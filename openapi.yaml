@@ -1,0 +1,1994 @@
+openapi: 3.0.0
+paths:
+  /categories:
+    get:
+      operationId: CategoryController_read_categories
+      parameters: []
+      responses:
+        '200':
+          description: '카테고리 목록을 성공적으로 조회했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/NestedCategoryDTO'}}}
+        '400':
+          description: '카테고리 목록 조회에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '카테고리 목록 조회에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '카테고리 목록 조회'
+      tags:
+        - 카테고리
+  '/categories/{id}/products':
+    get:
+      operationId: CategoryController_read_products
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+        -
+          name: page
+          required: false
+          in: query
+          description: '페이지 번호'
+          schema:
+            example: 1
+            type: number
+        -
+          name: perPage
+          required: false
+          in: query
+          description: '페이지당 아이템 수'
+          schema:
+            example: 10
+            type: number
+        -
+          name: sort
+          required: false
+          in: query
+          description: '정렬 기준. 형식: {필드}:{asc|desc}'
+          schema:
+            example: 'created_at:desc'
+            type: string
+        -
+          name: includeSubcategories
+          required: false
+          in: query
+          description: '하위 카테고리 포함 여부'
+          schema:
+            example: true
+            type: boolean
+      responses:
+        '200':
+          description: '특정 카테고리의 상품 목록을 성공적으로 조회했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/CategoryResponseBundle'}}}
+        '400':
+          description: '특정 카테고리의 상품 목록 조회에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '특정 카테고리의 상품 목록 조회에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '특정 카테고리의 상품 목록 조회'
+      tags:
+        - 카테고리
+  /main:
+    get:
+      operationId: MainController_read_main_products
+      parameters: []
+      responses:
+        '200':
+          description: '메인 페이지 상품 목록을 성공적으로 조회했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/MainResponseBundle'}}}
+        '400':
+          description: '입력 데이터가 유효하지 않습니다..'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '입력 데이터가 유효하지 않습니다..', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      summary: '메인 페이지용 상품 목록'
+      tags:
+        - 메인
+  /products:
+    post:
+      operationId: ProductController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductBodyDTO'
+      responses:
+        '201':
+          description: '상품이 성공적으로 등록되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/ProductResponseDTO'}}}
+        '400':
+          description: '상품 등록에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 등록에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 등록'
+      tags:
+        - '상품 관리'
+    get:
+      operationId: ProductController_read_all
+      parameters:
+        -
+          name: page
+          required: false
+          in: query
+          description: '페이지 번호 (기본값: 1)'
+          schema:
+            example: 1
+            type: number
+        -
+          name: perPage
+          required: false
+          in: query
+          description: '페이지당 아이템 수 (기본값: 10)'
+          schema:
+            example: 10
+            type: number
+        -
+          name: sort
+          required: false
+          in: query
+          description: '정렬 기준. 형식: {필드}:{asc|desc}. 여러 개인 경우 콤마로 구분 (기본값: created_at:desc)'
+          schema:
+            example: 'created_at:desc'
+            type: string
+        -
+          name: status
+          required: false
+          in: query
+          description: '상품 상태 필터 (ACTIVE, OUT_OF_STOCK, DELETED)'
+          schema:
+            example: ACTIVE
+            type: string
+        -
+          name: minPrice
+          required: false
+          in: query
+          description: '최소 가격 필터'
+          schema:
+            example: 10000
+            type: number
+        -
+          name: maxPrice
+          required: false
+          in: query
+          description: '최대 가격 필터'
+          schema:
+            example: 100000
+            type: number
+        -
+          name: category
+          required: false
+          in: query
+          description: '카테고리 ID 필터 (여러 개인 경우 콤마로 구분)'
+          schema:
+            example:
+              - 5
+            type: array
+            items:
+              type: number
+        -
+          name: seller
+          required: false
+          in: query
+          description: '판매자 ID 필터'
+          schema:
+            example: 1
+            type: number
+        -
+          name: brand
+          required: false
+          in: query
+          description: '브랜드 ID 필터'
+          schema:
+            example: 2
+            type: number
+        -
+          name: inStock
+          required: false
+          in: query
+          description: '재고 유무 필터'
+          schema:
+            example: true
+            type: boolean
+        -
+          name: search
+          required: false
+          in: query
+          description: 검색어
+          schema:
+            example: 소파
+            type: string
+      responses:
+        '200':
+          description: '상품 목록을 성공적으로 조회했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/ProductResponseBundle'}}}
+        '400':
+          description: '상품 목록 조회에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 목록 조회에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 목록 조회'
+      tags:
+        - '상품 관리'
+  '/products/{id}':
+    get:
+      operationId: ProductController_read
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+      responses:
+        '200':
+          description: '상품 상세 정보를 성공적으로 조회했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/Product_Catalog'}}}
+        '400':
+          description: '요청한 상품을 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '요청한 상품을 찾을 수 없습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 상세 조회'
+      tags:
+        - '상품 관리'
+    put:
+      operationId: ProductController_update
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductBodyDTO'
+      responses:
+        '200':
+          description: '상품이 성공적으로 수정되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/ProductResponseDTO'}}}
+        '400':
+          description: '상품 수정에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 수정에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 수정'
+      tags:
+        - '상품 관리'
+    delete:
+      operationId: ProductController_delete
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+      responses:
+        '200':
+          description: '상품이 성공적으로 삭제되었습니다.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        '400':
+          description: '상품 삭제에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 삭제에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 삭제'
+      tags:
+        - '상품 관리'
+  '/products/{id}/options':
+    post:
+      operationId: ProductOptionsController_create_option
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '상품 ID'
+          schema:
+            example: '123'
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptionsBodyDTO'
+      responses:
+        '201':
+          description: '상품 옵션이 성공적으로 추가되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/Product_Option'}}}
+        '400':
+          description: '상품 옵션 추가에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 옵션 추가에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 옵션 추가'
+      tags:
+        - '상품 옵션 관리'
+  '/products/{id}/options/{optionId}':
+    put:
+      operationId: ProductOptionsController_update_option
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '상품 ID'
+          schema:
+            example: '123'
+            type: number
+        -
+          name: optionId
+          required: true
+          in: path
+          description: '옵션 ID'
+          schema:
+            example: '456'
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptionsBodyDTO'
+      responses:
+        '200':
+          description: '상품 옵션이 성공적으로 수정되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/Product_Option'}}}
+        '400':
+          description: '상품 옵션 수정에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 옵션 수정에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 옵션 수정'
+      tags:
+        - '상품 옵션 관리'
+    delete:
+      operationId: ProductOptionsController_delete_option
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '상품 ID'
+          schema:
+            example: '123'
+            type: number
+        -
+          name: optionId
+          required: true
+          in: path
+          description: '옵션 ID'
+          schema:
+            example: '456'
+            type: number
+      responses:
+        '200':
+          description: '상품 옵션이 성공적으로 삭제되었습니다.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        '400':
+          description: '상품 옵션 삭제에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 옵션 삭제에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 옵션 삭제'
+      tags:
+        - '상품 옵션 관리'
+  '/products/{id}/images':
+    post:
+      operationId: ProductOptionsController_create_image
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '상품 ID'
+          schema:
+            example: '123'
+            type: number
+        -
+          name: optionId
+          required: true
+          in: path
+          description: '옵션에 대한 식별자'
+          schema:
+            example: '456'
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageBodyDTO'
+      responses:
+        '201':
+          description: '상품 이미지가 성공적으로 추가되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/Product_Image'}}}
+        '400':
+          description: '상품 이미지 추가에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 이미지 추가에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 이미지 추가'
+      tags:
+        - '상품 옵션 관리'
+  '/products/{id}/reviews':
+    get:
+      operationId: ReviewController_read
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+        -
+          name: page
+          required: false
+          in: query
+          description: '페이지 번호'
+          schema:
+            example: 1
+            type: number
+        -
+          name: perPage
+          required: false
+          in: query
+          description: '페이지당 아이템 수'
+          schema:
+            example: 10
+            type: number
+        -
+          name: sort
+          required: false
+          in: query
+          description: '정렬 기준. 형식: {필드}:{asc|desc}'
+          schema:
+            example: 'created_at:desc'
+            type: string
+        -
+          name: rating
+          required: false
+          in: query
+          description: '평점 필터 (1-5)'
+          schema:
+            example: 4
+            type: number
+      responses:
+        '200':
+          description: '상품 리뷰를 성공적으로 조회했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/ReviewResponseBundle'}}}
+        '400':
+          description: '상품 리뷰 조회에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '상품 리뷰 조회에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '상품 리뷰 조회'
+      tags:
+        - 리뷰
+    post:
+      operationId: ReviewController_create
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewBodyDTO'
+      responses:
+        '201':
+          description: '리뷰가 성공적으로 작성되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/Review'}}}
+        '400':
+          description: '리뷰 작성에 실패했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '리뷰 작성에 실패했습니다.', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '해당 작업을 수행할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '해당 작업을 수행할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '리뷰 작성'
+      tags:
+        - 리뷰
+  '/reviews/{id}':
+    put:
+      operationId: ReviewController_update
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewBodyDTO'
+      responses:
+        '200':
+          description: '리뷰가 성공적으로 수정되었습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ResponseDTO'}
+                  - {properties: {data: {$ref: '#/components/schemas/Review'}}}
+        '400':
+          description: '입력 데이터가 유효하지 않습니다..'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '입력 데이터가 유효하지 않습니다..', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '다른 사용자의 리뷰를 수정할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '다른 사용자의 리뷰를 수정할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '리뷰 수정'
+      tags:
+        - 리뷰
+    delete:
+      operationId: ReviewController_delete
+      parameters:
+        -
+          name: id
+          required: true
+          in: path
+          description: '고유 식별자'
+          schema:
+            example: '123'
+            type: number
+      responses:
+        '200':
+          description: '리뷰가 성공적으로 삭제되었습니다.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        '400':
+          description: '입력 데이터가 유효하지 않습니다..'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INVALID_INPUT, message: '입력 데이터가 유효하지 않습니다..', details: {}}}}
+        '401':
+          description: '인증이 필요합니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: UNAUTHORIZED, message: '인증이 필요합니다.', details: {}}}}
+        '403':
+          description: '다른 사용자의 리뷰를 삭제할 권한이 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: FORBIDDEN, message: '다른 사용자의 리뷰를 삭제할 권한이 없습니다.', details: {}}}}
+        '404':
+          description: '요청한 리소스를 찾을 수 없습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: RESOURCE_NOT_FOUND, message: '요청한 리소스를 찾을 수 없습니다.', details: {}}}}
+        '409':
+          description: '리소스 충돌이 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: CONFLICT, message: '리소스 충돌이 발생했습니다.', details: {}}}}
+        '500':
+          description: '서버 내부 오류가 발생했습니다.'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - {$ref: '#/components/schemas/ErrorDTO'}
+                  - {example: {success: false, error: {code: INTERNAL_ERROR, message: '서버 내부 오류가 발생했습니다.', details: {}}}}
+      security:
+        -
+          bearer: []
+      summary: '리뷰 삭제'
+      tags:
+        - 리뷰
+info:
+  title: 'API 명세서'
+  description: 'CQRS 시스템 설계/구축 챌린지 - API 명세서'
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+            - INVALID_INPUT
+            - RESOURCE_NOT_FOUND
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - NOT_FOUND
+            - CONFLICT
+            - INTERNAL_ERROR
+          description: '에러 발생 시 응답은 다음 형식을 따릅니다'
+        message:
+          type: string
+          description: '에러 메시지'
+          example: '에러가 발생했습니다.'
+        details:
+          type: object
+          description: '추가적인 에러 세부 정보 (선택 사항)'
+      required:
+        - code
+        - message
+    ErrorDTO:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: '요청 성공 여부'
+          example: false
+        error:
+          description: '공통 에러 코드'
+          allOf:
+            -
+              $ref: '#/components/schemas/ErrorObject'
+      required:
+        - success
+        - error
+    ResponseDTO:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: '요청 성공 여부'
+          example: true
+        data:
+          type: object
+          description: '응답 데이터'
+          example: {}
+        message:
+          type: string
+          description: '응답 메시지'
+          example: '요청이 성공적으로 처리되었습니다.'
+      required:
+        - success
+        - data
+    NestedCategoryDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '카테고리 ID'
+        name:
+          type: string
+          description: '카테고리 이름'
+        slug:
+          type: string
+          description: '카테고리 슬러그'
+        description:
+          type: string
+          description: '카테고리 설명'
+        level:
+          type: number
+          description: '카테고리 레벨'
+        image_url:
+          type: string
+          description: '카테고리 이미지 URL'
+        children:
+          description: '중첩 카테고리 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedCategoryDTO'
+    Category:
+      type: object
+      properties: {}
+    Product_Summary:
+      type: object
+      properties: {}
+    PaginationSummaryDTO:
+      type: object
+      properties:
+        total_items:
+          type: number
+          description: '총 항목 수'
+          example: 50
+        total_pages:
+          type: number
+          description: '총 페이지 수'
+          example: 5
+        current_page:
+          type: number
+          description: '현재 페이지'
+          example: 1
+        per_page:
+          type: number
+          description: '페이지당 항목 수'
+          example: 10
+      required:
+        - total_items
+        - total_pages
+        - current_page
+        - per_page
+    CategoryResponseBundle:
+      type: object
+      properties:
+        category:
+          description: '카테고리 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/Category'
+        items:
+          description: '상품 요약 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Product_Summary'
+        pagination:
+          description: '페이지네이션 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/PaginationSummaryDTO'
+      required:
+        - category
+        - items
+        - pagination
+    MainResponseBundle:
+      type: object
+      properties:
+        new_products:
+          description: '신상품 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Product_Summary'
+        popular_products:
+          description: '인기 상품 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Product_Summary'
+        featured_categories:
+          description: '추천 카테고리 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+      required:
+        - new_products
+        - popular_products
+        - featured_categories
+    ProductResponseDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '상품 ID'
+          example: 1
+        name:
+          type: string
+          description: '상품 이름'
+          example: 소파
+        slug:
+          type: string
+          description: 슬러그
+          example: super-comfortable-sofa
+        created_at:
+          format: date-time
+          type: string
+          description: '생성 일시'
+          example: '2025-04-14T09:30:00Z'
+        updated_at:
+          format: date-time
+          type: string
+          description: '수정 일시'
+          example: '2025-04-14T09:30:00Z'
+      required:
+        - id
+        - name
+        - slug
+        - created_at
+        - updated_at
+    Dimensions:
+      type: object
+      properties:
+        width:
+          type: number
+          description: '가로 길이'
+          example: 200
+        height:
+          type: number
+          description: '세로 길이'
+          example: 85
+        depth:
+          type: number
+          description: 깊이
+          example: 90
+      required:
+        - width
+        - height
+        - depth
+    AdditionalInfo:
+      type: object
+      properties:
+        assembly_required:
+          type: boolean
+          description: '조립 필요 여부'
+          example: true
+        assembly_time:
+          type: string
+          description: '조립 시간'
+          example: 30분
+      required:
+        - assembly_required
+        - assembly_time
+    Detail:
+      type: object
+      properties:
+        weight:
+          type: number
+          description: 무게
+          example: 25.5
+        dimensions:
+          description: '크기 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/Dimensions'
+        materials:
+          type: string
+          description: 재료
+          example: '가죽, 목재, 폼'
+        country_of_origin:
+          type: string
+          description: 원산지
+          example: 대한민국
+        warranty_info:
+          type: string
+          description: '보증 정보'
+          example: '2년 품질 보증'
+        care_instructions:
+          type: string
+          description: '관리 지침'
+          example: '마른 천으로 표면을 닦아주세요'
+        additional_info:
+          description: '추가 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/AdditionalInfo'
+      required:
+        - weight
+        - dimensions
+        - materials
+        - country_of_origin
+        - warranty_info
+        - care_instructions
+        - additional_info
+    Price:
+      type: object
+      properties:
+        base_price:
+          type: number
+          description: '기본 가격'
+          example: 599000
+        sale_price:
+          type: number
+          description: '할인 가격'
+          example: 499000
+        cost_price:
+          type: number
+          description: 원가
+          example: 350000
+        currency:
+          type: string
+          description: 통화
+          example: KRW
+        tax_rate:
+          type: number
+          description: 세율
+          example: 10
+      required:
+        - base_price
+        - sale_price
+        - cost_price
+        - currency
+        - tax_rate
+    Option:
+      type: object
+      properties:
+        name:
+          type: string
+          description: '옵션 이름'
+          example: 브라운
+        additional_price:
+          type: number
+          description: '추가 가격'
+          example: 0
+        sku:
+          type: string
+          description: SKU
+          example: SOFA-BRN
+        stock:
+          type: number
+          description: 재고
+          example: 10
+        display_order:
+          type: number
+          description: '표시 순서'
+          example: 1
+      required:
+        - name
+        - additional_price
+        - sku
+        - stock
+        - display_order
+    OptionGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          description: '옵션 그룹 이름'
+          example: 색상
+        display_order:
+          type: number
+          description: '표시 순서'
+          example: 1
+        options:
+          description: '옵션 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+      required:
+        - name
+        - display_order
+        - options
+    Image:
+      type: object
+      properties:
+        url:
+          type: string
+          description: '이미지 URL'
+          example: 'https://example.com/images/sofa1.jpg'
+        alt_text:
+          type: string
+          description: '대체 텍스트'
+          example: '브라운 소파 정면'
+        is_primary:
+          type: boolean
+          description: '주요 이미지 여부'
+          example: true
+        display_order:
+          type: number
+          description: '표시 순서'
+          example: 1
+        option_id:
+          type: object
+          description: '옵션 ID'
+          example: null
+          nullable: true
+      required:
+        - url
+        - alt_text
+        - is_primary
+        - display_order
+        - option_id
+    ProductBodyDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          description: '상품 이름'
+          example: '슈퍼 편안한 소파'
+        slug:
+          type: string
+          description: 슬러그
+          example: super-comfortable-sofa
+        short_description:
+          type: string
+          description: '짧은 설명'
+          example: '최고급 소재로 만든 편안한 소파'
+        full_description:
+          type: string
+          description: '상세 설명'
+          example: '<p>이 소파는 최고급 소재로 제작되었으며...</p>'
+        seller_id:
+          type: number
+          description: '판매자 ID'
+          example: 1
+        brand_id:
+          type: number
+          description: '브랜드 ID'
+          example: 2
+        status:
+          type: string
+          description: 상태
+          example: ACTIVE
+        detail:
+          description: '상세 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/Detail'
+        price:
+          description: '가격 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/Price'
+        categories:
+          description: '카테고리 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        option_groups:
+          description: '옵션 그룹 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionGroup'
+        images:
+          description: '이미지 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        tags:
+          description: '태그 목록'
+          example:
+            - 1
+            - 4
+            - 7
+          type: array
+          items:
+            type: string
+      required:
+        - name
+        - slug
+        - short_description
+        - full_description
+        - seller_id
+        - brand_id
+        - status
+        - detail
+        - price
+        - categories
+        - option_groups
+        - images
+        - tags
+    ProductResponseBundle:
+      type: object
+      properties:
+        items:
+          description: '상품 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/Product_Summary'
+        pagination:
+          description: '페이지네이션 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/PaginationSummaryDTO'
+      required:
+        - items
+        - pagination
+    Product_Catalog:
+      type: object
+      properties: {}
+    Product_Option:
+      type: object
+      properties: {}
+    OptionsBodyDTO:
+      type: object
+      properties:
+        option_group_id:
+          type: number
+          description: '옵션 그룹 ID'
+          example: 35
+        name:
+          type: string
+          description: '옵션 이름'
+          example: '네이비 블루'
+        additional_price:
+          type: number
+          description: '추가 가격'
+          example: 25000
+        sku:
+          type: string
+          description: 'SKU(재고 관리 코드)'
+          example: SOFA-NVBL
+        stock:
+          type: number
+          description: '재고 수량'
+          example: 10
+        display_order:
+          type: number
+          description: '표시 순서'
+          example: 3
+      required:
+        - name
+        - additional_price
+        - sku
+        - stock
+        - display_order
+    Product_Image:
+      type: object
+      properties: {}
+    ImageBodyDTO:
+      type: object
+      properties:
+        url:
+          type: string
+          description: '이미지 URL'
+          example: 'https://example.com/images/sofa3.jpg'
+        alt_text:
+          type: string
+          description: '이미지 대체 텍스트'
+          example: '네이비 소파 측면'
+        is_primary:
+          type: boolean
+          description: '대표 이미지 여부'
+          example: false
+        display_order:
+          type: number
+          description: '이미지 표시 순서'
+          example: 3
+        option_id:
+          type: number
+          description: '옵션 ID'
+          example: 35
+      required:
+        - url
+        - alt_text
+        - is_primary
+        - display_order
+        - option_id
+    ReviewSummaryDTO:
+      type: object
+      properties:
+        average_rating:
+          type: number
+          description: '리뷰 평균 평점'
+          example: 4.5
+        total_count:
+          type: number
+          description: '리뷰 개수'
+          example: 100
+        distribution:
+          type: object
+          description: '리뷰 평점 분포'
+          example:
+            '1': 10
+            '2': 20
+            '3': 30
+            '4': 25
+            '5': 15
+      required:
+        - average_rating
+        - total_count
+        - distribution
+    ReviewResponseBundle:
+      type: object
+      properties:
+        items:
+          description: '리뷰 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/Product_Summary'
+        summary:
+          description: '리뷰 요약 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/ReviewSummaryDTO'
+        pagination:
+          description: '페이지네이션 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/PaginationSummaryDTO'
+      required:
+        - items
+        - summary
+        - pagination
+    Review:
+      type: object
+      properties: {}
+    ReviewBodyDTO:
+      type: object
+      properties:
+        rating:
+          type: number
+          description: 평점
+          example: 5
+        title:
+          type: string
+          description: 제목
+          example: '완벽한 소파입니다!'
+        content:
+          type: string
+          description: 내용
+          example: '배송도 빠르고 품질도 매우 좋습니다. 색상도 사진과 동일하고 조립도 쉬웠어요.'
+      required:
+        - rating
+        - title
+        - content
