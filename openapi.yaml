@@ -12,7 +12,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/NestedCategoryDTO'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/NestedCategoryDTO'}, {example: {id: 5, name: 소파, slug: sofa, description: '다양한 스타일의 소파', level: 3, image_url: 'https://example.com/categories/sofa.jpg', children: '중첩 카테고리 목록'}}]}}}
         '400':
           description: '카테고리 목록 조회에 실패했습니다.'
           content:
@@ -119,7 +119,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/CategoryResponseBundle'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/CategoryResponseBundleDTO'}, {example: {category: {id: 5, name: 소파, slug: sofa, description: '다양한 스타일의 소파', level: 3, image_url: 'https://example.com/categories/sofa.jpg', parent: {id: 2, name: '거실 가구', slug: living-room}}, items: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, short_description: '최고급 소재로 만든 편안한 소파', status: ACTIVE, created_at: '2025-04-10T09:30:00Z', base_price: 599000, sale_price: 499000, currency: KRW, primary_image: {url: 'https://example.com/images/sofa3.jpg', alt_text: '네이비 소파 측면'}, brand: {id: 1, name: 편안가구}, seller: {id: 1, name: 홈퍼니처}, in_stock: true, rating: 4.7, review_count: 128}, pagination: {total_items: 50, total_pages: 5, current_page: 1, per_page: 10}}}]}}}
         '400':
           description: '특정 카테고리의 상품 목록 조회에 실패했습니다.'
           content:
@@ -186,7 +186,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/MainResponseBundle'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/MainResponseBundleDTO'}, {example: {new_products: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, short_description: '최고급 소재로 만든 편안한 소파', status: ACTIVE, created_at: '2025-04-10T09:30:00Z', base_price: 599000, sale_price: 499000, currency: KRW, primary_image: {url: 'https://example.com/images/sofa3.jpg', alt_text: '네이비 소파 측면'}, brand: {id: 1, name: 편안가구}, seller: {id: 1, name: 홈퍼니처}, in_stock: true, rating: 4.7, review_count: 128}, popular_products: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, short_description: '최고급 소재로 만든 편안한 소파', status: ACTIVE, created_at: '2025-04-10T09:30:00Z', base_price: 599000, sale_price: 499000, currency: KRW, primary_image: {url: 'https://example.com/images/sofa3.jpg', alt_text: '네이비 소파 측면'}, brand: {id: 1, name: 편안가구}, seller: {id: 1, name: 홈퍼니처}, in_stock: true, rating: 4.7, review_count: 128}, featured_categories: {id: 5, name: 소파, slug: sofa, image_url: 'https://example.com/categories/sofa.jpg', product_count: 85}}}]}}}
         '400':
           description: '입력 데이터가 유효하지 않습니다..'
           content:
@@ -256,7 +256,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/ProductResponseDTO'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ProductResponseDTO'}, {example: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, created_at: '2025-04-10T09:30:00Z', updated_at: '2025-04-14T10:15:00Z'}}]}}}
         '400':
           description: '상품 등록에 실패했습니다.'
           content:
@@ -413,7 +413,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/ProductResponseBundle'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ProductResponseBundleDTO'}, {example: {items: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, short_description: '최고급 소재로 만든 편안한 소파', status: ACTIVE, created_at: '2025-04-10T09:30:00Z', base_price: 599000, sale_price: 499000, currency: KRW, primary_image: {url: 'https://example.com/images/sofa3.jpg', alt_text: '네이비 소파 측면'}, brand: {id: 1, name: 편안가구}, seller: {id: 1, name: 홈퍼니처}, in_stock: true, rating: 4.7, review_count: 128}, pagination: {total_items: 50, total_pages: 5, current_page: 1, per_page: 10}}}]}}}
         '400':
           description: '상품 목록 조회에 실패했습니다.'
           content:
@@ -488,7 +488,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/Product_Catalog'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ProductCatalogDTO'}, {example: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, short_description: '최고급 소재로 만든 편안한 소파', full_description: '<p>이 소파는 최고급 소재로 제작되었으며...</p>', status: ACTIVE, created_at: '2025-04-10T09:30:00Z', updated_at: '2025-04-14T10:15:00Z', seller: {id: 1, name: 홈퍼니처, description: '최고의 가구 전문 판매점', logo_url: 'https://example.com/sellers/homefurniture.png', rating: 4.8, contact_email: contact@homefurniture.com, contact_phone: 02-1234-5678}, brand: {id: 1, name: 편안가구, description: '편안함을 추구하는 가구 브랜드', logo_url: 'https://example.com/brands/comfortfurniture.png', website: 'https://comfortfurniture.com'}, detail: {weight: 25.5, dimensions: {width: 200, height: 85, depth: 90}, materials: '가죽, 목재, 폼', country_of_origin: 대한민국, warranty_info: '2년 품질 보증', care_instructions: '마른 천으로 표면을 닦아주세요', additional_info: {assembly_required: true, assembly_time: 30분}}, price: {base_price: 599000, sale_price: 499000, cost_price: 350000, currency: KRW, tax_rate: 10, discount_percentage: 17}, categories: {id: 5, name: 소파, slug: sofa, is_primary: true, description: '다양한 스타일의 소파', level: 3, image_url: 'https://example.com/categories/sofa.jpg', parent: {id: 2, name: '거실 가구', slug: living-room}}, option_groups: {id: 1, name: 색상, display_order: 1, options: {id: 1, option_group_id: 35, name: 브라운, additional_price: 25000, sku: SOFA-BRN, stock: 10, display_order: 1}}, images: {id: 1, url: 'https://example.com/images/sofa3.jpg', alt_text: '네이비 소파 측면', is_primary: false, display_order: 3, option_id: 35}, tags: {id: 1, name: 편안함, slug: comfort}, rating: {average: 4.5, count: 150, distribution: {'1': 2, '2': 3, '3': 15, '4': 30, '5': 100}}}}]}}}
         '400':
           description: '요청한 상품을 찾을 수 없습니다.'
           content:
@@ -568,7 +568,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/ProductResponseDTO'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ProductResponseDTO'}, {example: {id: 123, name: '슈퍼 편안한 소파', slug: super-comfortable-sofa, created_at: '2025-04-10T09:30:00Z', updated_at: '2025-04-14T10:15:00Z'}}]}}}
         '400':
           description: '상품 수정에 실패했습니다.'
           content:
@@ -712,7 +712,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OptionsBodyDTO'
+              $ref: '#/components/schemas/ProductOptionDTO'
       responses:
         '201':
           description: '상품 옵션이 성공적으로 추가되었습니다.'
@@ -721,7 +721,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/Product_Option'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ProductOptionDTO'}, {example: {id: 1, option_group_id: 35, name: 브라운, additional_price: 25000, sku: SOFA-BRN, stock: 10, display_order: 1}}]}}}
         '400':
           description: '상품 옵션 추가에 실패했습니다.'
           content:
@@ -801,7 +801,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OptionsBodyDTO'
+              $ref: '#/components/schemas/ProductOptionDTO'
       responses:
         '200':
           description: '상품 옵션이 성공적으로 수정되었습니다.'
@@ -810,7 +810,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/Product_Option'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ProductOptionDTO'}, {example: {id: 1, option_group_id: 35, name: 브라운, additional_price: 25000, sku: SOFA-BRN, stock: 10, display_order: 1}}]}}}
         '400':
           description: '상품 옵션 수정에 실패했습니다.'
           content:
@@ -970,7 +970,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ImageBodyDTO'
+              $ref: '#/components/schemas/ImageDTO'
       responses:
         '201':
           description: '상품 이미지가 성공적으로 추가되었습니다.'
@@ -979,7 +979,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/Product_Image'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ImageDTO'}, {example: {id: 1, url: 'https://example.com/images/sofa3.jpg', alt_text: '네이비 소파 측면', is_primary: false, display_order: 3, option_id: 35}}]}}}
         '400':
           description: '상품 이미지 추가에 실패했습니다.'
           content:
@@ -1086,7 +1086,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/ReviewResponseBundle'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ReviewResponseBundleDTO'}, {example: {items: {id: 1500, user: {id: 250, name: 홍길동, avatar_url: 'https://example.com/avatars/user250.jpg'}, rating: 5, title: '완벽한 소파입니다!', content: '배송도 빠르고 품질도 매우 좋습니다. 색상도 사진과 동일하고 조립도 쉬웠어요.', created_at: '2025-04-12T15:30:00Z', updated_at: '2025-04-12T15:30:00Z', verified_purchase: true, helpful_votes: 12}, summary: {average_rating: 4.5, total_count: 100, distribution: {'1': 10, '2': 20, '3': 30, '4': 25, '5': 15}}, pagination: {total_items: 50, total_pages: 5, current_page: 1, per_page: 10}}}]}}}
         '400':
           description: '상품 리뷰 조회에 실패했습니다.'
           content:
@@ -1166,7 +1166,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/Review'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ReviewDTO'}, {example: {id: 1500, user: {id: 250, name: 홍길동, avatar_url: 'https://example.com/avatars/user250.jpg'}, rating: 5, title: '완벽한 소파입니다!', content: '배송도 빠르고 품질도 매우 좋습니다. 색상도 사진과 동일하고 조립도 쉬웠어요.', created_at: '2025-04-12T15:30:00Z', updated_at: '2025-04-12T15:30:00Z', verified_purchase: true, helpful_votes: 12}}]}}}
         '400':
           description: '리뷰 작성에 실패했습니다.'
           content:
@@ -1247,7 +1247,7 @@ paths:
               schema:
                 allOf:
                   - {$ref: '#/components/schemas/ResponseDTO'}
-                  - {properties: {data: {$ref: '#/components/schemas/Review'}}}
+                  - {properties: {data: {allOf: [{$ref: '#/components/schemas/ReviewResponseDTO'}, {example: {id: 1500, rating: 5, title: '완벽한 소파입니다!', content: '배송도 빠르고 품질도 매우 좋습니다. 색상도 사진과 동일하고 조립도 쉬웠어요.', updated_at: '2025-04-12T15:30:00Z'}}]}}}
         '400':
           description: '입력 데이터가 유효하지 않습니다..'
           content:
@@ -1388,11 +1388,15 @@ components:
       bearerFormat: JWT
       type: http
   schemas:
+    ErrorDetails:
+      type: object
+      properties: {}
     ErrorObject:
       type: object
       properties:
         code:
           type: string
+          description: '에러 발생 시 응답은 다음 형식을 따릅니다'
           enum:
             - INVALID_INPUT
             - RESOURCE_NOT_FOUND
@@ -1401,14 +1405,15 @@ components:
             - NOT_FOUND
             - CONFLICT
             - INTERNAL_ERROR
-          description: '에러 발생 시 응답은 다음 형식을 따릅니다'
         message:
           type: string
           description: '에러 메시지'
           example: '에러가 발생했습니다.'
         details:
-          type: object
           description: '추가적인 에러 세부 정보 (선택 사항)'
+          allOf:
+            -
+              $ref: '#/components/schemas/ErrorDetails'
       required:
         - code
         - message
@@ -1451,32 +1456,221 @@ components:
         id:
           type: number
           description: '카테고리 ID'
+          example: 5
         name:
           type: string
           description: '카테고리 이름'
+          example: 소파
         slug:
           type: string
           description: '카테고리 슬러그'
+          example: sofa
         description:
           type: string
           description: '카테고리 설명'
+          example: '다양한 스타일의 소파'
         level:
           type: number
           description: '카테고리 레벨'
+          example: 3
         image_url:
           type: string
           description: '카테고리 이미지 URL'
+          example: 'https://example.com/categories/sofa.jpg'
         children:
-          description: '중첩 카테고리 목록'
           type: array
+          description: '중첩 카테고리 목록'
           items:
             $ref: '#/components/schemas/NestedCategoryDTO'
-    Category:
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - level
+        - image_url
+    ParentCategoryDTO:
       type: object
-      properties: {}
-    Product_Summary:
+      properties:
+        id:
+          type: number
+          description: '카테고리 ID'
+          example: 2
+        name:
+          type: string
+          description: '카테고리 이름'
+          example: '거실 가구'
+        slug:
+          type: string
+          description: '카테고리 슬러그'
+          example: living-room
+      required:
+        - id
+        - name
+        - slug
+    CategoryResponseDTO:
       type: object
-      properties: {}
+      properties:
+        id:
+          type: number
+          description: '카테고리 ID'
+          example: 5
+        name:
+          type: string
+          description: '카테고리 이름'
+          example: 소파
+        slug:
+          type: string
+          description: '카테고리 슬러그'
+          example: sofa
+        description:
+          type: string
+          description: '카테고리 설명'
+          example: '다양한 스타일의 소파'
+        level:
+          type: number
+          description: '카테고리 레벨'
+          example: 3
+        image_url:
+          type: string
+          description: '카테고리 이미지 URL'
+          example: 'https://example.com/categories/sofa.jpg'
+        parent:
+          description: '부모 카테고리'
+          nullable: true
+          allOf:
+            -
+              $ref: '#/components/schemas/ParentCategoryDTO'
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - level
+        - image_url
+    ProductSummaryOfImageDTO:
+      type: object
+      properties:
+        url:
+          type: string
+          description: '이미지 URL'
+          example: 'https://example.com/images/sofa3.jpg'
+        alt_text:
+          type: string
+          description: '이미지 대체 텍스트'
+          example: '네이비 소파 측면'
+      required:
+        - url
+        - alt_text
+    ProductSummaryOfBrandDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '브랜드 ID'
+          example: 1
+        name:
+          type: string
+          description: '브랜드 이름'
+          example: 편안가구
+      required:
+        - name
+    ProductSummaryOfSellerDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '판매자 ID'
+          example: 1
+        name:
+          type: string
+          description: '판매자 이름'
+          example: 홈퍼니처
+      required:
+        - name
+    ProductSummaryDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '상품 ID'
+          example: 123
+        name:
+          type: string
+          description: '상품 이름'
+          example: '슈퍼 편안한 소파'
+        slug:
+          type: string
+          description: 슬러그
+          example: super-comfortable-sofa
+        short_description:
+          type: string
+          description: '짧은 설명'
+          example: '최고급 소재로 만든 편안한 소파'
+        status:
+          type: string
+          description: 상태
+          example: ACTIVE
+        created_at:
+          format: date-time
+          type: string
+          description: '생성 일시'
+          example: '2025-04-10T09:30:00Z'
+        base_price:
+          type: number
+          description: '기본 가격'
+          example: 599000
+        sale_price:
+          type: number
+          description: '할인 가격'
+          example: 499000
+        currency:
+          type: string
+          description: 통화
+          example: KRW
+        primary_image:
+          description: '주 이미지'
+          allOf:
+            -
+              $ref: '#/components/schemas/ProductSummaryOfImageDTO'
+        brand:
+          description: 브랜드
+          allOf:
+            -
+              $ref: '#/components/schemas/ProductSummaryOfBrandDTO'
+        seller:
+          description: 판매자
+          allOf:
+            -
+              $ref: '#/components/schemas/ProductSummaryOfSellerDTO'
+        in_stock:
+          type: boolean
+          description: '재고 유무'
+          example: true
+        rating:
+          type: number
+          description: 평점
+          example: 4.7
+        review_count:
+          type: number
+          description: '리뷰 수'
+          example: 128
+      required:
+        - id
+        - name
+        - slug
+        - short_description
+        - status
+        - created_at
+        - base_price
+        - sale_price
+        - currency
+        - primary_image
+        - brand
+        - seller
+        - in_stock
+        - rating
+        - review_count
     PaginationSummaryDTO:
       type: object
       properties:
@@ -1501,19 +1695,19 @@ components:
         - total_pages
         - current_page
         - per_page
-    CategoryResponseBundle:
+    CategoryResponseBundleDTO:
       type: object
       properties:
         category:
           description: '카테고리 정보'
           allOf:
             -
-              $ref: '#/components/schemas/Category'
+              $ref: '#/components/schemas/CategoryResponseDTO'
         items:
           description: '상품 요약 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Product_Summary'
+            $ref: '#/components/schemas/ProductSummaryDTO'
         pagination:
           description: '페이지네이션 정보'
           allOf:
@@ -1523,24 +1717,53 @@ components:
         - category
         - items
         - pagination
-    MainResponseBundle:
+    FeaturedCategoryDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '카테고리 ID'
+          example: 5
+        name:
+          type: string
+          description: '카테고리 이름'
+          example: 소파
+        slug:
+          type: string
+          description: '카테고리 슬러그'
+          example: sofa
+        image_url:
+          type: string
+          description: '카테고리 이미지 URL'
+          example: 'https://example.com/categories/sofa.jpg'
+        product_count:
+          type: number
+          description: '제품 수'
+          example: 85
+      required:
+        - id
+        - name
+        - slug
+        - image_url
+        - product_count
+    MainResponseBundleDTO:
       type: object
       properties:
         new_products:
           description: '신상품 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Product_Summary'
+            $ref: '#/components/schemas/ProductSummaryDTO'
         popular_products:
           description: '인기 상품 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Product_Summary'
+            $ref: '#/components/schemas/ProductSummaryDTO'
         featured_categories:
           description: '추천 카테고리 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Category'
+            $ref: '#/components/schemas/FeaturedCategoryDTO'
       required:
         - new_products
         - popular_products
@@ -1551,11 +1774,11 @@ components:
         id:
           type: number
           description: '상품 ID'
-          example: 1
+          example: 123
         name:
           type: string
           description: '상품 이름'
-          example: 소파
+          example: '슈퍼 편안한 소파'
         slug:
           type: string
           description: 슬러그
@@ -1564,19 +1787,19 @@ components:
           format: date-time
           type: string
           description: '생성 일시'
-          example: '2025-04-14T09:30:00Z'
+          example: '2025-04-10T09:30:00Z'
         updated_at:
           format: date-time
           type: string
           description: '수정 일시'
-          example: '2025-04-14T09:30:00Z'
+          example: '2025-04-14T10:15:00Z'
       required:
         - id
         - name
         - slug
         - created_at
         - updated_at
-    Dimensions:
+    DimensionsDTO:
       type: object
       properties:
         width:
@@ -1595,7 +1818,7 @@ components:
         - width
         - height
         - depth
-    AdditionalInfo:
+    AdditionalInfoDTO:
       type: object
       properties:
         assembly_required:
@@ -1609,7 +1832,7 @@ components:
       required:
         - assembly_required
         - assembly_time
-    Detail:
+    ProductDetailDTO:
       type: object
       properties:
         weight:
@@ -1620,7 +1843,7 @@ components:
           description: '크기 정보'
           allOf:
             -
-              $ref: '#/components/schemas/Dimensions'
+              $ref: '#/components/schemas/DimensionsDTO'
         materials:
           type: string
           description: 재료
@@ -1641,7 +1864,7 @@ components:
           description: '추가 정보'
           allOf:
             -
-              $ref: '#/components/schemas/AdditionalInfo'
+              $ref: '#/components/schemas/AdditionalInfoDTO'
       required:
         - weight
         - dimensions
@@ -1650,7 +1873,7 @@ components:
         - warranty_info
         - care_instructions
         - additional_info
-    Price:
+    PriceForProductBodyDTO:
       type: object
       properties:
         base_price:
@@ -1676,12 +1899,33 @@ components:
       required:
         - base_price
         - sale_price
-        - cost_price
         - currency
         - tax_rate
-    Option:
+    CategoryOfProductBodyDTO:
       type: object
       properties:
+        category_id:
+          type: number
+          description: '카테고리 ID'
+          example: 5
+        is_primary:
+          type: boolean
+          description: '대표 카테고리 여부'
+          example: true
+      required:
+        - category_id
+        - is_primary
+    ProductOptionDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '옵션 ID'
+          example: 1
+        option_group_id:
+          type: number
+          description: '옵션 그룹 ID'
+          example: 35
         name:
           type: string
           description: '옵션 이름'
@@ -1689,7 +1933,7 @@ components:
         additional_price:
           type: number
           description: '추가 가격'
-          example: 0
+          example: 25000
         sku:
           type: string
           description: SKU
@@ -1703,14 +1947,19 @@ components:
           description: '표시 순서'
           example: 1
       required:
+        - option_group_id
         - name
         - additional_price
         - sku
         - stock
         - display_order
-    OptionGroup:
+    ProductOptionGroupDTO:
       type: object
       properties:
+        id:
+          type: number
+          description: '옵션 그룹 ID'
+          example: 1
         name:
           type: string
           description: '옵션 그룹 이름'
@@ -1723,34 +1972,38 @@ components:
           description: '옵션 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Option'
+            $ref: '#/components/schemas/ProductOptionDTO'
       required:
         - name
         - display_order
         - options
-    Image:
+    ImageDTO:
       type: object
       properties:
+        id:
+          type: number
+          description: '이미지 ID'
+          example: 1
         url:
           type: string
           description: '이미지 URL'
-          example: 'https://example.com/images/sofa1.jpg'
+          example: 'https://example.com/images/sofa3.jpg'
         alt_text:
           type: string
-          description: '대체 텍스트'
-          example: '브라운 소파 정면'
+          description: '이미지 대체 텍스트'
+          example: '네이비 소파 측면'
         is_primary:
           type: boolean
-          description: '주요 이미지 여부'
-          example: true
+          description: '대표 이미지 여부'
+          example: false
         display_order:
           type: number
-          description: '표시 순서'
-          example: 1
+          description: '이미지 표시 순서'
+          example: 3
         option_id:
           type: object
           description: '옵션 ID'
-          example: null
+          example: 35
           nullable: true
       required:
         - url
@@ -1793,27 +2046,27 @@ components:
           description: '상세 정보'
           allOf:
             -
-              $ref: '#/components/schemas/Detail'
+              $ref: '#/components/schemas/ProductDetailDTO'
         price:
           description: '가격 정보'
           allOf:
             -
-              $ref: '#/components/schemas/Price'
+              $ref: '#/components/schemas/PriceForProductBodyDTO'
         categories:
           description: '카테고리 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Category'
+            $ref: '#/components/schemas/CategoryOfProductBodyDTO'
         option_groups:
           description: '옵션 그룹 목록'
           type: array
           items:
-            $ref: '#/components/schemas/OptionGroup'
+            $ref: '#/components/schemas/ProductOptionGroupDTO'
         images:
           description: '이미지 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Image'
+            $ref: '#/components/schemas/ImageDTO'
         tags:
           description: '태그 목록'
           example:
@@ -1837,14 +2090,14 @@ components:
         - option_groups
         - images
         - tags
-    ProductResponseBundle:
+    ProductResponseBundleDTO:
       type: object
       properties:
         items:
           description: '상품 정보'
-          allOf:
-            -
-              $ref: '#/components/schemas/Product_Summary'
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductSummaryDTO'
         pagination:
           description: '페이지네이션 정보'
           allOf:
@@ -1853,77 +2106,364 @@ components:
       required:
         - items
         - pagination
-    Product_Catalog:
-      type: object
-      properties: {}
-    Product_Option:
-      type: object
-      properties: {}
-    OptionsBodyDTO:
+    SellerDTO:
       type: object
       properties:
-        option_group_id:
+        id:
           type: number
-          description: '옵션 그룹 ID'
-          example: 35
+          description: '판매자 ID'
+          example: 1
         name:
           type: string
-          description: '옵션 이름'
-          example: '네이비 블루'
-        additional_price:
-          type: number
-          description: '추가 가격'
-          example: 25000
-        sku:
+          description: '판매자 이름'
+          example: 홈퍼니처
+        description:
           type: string
-          description: 'SKU(재고 관리 코드)'
-          example: SOFA-NVBL
-        stock:
+          description: '판매자 설명'
+          example: '최고의 가구 전문 판매점'
+        logo_url:
+          type: string
+          description: '판매자 로고 URL'
+          example: 'https://example.com/sellers/homefurniture.png'
+        rating:
           type: number
-          description: '재고 수량'
-          example: 10
-        display_order:
-          type: number
-          description: '표시 순서'
-          example: 3
+          description: '판매자 평점'
+          example: 4.8
+        contact_email:
+          type: string
+          description: '판매자 연락 이메일'
+          example: contact@homefurniture.com
+        contact_phone:
+          type: string
+          description: '판매자 연락 전화번호'
+          example: 02-1234-5678
       required:
         - name
-        - additional_price
-        - sku
-        - stock
-        - display_order
-    Product_Image:
-      type: object
-      properties: {}
-    ImageBodyDTO:
+        - description
+        - logo_url
+        - rating
+        - contact_email
+        - contact_phone
+    BrandDTO:
       type: object
       properties:
-        url:
+        id:
+          type: number
+          description: '브랜드 ID'
+          example: 1
+        name:
           type: string
-          description: '이미지 URL'
-          example: 'https://example.com/images/sofa3.jpg'
-        alt_text:
+          description: '브랜드 이름'
+          example: 편안가구
+        description:
           type: string
-          description: '이미지 대체 텍스트'
-          example: '네이비 소파 측면'
+          description: '브랜드 설명'
+          example: '편안함을 추구하는 가구 브랜드'
+        logo_url:
+          type: string
+          description: '브랜드 로고 URL'
+          example: 'https://example.com/brands/comfortfurniture.png'
+        website:
+          type: string
+          description: '브랜드 웹사이트'
+          example: 'https://comfortfurniture.com'
+      required:
+        - name
+        - description
+        - logo_url
+        - website
+    ProductPriceDTO:
+      type: object
+      properties:
+        base_price:
+          type: number
+          description: '기본 가격'
+          example: 599000
+        sale_price:
+          type: number
+          description: '할인 가격'
+          example: 499000
+        cost_price:
+          type: number
+          description: 원가
+          example: 350000
+        currency:
+          type: string
+          description: 통화
+          example: KRW
+        tax_rate:
+          type: number
+          description: 세율
+          example: 10
+        discount_percentage:
+          type: number
+          description: 할인율
+          example: 17
+      required:
+        - base_price
+        - sale_price
+        - currency
+        - tax_rate
+        - discount_percentage
+    CategoryDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '카테고리 ID'
+          example: 5
+        name:
+          type: string
+          description: '카테고리 이름'
+          example: 소파
+        slug:
+          type: string
+          description: '카테고리 슬러그'
+          example: sofa
         is_primary:
           type: boolean
-          description: '대표 이미지 여부'
-          example: false
-        display_order:
+          description: '대표 카테고리 여부'
+          example: true
+        description:
+          type: string
+          description: '카테고리 설명'
+          example: '다양한 스타일의 소파'
+        level:
           type: number
-          description: '이미지 표시 순서'
+          description: '카테고리 레벨'
           example: 3
-        option_id:
-          type: number
-          description: '옵션 ID'
-          example: 35
+        image_url:
+          type: string
+          description: '카테고리 이미지 URL'
+          example: 'https://example.com/categories/sofa.jpg'
+        parent:
+          description: '부모 카테고리'
+          nullable: true
+          allOf:
+            -
+              $ref: '#/components/schemas/ParentCategoryDTO'
       required:
-        - url
-        - alt_text
+        - id
+        - name
+        - slug
         - is_primary
-        - display_order
-        - option_id
+        - description
+        - level
+        - image_url
+    TagDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '태그 ID'
+          example: 1
+        name:
+          type: string
+          description: '태그 이름'
+          example: 편안함
+        slug:
+          type: string
+          description: 슬러그
+          example: comfort
+      required:
+        - id
+        - name
+        - slug
+    RatingDTO:
+      type: object
+      properties:
+        average:
+          type: number
+          description: '평균 평점'
+          example: 4.5
+        count:
+          type: number
+          description: '총 리뷰 수'
+          example: 150
+        distribution:
+          type: object
+          description: '별점 분포'
+          example:
+            '1': 2
+            '2': 3
+            '3': 15
+            '4': 30
+            '5': 100
+      required:
+        - average
+        - count
+        - distribution
+    ProductCatalogDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '상품 ID'
+          example: 123
+        name:
+          type: string
+          description: '상품 이름'
+          example: '슈퍼 편안한 소파'
+        slug:
+          type: string
+          description: 슬러그
+          example: super-comfortable-sofa
+        short_description:
+          type: string
+          description: '짧은 설명'
+          example: '최고급 소재로 만든 편안한 소파'
+        full_description:
+          type: string
+          description: '상세 설명'
+          example: '<p>이 소파는 최고급 소재로 제작되었으며...</p>'
+        status:
+          type: string
+          description: 상태
+          example: ACTIVE
+        created_at:
+          format: date-time
+          type: string
+          description: '생성 일시'
+          example: '2025-04-10T09:30:00Z'
+        updated_at:
+          format: date-time
+          type: string
+          description: '수정 일시'
+          example: '2025-04-14T10:15:00Z'
+        seller:
+          description: '판매자 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/SellerDTO'
+        brand:
+          description: '브랜드 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/BrandDTO'
+        detail:
+          description: '상세 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/ProductDetailDTO'
+        price:
+          description: '가격 정보'
+          allOf:
+            -
+              $ref: '#/components/schemas/ProductPriceDTO'
+        categories:
+          description: '카테고리 목록'
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryDTO'
+        option_groups:
+          description: '상품 옵션 그룹'
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOptionGroupDTO'
+        images:
+          description: '상품 이미지'
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageDTO'
+        tags:
+          description: '상품 태그'
+          type: array
+          items:
+            $ref: '#/components/schemas/TagDTO'
+        rating:
+          description: '상품 평점'
+          allOf:
+            -
+              $ref: '#/components/schemas/RatingDTO'
+      required:
+        - id
+        - name
+        - slug
+        - short_description
+        - full_description
+        - status
+        - created_at
+        - updated_at
+        - seller
+        - brand
+        - detail
+        - price
+        - categories
+        - option_groups
+        - images
+        - tags
+        - rating
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '사용자 ID'
+          example: 250
+        name:
+          type: string
+          description: '사용자 이름'
+          example: 홍길동
+        avatar_url:
+          type: string
+          description: '사용자 아바타 URL'
+          example: 'https://example.com/avatars/user250.jpg'
+      required:
+        - id
+        - name
+        - avatar_url
+    ReviewDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '리뷰 ID'
+          example: 1500
+        user:
+          description: '리뷰 작성자'
+          allOf:
+            -
+              $ref: '#/components/schemas/UserDTO'
+        rating:
+          type: number
+          description: 평점
+          example: 5
+        title:
+          type: string
+          description: '리뷰 제목'
+          example: '완벽한 소파입니다!'
+        content:
+          type: string
+          description: '리뷰 내용'
+          example: '배송도 빠르고 품질도 매우 좋습니다. 색상도 사진과 동일하고 조립도 쉬웠어요.'
+        created_at:
+          format: date-time
+          type: string
+          description: '생성 일시'
+          example: '2025-04-12T15:30:00Z'
+        updated_at:
+          format: date-time
+          type: string
+          description: '수정 일시'
+          example: '2025-04-12T15:30:00Z'
+        verified_purchase:
+          type: boolean
+          description: '구매 여부'
+          example: true
+        helpful_votes:
+          type: number
+          description: '유용한 리뷰 점수'
+          example: 12
+      required:
+        - id
+        - user
+        - rating
+        - title
+        - content
+        - created_at
+        - updated_at
+        - verified_purchase
+        - helpful_votes
     ReviewSummaryDTO:
       type: object
       properties:
@@ -1948,14 +2488,14 @@ components:
         - average_rating
         - total_count
         - distribution
-    ReviewResponseBundle:
+    ReviewResponseBundleDTO:
       type: object
       properties:
         items:
           description: '리뷰 목록'
           type: array
           items:
-            $ref: '#/components/schemas/Product_Summary'
+            $ref: '#/components/schemas/ReviewDTO'
         summary:
           description: '리뷰 요약 정보'
           allOf:
@@ -1970,9 +2510,6 @@ components:
         - items
         - summary
         - pagination
-    Review:
-      type: object
-      properties: {}
     ReviewBodyDTO:
       type: object
       properties:
@@ -1992,3 +2529,33 @@ components:
         - rating
         - title
         - content
+    ReviewResponseDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          description: '리뷰 ID'
+          example: 1500
+        rating:
+          type: number
+          description: 평점
+          example: 5
+        title:
+          type: string
+          description: '리뷰 제목'
+          example: '완벽한 소파입니다!'
+        content:
+          type: string
+          description: '리뷰 내용'
+          example: '배송도 빠르고 품질도 매우 좋습니다. 색상도 사진과 동일하고 조립도 쉬웠어요.'
+        updated_at:
+          format: date-time
+          type: string
+          description: '수정 일시'
+          example: '2025-04-12T15:30:00Z'
+      required:
+        - id
+        - rating
+        - title
+        - content
+        - updated_at
