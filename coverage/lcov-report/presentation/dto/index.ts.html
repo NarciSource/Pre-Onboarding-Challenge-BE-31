@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>18/20</span>
+                <span class='fraction'>21/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -83,7 +83,12 @@
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -103,26 +108,36 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export { default as CategoryQueryDTO } from "./CategoryQuery.dto";
-export { default as ErrorDTO, HttpStatusToErrorCodeMap } from "./Error.dto";
-export { default as ImageBodyDTO } from "./ImageBody.dto";
-export { default as NestedCategoryDTO } from "./NestedCategory.dto";
-export { default as OptionBodyDTO } from "./OptionsBody.dto";
-export { <span class="fstat-no" title="function not covered" >default as PaginationSummaryDTO </span>} from "./PaginationSummary.dto";
-export { OptionParamDTO, ParamDTO } from "./Param.dto";
-export { default as BodyDTO } from "./ProductBody.dto";
-export { default as ProductQueryDTO } from "./ProductQuery.dto";
-export { default as ProductResponseDTO } from "./ProductResponse.dto";
-export {
-  CategoryResponseBundle,
-  MainResponseBundle,
-  ProductResponseBundle,
-  default as ResponseDTO,
-  ReviewResponseBundle,
-} from "./Response.dto";
-export { default as ReviewBodyDTO } from "./ReviewBody.dto";
-export { default as ReviewQueryDTO } from "./ReviewQuery.dto";
-export { <span class="fstat-no" title="function not covered" >default as ReviewSummaryDTO </span>} from "./ReviewSummary.dto";
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export { default as ErrorDTO, HttpStatusToErrorCodeMap } from "./Error.dto";
+export { default as ResponseDTO } from "./Response.dto";
+&nbsp;
+export { default as CategoryQueryDTO } from "./request/CategoryQuery.dto";
+export { OptionParamDTO, ParamDTO } from "./request/Param.dto";
+export { default as ProductBodyDTO } from "./request/ProductBody.dto";
+export { default as ProductQueryDTO } from "./request/ProductQuery.dto";
+export { default as ReviewBodyDTO } from "./request/ReviewBody.dto";
+export { default as ReviewQueryDTO } from "./request/ReviewQuery.dto";
+&nbsp;
+export { default as ImageDTO } from "./model/Image.dto";
+export { default as ProductOptionDTO } from "./model/ProductOption.dto";
+export { default as ReviewDTO } from "./model/Review.dto";
+export { default as NestedCategoryDTO } from "./response/NestedCategory.dto";
+export { <span class="fstat-no" title="function not covered" >default as PaginationSummaryDTO </span>} from "./response/PaginationSummary.dto";
+export { default as ProductCatalogDTO } from "./response/ProductCatalog.dto";
+export { default as ProductResponseDTO } from "./response/ProductResponse.dto";
+export { <span class="fstat-no" title="function not covered" >default as ProductSummaryDTO </span>} from "./response/ProductSummary.dto";
+export { default as ReviewResponseDTO } from "./response/ReviewResponse.dto";
+export { <span class="fstat-no" title="function not covered" >default as ReviewSummaryDTO </span>} from "./response/ReviewSummary.dto";
+&nbsp;
+export { default as CategoryResponseBundle } from "./response/CategoryResponseBundle.dto";
+export { default as MainResponseBundle } from "./response/MainResponseBundle.dto";
+export { default as ProductResponseBundle } from "./response/ProductResponseBundle.dto";
+export { default as ReviewResponseBundle } from "./response/ReviewResponseBundle.dto";
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -130,7 +145,7 @@ export { <span class="fstat-no" title="function not covered" >default as ReviewS
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-06T14:54:53.486Z
+                at 2025-05-06T15:00:48.695Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

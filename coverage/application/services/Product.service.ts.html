@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.33% </span>
+                <span class="strong">65.81% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>132/199</span>
+                <span class='fraction'>129/196</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.33% </span>
+                <span class="strong">65.81% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>132/199</span>
+                <span class='fraction'>129/196</span>
             </div>
         
             
@@ -259,13 +259,7 @@
 <a name='L194'></a><a href='#L194'>194</a>
 <a name='L195'></a><a href='#L195'>195</a>
 <a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a>
-<a name='L198'></a><a href='#L198'>198</a>
-<a name='L199'></a><a href='#L199'>199</a>
-<a name='L200'></a><a href='#L200'>200</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L197'></a><a href='#L197'>197</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -465,39 +459,36 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 &nbsp;
-import {
-  Product,
-  Product_Catalog,
-  Product_Category,
-  Product_Detail,
-  Product_Image,
-  Product_Option_Group,
-  Product_Price,
-  Product_Summary,
-  Product_Tag,
-} from "src/domain/entities";
+import { Product, Product_Detail, Product_Image, Product_Price } from "src/domain/entities";
 import { IRepository } from "src/domain/repositories";
-import { ProductRepository } from "src/infrastructure/repositories";
-import { FilterDTO, ProductInputDTO } from "../dto";
+import {
+  FilterDTO,
+  ProductCatalogDTO,
+  ProductCategoryDTO,
+  ProductInputDTO,
+  ProductOptionGroupDTO,
+  ProductSummaryDTO,
+  ProductTagDTO,
+} from "../dto";
 &nbsp;
 @Injectable()
 export default class ProductService {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")
-    private readonly repository: IRepository&lt;Product | Product_Summary | Product_Catalog&gt;,
+    private readonly repository: IRepository&lt;Product | ProductSummaryDTO | ProductCatalogDTO&gt;,
     @Inject("IProductDetailRepository")
     private readonly product_detail_repository: IRepository&lt;Product_Detail&gt;,
     @Inject("IProductPriceRepository")
     private readonly product_price_repository: IRepository&lt;Product_Price&gt;,
     @Inject("IProductCategoryRepository")
-    private readonly product_category_repository: IRepository&lt;Product_Category&gt;,
+    private readonly product_category_repository: IRepository&lt;ProductCategoryDTO&gt;,
     @Inject("IProductOptionGroupRepository")
-    private readonly product_option_group_repository: IRepository&lt;Product_Option_Group&gt;,
+    private readonly product_option_group_repository: IRepository&lt;ProductOptionGroupDTO&gt;,
     @Inject("IProductImageRepository")
     private readonly product_image_repository: IRepository&lt;Product_Image&gt;,
     @Inject("IProductTagRepository")
-    private readonly product_tag_repository: IRepository&lt;Product_Tag&gt;,
+    private readonly product_tag_repository: IRepository&lt;ProductTagDTO&gt;,
   ) {}
 &nbsp;
   async register({
@@ -514,7 +505,7 @@ export default class ProductService {
     // 상품 등록 트랜잭션 처리
     const product_entity = await this.entity_manager.transaction(async (manager) =&gt; {
 <span class="cstat-no" title="statement not covered" >      // 상품 등록</span>
-<span class="cstat-no" title="statement not covered" >      const product_entity = await new ProductRepository(manager).save({</span>
+<span class="cstat-no" title="statement not covered" >      const product_entity = await this.repository.with_transaction(manager).save({</span>
 <span class="cstat-no" title="statement not covered" >        ...product,</span>
 <span class="cstat-no" title="statement not covered" >        seller_id,</span>
 <span class="cstat-no" title="statement not covered" >        brand_id,</span>
@@ -574,7 +565,7 @@ export default class ProductService {
       sort_field,
       sort_order,
       ...rest,
-    })) as Product_Summary[];
+    })) as ProductSummaryDTO[];
 &nbsp;
     // 페이지네이션 요약 정보
     const pagination = {
@@ -596,7 +587,7 @@ export default class ProductService {
         details: { resourceType: "Product", resourceId: id },
       });
     }
-    return product as Product_Catalog;
+    return product as ProductCatalogDTO;
   }
 &nbsp;
   async edit(
@@ -667,7 +658,7 @@ export default class ProductService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-06T14:54:53.441Z
+                at 2025-05-06T15:00:48.653Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
