@@ -39,6 +39,159 @@
 
 ![Sunburst-graph](https://codecov.io/gh/narcisource/wanted-preonboarding-challenge-backend-31/graphs/sunburst.svg)
 
+## ERD
+
+```mermaid
+erDiagram
+    products {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR slug
+        VARCHAR short_description
+        TEXT full_description
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        BIGINT seller_id FK
+        BIGINT brand_id FK
+        VARCHAR status
+    }
+
+    categories {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR slug
+        TEXT description
+        BIGINT parent_id FK
+        INTEGER level
+        VARCHAR image_url
+    }
+
+    sellers {
+        BIGINT id PK
+        VARCHAR name
+        TEXT description
+        VARCHAR logo_url
+        DECIMAL rating
+        VARCHAR contact_email
+        VARCHAR contact_phone
+        TIMESTAMP created_at
+    }
+
+    brands {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR slug
+        TEXT description
+        VARCHAR logo_url
+        VARCHAR website
+    }
+
+    product_details {
+        BIGINT id PK
+        BIGINT product_id FK
+        DECIMAL weight
+        JSONB dimensions
+        TEXT materials
+        VARCHAR country_of_origin
+        TEXT warranty_info
+        TEXT care_instructions
+        JSONB additional_info
+    }
+
+    product_prices {
+        BIGINT id PK
+        BIGINT product_id FK
+        DECIMAL base_price
+        DECIMAL sale_price
+        DECIMAL cost_price
+        VARCHAR currency
+        DECIMAL tax_rate
+    }
+
+    product_categories {
+        BIGINT id PK
+        BIGINT product_id FK
+        BIGINT category_id FK
+        BOOLEAN is_primary
+    }
+
+    product_option_groups {
+        BIGINT id PK
+        BIGINT product_id FK
+        VARCHAR name
+        INTEGER display_order
+    }
+
+    product_options {
+        BIGINT id PK
+        BIGINT option_group_id FK
+        VARCHAR name
+        DECIMAL additional_price
+        VARCHAR sku
+        INTEGER stock
+        INTEGER display_order
+    }
+
+    product_images {
+        BIGINT id PK
+        BIGINT product_id FK
+        VARCHAR url
+        VARCHAR alt_text
+        BOOLEAN is_primary
+        INTEGER display_order
+        BIGINT option_id FK
+    }
+
+    product_tags {
+        BIGINT id PK
+        BIGINT product_id FK
+        BIGINT tag_id FK
+    }
+
+    tags {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR slug
+    }
+
+    reviews {
+        BIGINT id PK
+        BIGINT product_id FK
+        BIGINT user_id FK
+        INTEGER rating
+        VARCHAR title
+        TEXT content
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        BOOLEAN verified_purchase
+        INTEGER helpful_votes
+    }
+
+    users {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR email
+        VARCHAR avatar_url
+        TIMESTAMP created_at
+    }
+
+    products }o--|| sellers : seller
+    products }o--|| brands : brand
+    product_details ||--|| products : product
+    product_prices ||--|| products : product
+    product_categories }o--|| products : product
+    product_categories }o--|| categories : category
+    categories ||--o{ categories : parent
+    product_option_groups }o--|| products : product
+    product_options }o--|| product_option_groups : option_group
+    product_images }o--o| product_options : option
+    product_images }o--|| products : product
+    product_tags }o--|| products : product
+    product_tags }o--|| tags : tag
+    reviews }o--|| products : product
+    reviews }o--o| users : user
+```
+
 ## 폴더 구조
 
 <details>
