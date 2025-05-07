@@ -190,6 +190,34 @@ erDiagram
     product_tags }o--|| tags : tag
     reviews }o--|| products : product
     reviews }o--o| users : user
+
+    ProductSummaryView:::viewStyle {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR slug
+        VARCHAR short_description
+        DECIMAL base_price
+        DECIMAL sale_price
+        VARCHAR currency
+        JSON primary_image
+        JSON brand
+        JSON seller
+        VARCHAR status
+        TIMESTAMP created_at
+        BOOLEAN in_stock
+        DECIMAL rating
+        INTEGER review_count
+    }
+
+    products ||--o{ ProductSummaryView : aggregates
+    product_prices ||--o{ ProductSummaryView : aggregates
+    reviews ||--o{ ProductSummaryView : aggregates
+    brands ||--o{ ProductSummaryView : aggregates
+    sellers ||--o{ ProductSummaryView : aggregates
+    product_images ||--o{ ProductSummaryView : aggregates
+    product_options ||--o{ ProductSummaryView : aggregates
+
+    classDef viewStyle fill:#F0F0F0
 ```
 
 ## 폴더 구조
