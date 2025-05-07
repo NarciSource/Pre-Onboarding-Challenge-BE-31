@@ -217,6 +217,40 @@ erDiagram
     product_images ||--o{ ProductSummaryView : aggregates
     product_options ||--o{ ProductSummaryView : aggregates
 
+    ProductCatalogView:::viewStyle {
+        BIGINT id PK
+        VARCHAR name
+        VARCHAR slug
+        VARCHAR short_description
+        VARCHAR full_description
+        VARCHAR status
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+        JSON seller
+        JSON brand
+        JSON detail
+        JSON price
+        JSON[] categories
+        JSON[] option_groups
+        JSON[] images
+        JSON[] tags
+        JSON rating
+    }
+
+    products ||--o{ ProductCatalogView : aggregates
+    sellers ||--o{ ProductCatalogView : includes
+    brands ||--o{ ProductCatalogView : includes
+    product_details ||--o{ ProductCatalogView : includes
+    product_prices ||--o{ ProductCatalogView : includes
+    product_categories ||--o{ ProductCatalogView : includes
+    categories ||--o{ ProductCatalogView : includes
+    product_option_groups ||--o{ ProductCatalogView : includes
+    product_options ||--o{ ProductCatalogView : includes
+    product_images ||--o{ ProductCatalogView : includes
+    product_tags ||--o{ ProductCatalogView : includes
+    tags ||--o{ ProductCatalogView : includes
+    reviews ||--o{ ProductCatalogView : aggregates
+
     classDef viewStyle fill:#F0F0F0
 ```
 
