@@ -3,10 +3,10 @@ import { EntityManager } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Product, Product_Detail, Product_Image, Product_Price } from "@product/domain/entities";
+import { ProductCategoryEntity } from "@product/infrastructure/entities";
 import {
   FilterDTO,
   ProductCatalogDTO,
-  ProductCategoryDTO,
   ProductInputDTO,
   ProductOptionGroupDTO,
   ProductSummaryDTO,
@@ -24,7 +24,7 @@ export default class ProductService {
     @Inject("IProductPriceRepository")
     private readonly product_price_repository: IBaseRepository<Product_Price>,
     @Inject("IProductCategoryRepository")
-    private readonly product_category_repository: IBaseRepository<ProductCategoryDTO>,
+    private readonly product_category_repository: IBaseRepository<ProductCategoryEntity>,
     @Inject("IProductOptionGroupRepository")
     private readonly product_option_group_repository: IBaseRepository<ProductOptionGroupDTO>,
     @Inject("IProductImageRepository")
@@ -69,9 +69,13 @@ export default class ProductService {
       });
 
       // 상품 카테고리 등록
-      await this.product_category_repository
-        .with_transaction(manager)
-        .saves(categories.map((category) => ({ ...category, product_id })));
+      await this.product_category_repository.with_transaction(manager).saves(
+        categories.map(({ category_id, is_primary }) => ({
+          product: { id: product_id },
+          category: { id: category_id },
+          is_primary,
+        })),
+      );
 
       // 상품 옵션 등록
       await this.product_option_group_repository
@@ -150,10 +154,10 @@ export default class ProductService {
         .update({ ...price, product_id });
 
       // 상품 카테고리 업데이트
-      for (const category of categories) {
+      for (const { category_id, ...category } of categories) {
         await this.product_category_repository
           .with_transaction(manager)
-          .update({ ...category, product_id });
+          .update({ id: category_id!, ...category }, product_id);
       }
 
       // 상품 제품 업데이트

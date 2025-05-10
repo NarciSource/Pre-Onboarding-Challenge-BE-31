@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager, UpdateResult } from "typeorm";
 
-import { ProductCategoryDTO } from "@product/application/dto";
+import { ProductCategoryEntity } from "../entities";
 import ProductCategoryRepository from "./Product_Category.repository";
 
 describe("ProductCategoryRepository", () => {
@@ -24,10 +24,10 @@ describe("ProductCategoryRepository", () => {
 
   describe("saves", () => {
     it("카테고리 저장", async () => {
-      const categories: ProductCategoryDTO[] = [
-        { product_id: 1, category_id: 2, is_primary: true },
-        { product_id: 1, category_id: 3, is_primary: false },
-      ];
+      const categories = [
+        { product: { id: 1 }, category: { id: 2 }, is_primary: true },
+        { product: { id: 1 }, category: { id: 3 }, is_primary: false },
+      ] as ProductCategoryEntity[];
       const savedEntities = [
         { id: 1, product: { id: 1 }, category: { id: 2 }, is_primary: true },
         { id: 2, product: { id: 1 }, category: { id: 3 }, is_primary: false },
@@ -42,27 +42,25 @@ describe("ProductCategoryRepository", () => {
 
   describe("update", () => {
     it("카테고리 업데이트 성공", async () => {
-      const category: ProductCategoryDTO = {
-        product_id: 1,
-        category_id: 2,
+      const category = {
+        id: 2,
         is_primary: true,
-      };
+      } as ProductCategoryEntity;
       mockEntityManager.update = jest.fn().mockResolvedValue({ affected: 1 } as UpdateResult);
 
-      const result = await repository.update(category);
+      const result = await repository.update(category, 1);
 
       expect(result).toBe(true);
     });
 
     it("카테고리 업데이트 실패", async () => {
-      const category: ProductCategoryDTO = {
-        product_id: 1,
-        category_id: 2,
+      const category = {
+        id: 2,
         is_primary: true,
-      };
+      } as ProductCategoryEntity;
       mockEntityManager.update = jest.fn().mockResolvedValue({ affected: 0 } as UpdateResult);
 
-      const result = await repository.update(category);
+      const result = await repository.update(category, 1);
 
       expect(result).toBe(false);
     });

@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm";
+import { DeepPartial, EntityManager } from "typeorm";
 
 import IBaseRepository from "./IBaseRepository";
 
@@ -13,7 +13,7 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
   save(param: T): Promise<T> {
     throw new Error("Method not implemented.");
   }
-  saves(param: T[]): Promise<T[]> {
+  saves(param: DeepPartial<T>[]): Promise<T[]> {
     throw new Error("Method not implemented.");
   }
   find_by_id(id: number): Promise<T | null> {
@@ -22,7 +22,7 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
   find_by_filters(filters: any): Promise<T[]> {
     throw new Error("Method not implemented.");
   }
-  update(param: T, id?: number): Promise<T | boolean> {
+  update(param: DeepPartial<T>, id?: number): Promise<T | boolean> {
     throw new Error("Method not implemented.");
   }
   delete(id: number): Promise<boolean> {
