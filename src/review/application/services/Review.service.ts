@@ -15,13 +15,15 @@ export default class ReviewService {
   async find(product_id: number, { page = 1, per_page = 10, sort, rating }: FilterDTO) {
     const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
 
-    const reviews = await this.repository.find_by_filters({
-      product_id,
-      page,
-      per_page,
-      sort_field,
-      sort_order,
-      rating,
+    const reviews = await this.repository.find({
+      where: {
+        product: { id: product_id },
+        rating,
+      },
+      relations: ["user"],
+      order: { [sort_field]: sort_order.toUpperCase() as "ASC" | "DESC" },
+      skip: (page - 1) * per_page,
+      take: per_page,
     });
 
     const summary = {
@@ -54,7 +56,7 @@ export default class ReviewService {
   }
 
   async edit(id: number, review: Omit<Review, "product_id">) {
-    const is_updated = await this.repository.update(review, id);
+    const is_updated = await this.repository.update(id, review);
 
     if (!is_updated) {
       throw new NotFoundException({
@@ -63,7 +65,7 @@ export default class ReviewService {
       });
     }
 
-    return (await this.repository.find_by_id(id))!;
+    return (await this.repository.findOneBy({ id }))!;
   }
 
   async remove(id: number) {

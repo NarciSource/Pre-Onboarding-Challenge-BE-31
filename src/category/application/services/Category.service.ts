@@ -37,7 +37,9 @@ export default class CategoryService {
     }
 
     // 카테고리 정보 조회
-    const categories = await this.repository.find_by_filters({});
+    const categories = await this.repository.find({
+      relations: ["parent"],
+    });
 
     // 카테고리 트리 구조로 변환
     return build_tree(categories, level);
@@ -50,7 +52,11 @@ export default class CategoryService {
     const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
 
     // 카테고리 정보 조회
-    const category = await this.repository.find_by_id(category_id);
+    const category = await this.repository.findOne({
+      where: { id: category_id },
+      relations: ["parent"],
+    });
+
     if (!category) {
       throw new NotFoundException({
         message: "요청한 리소스를 찾을 수 없습니다.",

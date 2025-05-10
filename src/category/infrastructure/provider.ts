@@ -1,3 +1,4 @@
-import { CategoryRepository } from "./repositories";
+import { createRepositoryProvider } from "@shared/repositories";
+import { CategoryEntity } from "./entities";
 
-export default [{ provide: "ICategoryRepository", useClass: CategoryRepository }];
+export default [createRepositoryProvider("ICategoryRepository", CategoryEntity)];

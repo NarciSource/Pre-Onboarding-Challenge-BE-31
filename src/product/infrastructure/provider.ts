@@ -1,21 +1,22 @@
+import { createRepositoryProvider } from "@shared/repositories";
 import {
-  ProductCategoryRepository,
-  ProductDetailRepository,
-  ProductImageRepository,
-  ProductOptionGroupRepository,
-  ProductOptionsRepository,
-  ProductPriceRepository,
-  ProductRepository,
-  ProductTagRepository,
-} from "./repositories";
+  ProductCategoryEntity,
+  ProductDetailEntity,
+  ProductEntity,
+  ProductImageEntity,
+  ProductOptionEntity,
+  ProductOptionGroupEntity,
+  ProductPriceEntity,
+  ProductTagEntity,
+} from "./entities";
 
 export default [
-  { provide: "IProductRepository", useClass: ProductRepository },
-  { provide: "IProductDetailRepository", useClass: ProductDetailRepository },
-  { provide: "IProductPriceRepository", useClass: ProductPriceRepository },
-  { provide: "IProductCategoryRepository", useClass: ProductCategoryRepository },
-  { provide: "IProductOptionsRepository", useClass: ProductOptionsRepository },
-  { provide: "IProductOptionGroupRepository", useClass: ProductOptionGroupRepository },
-  { provide: "IProductImageRepository", useClass: ProductImageRepository },
-  { provide: "IProductTagRepository", useClass: ProductTagRepository },
+  createRepositoryProvider("IProductRepository", ProductEntity),
+  createRepositoryProvider("IProductDetailRepository", ProductDetailEntity),
+  createRepositoryProvider("IProductPriceRepository", ProductPriceEntity),
+  createRepositoryProvider("IProductCategoryRepository", ProductCategoryEntity),
+  createRepositoryProvider("IProductOptionsRepository", ProductOptionEntity),
+  createRepositoryProvider("IProductOptionGroupRepository", ProductOptionGroupEntity),
+  createRepositoryProvider("IProductImageRepository", ProductImageEntity),
+  createRepositoryProvider("IProductTagRepository", ProductTagEntity),
 ];

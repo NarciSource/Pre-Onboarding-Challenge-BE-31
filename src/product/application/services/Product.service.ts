@@ -72,7 +72,7 @@ export default class ProductService {
       });
 
       // 상품 카테고리 등록
-      await this.product_category_repository.with_transaction(manager).saves(
+      await this.product_category_repository.with_transaction(manager).save(
         categories.map(({ category_id, is_primary }) => ({
           product: { id: product_id },
           category: { id: category_id },
@@ -83,13 +83,13 @@ export default class ProductService {
       // 상품 옵션 등록
       const saved_option_groups = await this.product_option_group_repository
         .with_transaction(manager)
-        .saves(
+        .save(
           option_groups.map(({ options, ...group }) => ({
             ...group,
             product: { id: product_id },
           })),
         );
-      await this.product_options_repository.with_transaction(manager).saves(
+      await this.product_options_repository.with_transaction(manager).save(
         option_groups.flatMap(
           ({ options }, index) =>
             options?.map((option) => ({
@@ -102,10 +102,10 @@ export default class ProductService {
 
       await this.product_option_group_repository
         .with_transaction(manager)
-        .saves(option_groups.map((group) => ({ ...group, product_id })));
+        .save(option_groups.map((group) => ({ ...group, product_id })));
 
       // 상품 이미지 등록
-      await this.product_image_repository.with_transaction(manager).saves(
+      await this.product_image_repository.with_transaction(manager).save(
         images.map(({ option_id, ...image }) => ({
           ...image,
           product: { id: product_id },
@@ -116,7 +116,7 @@ export default class ProductService {
       // 상품 태그 등록
       await this.product_tag_repository
         .with_transaction(manager)
-        .saves(tag_ids.map((id) => ({ tag: { id }, product: { id: product_id } })));
+        .save(tag_ids.map((id) => ({ tag: { id }, product: { id: product_id } })));
 
       return product_entity;
     });
@@ -170,26 +170,31 @@ export default class ProductService {
   ) {
     const is_updated = await this.entity_manager.transaction(async (manager) => {
       // 상품 디테일 업데이트
-      await this.product_detail_repository.with_transaction(manager).update(detail, product_id);
+      await this.product_detail_repository.with_transaction(manager).update(product_id, detail);
 
       // 상품 가격 업데이트
-      await this.product_price_repository.with_transaction(manager).update(price, product_id);
+      await this.product_price_repository.with_transaction(manager).update(product_id, price);
 
       // 상품 카테고리 업데이트
-      for (const { category_id, ...category } of categories) {
-        await this.product_category_repository
-          .with_transaction(manager)
-          .update({ id: category_id!, ...category }, product_id);
+      for (const { category_id, is_primary } of categories) {
+        await this.product_category_repository.with_transaction(manager).update(
+          {
+            product: { id: product_id },
+          },
+          { is_primary, category: { id: category_id } },
+        );
       }
 
       // 상품 제품 업데이트
       return this.repository.with_transaction(manager).update(
         {
+          product: { id: product_id },
+        } as Partial<ProductEntity>,
+        {
           seller: { id: seller_id },
           brand: { id: brand_id },
           ...product,
         },
-        product_id,
       );
     });
 

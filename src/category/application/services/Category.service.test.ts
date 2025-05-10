@@ -23,7 +23,7 @@ describe("CategoryService", () => {
         { id: 2, name: "중분류1", parent: { id: 1 } as Category },
         { id: 3, name: "소분류1", parent: { id: 2 } as Category },
       ] as Category[];
-      mockCategoryRepository.find_by_filters = jest.fn().mockResolvedValue(categories);
+      mockCategoryRepository.find = jest.fn().mockResolvedValue(categories);
 
       const result = await service.find_all_as_tree();
 
@@ -45,17 +45,21 @@ describe("CategoryService", () => {
           ],
         },
       ]);
-      expect(mockCategoryRepository.find_by_filters).toHaveBeenCalledWith({});
+      expect(mockCategoryRepository.find).toHaveBeenCalledWith({
+        relations: ["parent"],
+      });
     });
 
     it("레벨 제한을 초과한 경우 빈 배열 반환", async () => {
       const categories: Category[] = [];
-      mockCategoryRepository.find_by_filters = jest.fn().mockResolvedValue(categories);
+      mockCategoryRepository.find = jest.fn().mockResolvedValue(categories);
 
       const result = await service.find_all_as_tree(4);
 
       expect(result).toEqual([]);
-      expect(mockCategoryRepository.find_by_filters).toHaveBeenCalledWith({});
+      expect(mockCategoryRepository.find).toHaveBeenCalledWith({
+        relations: ["parent"],
+      });
     });
   });
 
@@ -67,7 +71,7 @@ describe("CategoryService", () => {
     ];
 
     beforeEach(() => {
-      mockCategoryRepository.find_by_id = jest.fn().mockResolvedValue(category);
+      mockCategoryRepository.findOne = jest.fn().mockResolvedValue(category);
       mockBrowsingRepository.find_by_filters = jest.fn().mockResolvedValue(items);
     });
 

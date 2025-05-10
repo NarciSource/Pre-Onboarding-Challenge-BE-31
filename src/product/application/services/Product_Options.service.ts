@@ -31,7 +31,7 @@ export default class ProductOptionsService {
     option_id: number,
     options: Omit<Product_Option, "option_group_id">,
   ): Promise<Product_Option> {
-    const is_updated = await this.repository.update(options, option_id);
+    const is_updated = await this.repository.update(option_id, options);
 
     if (!is_updated) {
       throw new NotFoundException({
@@ -40,7 +40,7 @@ export default class ProductOptionsService {
       });
     }
 
-    return (await this.repository.find_by_id(option_id))!;
+    return (await this.repository.findOneBy({ id: option_id }))!;
   }
 
   async remove(product_id: number, option_id: number): Promise<void> {

@@ -21,9 +21,9 @@ describe("ReviewService", () => {
       { id: 1, product_id: 1, rating: 5, content: "좋아요" },
       { id: 2, product_id: 1, rating: 4, content: "괜찮아요" },
     ];
-    mockRepository.find_by_filters = jest.fn().mockResolvedValue(reviews);
+    mockRepository.find = jest.fn().mockResolvedValue(reviews);
 
-    const filter: FilterDTO = { page: 1, per_page: 10, sort: "rating:DESC" };
+    const filter: FilterDTO = { page: 1, per_page: 10, rating: 3, sort: "rating:DESC" };
     const result = await service.find(1, filter);
 
     expect(result.items).toEqual(reviews);
@@ -31,13 +31,15 @@ describe("ReviewService", () => {
     expect(result.summary.total_count).toBe(2);
     expect(result.summary.distribution[5]).toBe(1);
     expect(result.summary.distribution[4]).toBe(1);
-    expect(mockRepository.find_by_filters).toHaveBeenCalledWith({
-      product_id: 1,
-      page: 1,
-      per_page: 10,
-      sort_field: "rating",
-      sort_order: "DESC",
-      rating: undefined,
+    expect(mockRepository.find).toHaveBeenCalledWith({
+      where: {
+        product: { id: 1 },
+        rating: 3,
+      },
+      relations: ["user"],
+      order: { rating: "DESC" },
+      skip: 0,
+      take: 10,
     });
   });
 
@@ -56,13 +58,13 @@ describe("ReviewService", () => {
     const review = { rating: 4, content: "수정된 리뷰" };
     const updatedReview = { id: 1, product_id: 1, ...review };
     mockRepository.update = jest.fn().mockResolvedValue(true);
-    mockRepository.find_by_id = jest.fn().mockResolvedValue(updatedReview);
+    mockRepository.findOneBy = jest.fn().mockResolvedValue(updatedReview);
 
     const result = await service.edit(1, review);
 
     expect(result).toEqual(updatedReview);
-    expect(mockRepository.update).toHaveBeenCalledWith(review, 1);
-    expect(mockRepository.find_by_id).toHaveBeenCalledWith(1);
+    expect(mockRepository.update).toHaveBeenCalledWith(1, review);
+    expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
   });
 
   it("리뷰 수정 실패 시 NotFoundException 발생", async () => {
@@ -71,7 +73,7 @@ describe("ReviewService", () => {
     await expect(service.edit(1, { rating: 4, content: "수정된 리뷰" })).rejects.toThrow(
       NotFoundException,
     );
-    expect(mockRepository.update).toHaveBeenCalledWith({ rating: 4, content: "수정된 리뷰" }, 1);
+    expect(mockRepository.update).toHaveBeenCalledWith(1, { rating: 4, content: "수정된 리뷰" });
   });
 
   it("리뷰 삭제", async () => {

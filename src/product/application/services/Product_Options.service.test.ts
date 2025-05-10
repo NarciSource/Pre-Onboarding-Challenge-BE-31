@@ -38,13 +38,11 @@ describe("ProductOptionsService", () => {
     const updatedOption = { id: option_id, ...options } as Product_Option;
 
     mockProductOptionsRepository.update = jest.fn().mockResolvedValue(true);
-    mockProductOptionsRepository.find_by_id = jest.fn().mockResolvedValue(updatedOption);
+    mockProductOptionsRepository.findOneBy = jest.fn().mockResolvedValue(updatedOption);
 
     const result = await service.update(product_id, option_id, options);
 
     expect(result).toEqual(updatedOption);
-    expect(mockProductOptionsRepository.update).toHaveBeenCalledWith(options, option_id);
-    expect(mockProductOptionsRepository.find_by_id).toHaveBeenCalledWith(option_id);
   });
 
   it("옵션 수정 실패 시 NotFoundException 발생", async () => {
@@ -55,7 +53,7 @@ describe("ProductOptionsService", () => {
     mockProductOptionsRepository.update = jest.fn().mockResolvedValue(false);
 
     await expect(service.update(product_id, option_id, options)).rejects.toThrow(NotFoundException);
-    expect(mockProductOptionsRepository.update).toHaveBeenCalledWith(options, option_id);
+    expect(mockProductOptionsRepository.update).toHaveBeenCalledWith(option_id, options);
   });
 
   it("옵션 삭제", async () => {
