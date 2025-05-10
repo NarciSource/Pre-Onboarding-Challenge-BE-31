@@ -2,8 +2,8 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager, UpdateResult } from "typeorm";
 
 import { ProductCatalogDTO, ProductSummaryDTO } from "@product/application/dto";
-import { Product } from "@product/domain/entities";
 import { BrowsingRepository } from "@browsing/infrastructure/repositories";
+import { ProductEntity } from "../entities";
 import ProductRepository from "./Product.repository";
 
 describe("ProductRepository", () => {
@@ -31,10 +31,10 @@ describe("ProductRepository", () => {
     it("상품 저장 성공", async () => {
       const product = {
         id: 1,
-        name: "Test Product",
-        seller_id: 10,
-        brand_id: 20,
-      } as Product;
+        name: "상품1",
+        seller: { id: 10 },
+        brand: { id: 20 },
+      } as ProductEntity;
 
       const mockSavedProduct = { ...product, seller: { id: 10 }, brand: { id: 20 } };
       mockEntityManager.save.mockResolvedValue(mockSavedProduct);
@@ -61,7 +61,7 @@ describe("ProductRepository", () => {
         search: "Test",
       };
 
-      const mockProducts = [{ id: 1, name: "Test Product" }] as ProductSummaryDTO[];
+      const mockProducts = [{ id: 1, name: "상품1" }] as ProductSummaryDTO[];
       mockEntityManager.getRepository().createQueryBuilder().getMany = jest
         .fn()
         .mockResolvedValue(mockProducts);
@@ -74,7 +74,7 @@ describe("ProductRepository", () => {
 
   describe("find_by_id", () => {
     it("ID로 상품 검색 성공", async () => {
-      const mockProduct = { id: 1, name: "Test Product" } as ProductCatalogDTO;
+      const mockProduct = { id: 1, name: "상품1" } as ProductCatalogDTO;
       mockEntityManager.findOne.mockResolvedValue(mockProduct);
 
       const result = await browsingRepository.find_by_id(1);
@@ -87,10 +87,10 @@ describe("ProductRepository", () => {
     it("상품 업데이트 성공", async () => {
       const product = {
         id: 1,
-        name: "Updated Product",
-        seller_id: 10,
-        brand_id: 20,
-      } as Product;
+        name: "상품1 수정",
+        seller: { id: 10 },
+        brand: { id: 20 },
+      } as ProductEntity;
 
       mockEntityManager.update.mockResolvedValue({ affected: 1 } as UpdateResult);
 

@@ -2,10 +2,10 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
-import { Product } from "@product/domain/entities";
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
+  ProductEntity,
   ProductImageEntity,
   ProductOptionEntity,
   ProductOptionGroupEntity,
@@ -19,7 +19,7 @@ export default class ProductService {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")
-    private readonly repository: IBaseRepository<Product | ProductSummaryDTO | ProductCatalogDTO>,
+    private readonly repository: IBaseRepository<ProductEntity>,
     @Inject("IProductDetailRepository")
     private readonly product_detail_repository: IBaseRepository<ProductDetailEntity>,
     @Inject("IProductPriceRepository")
@@ -54,21 +54,21 @@ export default class ProductService {
       // 상품 등록
       const product_entity = await this.repository.with_transaction(manager).save({
         ...product,
-        seller_id,
-        brand_id,
+        seller: { id: seller_id },
+        brand: { id: brand_id },
       });
       const { id: product_id } = product_entity;
 
       // 상품 상세 등록
       await this.product_detail_repository.with_transaction(manager).save({
         ...detail,
-        product: { id: product_id! },
+        product: { id: product_id },
       });
 
       // 상품 가격 등록
       await this.product_price_repository.with_transaction(manager).save({
         ...price,
-        product: { id: product_id! },
+        product: { id: product_id },
       });
 
       // 상품 카테고리 등록
@@ -122,11 +122,11 @@ export default class ProductService {
     });
     // 상품 등록 결과 반환
     return (({ id, name, slug, created_at, updated_at }) => ({
-      id: id!,
+      id: id,
       name,
       slug,
-      created_at: created_at!,
-      updated_at: updated_at!,
+      created_at,
+      updated_at,
     }))(product_entity);
   }
 
@@ -185,8 +185,8 @@ export default class ProductService {
       // 상품 제품 업데이트
       return this.repository.with_transaction(manager).update(
         {
-          seller_id,
-          brand_id,
+          seller: { id: seller_id },
+          brand: { id: brand_id },
           ...product,
         },
         product_id,
