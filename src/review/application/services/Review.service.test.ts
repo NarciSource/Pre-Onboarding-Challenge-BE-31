@@ -49,7 +49,7 @@ describe("ReviewService", () => {
     const result = await service.register(1, review);
 
     expect(result).toEqual(savedReview);
-    expect(mockRepository.save).toHaveBeenCalledWith({ product_id: 1, ...review });
+    expect(mockRepository.save).toHaveBeenCalledWith({ product: { id: 1 }, ...review });
   });
 
   it("리뷰 수정", async () => {

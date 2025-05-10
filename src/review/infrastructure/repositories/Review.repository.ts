@@ -2,20 +2,16 @@ import { Injectable } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { BaseRepository } from "@shared/repositories";
-import { Review } from "@review/domain/entities";
 import { ReviewEntity } from "../entities";
 
 @Injectable()
-export default class ReviewRepository extends BaseRepository<Review> {
+export default class ReviewRepository extends BaseRepository<ReviewEntity> {
   constructor(protected readonly entity_manager: EntityManager) {
     super(entity_manager);
   }
 
-  async save({ product_id, ...review }: Review): Promise<Review> {
-    return this.entity_manager.save(ReviewEntity, {
-      ...review,
-      product: { id: product_id },
-    });
+  async save(review: ReviewEntity): Promise<ReviewEntity> {
+    return this.entity_manager.save(ReviewEntity, review);
   }
 
   async find_by_filters({
@@ -32,7 +28,7 @@ export default class ReviewRepository extends BaseRepository<Review> {
     sort_field?: string;
     sort_order?: string;
     rating?: number;
-  }): Promise<Review[]> {
+  }): Promise<ReviewEntity[]> {
     const query = this.entity_manager
       .getRepository(ReviewEntity)
       .createQueryBuilder("reviews")
@@ -47,7 +43,7 @@ export default class ReviewRepository extends BaseRepository<Review> {
     return await query.getMany();
   }
 
-  async update(review: Review, id: number) {
+  async update(review: ReviewEntity, id: number) {
     const { affected } = await this.entity_manager.update(ReviewEntity, id, review);
     return !!affected;
   }

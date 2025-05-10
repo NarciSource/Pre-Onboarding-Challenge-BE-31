@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager, UpdateResult } from "typeorm";
 
-import { Review } from "@review/domain/entities";
+import { ReviewEntity } from "../entities";
 import ReviewRepository from "./Review.repository";
 
 describe("ReviewRepository", () => {
@@ -25,12 +25,11 @@ describe("ReviewRepository", () => {
   describe("save", () => {
     it("리뷰 저장 성공", async () => {
       const review = {
-        id: 1,
-        product_id: 100,
-        user_id: 10,
+        product: { id: 100 },
+        user: { id: 10 },
         rating: 5,
-        comment: "좋아요!",
-      } as Review;
+        title: "좋아요!",
+      } as ReviewEntity;
 
       mockEntityManager.save.mockResolvedValue(review);
 
@@ -73,7 +72,7 @@ describe("ReviewRepository", () => {
     it("리뷰 업데이트 성공", async () => {
       mockEntityManager.update.mockResolvedValue({ affected: 1 } as UpdateResult);
 
-      const result = await repository.update({ title: "수정된 리뷰" } as Review, 1);
+      const result = await repository.update({ title: "수정된 리뷰" } as ReviewEntity, 1);
 
       expect(result).toBe(true);
     });
@@ -81,7 +80,7 @@ describe("ReviewRepository", () => {
     it("리뷰 업데이트 실패", async () => {
       mockEntityManager.update.mockResolvedValue({ affected: 0 } as UpdateResult);
 
-      const result = await repository.update({ title: "수정된 리뷰" } as Review, 1);
+      const result = await repository.update({ title: "수정된 리뷰" } as ReviewEntity, 1);
 
       expect(result).toBe(false);
     });
