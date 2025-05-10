@@ -1,7 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { FilterDTO } from "../dto";
+import { FilterDTO } from "@shared/dto";
 import ReviewService from "./Review.service";
 
 describe("ReviewService", () => {

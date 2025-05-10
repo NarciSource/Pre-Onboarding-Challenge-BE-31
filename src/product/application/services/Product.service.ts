@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
+import { FilterDTO } from "@shared/dto";
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Product, Product_Detail, Product_Image, Product_Price } from "@product/domain/entities";
 import {
@@ -9,10 +10,11 @@ import {
   ProductInputDTO,
   CommandHandler,
 } from "../command";
-import { FilterDTO, ProductCatalogDTO, ProductSummaryDTO, ProductTagDTO } from "../dto";
+import { ProductTagDTO } from "../dto";
+import { ProductSummaryDTO, ProductCatalogDTO, QueryHandler } from "../query";
 
 @Injectable()
-export default class ProductService implements CommandHandler {
+export default class ProductService implements CommandHandler, QueryHandler {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")

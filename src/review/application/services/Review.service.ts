@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
+import { FilterDTO } from "@shared/dto";
 import { IBaseRepository } from "@shared/repositories";
 import { Review } from "@review/domain/entities";
-import { FilterDTO } from "../dto";
 
 @Injectable()
 export default class ReviewService {
