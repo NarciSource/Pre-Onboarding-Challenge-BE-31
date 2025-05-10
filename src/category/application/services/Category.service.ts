@@ -2,14 +2,15 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
+import { ProductSummaryView } from "@browsing/infrastructure/views";
 
 @Injectable()
 export default class CategoryService {
   constructor(
     @Inject("ICategoryRepository")
     private readonly repository: IBaseRepository<Category>,
-    @Inject("IBrowsingRepository")
-    private readonly browsing_repository: IBrowsingRepository,
+    @Inject("IProductSummaryRepository")
+    private readonly summary_repository: IBrowsingRepository<ProductSummaryView>,
   ) {}
 
   async find_all_as_tree(level: number = 1) {
@@ -68,7 +69,7 @@ export default class CategoryService {
     }
 
     // 아이템 필터링
-    const items = await this.browsing_repository.find_by_filters({
+    const items = await this.summary_repository.find_by_filters({
       page,
       per_page,
       sort_field,

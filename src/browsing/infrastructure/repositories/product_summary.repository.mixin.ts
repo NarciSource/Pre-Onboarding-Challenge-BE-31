@@ -1,20 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { EntityManager } from "typeorm";
-
-import { IBrowsingRepository } from "@shared/repositories";
+import { ProductSummaryDTO } from "@product/application/dto";
 import { ProductCategoryEntity } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
-import {
-  CategoryCatalogView,
-  ProductCatalogView,
-  ProductSummaryView,
-} from "@browsing/infrastructure/views";
-import { ProductCatalogDTO, ProductSummaryDTO } from "@browsing/presentation/dto";
+import { ProductSummaryView } from "../views";
 
-@Injectable()
-export default class BrowsingRepository implements IBrowsingRepository {
-  constructor(private readonly entity_manager: EntityManager) {}
-
+const product_summary_repository_mixin = {
   async find_by_filters({
     page,
     per_page,
@@ -41,7 +30,7 @@ export default class BrowsingRepository implements IBrowsingRepository {
     search?: string;
   }): Promise<ProductSummaryDTO[]> {
     // 카테고리 조인
-    const inner_query = this.entity_manager
+    const inner_query = this.manager
       .createQueryBuilder()
       .subQuery()
       .select("product_category.product_id")
@@ -51,7 +40,7 @@ export default class BrowsingRepository implements IBrowsingRepository {
       .getQuery();
 
     // 상품 집계 처리 쿼리
-    const query = this.entity_manager
+    const query = this.manager
       .getRepository(ProductSummaryView)
       .createQueryBuilder("summary")
       .where(status ? "summary.status = :status" : "1=1", { status })
@@ -70,13 +59,7 @@ export default class BrowsingRepository implements IBrowsingRepository {
 
     // 쿼리 실행
     return await query.getMany();
-  }
+  },
+};
 
-  async find_by_id(id: number): Promise<ProductCatalogDTO | null> {
-    return this.entity_manager.findOne(ProductCatalogView, { where: { id } });
-  }
-
-  async get_featured_categories(): Promise<CategoryCatalogView[]> {
-    return this.entity_manager.find(CategoryCatalogView);
-  }
-}
+export default product_summary_repository_mixin;

@@ -7,6 +7,6 @@ import * as controllers from "./presentation/controllers";
 @Module({
   providers: [...Object.values(services), ...repository_providers],
   controllers: [...Object.values(controllers)],
-  exports: ["IBrowsingRepository"],
+  exports: ["IProductSummaryRepository", "IProductCatalogRepository", "ICategoryCatalogRepository"],
 })
 export default class BrowsingModule {}

@@ -1,3 +1,13 @@
-import { BrowsingRepository } from "./repositories";
+import { createRepositoryProvider } from "@shared/repositories";
+import { product_summary_repository_mixin } from "./repositories";
+import { CategoryCatalogView, ProductCatalogView, ProductSummaryView } from "./views";
 
-export default [{ provide: "IBrowsingRepository", useClass: BrowsingRepository }];
+export default [
+  createRepositoryProvider(
+    "IProductSummaryRepository",
+    ProductSummaryView,
+    product_summary_repository_mixin,
+  ),
+  createRepositoryProvider("IProductCatalogRepository", ProductCatalogView),
+  createRepositoryProvider("ICategoryCatalogRepository", CategoryCatalogView),
+];

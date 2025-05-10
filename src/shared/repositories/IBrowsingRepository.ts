@@ -1,5 +1,5 @@
-export default interface IBrowsingRepository {
+import { ObjectLiteral, Repository } from "typeorm";
+
+export default interface IBrowsingRepository<T extends ObjectLiteral> extends Repository<T> {
   find_by_filters(filters: any);
-  find_by_id(id: number);
-  get_featured_categories();
 }

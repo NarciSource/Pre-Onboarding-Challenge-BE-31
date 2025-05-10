@@ -12,6 +12,7 @@ import {
   ProductPriceEntity,
   ProductTagEntity,
 } from "@product/infrastructure/entities";
+import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
 import { FilterDTO, ProductCatalogDTO, ProductInputDTO, ProductSummaryDTO } from "../dto";
 
 @Injectable()
@@ -34,8 +35,10 @@ export default class ProductService {
     private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
     @Inject("IProductTagRepository")
     private readonly product_tag_repository: IBaseRepository<ProductTagEntity>,
-    @Inject("IBrowsingRepository")
-    private readonly browsing_repository: IBrowsingRepository,
+    @Inject("IProductSummaryRepository")
+    private readonly product_summary_repository: IBrowsingRepository<ProductSummaryView>,
+    @Inject("IProductCatalogRepository")
+    private readonly product_catalog_repository: IBrowsingRepository<ProductCatalogView>,
   ) {}
 
   async register({
@@ -133,7 +136,7 @@ export default class ProductService {
   async find_all({ page = 1, per_page = 10, sort, ...rest }: FilterDTO) {
     const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
 
-    const items = (await this.browsing_repository.find_by_filters({
+    const items = (await this.product_summary_repository.find_by_filters({
       page,
       per_page,
       sort_field,
@@ -153,7 +156,7 @@ export default class ProductService {
   }
 
   async find(id: number) {
-    const product = await this.browsing_repository.find_by_id(id);
+    const product = await this.product_catalog_repository.findOne({ where: { id } });
 
     if (!product) {
       throw new NotFoundException({
@@ -205,14 +208,16 @@ export default class ProductService {
       });
     }
 
-    const updated_product = await this.browsing_repository.find_by_id(product_id);
+    const updated_product = await this.product_catalog_repository.findOne({
+      where: { id: product_id },
+    });
 
     return (({ id, name, slug, updated_at }) => ({
-      id: id!,
+      id,
       name,
       slug,
-      updated_at: updated_at!,
-    }))(updated_product);
+      updated_at,
+    }))(updated_product!);
   }
 
   async remove(id: number) {

@@ -20,7 +20,9 @@ export const mockProductImageRepository = makeMockRepository();
 export const mockProductTagRepository = makeMockRepository();
 export const mockReviewRepository = makeMockRepository();
 export const mockCategoryRepository = makeMockRepository();
-export const mockBrowsingRepository = makeMockRepository();
+export const mockProductSummaryRepository = makeMockRepository();
+export const mockProductCatalogRepository = makeMockRepository();
+export const mockCategoryCatalogRepository = makeMockRepository();
 
 export const mockRepositoryProviders = [
   {
@@ -64,7 +66,15 @@ export const mockRepositoryProviders = [
     useValue: mockCategoryRepository,
   },
   {
-    provide: "IBrowsingRepository",
-    useValue: mockBrowsingRepository,
+    provide: "IProductSummaryRepository",
+    useValue: mockProductSummaryRepository,
+  },
+  {
+    provide: "IProductCatalogRepository",
+    useValue: mockProductCatalogRepository,
+  },
+  {
+    provide: "ICategoryCatalogRepository",
+    useValue: mockCategoryCatalogRepository,
   },
 ];
