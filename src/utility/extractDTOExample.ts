@@ -20,7 +20,7 @@ export default function extractDTOExample(
     );
     if (!metadata) continue;
 
-    const { example, type, description } = metadata;
+    const { example, type, description, isArray } = metadata;
 
     if (example !== undefined) {
       examples[key] = example;
@@ -28,17 +28,10 @@ export default function extractDTOExample(
     }
 
     try {
-      if (Array.isArray(type) && typeof type[0] === "function") {
-        const nested = extractDTOExample(type[0] as Type<unknown>, new Set(visited));
-        examples[key] = [nested];
-      } else if (typeof type === "function") {
-        const nested = extractDTOExample(type as Type<unknown>, new Set(visited));
-        examples[key] = nested;
-      } else {
-        examples[key] = description ?? null;
-      }
+      const nested = extractDTOExample(type as Type<unknown>, new Set(visited));
+      examples[key] = isArray ? [nested] : nested;
     } catch (err) {
-      examples[key] = Array.isArray(type) ? [description ?? null] : (description ?? null);
+      examples[key] = isArray ? [description ?? null] : (description ?? null);
     }
   }
 

@@ -14,7 +14,7 @@ export default class NestedCategoryDTO extends PickType(CategoryDTO, [
 ] as const) {
   @ApiPropertyOptional({
     description: "중첩 카테고리 목록",
-    type: "array",
+    type: [NestedCategoryDTO],
     items: { $ref: getSchemaPath(NestedCategoryDTO) },
   })
   @IsOptional()
