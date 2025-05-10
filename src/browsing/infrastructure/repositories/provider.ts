@@ -1,6 +1,6 @@
 import { createRepositoryProvider } from "@shared/repositories";
-import { product_summary_repository_mixin } from "./repositories";
-import { CategoryCatalogView, ProductCatalogView, ProductSummaryView } from "./views";
+import { CategoryCatalogView, ProductCatalogView, ProductSummaryView } from "../views";
+import { product_summary_repository_mixin } from ".";
 
 export default [
   createRepositoryProvider(

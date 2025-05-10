@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 
 import * as services from "./application/services";
-import repository_providers from "./infrastructure/provider";
+import { repository_providers } from "./infrastructure/repositories";
 import * as controllers from "./presentation/controllers";
 
 @Module({

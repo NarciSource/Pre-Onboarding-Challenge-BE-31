@@ -8,7 +8,7 @@ import {
   ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
-} from "./entities";
+} from "../entities";
 
 export default [
   createRepositoryProvider("IProductRepository", ProductEntity),

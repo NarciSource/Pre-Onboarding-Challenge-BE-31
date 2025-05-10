@@ -4,12 +4,12 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers
 import { DataSource } from "typeorm";
 
 import * as product_entities from "@product/infrastructure/entities";
-import product_repository_providers from "@product/infrastructure/provider";
+import { repository_providers as product_repository_providers } from "@product/infrastructure/repositories";
 import * as category_entities from "@category/infrastructure/entities";
-import category_repository_providers from "@category/infrastructure/provider";
+import { repository_providers as category_repository_providers } from "@category/infrastructure/repositories";
 import * as review_entities from "@review/infrastructure/entities";
-import review_repository_providers from "@review/infrastructure/provider";
-import browsing_repository_providers from "@browsing/infrastructure/provider";
+import { repository_providers as review_repository_providers } from "@review/infrastructure/repositories";
+import browsing_repository_providers from "@browsing/infrastructure/repositories/provider";
 import * as views from "@browsing/infrastructure/views";
 
 let container: StartedPostgreSqlContainer;
