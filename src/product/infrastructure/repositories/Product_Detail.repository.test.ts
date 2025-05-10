@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager, UpdateResult } from "typeorm";
 
-import { Product_Detail } from "@product/domain/entities";
+import { ProductDetailEntity } from "../entities";
 import ProductDetailRepository from "./Product_Detail.repository";
 
 describe("ProductDetailRepository", () => {
@@ -25,14 +25,13 @@ describe("ProductDetailRepository", () => {
   describe("save", () => {
     it("상품 상세 정보 저장", async () => {
       const productDetail = {
-        product_id: 1,
+        product: { id: 1 },
         materials: "플라스틱",
         country_of_origin: "한국",
-      } as Product_Detail;
+      } as ProductDetailEntity;
       const savedEntity = {
-        id: 1,
         ...productDetail,
-        product: { id: productDetail.product_id },
+        product: { id: productDetail.product.id },
       };
       mockEntityManager.save = jest.fn().mockResolvedValue(savedEntity);
 
@@ -45,26 +44,24 @@ describe("ProductDetailRepository", () => {
   describe("update", () => {
     it("상품 상세 정보 수정한", async () => {
       const productDetail = {
-        product_id: 1,
         materials: "플라스틱",
         country_of_origin: "한국",
-      } as Product_Detail;
+      } as ProductDetailEntity;
       mockEntityManager.update = jest.fn().mockResolvedValue({ affected: 1 } as UpdateResult);
 
-      const result = await repository.update(productDetail);
+      const result = await repository.update(productDetail, 1);
 
       expect(result).toBe(true);
     });
 
     it("수정된 행이 없으면 false를 반환", async () => {
       const productDetail = {
-        product_id: 1,
         materials: "수정 플라스틱",
         country_of_origin: "수정 한국",
-      } as Product_Detail;
+      } as ProductDetailEntity;
       mockEntityManager.update = jest.fn().mockResolvedValue({ affected: 0 } as UpdateResult);
 
-      const result = await repository.update(productDetail);
+      const result = await repository.update(productDetail, 1);
 
       expect(result).toBe(false);
     });

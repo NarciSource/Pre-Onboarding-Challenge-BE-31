@@ -10,7 +10,7 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
     return new Repository_Class(manager);
   }
 
-  save(param: T): Promise<T> {
+  save(param: DeepPartial<T>): Promise<T> {
     throw new Error("Method not implemented.");
   }
   saves(param: DeepPartial<T>[]): Promise<T[]> {

@@ -2,23 +2,19 @@ import { Injectable } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { BaseRepository } from "@shared/repositories";
-import { Product_Detail } from "@product/domain/entities";
 import { ProductDetailEntity } from "../entities";
 
 @Injectable()
-export default class ProductDetailRepository extends BaseRepository<Product_Detail> {
+export default class ProductDetailRepository extends BaseRepository<ProductDetailEntity> {
   constructor(protected readonly entity_manager: EntityManager) {
     super(entity_manager);
   }
 
-  async save({ product_id, ...detail }: Product_Detail) {
-    return await this.entity_manager.save(ProductDetailEntity, {
-      ...detail,
-      product: { id: product_id },
-    });
+  async save(detail: ProductDetailEntity) {
+    return await this.entity_manager.save(ProductDetailEntity, detail);
   }
 
-  async update({ product_id, ...detail }: Product_Detail) {
+  async update(detail: ProductDetailEntity, product_id: number) {
     const { affected } = await this.entity_manager.update(
       ProductDetailEntity,
       { product: { id: product_id } },

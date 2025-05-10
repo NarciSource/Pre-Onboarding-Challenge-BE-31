@@ -2,8 +2,8 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
-import { Product, Product_Detail, Product_Image, Product_Price } from "@product/domain/entities";
-import { ProductCategoryEntity } from "@product/infrastructure/entities";
+import { Product, Product_Image, Product_Price } from "@product/domain/entities";
+import { ProductCategoryEntity, ProductDetailEntity } from "@product/infrastructure/entities";
 import {
   FilterDTO,
   ProductCatalogDTO,
@@ -20,7 +20,7 @@ export default class ProductService {
     @Inject("IProductRepository")
     private readonly repository: IBaseRepository<Product | ProductSummaryDTO | ProductCatalogDTO>,
     @Inject("IProductDetailRepository")
-    private readonly product_detail_repository: IBaseRepository<Product_Detail>,
+    private readonly product_detail_repository: IBaseRepository<ProductDetailEntity>,
     @Inject("IProductPriceRepository")
     private readonly product_price_repository: IBaseRepository<Product_Price>,
     @Inject("IProductCategoryRepository")
@@ -59,7 +59,7 @@ export default class ProductService {
       // 상품 상세 등록
       await this.product_detail_repository.with_transaction(manager).save({
         ...detail,
-        product_id,
+        product: { id: product_id! },
       });
 
       // 상품 가격 등록
@@ -144,9 +144,7 @@ export default class ProductService {
   ) {
     const is_updated = await this.entity_manager.transaction(async (manager) => {
       // 상품 디테일 업데이트
-      await this.product_detail_repository
-        .with_transaction(manager)
-        .update({ ...detail, product_id });
+      await this.product_detail_repository.with_transaction(manager).update(detail, product_id);
 
       // 상품 가격 업데이트
       await this.product_price_repository
