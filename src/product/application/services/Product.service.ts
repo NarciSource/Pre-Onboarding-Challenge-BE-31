@@ -2,10 +2,11 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
-import { Product, Product_Image } from "@product/domain/entities";
+import { Product } from "@product/domain/entities";
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
+  ProductImageEntity,
   ProductPriceEntity,
 } from "@product/infrastructure/entities";
 import {
@@ -32,7 +33,7 @@ export default class ProductService {
     @Inject("IProductOptionGroupRepository")
     private readonly product_option_group_repository: IBaseRepository<ProductOptionGroupDTO>,
     @Inject("IProductImageRepository")
-    private readonly product_image_repository: IBaseRepository<Product_Image>,
+    private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
     @Inject("IProductTagRepository")
     private readonly product_tag_repository: IBaseRepository<ProductTagDTO>,
     @Inject("IBrowsingRepository")
@@ -87,9 +88,13 @@ export default class ProductService {
         .saves(option_groups.map((group) => ({ ...group, product_id })));
 
       // 상품 이미지 등록
-      await this.product_image_repository
-        .with_transaction(manager)
-        .saves(images.map((image) => ({ ...image, product_id })));
+      await this.product_image_repository.with_transaction(manager).saves(
+        images.map(({ option_id, ...image }) => ({
+          ...image,
+          product: { id: product_id },
+          option: { id: option_id ?? undefined },
+        })),
+      );
 
       // 상품 태그 등록
       await this.product_tag_repository

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager } from "typeorm";
 
-import { Product_Image } from "@product/domain/entities";
+import { ProductImageEntity } from "../entities";
 import ProductImageRepository from "./Product_Image.repository";
 
 describe("ProductImageRepository", () => {
@@ -26,11 +26,11 @@ describe("ProductImageRepository", () => {
     it("이미지 저장 성공", async () => {
       const productImage = {
         id: 1,
-        product_id: 1,
-        option_id: 2,
+        product: { id: 1 },
+        option: { id: 2 },
         url: "http://example.com/image.jpg",
-      } as Product_Image;
-      const mockSavedEntity = { id: 1, ...productImage };
+      } as ProductImageEntity;
+      const mockSavedEntity = { ...productImage };
       mockEntityManager.save.mockResolvedValue(mockSavedEntity);
 
       const result = await repository.save(productImage);
@@ -42,15 +42,14 @@ describe("ProductImageRepository", () => {
   describe("saves", () => {
     it("여러 이미지 저장 성공", async () => {
       const productImages = [
-        { id: 1, product_id: 1, option_id: 2, url: "http://example.com/image1.jpg" },
-        { id: 2, product_id: 1, option_id: null, url: "http://example.com/image2.jpg" },
-      ] as Product_Image[];
-      const mockSavedEntities = productImages.map((image) => ({ id: image.id, ...image }));
-      mockEntityManager.save.mockResolvedValue(mockSavedEntities);
+        { id: 1, product: { id: 1 }, option: { id: 2 }, url: "http://example.com/image1.jpg" },
+        { id: 2, product: { id: 1 }, option: { id: null }, url: "http://example.com/image2.jpg" },
+      ] as ProductImageEntity[];
+      mockEntityManager.save.mockResolvedValue(productImages);
 
       const result = await repository.saves(productImages);
 
-      expect(result).toEqual(mockSavedEntities);
+      expect(result).toEqual(productImages);
     });
   });
 });

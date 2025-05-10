@@ -2,6 +2,7 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 import { IBaseRepository } from "@shared/repositories";
 import { Product_Image, Product_Option } from "@product/domain/entities";
+import { ProductImageEntity } from "@product/infrastructure/entities";
 
 @Injectable()
 export default class ProductOptionsService {
@@ -9,7 +10,7 @@ export default class ProductOptionsService {
     @Inject("IProductOptionsRepository")
     private readonly repository: IBaseRepository<Product_Option>,
     @Inject("IProductImageRepository")
-    private readonly product_image_repository: IBaseRepository<Product_Image>,
+    private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
   ) {}
 
   async register(
@@ -54,8 +55,8 @@ export default class ProductOptionsService {
     image: Omit<Product_Image, "product_id" | "option_id">,
   ) {
     const saved_product_image = await this.product_image_repository.save({
-      product_id: id,
-      option_id,
+      product: { id },
+      option: { id: option_id },
       ...image,
     });
 

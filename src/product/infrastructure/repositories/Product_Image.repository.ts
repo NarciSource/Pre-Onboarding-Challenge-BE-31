@@ -2,24 +2,19 @@ import { Injectable } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { BaseRepository } from "@shared/repositories";
-import { Product_Image } from "@product/domain/entities";
 import { ProductImageEntity } from "../entities";
 
 @Injectable()
-export default class ProductImageRepository extends BaseRepository<Product_Image> {
+export default class ProductImageRepository extends BaseRepository<ProductImageEntity> {
   constructor(protected readonly entity_manager: EntityManager) {
     super(entity_manager);
   }
 
-  async save({ product_id, option_id, ...image }: Product_Image) {
-    return await this.entity_manager.save(ProductImageEntity, {
-      ...image,
-      product: { id: product_id },
-      option: { id: option_id ?? undefined },
-    });
+  async save(image: ProductImageEntity) {
+    return await this.entity_manager.save(ProductImageEntity, image);
   }
 
-  async saves(images: Product_Image[]) {
+  async saves(images: ProductImageEntity[]) {
     return await this.entity_manager.save(ProductImageEntity, images);
   }
 }

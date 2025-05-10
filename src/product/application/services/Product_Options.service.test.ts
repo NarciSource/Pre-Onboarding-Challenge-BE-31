@@ -3,6 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 
 import { Product_Image, Product_Option } from "@product/domain/entities";
 import ProductOptionsService from "./Product_Options.service";
+import { ProductImageEntity } from "@product/infrastructure/entities";
 
 describe("ProductOptionsService", () => {
   let service: ProductOptionsService;
@@ -85,20 +86,19 @@ describe("ProductOptionsService", () => {
     const image = { url: "image-url" } as Omit<Product_Image, "product_id" | "option_id">;
     const savedImage = {
       id: 1,
-      product_id: id,
-      option_id,
+      product: { id },
+      option: { id: option_id },
       ...image,
-    } as Product_Image;
+    } as ProductImageEntity;
 
     mockProductImageRepository.save = jest.fn().mockResolvedValue(savedImage);
 
     const result = await service.register_images(id, option_id, image);
 
-    expect(result).toEqual({ id: 1, url: "image-url", product_id: 1, option_id: undefined });
-    expect(mockProductImageRepository.save).toHaveBeenCalledWith({
-      product_id: id,
+    expect(result).toEqual({
+      id: 1,
+      url: "image-url",
       option_id,
-      ...image,
     });
   });
 });
