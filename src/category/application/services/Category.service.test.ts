@@ -6,7 +6,7 @@ import CategoryService from "./Category.service";
 describe("CategoryService", () => {
   let service: CategoryService;
   const mockCategoryRepository = global.mockCategoryRepository;
-  const mockProductRepository = global.mockProductRepository;
+  const mockBrowsingRepository = global.mockBrowsingRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -68,7 +68,7 @@ describe("CategoryService", () => {
 
     beforeEach(() => {
       mockCategoryRepository.find_by_id = jest.fn().mockResolvedValue(category);
-      mockProductRepository.find_by_filters = jest.fn().mockResolvedValue(items);
+      mockBrowsingRepository.find_by_filters = jest.fn().mockResolvedValue(items);
     });
 
     it("카테고리 ID로 상품 조회", async () => {
