@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager } from "typeorm";
 
-import { ProductTagDTO } from "@product/application/dto";
+import { ProductTagEntity } from "../entities";
 import ProductTagRepository from "./Product_Tag.repository";
 
 describe("ProductTagRepository", () => {
@@ -24,10 +24,10 @@ describe("ProductTagRepository", () => {
 
   describe("saves", () => {
     it("상품 태그 저장 성공", async () => {
-      const productTags: ProductTagDTO[] = [
-        { tag_id: 1, product_id: 100 },
-        { tag_id: 2, product_id: 100 },
-      ];
+      const productTags = [
+        { tag: { id: 1 }, product: { id: 100 } },
+        { tag: { id: 2 }, product: { id: 100 } },
+      ] as ProductTagEntity[];
 
       const mockSavedEntities = [
         { id: 1, product: { id: 100 }, tag: { id: 1 } },

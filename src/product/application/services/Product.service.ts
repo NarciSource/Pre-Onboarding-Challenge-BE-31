@@ -8,6 +8,7 @@ import {
   ProductDetailEntity,
   ProductImageEntity,
   ProductPriceEntity,
+  ProductTagEntity,
 } from "@product/infrastructure/entities";
 import {
   FilterDTO,
@@ -15,7 +16,6 @@ import {
   ProductInputDTO,
   ProductOptionGroupDTO,
   ProductSummaryDTO,
-  ProductTagDTO,
 } from "../dto";
 
 @Injectable()
@@ -35,7 +35,7 @@ export default class ProductService {
     @Inject("IProductImageRepository")
     private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
     @Inject("IProductTagRepository")
-    private readonly product_tag_repository: IBaseRepository<ProductTagDTO>,
+    private readonly product_tag_repository: IBaseRepository<ProductTagEntity>,
     @Inject("IBrowsingRepository")
     private readonly browsing_repository: IBrowsingRepository,
   ) {}
@@ -99,7 +99,7 @@ export default class ProductService {
       // 상품 태그 등록
       await this.product_tag_repository
         .with_transaction(manager)
-        .saves(tag_ids.map((tag_id) => ({ tag_id, product_id })));
+        .saves(tag_ids.map((id) => ({ tag: { id }, product: { id: product_id } })));
 
       return product_entity;
     });
