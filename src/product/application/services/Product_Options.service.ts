@@ -2,13 +2,13 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 import { IBaseRepository } from "@shared/repositories";
 import { Product_Image, Product_Option } from "@product/domain/entities";
-import { ProductImageEntity } from "@product/infrastructure/entities";
+import { ProductImageEntity, ProductOptionEntity } from "@product/infrastructure/entities";
 
 @Injectable()
 export default class ProductOptionsService {
   constructor(
     @Inject("IProductOptionsRepository")
-    private readonly repository: IBaseRepository<Product_Option>,
+    private readonly repository: IBaseRepository<ProductOptionEntity>,
     @Inject("IProductImageRepository")
     private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
   ) {}
@@ -18,7 +18,12 @@ export default class ProductOptionsService {
     option_group_id: number,
     option: Omit<Product_Option, "option_group_id">,
   ): Promise<Product_Option> {
-    return await this.repository.save({ option_group_id, ...option });
+    return await this.repository.save({
+      ...option,
+      option_group: {
+        id: option_group_id,
+      },
+    });
   }
 
   async update(

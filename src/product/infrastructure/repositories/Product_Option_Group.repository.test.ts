@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager } from "typeorm";
 
-import { ProductOptionGroupDTO } from "@product/application/dto";
+import { ProductOptionGroupEntity } from "../entities";
 import ProductOptionGroupRepository from "./Product_Option_Group.repository";
 
 describe("ProductOptionGroupRepository", () => {
@@ -28,13 +28,9 @@ describe("ProductOptionGroupRepository", () => {
         {
           id: 1,
           name: "색상",
-          product_id: 100,
-          options: [
-            { id: 1, name: "빨강" },
-            { id: 2, name: "파랑" },
-          ],
+          product: { id: 100 },
         },
-      ] as ProductOptionGroupDTO[];
+      ] as ProductOptionGroupEntity[];
 
       const mockGroupEntity = { id: 1, name: "색상", product: { id: 100 } };
       const mockOptionEntities = [
@@ -48,7 +44,7 @@ describe("ProductOptionGroupRepository", () => {
 
       const result = await repository.saves(optionGroups);
 
-      expect(result).toEqual([mockGroupEntity]);
+      expect(result).toEqual(mockGroupEntity);
     });
   });
 });

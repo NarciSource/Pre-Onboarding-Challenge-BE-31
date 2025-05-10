@@ -2,27 +2,29 @@ import { Injectable } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { BaseRepository } from "@shared/repositories";
-import { Product_Option } from "@product/domain/entities";
 import { ProductOptionEntity } from "../entities";
 
 @Injectable()
-export default class ProductOptionsRepository extends BaseRepository<Product_Option> {
+export default class ProductOptionsRepository extends BaseRepository<ProductOptionEntity> {
   constructor(protected readonly entity_manager: EntityManager) {
     super(entity_manager);
   }
 
-  async save({ option_group_id, ...options }: Product_Option) {
-    return this.entity_manager.save(ProductOptionEntity, {
-      option_group: { id: option_group_id },
-      ...options,
-    });
+  async save(option: ProductOptionEntity) {
+    return this.entity_manager.save(option);
   }
 
-  async update(options: Product_Option, option_id: number) {
-    return this.entity_manager.save(ProductOptionEntity, {
-      id: option_id,
-      ...options,
-    });
+  async saves(options: ProductOptionEntity[]) {
+    return this.entity_manager.save(ProductOptionEntity, options);
+  }
+
+  async update(option: ProductOptionEntity, option_id: number) {
+    const { affected } = await this.entity_manager.update(
+      ProductOptionEntity,
+      { id: option_id },
+      option,
+    );
+    return !!affected;
   }
 
   async delete(id: number) {

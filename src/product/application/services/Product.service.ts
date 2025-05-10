@@ -7,16 +7,12 @@ import {
   ProductCategoryEntity,
   ProductDetailEntity,
   ProductImageEntity,
+  ProductOptionEntity,
+  ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
 } from "@product/infrastructure/entities";
-import {
-  FilterDTO,
-  ProductCatalogDTO,
-  ProductInputDTO,
-  ProductOptionGroupDTO,
-  ProductSummaryDTO,
-} from "../dto";
+import { FilterDTO, ProductCatalogDTO, ProductInputDTO, ProductSummaryDTO } from "../dto";
 
 @Injectable()
 export default class ProductService {
@@ -30,8 +26,10 @@ export default class ProductService {
     private readonly product_price_repository: IBaseRepository<ProductPriceEntity>,
     @Inject("IProductCategoryRepository")
     private readonly product_category_repository: IBaseRepository<ProductCategoryEntity>,
+    @Inject("IProductOptionsRepository")
+    private readonly product_options_repository: IBaseRepository<ProductOptionEntity>,
     @Inject("IProductOptionGroupRepository")
-    private readonly product_option_group_repository: IBaseRepository<ProductOptionGroupDTO>,
+    private readonly product_option_group_repository: IBaseRepository<ProductOptionGroupEntity>,
     @Inject("IProductImageRepository")
     private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
     @Inject("IProductTagRepository")
@@ -83,6 +81,25 @@ export default class ProductService {
       );
 
       // 상품 옵션 등록
+      const saved_option_groups = await this.product_option_group_repository
+        .with_transaction(manager)
+        .saves(
+          option_groups.map(({ options, ...group }) => ({
+            ...group,
+            product: { id: product_id },
+          })),
+        );
+      await this.product_options_repository.with_transaction(manager).saves(
+        option_groups.flatMap(
+          ({ options }, index) =>
+            options?.map((option) => ({
+              ...option,
+              product: { id: product_id },
+              option_group: { id: saved_option_groups[index].id },
+            })) ?? [],
+        ),
+      );
+
       await this.product_option_group_repository
         .with_transaction(manager)
         .saves(option_groups.map((group) => ({ ...group, product_id })));

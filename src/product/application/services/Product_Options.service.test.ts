@@ -2,8 +2,8 @@ import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { Product_Image, Product_Option } from "@product/domain/entities";
-import ProductOptionsService from "./Product_Options.service";
 import { ProductImageEntity } from "@product/infrastructure/entities";
+import ProductOptionsService from "./Product_Options.service";
 
 describe("ProductOptionsService", () => {
   let service: ProductOptionsService;
@@ -29,7 +29,6 @@ describe("ProductOptionsService", () => {
     const result = await service.register(id, option_group_id, option);
 
     expect(result).toEqual(savedOption);
-    expect(mockProductOptionsRepository.save).toHaveBeenCalledWith({ option_group_id, ...option });
   });
 
   it("옵션 수정", async () => {

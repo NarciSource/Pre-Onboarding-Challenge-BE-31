@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager, UpdateResult } from "typeorm";
 
-import { Product_Option } from "@product/domain/entities";
+import { ProductOptionEntity } from "../entities";
 import ProductOptionsRepository from "./Product_Options.repository";
 
 describe("ProductOptionsRepository", () => {
@@ -24,7 +24,7 @@ describe("ProductOptionsRepository", () => {
 
   describe("save", () => {
     it("상품 옵션 저장 성공", async () => {
-      const option = { id: 1, name: "빨강", option_group_id: 10 } as Product_Option;
+      const option = { id: 1, name: "빨강", option_group: { id: 10 } } as ProductOptionEntity;
       const mockSavedEntity = { id: 1, name: "빨강", option_group: { id: 10 } };
 
       mockEntityManager.save.mockResolvedValue(mockSavedEntity);
@@ -35,17 +35,32 @@ describe("ProductOptionsRepository", () => {
     });
   });
 
+  describe("saves", () => {
+    it("상품 옵션 묶음 저장 성공", async () => {
+      const options = [
+        { id: 1, name: "빨강", option_group: { id: 10 } },
+        { id: 2, name: "파랑", option_group: { id: 10 } },
+      ] as ProductOptionEntity[];
+      const mockSavedEntity = { id: 1, name: "빨강", option_group: { id: 10 } };
+
+      mockEntityManager.save.mockResolvedValue(mockSavedEntity);
+
+      const result = await repository.saves(options);
+
+      expect(result).toEqual(mockSavedEntity);
+    });
+  });
+
   describe("update", () => {
     it("상품 옵션 업데이트 성공", async () => {
-      const option = { name: "파랑" } as Product_Option;
+      const option = { name: "파랑" } as ProductOptionEntity;
       const optionId = 1;
-      const mockUpdatedEntity = { id: 1, name: "파랑" };
 
-      mockEntityManager.save.mockResolvedValue(mockUpdatedEntity);
+      mockEntityManager.update.mockResolvedValue({ affected: true });
 
       const result = await repository.update(option, optionId);
 
-      expect(result).toEqual(mockUpdatedEntity);
+      expect(result).toEqual(true);
     });
   });
 
