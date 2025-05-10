@@ -2,9 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { IBrowsingRepository } from "@shared/repositories";
-import { ProductCategoryEntity, ProductEntity } from "@product/infrastructure/entities";
+import { ProductCategoryEntity } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
-import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
+import {
+  CategoryCatalogView,
+  ProductCatalogView,
+  ProductSummaryView,
+} from "@browsing/infrastructure/views";
 import { ProductCatalogDTO, ProductSummaryDTO } from "@browsing/presentation/dto";
 
 @Injectable()
@@ -72,27 +76,7 @@ export default class BrowsingRepository implements IBrowsingRepository {
     return this.entity_manager.findOne(ProductCatalogView, { where: { id } });
   }
 
-  async get_featured_categories(): Promise<CategoryEntity[]> {
-    const query = this.entity_manager
-      .getRepository(CategoryEntity)
-      .createQueryBuilder("categories")
-      .innerJoinAndSelect(
-        ProductCategoryEntity,
-        "product_categories",
-        "product_categories.category_id = categories.id",
-      )
-      .innerJoinAndSelect(ProductEntity, "products", "products.id = product_categories.product_id")
-      .select([
-        "categories.id as id",
-        "categories.name as name",
-        "categories.slug as slug",
-        "categories.image_url as image_url",
-      ])
-      .addSelect("COUNT(products.id)", "product_count")
-      .groupBy("categories.id")
-      .orderBy("product_count", "DESC")
-      .limit(5);
-
-    return query.getRawMany();
+  async get_featured_categories(): Promise<CategoryCatalogView[]> {
+    return this.entity_manager.find(CategoryCatalogView);
   }
 }
