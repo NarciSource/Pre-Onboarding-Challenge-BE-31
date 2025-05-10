@@ -6,8 +6,7 @@ import {
   Seller,
   Tag,
 } from "@product/domain/entities";
-import ProductCategoryDTO from "./ProductCategory.dto";
-import ProductOptionGroupDTO from "./ProductOptionGroup.dto";
+import { ProductCategoryDTO, ProductOptionGroupDTO } from "../command";
 
 type ProductCatalogDTO = {
   id: number;

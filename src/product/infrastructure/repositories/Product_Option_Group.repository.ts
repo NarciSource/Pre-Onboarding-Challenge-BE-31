@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
 import { BaseRepository } from "@shared/repositories";
-import { ProductOptionGroupDTO } from "@product/application/dto";
+import { ProductOptionGroupDTO } from "@product/application/command";
 import { ProductOptionEntity, ProductOptionGroupEntity } from "../entities";
 
 @Injectable()

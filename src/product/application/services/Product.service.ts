@@ -4,17 +4,15 @@ import { EntityManager } from "typeorm";
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Product, Product_Detail, Product_Image, Product_Price } from "@product/domain/entities";
 import {
-  FilterDTO,
-  ProductCatalogDTO,
   ProductCategoryDTO,
-  ProductInputDTO,
   ProductOptionGroupDTO,
-  ProductSummaryDTO,
-  ProductTagDTO,
-} from "../dto";
+  ProductInputDTO,
+  CommandHandler,
+} from "../command";
+import { FilterDTO, ProductCatalogDTO, ProductSummaryDTO, ProductTagDTO } from "../dto";
 
 @Injectable()
-export default class ProductService {
+export default class ProductService implements CommandHandler {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")
@@ -90,6 +88,7 @@ export default class ProductService {
 
       return product_entity;
     });
+
     // 상품 등록 결과 반환
     return (({ id, name, slug, created_at, updated_at }) => ({
       id: id!,

@@ -2,7 +2,7 @@ import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager } from "typeorm";
 
-import { ProductInputDTO } from "../dto";
+import { ProductInputDTO } from "../command";
 import ProductService from "./Product.service";
 
 describe("ProductService", () => {
