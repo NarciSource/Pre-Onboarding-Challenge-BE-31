@@ -1,31 +1,31 @@
 import { TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { DataSource, Repository, UpdateResult } from "typeorm";
+import { DataSource, UpdateResult } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
+import { IBaseRepository } from "@shared/repositories";
 import UserEntity from "./User.entity";
 
 describe("UserEntity", () => {
-  let data_source: DataSource;
-  let repository: Repository<UserEntity>;
+  let dataSource: DataSource;
+  let repository: IBaseRepository<UserEntity>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
-    data_source = module.get<DataSource>(DataSource);
-    repository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
+    dataSource = module.get(DataSource);
+    repository = module.get("IUserRepository");
   });
 
   describe("UserEntity가 정의", () => {
     it("올바른 테이블 이름", () => {
-      const entityMetadata = data_source.getRepository(UserEntity).metadata;
+      const entityMetadata = dataSource.getRepository(UserEntity).metadata;
 
       expect(entityMetadata.tableName).toBe("users");
     });
 
     it("기본 키 'id'", () => {
-      const entityMetadata = data_source.getRepository(UserEntity).metadata;
+      const entityMetadata = dataSource.getRepository(UserEntity).metadata;
 
       const primaryColumn = entityMetadata.columns.find((col) => col.propertyName === "id")!;
 

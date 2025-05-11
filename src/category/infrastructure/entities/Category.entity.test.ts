@@ -1,31 +1,31 @@
 import { TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { DataSource, Repository, UpdateResult } from "typeorm";
+import { DataSource, UpdateResult } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
+import { IBaseRepository } from "@shared/repositories";
 import CategoryEntity from "./Category.entity";
 
 describe("CategoryEntity", () => {
-  let data_source: DataSource;
-  let repository: Repository<CategoryEntity>;
+  let dataSource: DataSource;
+  let repository: IBaseRepository<CategoryEntity>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
-    data_source = module.get<DataSource>(DataSource);
-    repository = module.get<Repository<CategoryEntity>>(getRepositoryToken(CategoryEntity));
+    dataSource = module.get(DataSource);
+    repository = module.get("ICategoryRepository");
   });
 
   describe("CategoryEntity가 정의", () => {
     it("올바른 테이블 이름", () => {
-      const entityMetadata = data_source.getRepository(CategoryEntity).metadata;
+      const entityMetadata = dataSource.getRepository(CategoryEntity).metadata;
 
       expect(entityMetadata.tableName).toBe("categories");
     });
 
     it("기본 키 'id'", () => {
-      const entityMetadata = data_source.getRepository(CategoryEntity).metadata;
+      const entityMetadata = dataSource.getRepository(CategoryEntity).metadata;
 
       const primaryColumn = entityMetadata.columns.find((col) => col.propertyName === "id")!;
 
@@ -35,7 +35,7 @@ describe("CategoryEntity", () => {
     });
 
     it("고유 제약 조건 'slug'", () => {
-      const entityMetadata = data_source.getRepository(CategoryEntity).metadata;
+      const entityMetadata = dataSource.getRepository(CategoryEntity).metadata;
 
       const uniqueConstraint = entityMetadata.uniques.find((unique) =>
         unique.columns.some((col) => col.propertyName === "slug"),
@@ -45,7 +45,7 @@ describe("CategoryEntity", () => {
     });
 
     it("CategoryEntity와 다대일 관계", () => {
-      const entityMetadata = data_source.getRepository(CategoryEntity).metadata;
+      const entityMetadata = dataSource.getRepository(CategoryEntity).metadata;
 
       const relation = entityMetadata.relations.find((rel) => rel.propertyName === "parent")!;
 

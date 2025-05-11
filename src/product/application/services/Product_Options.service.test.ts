@@ -1,26 +1,24 @@
 import { NotFoundException } from "@nestjs/common";
-import { Test, TestingModule } from "@nestjs/testing";
+import { TestingModule } from "@nestjs/testing";
 
-import { MockRepository, MockRepositoryProviders } from "src/__mocks__/repositoryMock";
+import { get_module } from "__test-utils__/test-module";
 
+import { IBaseRepository } from "@shared/repositories";
 import { Product_Image, Product_Option } from "@product/domain/entities";
-import { ProductImageEntity } from "@product/infrastructure/entities";
+import { ProductImageEntity, ProductOptionEntity } from "@product/infrastructure/entities";
 import ProductOptionsService from "./Product_Options.service";
 
 describe("ProductOptionsService", () => {
   let service: ProductOptionsService;
-  const mockProductOptionsRepository = global.mockProductOptionsRepository as MockRepository;
-  const mockProductImageRepository = global.mockProductImageRepository as MockRepository;
+  let productOptionsRepository: IBaseRepository<ProductOptionEntity>;
+  let productImageRepository: IBaseRepository<ProductImageEntity>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProductOptionsService,
-        ...(global.mockRepositoryProviders as MockRepositoryProviders),
-      ],
-    }).compile();
+  beforeAll(async () => {
+    const module: TestingModule = await get_module();
 
-    service = module.get<ProductOptionsService>(ProductOptionsService);
+    service = module.get(ProductOptionsService);
+    productOptionsRepository = module.get("IProductOptionsRepository");
+    productImageRepository = module.get("IProductImageRepository");
   });
 
   it("옵션 등록", async () => {
@@ -29,7 +27,7 @@ describe("ProductOptionsService", () => {
     const option = { name: "옵션1" } as Omit<Product_Option, "option_group_id">;
     const savedOption = { id: 1, option_group_id, ...option } as Product_Option;
 
-    mockProductOptionsRepository.save = jest.fn().mockResolvedValue(savedOption);
+    productOptionsRepository.save = jest.fn().mockResolvedValue(savedOption);
 
     const result = await service.register(id, option_group_id, option);
 
@@ -42,8 +40,8 @@ describe("ProductOptionsService", () => {
     const options = { name: "옵션 수정" } as Omit<Product_Option, "option_group_id">;
     const updatedOption = { id: option_id, ...options } as Product_Option;
 
-    mockProductOptionsRepository.update = jest.fn().mockResolvedValue(true);
-    mockProductOptionsRepository.findOneBy = jest.fn().mockResolvedValue(updatedOption);
+    productOptionsRepository.update = jest.fn().mockResolvedValue(true);
+    productOptionsRepository.findOneBy = jest.fn().mockResolvedValue(updatedOption);
 
     const result = await service.update(product_id, option_id, options);
 
@@ -55,31 +53,31 @@ describe("ProductOptionsService", () => {
     const option_id = 1;
     const options = { name: "옵션 수정" } as Omit<Product_Option, "option_group_id">;
 
-    mockProductOptionsRepository.update = jest.fn().mockResolvedValue(false);
+    productOptionsRepository.update = jest.fn().mockResolvedValue(false);
 
     await expect(service.update(product_id, option_id, options)).rejects.toThrow(NotFoundException);
-    expect(mockProductOptionsRepository.update).toHaveBeenCalledWith(option_id, options);
+    expect(productOptionsRepository.update).toHaveBeenCalledWith(option_id, options);
   });
 
   it("옵션 삭제", async () => {
     const product_id = 1;
     const option_id = 1;
 
-    mockProductOptionsRepository.delete = jest.fn().mockResolvedValue(true);
+    productOptionsRepository.delete = jest.fn().mockResolvedValue(true);
 
     await service.remove(product_id, option_id);
 
-    expect(mockProductOptionsRepository.delete).toHaveBeenCalledWith(option_id);
+    expect(productOptionsRepository.delete).toHaveBeenCalledWith(option_id);
   });
 
   it("옵션 삭제 실패 시 NotFoundException 발생", async () => {
     const product_id = 1;
     const option_id = 1;
 
-    mockProductOptionsRepository.delete = jest.fn().mockResolvedValue(false);
+    productOptionsRepository.delete = jest.fn().mockResolvedValue(false);
 
     await expect(service.remove(product_id, option_id)).rejects.toThrow(NotFoundException);
-    expect(mockProductOptionsRepository.delete).toHaveBeenCalledWith(option_id);
+    expect(productOptionsRepository.delete).toHaveBeenCalledWith(option_id);
   });
 
   it("옵션 이미지 등록", async () => {
@@ -93,7 +91,7 @@ describe("ProductOptionsService", () => {
       ...image,
     } as ProductImageEntity;
 
-    mockProductImageRepository.save = jest.fn().mockResolvedValue(savedImage);
+    productImageRepository.save = jest.fn().mockResolvedValue(savedImage);
 
     const result = await service.register_images(id, option_id, image);
 

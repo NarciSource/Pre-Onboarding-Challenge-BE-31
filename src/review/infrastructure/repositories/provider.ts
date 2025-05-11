@@ -1,4 +1,7 @@
 import { createRepositoryProvider } from "@shared/repositories";
-import { ReviewEntity } from "../entities";
+import { ReviewEntity, UserEntity } from "../entities";
 
-export default [createRepositoryProvider("IReviewRepository", ReviewEntity)];
+export default [
+  createRepositoryProvider("IReviewRepository", ReviewEntity),
+  createRepositoryProvider("IUserRepository", UserEntity),
+];

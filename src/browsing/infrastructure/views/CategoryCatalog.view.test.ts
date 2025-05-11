@@ -1,27 +1,25 @@
 import { TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { DataSource, Repository } from "typeorm";
+import { DataSource } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
+import { IBrowsingRepository } from "@shared/repositories";
 import CategoryCatalogView from "./CategoryCatalog.view";
 
 describe("CategoryCatalogView", () => {
-  let data_source: DataSource;
-  let repository: Repository<CategoryCatalogView>;
+  let dataSource: DataSource;
+  let repository: IBrowsingRepository<CategoryCatalogView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
-    data_source = module.get<DataSource>(DataSource);
-    repository = module.get<Repository<CategoryCatalogView>>(
-      getRepositoryToken(CategoryCatalogView),
-    );
+    dataSource = module.get(DataSource);
+    repository = module.get("ICategoryCatalogRepository");
   });
 
   describe("CategoryCatalogView 정의", () => {
     it("뷰 컬럼 정의", () => {
-      const entityMetadata = data_source.getRepository(CategoryCatalogView).metadata;
+      const entityMetadata = dataSource.getRepository(CategoryCatalogView).metadata;
 
       const columns = ["id", "name", "slug", "image_url", "product_count"];
 

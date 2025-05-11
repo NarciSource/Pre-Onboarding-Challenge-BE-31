@@ -1,33 +1,33 @@
 import { TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { DataSource, Repository, UpdateResult } from "typeorm";
+import { DataSource, UpdateResult } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
+import { IBaseRepository } from "@shared/repositories";
 import ProductEntity from "@product/infrastructure/entities/Product.entity";
 import ReviewEntity from "./Review.entity";
 import UserEntity from "./User.entity";
 
 describe("ReviewEntity", () => {
-  let data_source: DataSource;
-  let repository: Repository<ReviewEntity>;
+  let dataSource: DataSource;
+  let repository: IBaseRepository<ReviewEntity>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
-    data_source = module.get<DataSource>(DataSource);
-    repository = module.get<Repository<ReviewEntity>>(getRepositoryToken(ReviewEntity));
+    dataSource = module.get(DataSource);
+    repository = module.get("IReviewRepository");
   });
 
   describe("ReviewEntity가 정의", () => {
     it("올바른 테이블 이름", () => {
-      const entityMetadata = data_source.getRepository(ReviewEntity).metadata;
+      const entityMetadata = dataSource.getRepository(ReviewEntity).metadata;
 
       expect(entityMetadata.tableName).toBe("reviews");
     });
 
     it("기본 키 'id'", () => {
-      const entityMetadata = data_source.getRepository(ReviewEntity).metadata;
+      const entityMetadata = dataSource.getRepository(ReviewEntity).metadata;
 
       const primaryColumn = entityMetadata.columns.find((col) => col.propertyName === "id")!;
 
@@ -37,7 +37,7 @@ describe("ReviewEntity", () => {
     });
 
     it("ProductEntity와 다대일 관계", () => {
-      const entityMetadata = data_source.getRepository(ReviewEntity).metadata;
+      const entityMetadata = dataSource.getRepository(ReviewEntity).metadata;
 
       const relation = entityMetadata.relations.find((rel) => rel.propertyName === "product")!;
 
@@ -49,7 +49,7 @@ describe("ReviewEntity", () => {
     });
 
     it("UserEntity와 다대일 관계", () => {
-      const entityMetadata = data_source.getRepository(ReviewEntity).metadata;
+      const entityMetadata = dataSource.getRepository(ReviewEntity).metadata;
 
       const relation = entityMetadata.relations.find((rel) => rel.propertyName === "user")!;
 

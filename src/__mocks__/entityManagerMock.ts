@@ -1,36 +1,41 @@
 import { EntityManager } from "typeorm";
 
-export const mockEntityManager = {
-  create: jest.fn(),
-  save: jest.fn(),
-  find: jest.fn(),
-  findOne: jest.fn(),
-  update: jest.fn(),
-  delete: jest.fn(),
-  getRepository: jest.fn().mockReturnThis(),
-  createQueryBuilder: jest.fn().mockReturnValue({
-    subQuery: jest.fn().mockReturnThis(),
-    select: jest.fn().mockReturnThis(),
-    addSelect: jest.fn().mockReturnThis(),
-    from: jest.fn().mockReturnThis(),
-    leftJoin: jest.fn().mockReturnThis(),
-    leftJoinAndSelect: jest.fn().mockReturnThis(),
-    innerJoin: jest.fn().mockReturnThis(),
-    innerJoinAndSelect: jest.fn().mockReturnThis(),
-    where: jest.fn().mockReturnThis(),
-    andWhere: jest.fn().mockReturnThis(),
-    orderBy: jest.fn().mockReturnThis(),
-    groupBy: jest.fn().mockReturnThis(),
-    having: jest.fn().mockReturnThis(),
-    offset: jest.fn().mockReturnThis(),
-    limit: jest.fn().mockReturnThis(),
-    setParameter: jest.fn().mockReturnThis(),
-    getQuery: jest.fn().mockReturnValue("mockInnerQuery"),
-    getMany: jest.fn(),
-  }),
-  transaction: jest.fn(async (callback: (entityManager: EntityManager) => Promise<void>) => {
-    await callback({} as EntityManager);
-  }),
-} as unknown as jest.Mocked<Partial<EntityManager>>;
+jest.mock("typeorm", () => {
+  const original: typeof import("typeorm") = jest.requireActual("typeorm");
 
-export type MockEntityManager = typeof mockEntityManager;
+  return {
+    ...original,
+    EntityManager: jest.fn().mockImplementation(() => ({
+      create: jest.fn(),
+      save: jest.fn(),
+      find: jest.fn(),
+      findOne: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+      getRepository: jest.fn().mockReturnThis(),
+      createQueryBuilder: jest.fn().mockReturnValue({
+        subQuery: jest.fn().mockReturnThis(),
+        select: jest.fn().mockReturnThis(),
+        addSelect: jest.fn().mockReturnThis(),
+        from: jest.fn().mockReturnThis(),
+        leftJoin: jest.fn().mockReturnThis(),
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        innerJoin: jest.fn().mockReturnThis(),
+        innerJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        groupBy: jest.fn().mockReturnThis(),
+        having: jest.fn().mockReturnThis(),
+        offset: jest.fn().mockReturnThis(),
+        limit: jest.fn().mockReturnThis(),
+        setParameter: jest.fn().mockReturnThis(),
+        getQuery: jest.fn().mockReturnValue("mockInnerQuery"),
+        getMany: jest.fn(),
+      }),
+      transaction: jest.fn(async (callback: (entityManager: EntityManager) => Promise<void>) => {
+        await callback({} as EntityManager);
+      }),
+    })),
+  };
+});

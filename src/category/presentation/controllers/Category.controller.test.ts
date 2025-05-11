@@ -1,41 +1,31 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { TestingModule } from "@nestjs/testing";
+
+import { get_module } from "__test-utils__/test-module";
 
 import { CategoryService } from "@category/application/services";
 import { CategoryQueryDTO } from "../dto";
 import CategoryController from "./Category.controller";
 
 describe("CategoryController", () => {
-  let mockController: CategoryController;
-  let mockService: jest.Mocked<CategoryService>;
+  let controller: CategoryController;
+  let service: CategoryService;
 
-  beforeEach(async () => {
-    mockService = {
-      find_all_as_tree: jest.fn(),
-      find_products_by_category_id: jest.fn(),
-    } as unknown as jest.Mocked<CategoryService>;
+  beforeAll(async () => {
+    const module: TestingModule = await get_module();
 
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoryController],
-      providers: [
-        {
-          provide: CategoryService,
-          useValue: mockService,
-        },
-      ],
-    }).compile();
-
-    mockController = module.get<CategoryController>(CategoryController);
+    controller = module.get(CategoryController);
+    service = module.get(CategoryService);
   });
 
   describe("readCategories", () => {
     it("카테고리 목록 조회 성공", async () => {
       const level = 2;
       const data = [{ id: 1, name: "Category 1" }];
-      mockService.find_all_as_tree = jest.fn().mockResolvedValue(data);
+      service.find_all_as_tree = jest.fn().mockResolvedValue(data);
 
-      const result = await mockController.read_categories({ level });
+      const result = await controller.read_categories({ level });
 
-      expect(mockService.find_all_as_tree).toHaveBeenCalledWith(level);
+      expect(service.find_all_as_tree).toHaveBeenCalledWith(level);
       expect(result).toEqual({
         success: true,
         data,
@@ -49,11 +39,11 @@ describe("CategoryController", () => {
       const id = 1;
       const query = { page: 1, perPage: 10 } as CategoryQueryDTO;
       const data = { category: "Category 1" };
-      mockService.find_products_by_category_id = jest.fn().mockResolvedValue(data);
+      service.find_products_by_category_id = jest.fn().mockResolvedValue(data);
 
-      const result = await mockController.read_products({ id }, query);
+      const result = await controller.read_products({ id }, query);
 
-      expect(mockService.find_products_by_category_id).toHaveBeenCalledWith(id, query);
+      expect(service.find_products_by_category_id).toHaveBeenCalledWith(id, query);
       expect(result).toEqual({
         success: true,
         data,

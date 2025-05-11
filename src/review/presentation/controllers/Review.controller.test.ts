@@ -1,4 +1,6 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { TestingModule } from "@nestjs/testing";
+
+import { get_module } from "__test-utils__/test-module";
 
 import { ReviewService } from "@review/application/services";
 import {
@@ -14,27 +16,13 @@ import ReviewController from "./Review.controller";
 
 describe("ReviewController", () => {
   let controller: ReviewController;
-  let mockReviewService: jest.Mocked<ReviewService>;
+  let service: ReviewService;
 
-  beforeEach(async () => {
-    mockReviewService = {
-      get: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-    } as unknown as jest.Mocked<ReviewService>;
+  beforeAll(async () => {
+    const module: TestingModule = await get_module();
 
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ReviewController],
-      providers: [
-        {
-          provide: ReviewService,
-          useValue: mockReviewService,
-        },
-      ],
-    }).compile();
-
-    controller = module.get<ReviewController>(ReviewController);
+    controller = module.get(ReviewController);
+    service = module.get(ReviewService);
   });
 
   describe("read", () => {
@@ -42,14 +30,14 @@ describe("ReviewController", () => {
       const id = 1;
       const query: ReviewQueryDTO = { page: 1, perPage: 10 };
       const mockData = { items: [], summary: {}, pagination: {} };
-      mockReviewService.find = jest.fn().mockResolvedValue(mockData);
+      service.find = jest.fn().mockResolvedValue(mockData);
 
       const result: ResponseDTO<ReviewResponseBundle> = await controller.read(
         { id } as ParamDTO,
         query,
       );
 
-      expect(mockReviewService.find).toHaveBeenCalledWith(id, query);
+      expect(service.find).toHaveBeenCalledWith(id, query);
       expect(result).toEqual({
         success: true,
         data: mockData,
@@ -63,11 +51,11 @@ describe("ReviewController", () => {
       const id = 1;
       const body: ReviewBodyDTO = { title: "좋은 상품", content: "만족합니다", rating: 5 };
       const mockData = { id: 1, ...body };
-      mockReviewService.register = jest.fn().mockResolvedValue(mockData);
+      service.register = jest.fn().mockResolvedValue(mockData);
 
       const result: ResponseDTO<ReviewDTO> = await controller.create({ id } as ParamDTO, body);
 
-      expect(mockReviewService.register).toHaveBeenCalledWith(id, body);
+      expect(service.register).toHaveBeenCalledWith(id, body);
       expect(result).toEqual({
         success: true,
         data: mockData,
@@ -81,14 +69,14 @@ describe("ReviewController", () => {
       const id = 1;
       const body: ReviewBodyDTO = { title: "수정된 제목", content: "수정된 내용", rating: 4 };
       const mockData = { id, ...body };
-      mockReviewService.edit = jest.fn().mockResolvedValue(mockData);
+      service.edit = jest.fn().mockResolvedValue(mockData);
 
       const result: ResponseDTO<ReviewResponseDTO> = await controller.update(
         { id } as ParamDTO,
         body,
       );
 
-      expect(mockReviewService.edit).toHaveBeenCalledWith(id, body);
+      expect(service.edit).toHaveBeenCalledWith(id, body);
       expect(result).toEqual({
         success: true,
         data: mockData,
@@ -100,11 +88,11 @@ describe("ReviewController", () => {
   describe("delete", () => {
     it("리뷰 삭제 성공", async () => {
       const id = 1;
-      mockReviewService.remove = jest.fn().mockResolvedValue(true);
+      service.remove = jest.fn().mockResolvedValue(true);
 
       const result: ResponseDTO<null> = await controller.delete({ id } as ParamDTO);
 
-      expect(mockReviewService.remove).toHaveBeenCalledWith(id);
+      expect(service.remove).toHaveBeenCalledWith(id);
       expect(result).toEqual({
         success: true,
         data: null,

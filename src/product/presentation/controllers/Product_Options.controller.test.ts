@@ -1,4 +1,6 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { TestingModule } from "@nestjs/testing";
+
+import { get_module } from "__test-utils__/test-module";
 
 import { ProductOptionsService } from "@product/application/services";
 import { Product_Image, Product_Option } from "@product/domain/entities";
@@ -6,27 +8,14 @@ import { ImageDTO, OptionParamDTO, ProductOptionDTO, ResponseDTO } from "../dto"
 import ProductOptionsController from "./Product_Options.controller";
 
 describe("ProductOptionsController", () => {
-  let mockController: ProductOptionsController;
-  let mockService: jest.Mocked<ProductOptionsService>;
+  let controller: ProductOptionsController;
+  let service: jest.Mocked<ProductOptionsService>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ProductOptionsController],
-      providers: [
-        {
-          provide: ProductOptionsService,
-          useValue: {
-            addOptions: jest.fn(),
-            updateOptions: jest.fn(),
-            deleteOptions: jest.fn(),
-            addImages: jest.fn(),
-          },
-        },
-      ],
-    }).compile();
+  beforeAll(async () => {
+    const module: TestingModule = await get_module();
 
-    mockController = module.get<ProductOptionsController>(ProductOptionsController);
-    mockService = module.get(ProductOptionsService);
+    controller = module.get(ProductOptionsController);
+    service = module.get(ProductOptionsService);
   });
 
   describe("addOptions", () => {
@@ -37,9 +26,9 @@ describe("ProductOptionsController", () => {
         id: param.id,
         ...body,
       } as Product_Option;
-      mockService.register = jest.fn().mockResolvedValue(data);
+      service.register = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<ProductOptionDTO> = await mockController.create_option(param, body);
+      const result: ResponseDTO<ProductOptionDTO> = await controller.create_option(param, body);
 
       expect(result).toEqual({
         success: true,
@@ -58,9 +47,9 @@ describe("ProductOptionsController", () => {
         option_group_id: param.optionId,
         ...body,
       } as Product_Option;
-      mockService.update = jest.fn().mockResolvedValue(data);
+      service.update = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<ProductOptionDTO> = await mockController.update_option(param, body);
+      const result: ResponseDTO<ProductOptionDTO> = await controller.update_option(param, body);
 
       expect(result).toEqual({
         success: true,
@@ -77,9 +66,9 @@ describe("ProductOptionsController", () => {
   describe("deleteOptions", () => {
     it("상품 옵션 삭제 성공", async () => {
       const param = { id: 1, optionId: 2 };
-      mockService.remove = jest.fn().mockResolvedValue(undefined);
+      service.remove = jest.fn().mockResolvedValue(undefined);
 
-      const result: ResponseDTO<null> = await mockController.delete_option(param);
+      const result: ResponseDTO<null> = await controller.delete_option(param);
 
       expect(result).toEqual({
         success: true,
@@ -94,9 +83,9 @@ describe("ProductOptionsController", () => {
       const param = { id: 1 } as OptionParamDTO;
       const body = { option_id: 2, url: "http://example.com/image.jpg" } as ImageDTO;
       const data = { id: param.id, url: body.url } as Product_Image;
-      mockService.register_images = jest.fn().mockResolvedValue(data);
+      service.register_images = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<ImageDTO> = await mockController.create_image(param, body);
+      const result: ResponseDTO<ImageDTO> = await controller.create_image(param, body);
 
       expect(result).toEqual({
         success: true,

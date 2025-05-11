@@ -1,31 +1,31 @@
 import { TestingModule } from "@nestjs/testing";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import { DataSource, Repository } from "typeorm";
+import { DataSource } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
+import { IBrowsingRepository } from "@shared/repositories";
 import ProductSummaryView from "./ProductSummary.view";
 
 describe("ProductSummaryView", () => {
-  let data_source: DataSource;
-  let repository: Repository<ProductSummaryView>;
+  let dataSource: DataSource;
+  let repository: IBrowsingRepository<ProductSummaryView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
-    data_source = module.get<DataSource>(DataSource);
-    repository = module.get<Repository<ProductSummaryView>>(getRepositoryToken(ProductSummaryView));
+    dataSource = module.get(DataSource);
+    repository = module.get("IProductSummaryRepository");
   });
 
   describe("ProductSummaryView 정의", () => {
     it("올바른 뷰 이름", () => {
-      const entityMetadata = data_source.getRepository(ProductSummaryView).metadata;
+      const entityMetadata = dataSource.getRepository(ProductSummaryView).metadata;
 
       expect(entityMetadata.tableName).toBe("product_summary_view");
     });
 
     it("뷰 컬럼 정의", () => {
-      const entityMetadata = data_source.getRepository(ProductSummaryView).metadata;
+      const entityMetadata = dataSource.getRepository(ProductSummaryView).metadata;
 
       const columns = [
         "id",

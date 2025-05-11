@@ -1,21 +1,24 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import { TestingModule } from "@nestjs/testing";
 
-import { MockRepository, MockRepositoryProviders } from "src/__mocks__/repositoryMock";
+import { get_module } from "__test-utils__/test-module";
 
+import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
+import { CategoryEntity } from "@category/infrastructure/entities";
+import { ProductSummaryView } from "@browsing/infrastructure/views";
 import CategoryService from "./Category.service";
 
 describe("CategoryService", () => {
   let service: CategoryService;
-  const mockCategoryRepository = global.mockCategoryRepository as MockRepository;
-  const mockProductSummaryRepository = global.mockProductSummaryRepository as MockRepository;
+  let categoryRepository: IBaseRepository<CategoryEntity>;
+  let productSummaryRepository: IBrowsingRepository<ProductSummaryView>;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [CategoryService, ...(global.mockRepositoryProviders as MockRepositoryProviders)],
-    }).compile();
+  beforeAll(async () => {
+    const module: TestingModule = await get_module();
 
-    service = module.get<CategoryService>(CategoryService);
+    service = module.get(CategoryService);
+    categoryRepository = module.get("ICategoryRepository");
+    productSummaryRepository = module.get("IProductSummaryRepository");
   });
 
   describe("find_all_as_tree", () => {
@@ -25,7 +28,7 @@ describe("CategoryService", () => {
         { id: 2, name: "중분류1", parent: { id: 1 } as Category },
         { id: 3, name: "소분류1", parent: { id: 2 } as Category },
       ] as Category[];
-      mockCategoryRepository.find = jest.fn().mockResolvedValue(categories);
+      categoryRepository.find = jest.fn().mockResolvedValue(categories);
 
       const result = await service.find_all_as_tree();
 
@@ -47,19 +50,19 @@ describe("CategoryService", () => {
           ],
         },
       ]);
-      expect(mockCategoryRepository.find).toHaveBeenCalledWith({
+      expect(categoryRepository.find).toHaveBeenCalledWith({
         relations: ["parent"],
       });
     });
 
     it("레벨 제한을 초과한 경우 빈 배열 반환", async () => {
       const categories: Category[] = [];
-      mockCategoryRepository.find = jest.fn().mockResolvedValue(categories);
+      categoryRepository.find = jest.fn().mockResolvedValue(categories);
 
       const result = await service.find_all_as_tree(4);
 
       expect(result).toEqual([]);
-      expect(mockCategoryRepository.find).toHaveBeenCalledWith({
+      expect(categoryRepository.find).toHaveBeenCalledWith({
         relations: ["parent"],
       });
     });
@@ -73,8 +76,8 @@ describe("CategoryService", () => {
     ];
 
     beforeEach(() => {
-      mockCategoryRepository.findOne = jest.fn().mockResolvedValue(category);
-      mockProductSummaryRepository.find_by_filters = jest.fn().mockResolvedValue(items);
+      categoryRepository.findOne = jest.fn().mockResolvedValue(category);
+      productSummaryRepository.find_by_filters = jest.fn().mockResolvedValue(items);
     });
 
     it("카테고리 ID로 상품 조회", async () => {

@@ -3,14 +3,25 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { DataSource } from "typeorm";
 
+import * as product_services from "@product/application/services";
 import * as product_entities from "@product/infrastructure/entities";
 import { repository_providers as product_repository_providers } from "@product/infrastructure/repositories";
+import * as product_controllers from "@product/presentation/controllers";
+
+import * as category_services from "@category/application/services";
 import * as category_entities from "@category/infrastructure/entities";
 import { repository_providers as category_repository_providers } from "@category/infrastructure/repositories";
+import * as category_controllers from "@category/presentation/controllers";
+
+import * as review_services from "@review/application/services";
 import * as review_entities from "@review/infrastructure/entities";
 import { repository_providers as review_repository_providers } from "@review/infrastructure/repositories";
+import * as review_controllers from "@review/presentation/controllers";
+
+import * as browsing_services from "@browsing/application/services";
 import browsing_repository_providers from "@browsing/infrastructure/repositories/provider";
 import * as views from "@browsing/infrastructure/views";
+import * as browsing_controllers from "@browsing/presentation/controllers";
 
 let container: StartedPostgreSqlContainer;
 let test_module: TestingModule;
@@ -56,6 +67,16 @@ export async function get_module() {
       ...category_repository_providers,
       ...review_repository_providers,
       ...browsing_repository_providers,
+      ...Object.values(product_services),
+      ...Object.values(review_services),
+      ...Object.values(category_services),
+      ...Object.values(browsing_services),
+    ],
+    controllers: [
+      ...Object.values(product_controllers),
+      ...Object.values(category_controllers),
+      ...Object.values(review_controllers),
+      ...Object.values(browsing_controllers),
     ],
   }).compile();
 
