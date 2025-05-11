@@ -77,7 +77,7 @@ describe("CategoryService", () => {
 
     beforeEach(() => {
       categoryRepository.findOne = jest.fn().mockResolvedValue(category);
-      productSummaryRepository.find_by_filters = jest.fn().mockResolvedValue(items);
+      productSummaryRepository.find = jest.fn().mockResolvedValue(items);
     });
 
     it("카테고리 ID로 상품 조회", async () => {

@@ -1,13 +1,13 @@
 import { NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
-import { EntityManager } from "typeorm";
+import { Between, EntityManager, In, Like } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { ProductEntity } from "@product/infrastructure/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import { ProductInputDTO } from "../dto";
+import { FilterDTO, ProductInputDTO } from "../dto";
 import ProductService from "./Product.service";
 
 describe("ProductService", () => {
@@ -113,16 +113,21 @@ describe("ProductService", () => {
   });
 
   it("상품 목록 조회", async () => {
-    const filterDTO = {
+    const filterDTO: FilterDTO = {
       page: 1,
       per_page: 10,
-      sort: "created_at:DESC",
+      sort: "created_at:ASC",
+      min_price: 100,
+      max_price: 1000000,
+      category: [1, 2],
+      in_stock: true,
+      search: "상품",
     };
     const mockProducts = [
       { id: 1, name: "상품1", slug: "product-1" },
       { id: 2, name: "상품2", slug: "product-2" },
     ];
-    productSummaryRepository.find_by_filters = jest.fn().mockResolvedValue(mockProducts);
+    productSummaryRepository.find = jest.fn().mockResolvedValue(mockProducts);
 
     const result = await service.find_all(filterDTO);
 
@@ -135,11 +140,17 @@ describe("ProductService", () => {
         per_page: 10,
       },
     });
-    expect(productSummaryRepository.find_by_filters).toHaveBeenCalledWith({
-      page: 1,
-      per_page: 10,
-      sort_field: "created_at",
-      sort_order: "DESC",
+    expect(productSummaryRepository.find).toHaveBeenCalledWith({
+      order: { created_at: "ASC" },
+      skip: 0,
+      take: 10,
+      where: {
+        base_price: Between(100, 1000000),
+        categories: In([1, 2]),
+        in_stock: true,
+        name: Like("%상품%"),
+        status: undefined,
+      },
     });
   });
 
@@ -148,7 +159,7 @@ describe("ProductService", () => {
       { id: 1, name: "상품1", slug: "product-1" },
       { id: 2, name: "상품2", slug: "product-2" },
     ];
-    productSummaryRepository.find_by_filters = jest.fn().mockResolvedValue(mockProducts);
+    productSummaryRepository.find = jest.fn().mockResolvedValue(mockProducts);
 
     const result = await service.find_all({});
 
@@ -161,11 +172,17 @@ describe("ProductService", () => {
         per_page: 10,
       },
     });
-    expect(productSummaryRepository.find_by_filters).toHaveBeenCalledWith({
-      page: 1,
-      per_page: 10,
-      sort_field: "created_at",
-      sort_order: "DESC",
+    expect(productSummaryRepository.find).toHaveBeenCalledWith({
+      order: { created_at: "DESC" },
+      skip: 0,
+      take: 10,
+      where: {
+        base_price: Between(0, Number.MAX_SAFE_INTEGER),
+        categories: In([]),
+        in_stock: undefined,
+        name: Like("%%"),
+        status: undefined,
+      },
     });
   });
 

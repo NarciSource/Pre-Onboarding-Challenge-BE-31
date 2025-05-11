@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { EntityManager } from "typeorm";
+import { Between, EntityManager, In, Like } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import {
@@ -134,15 +134,34 @@ export default class ProductService {
     }))(product_entity);
   }
 
-  async find_all({ page = 1, per_page = 10, sort, ...rest }: FilterDTO) {
+  async find_all({
+    page = 1,
+    per_page = 10,
+    sort,
+    status,
+    max_price,
+    min_price,
+    category: categories,
+    seller: seller_id,
+    brand: brand_id,
+    in_stock,
+    search,
+  }: FilterDTO) {
     const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
 
-    const items = await this.product_summary_repository.find_by_filters({
-      page,
-      per_page,
-      sort_field,
-      sort_order,
-      ...rest,
+    const items = await this.product_summary_repository.find({
+      where: {
+        status,
+        base_price: Between(min_price ?? 0, max_price ?? Number.MAX_SAFE_INTEGER),
+        categories: In(categories ?? []),
+        ...(seller_id ? { seller: { id: seller_id } } : {}),
+        ...(brand_id ? { brand: { id: brand_id } } : {}),
+        in_stock,
+        name: Like(`%${search ?? ""}%`),
+      },
+      order: { [sort_field]: sort_order },
+      skip: (page - 1) * per_page,
+      take: per_page,
     });
 
     // 페이지네이션 요약 정보

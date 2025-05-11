@@ -1,14 +1,16 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { In } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
+import { CategoryEntity } from "@category/infrastructure/entities";
 import { ProductSummaryView } from "@browsing/infrastructure/views";
 
 @Injectable()
 export default class CategoryService {
   constructor(
     @Inject("ICategoryRepository")
-    private readonly repository: IBaseRepository<Category>,
+    private readonly repository: IBaseRepository<CategoryEntity>,
     @Inject("IProductSummaryRepository")
     private readonly summary_repository: IBrowsingRepository<ProductSummaryView>,
   ) {}
@@ -69,12 +71,13 @@ export default class CategoryService {
     }
 
     // 아이템 필터링
-    const items = await this.summary_repository.find_by_filters({
-      page,
-      per_page,
-      sort_field,
-      sort_order,
-      category: [category_id],
+    const items = await this.summary_repository.find({
+      where: {
+        categories: In([category_id]),
+      },
+      order: { [sort_field]: sort_order },
+      skip: (page - 1) * per_page,
+      take: per_page,
     });
 
     // 페이지네이션 요약 정보

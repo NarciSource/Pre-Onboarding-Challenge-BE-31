@@ -87,57 +87,42 @@ import { ReviewEntity } from "@review/infrastructure/entities";
   },
 })
 export default class ProductSummaryView {
-  @ViewColumn()
-  id: number;
+  @ViewColumn() id: number;
 
-  @ViewColumn()
-  name: string;
+  @ViewColumn() name: string;
 
-  @ViewColumn()
-  slug: string;
+  @ViewColumn() slug: string;
 
-  @ViewColumn()
-  short_description: string;
+  @ViewColumn() short_description: string;
 
-  @ViewColumn()
-  base_price: number;
+  @ViewColumn() base_price: number;
 
-  @ViewColumn()
-  sale_price: number;
+  @ViewColumn() sale_price: number;
 
-  @ViewColumn()
-  currency: string;
+  @ViewColumn() currency: string;
 
-  @ViewColumn()
-  primary_image: {
+  @ViewColumn() primary_image: {
     url: string;
     alt_text: string;
   };
 
-  @ViewColumn()
-  brand: {
+  @ViewColumn() brand: {
     id: number;
     name: string;
   };
 
-  @ViewColumn()
-  seller: {
+  @ViewColumn() seller: {
     id: number;
     name: string;
   };
 
-  @ViewColumn()
-  status: string;
+  @ViewColumn() status: string;
 
-  @ViewColumn()
-  created_at: Date;
+  @ViewColumn() created_at: Date;
 
-  @ViewColumn()
-  in_stock: boolean;
+  @ViewColumn() in_stock: boolean;
 
-  @ViewColumn()
-  rating: number;
+  @ViewColumn() rating: number;
 
-  @ViewColumn()
-  review_count: number;
+  @ViewColumn() review_count: number;
 }

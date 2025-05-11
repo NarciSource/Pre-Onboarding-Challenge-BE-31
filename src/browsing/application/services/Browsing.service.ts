@@ -13,14 +13,12 @@ export default class BrowsingService {
   ) {}
 
   async find() {
-    const new_products = await this.product_summary_repository.find_by_filters({
-      sort_field: "created_at",
-      sort_order: "DESC",
+    const new_products = await this.product_summary_repository.find({
+      order: { created_at: "DESC" },
     });
 
-    const popular_products = await this.product_summary_repository.find_by_filters({
-      sort_field: "rating",
-      sort_order: "DESC",
+    const popular_products = await this.product_summary_repository.find({
+      order: { rating: "DESC" },
     });
 
     const featured_categories = await this.category_catalog_repository.find({

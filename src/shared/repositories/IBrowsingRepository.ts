@@ -1,19 +1,18 @@
-import { ObjectLiteral, Repository } from "typeorm";
-
-import { ProductSummaryDTO } from "@browsing/presentation/dto";
+import {
+  FindOperator,
+  FindOptionsOrder,
+  FindOptionsWhere,
+  ObjectLiteral,
+  Repository,
+} from "typeorm";
 
 export default interface IBrowsingRepository<T extends ObjectLiteral> extends Repository<T> {
-  find_by_filters(filters: {
-    page?: number;
-    per_page?: number;
-    sort_field: string;
-    sort_order: string;
-    status?: string;
-    min_price?: number;
-    max_price?: number;
-    category?: number[];
-    seller?: number;
-    brand?: number;
-    search?: string;
-  }): Promise<ProductSummaryDTO[]>;
+  find(options?: {
+    where?: FindOptionsWhere<T> & {
+      categories?: FindOperator<number[]>;
+    };
+    order?: FindOptionsOrder<T>;
+    skip?: number;
+    take?: number;
+  }): Promise<T[]>;
 }

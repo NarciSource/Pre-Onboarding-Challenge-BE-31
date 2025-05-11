@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm";
+import { EntityManager, FindOperator, FindOptionsOrder, FindOptionsWhere } from "typeorm";
 
 import { ProductCategoryEntity } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
@@ -6,63 +6,98 @@ import { ProductSummaryDTO } from "@browsing/presentation/dto";
 import { ProductSummaryView } from "../views";
 
 const product_summary_repository_mixin = {
-  async find_by_filters(
+  async find(
     this: {
       manager: EntityManager;
     },
-    {
-      page,
-      per_page,
-      sort_field,
-      sort_order,
-      status,
-      category: categories,
-      min_price,
-      max_price,
-      seller,
-      brand,
-      search,
-    }: {
-      page?: number;
-      per_page?: number;
-      sort_field: string;
-      sort_order: string;
-      status?: string;
-      min_price?: number;
-      max_price?: number;
-      category?: number[];
-      seller?: number;
-      brand?: number;
-      search?: string;
+    options?: {
+      where?: FindOptionsWhere<ProductSummaryView> & {
+        categories?: FindOperator<number[]>;
+      };
+      order?: FindOptionsOrder<ProductSummaryView>;
+      skip?: number;
+      take?: number;
     },
   ): Promise<ProductSummaryDTO[]> {
-    // 카테고리 조인
-    const inner_query = this.manager
-      .createQueryBuilder()
-      .subQuery()
-      .select("product_category.product_id")
-      .from(ProductCategoryEntity, "product_category")
-      .leftJoin(CategoryEntity, "category", "category.id = product_category.category_id")
-      .where("category.id IN (:...categories)")
-      .getQuery();
-
-    // 상품 집계 처리 쿼리
     const query = this.manager
       .getRepository(ProductSummaryView)
       .createQueryBuilder("summary")
-      .where(status ? "summary.status = :status" : "1=1", { status })
-      .andWhere(min_price ? "summary.base_price >= :minPrice" : "1=1", { minPrice: min_price })
-      .andWhere(max_price ? "summary.base_price <= :maxPrice" : "1=1", { maxPrice: max_price })
-      .andWhere(categories ? `summary.id IN ${inner_query}` : "1=1")
-      .andWhere(seller ? "summary.seller->>'id' = :seller" : "1=1", { seller })
-      .andWhere(brand ? "summary.brand->>'id' = :brand" : "1=1", { brand })
-      .andWhere(search ? "summary.name LIKE :search" : "1=1", { search: `%${search}%` })
-      .orderBy(`summary.${sort_field}`, sort_order.toUpperCase() as "ASC" | "DESC")
-      .setParameter("categories", categories);
+      .where("1=1");
 
-    if (page && per_page) {
-      query.offset((page - 1) * per_page).limit(per_page);
+    // 조건
+    const where = options?.where ?? {};
+
+    if (where.status) {
+      query.andWhere("summary.status = :status", { status: where.status });
     }
+
+    if (where.base_price) {
+      if (where.base_price instanceof FindOperator) {
+        const [min_price, max_price] = where.base_price.value as unknown as [number, number];
+
+        query.andWhere("summary.base_price BETWEEN :min_price AND :max_price", {
+          min_price,
+          max_price,
+        });
+      } else {
+        query.andWhere("summary.base_price = :base_price", {
+          base_price: where.base_price,
+        });
+      }
+    }
+
+    if (
+      where.categories &&
+      where.categories instanceof FindOperator &&
+      where.categories.value.length > 0
+    ) {
+      const values = where.categories.value as unknown as number[];
+
+      // 카테고리 조인
+      const inner_query = this.manager
+        .createQueryBuilder()
+        .subQuery()
+        .select("product_category.product_id")
+        .from(ProductCategoryEntity, "product_category")
+        .leftJoin(CategoryEntity, "category", "category.id = product_category.category_id")
+        .where("category.id IN (:...category_ids)")
+        .getQuery();
+
+      query.andWhere(`summary.id IN ${inner_query}`).setParameter("category_ids", values);
+    }
+
+    if (where.seller && typeof where.seller === "object" && "id" in where.seller) {
+      query.andWhere("summary.seller->>'id' = :seller_id", {
+        seller_id: where.seller.id,
+      });
+    }
+
+    if (where.brand && typeof where.brand === "object" && "id" in where.brand) {
+      query.andWhere("summary.brand->>'id' = :brand_id", {
+        brand_id: where.brand.id,
+      });
+    }
+
+    if (where.in_stock) {
+      query.andWhere("summary.in_stock = :in_stock", { in_stock: where.in_stock });
+    }
+
+    if (where.name instanceof FindOperator && where.name.type === "like") {
+      query.andWhere("summary.name LIKE :name", { name: where.name.value });
+    }
+
+    // 정렬
+    if (options?.order) {
+      for (const [field, direction] of Object.entries(options.order)) {
+        if (typeof direction === "string") {
+          query.addOrderBy(`summary.${field}`, direction.toUpperCase() as "ASC" | "DESC");
+        }
+      }
+    }
+
+    // 페이징
+    query.skip(options?.skip ?? 0);
+    query.take(options?.take ?? 10);
 
     // 쿼리 실행
     return await query.getMany();
