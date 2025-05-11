@@ -8,7 +8,7 @@ export class ErrorDetails {
   [key: string]: string;
 }
 
-class ErrorObject {
+export class ErrorObject {
   @ApiProperty({
     description: "에러 발생 시 응답은 다음 형식을 따릅니다",
     enum: ErrorCode,

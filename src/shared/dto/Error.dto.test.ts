@@ -1,17 +1,10 @@
-import { plainToInstance } from "class-transformer";
-import { validate } from "class-validator";
+import getValidateDTO from "__test-utils__/getValidateDTO";
 
 import ErrorCode, { HttpStatusToErrorCodeMap } from "@libs/constants/ErrorCode";
 import ErrorDTO, { ErrorDetails } from "./Error.dto";
 
 describe("ErrorDTO", () => {
-  const validateDTO = async (dto: Partial<ErrorDTO>) => {
-    const instance = plainToInstance(ErrorDTO, dto);
-
-    const errors = await validate(instance);
-
-    return errors.map((error) => error.constraints);
-  };
+  const validateDTO = getValidateDTO(ErrorDTO);
 
   it("유효한 DTO는 검증을 통과", async () => {
     const dto: Partial<ErrorDTO> = {
