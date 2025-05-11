@@ -10,7 +10,7 @@ class Verifier {
     return this.instance;
   }
 
-  public verify(token: string): Promise<any> {
+  public verify(_token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // 인가 기능 미구현
       const is_valid = true;

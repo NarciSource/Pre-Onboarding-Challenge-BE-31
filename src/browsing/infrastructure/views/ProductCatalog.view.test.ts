@@ -56,27 +56,28 @@ describe("ProductCatalogView", () => {
 
   describe("ProductCatalogView 데이터 조회", () => {
     it("뷰 데이터를 조회", async () => {
-      const mockData = new ProductCatalogView();
-      mockData.id = 1;
-      mockData.name = "Test Product";
-      mockData.slug = "test-product";
-      mockData.short_description = "Test short description";
-      mockData.full_description = "Test full description";
-      mockData.status = "active";
-      mockData.created_at = new Date();
-      mockData.updated_at = new Date();
-      mockData.seller = { id: 1, name: "Test Seller" } as any;
-      mockData.brand = { id: 1, name: "Test Brand" } as any;
-      mockData.detail = { weight: 1.2, dimensions: "10x10x10" } as any;
-      mockData.price = { base_price: 100, sale_price: 80, discount_percentage: 20 } as any;
-      mockData.categories = [{ id: 1, name: "Category 1" }] as any;
-      mockData.option_groups = [{ id: 1, name: "Option Group 1" }] as any;
-      mockData.images = [{ url: "image_url", alt_text: "image_alt" }] as any;
-      mockData.tags = [{ id: 1, name: "Tag 1" }] as any;
-      mockData.rating = {
-        average: 4.5,
-        count: 10,
-        distribution: { "5": 5, "4": 3, "3": 1, "2": 1, "1": 0 },
+      const mockData = {
+        id: 1,
+        name: "Test Product",
+        slug: "test-product",
+        short_description: "Test short description",
+        full_description: "Test full description",
+        status: "active",
+        created_at: new Date(),
+        updated_at: new Date(),
+        seller: { id: 1, name: "Test Seller" },
+        brand: { id: 1, name: "Test Brand" },
+        detail: { weight: 1.2, dimensions: "10x10x10" },
+        price: { base_price: 100, sale_price: 80, discount_percentage: 20 },
+        categories: [{ id: 1, name: "Category 1" }],
+        option_groups: [{ id: 1, name: "Option Group 1" }],
+        images: [{ url: "image_url", alt_text: "image_alt" }],
+        tags: [{ id: 1, name: "Tag 1" }],
+        rating: {
+          average: 4.5,
+          count: 10,
+          distribution: { "5": 5, "4": 3, "3": 1, "2": 1, "1": 0 },
+        },
       };
 
       repository.find = jest.fn().mockResolvedValue([mockData]);

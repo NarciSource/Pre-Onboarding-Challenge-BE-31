@@ -25,7 +25,7 @@ export default class CategoryService {
 
       const result: (Category | { id: number; children: Category })[] = categories
         .filter((category) => category.parent?.id === parent_id)
-        .map(({ id, parent, ...rest }) => {
+        .map(({ id, parent: _parent, ...rest }) => {
           const children = build_tree(categories, level + 1, id);
 
           return {

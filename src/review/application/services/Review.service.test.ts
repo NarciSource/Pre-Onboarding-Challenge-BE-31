@@ -1,16 +1,18 @@
 import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
+import { MockRepository, MockRepositoryProviders } from "src/__mocks__/repositoryMock";
+
 import { FilterDTO } from "../dto";
 import ReviewService from "./Review.service";
 
 describe("ReviewService", () => {
   let service: ReviewService;
-  const mockRepository = global.mockReviewRepository;
+  const mockRepository = global.mockReviewRepository as MockRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ReviewService, ...global.mockRepositoryProviders],
+      providers: [ReviewService, ...(global.mockRepositoryProviders as MockRepositoryProviders)],
     }).compile();
 
     service = module.get<ReviewService>(ReviewService);

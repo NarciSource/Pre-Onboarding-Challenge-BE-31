@@ -4,7 +4,7 @@ import { ApiExtraModels, ApiResponse, getSchemaPath } from "@nestjs/swagger";
 import extractDTOExample from "@utility/extractDTOExample";
 import { ResponseDTO } from "@shared/dto";
 
-export function ApiStandardResponse<TModel extends Type<any>>(
+export function ApiStandardResponse<TModel extends Type>(
   description: string,
   model?: TModel,
   status = 200,
@@ -50,6 +50,6 @@ export function ApiStandardResponse<TModel extends Type<any>>(
   );
 }
 
-export function ApiCreatedResponse<TModel extends Type<any>>(description: string, model?: TModel) {
+export function ApiCreatedResponse<TModel extends Type>(description: string, model?: TModel) {
   return ApiStandardResponse<TModel>(description, model, 201);
 }

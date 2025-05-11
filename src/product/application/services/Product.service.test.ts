@@ -2,21 +2,24 @@ import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { EntityManager } from "typeorm";
 
+import { MockEntityManager } from "src/__mocks__/entityManagerMock";
+import { MockRepository, MockRepositoryProviders } from "src/__mocks__/repositoryMock";
+
 import { ProductInputDTO } from "../dto";
 import ProductService from "./Product.service";
 
 describe("ProductService", () => {
   let service: ProductService;
-  const mockProductRepository = global.mockProductRepository;
-  const mockProductCatalogRepository = global.mockProductCatalogRepository;
-  const mockProductSummaryRepository = global.mockProductSummaryRepository;
-  const mockEntityManager = global.mockEntityManager;
+  const mockProductRepository = global.mockProductRepository as MockRepository;
+  const mockProductCatalogRepository = global.mockProductCatalogRepository as MockRepository;
+  const mockProductSummaryRepository = global.mockProductSummaryRepository as MockRepository;
+  const mockEntityManager = global.mockEntityManager as MockEntityManager;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductService,
-        ...global.mockRepositoryProviders,
+        ...(global.mockRepositoryProviders as MockRepositoryProviders),
         {
           provide: EntityManager,
           useValue: mockEntityManager,

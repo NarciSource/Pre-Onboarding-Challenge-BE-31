@@ -17,7 +17,12 @@ export default function extractDTOExample(
       "swagger/apiModelProperties",
       dto.prototype as Type<unknown>,
       key,
-    );
+    ) as {
+      example?: unknown;
+      type?: Type<unknown>;
+      description?: string;
+      isArray?: boolean;
+    };
     if (!metadata) continue;
 
     const { example, type, description, isArray } = metadata;
@@ -30,7 +35,7 @@ export default function extractDTOExample(
     try {
       const nested = extractDTOExample(type as Type<unknown>, new Set(visited));
       examples[key] = isArray ? [nested] : nested;
-    } catch (err) {
+    } catch {
       examples[key] = isArray ? [description ?? null] : (description ?? null);
     }
   }
@@ -42,10 +47,11 @@ function getModelProperties(prototype: Type<unknown>): string[] {
   const DECORATORS_PREFIX = "swagger";
   const API_MODEL_PROPERTIES_ARRAY = `${DECORATORS_PREFIX}/apiModelPropertiesArray`;
 
-  const properties = Reflect.getMetadata(API_MODEL_PROPERTIES_ARRAY, prototype) || [];
+  const properties = (Reflect.getMetadata(API_MODEL_PROPERTIES_ARRAY, prototype) as string[]) || [];
 
-  const isFunction = (val: any): val is (...args: any[]) => any => typeof val === "function";
-  const isString = (val: any): val is string => typeof val === "string";
+  const isFunction = (val: unknown): val is (...args: unknown[]) => unknown =>
+    typeof val === "function";
+  const isString = (val: unknown): val is string => typeof val === "string";
 
   return properties
     .filter(isString)

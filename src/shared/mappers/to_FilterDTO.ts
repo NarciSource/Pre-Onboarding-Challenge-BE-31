@@ -14,7 +14,8 @@ export default function to_FilterDTO(
   query: ProductQueryDTO | CategoryQueryDTO | ReviewQueryDTO,
 ): FilterDTO {
   return Object.entries(query).reduce((acc, [field, value]) => {
-    const mapped_field = field_mapping[field] || field;
+    const mapped_field = (field in field_mapping ? field_mapping[field] : field) as keyof FilterDTO;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     acc[mapped_field] = value;
     return acc;
   }, {} as FilterDTO);

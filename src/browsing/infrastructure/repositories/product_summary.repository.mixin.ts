@@ -1,34 +1,41 @@
-import { ProductSummaryDTO } from "@product/application/dto";
+import { EntityManager } from "typeorm";
+
 import { ProductCategoryEntity } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
+import { ProductSummaryDTO } from "@browsing/presentation/dto";
 import { ProductSummaryView } from "../views";
 
 const product_summary_repository_mixin = {
-  async find_by_filters({
-    page,
-    per_page,
-    sort_field,
-    sort_order,
-    status,
-    category: categories,
-    min_price,
-    max_price,
-    seller,
-    brand,
-    search,
-  }: {
-    page?: number;
-    per_page?: number;
-    sort_field: string;
-    sort_order: string;
-    status?: string;
-    min_price?: number;
-    max_price?: number;
-    category?: number[];
-    seller?: number;
-    brand?: number;
-    search?: string;
-  }): Promise<ProductSummaryDTO[]> {
+  async find_by_filters(
+    this: {
+      manager: EntityManager;
+    },
+    {
+      page,
+      per_page,
+      sort_field,
+      sort_order,
+      status,
+      category: categories,
+      min_price,
+      max_price,
+      seller,
+      brand,
+      search,
+    }: {
+      page?: number;
+      per_page?: number;
+      sort_field: string;
+      sort_order: string;
+      status?: string;
+      min_price?: number;
+      max_price?: number;
+      category?: number[];
+      seller?: number;
+      brand?: number;
+      search?: string;
+    },
+  ): Promise<ProductSummaryDTO[]> {
     // 카테고리 조인
     const inner_query = this.manager
       .createQueryBuilder()

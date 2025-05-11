@@ -28,5 +28,9 @@ export const mockEntityManager = {
     getQuery: jest.fn().mockReturnValue("mockInnerQuery"),
     getMany: jest.fn(),
   }),
-  transaction: jest.fn((callback) => callback({})),
-} as unknown as jest.Mocked<EntityManager>;
+  transaction: jest.fn(async (callback: (entityManager: EntityManager) => Promise<void>) => {
+    await callback({} as EntityManager);
+  }),
+} as unknown as jest.Mocked<Partial<EntityManager>>;
+
+export type MockEntityManager = typeof mockEntityManager;

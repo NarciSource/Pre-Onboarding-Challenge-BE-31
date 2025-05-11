@@ -53,7 +53,10 @@ describe("ReviewDTO", () => {
   });
 
   it("created_at 필드가 유효한 날짜가 아닌 경우 검증 실패", async () => {
-    const invalidData = { ...validData, created_at: "invalid-date" as any };
+    const invalidData = {
+      ...validData,
+      created_at: "invalid-date",
+    } as unknown as Partial<ReviewDTO>;
 
     const errors = await validateDTO(invalidData);
 
@@ -62,7 +65,10 @@ describe("ReviewDTO", () => {
   });
 
   it("verified_purchase 필드가 boolean이 아닌 경우 검증 실패", async () => {
-    const invalidData = { ...validData, verified_purchase: "not-boolean" as any };
+    const invalidData = {
+      ...validData,
+      verified_purchase: "not-boolean",
+    } as unknown as Partial<ReviewDTO>;
 
     const errors = await validateDTO(invalidData);
 
@@ -80,7 +86,10 @@ describe("ReviewDTO", () => {
   });
 
   it("user 필드가 올바르지 않은 경우 검증 실패", async () => {
-    const invalidData = { ...validData, user: { id: "invalid-id" } as any };
+    const invalidData = {
+      ...validData,
+      user: { id: "invalid-id" },
+    } as unknown as Partial<ReviewDTO>;
 
     const errors = await validateDTO(invalidData);
 

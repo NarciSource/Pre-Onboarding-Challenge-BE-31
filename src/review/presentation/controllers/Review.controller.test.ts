@@ -1,7 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { ReviewService } from "@review/application/services";
-import { ParamDTO, ResponseDTO, ReviewBodyDTO, ReviewQueryDTO } from "../dto";
+import {
+  ParamDTO,
+  ResponseDTO,
+  ReviewBodyDTO,
+  ReviewDTO,
+  ReviewQueryDTO,
+  ReviewResponseBundle,
+  ReviewResponseDTO,
+} from "../dto";
 import ReviewController from "./Review.controller";
 
 describe("ReviewController", () => {
@@ -36,7 +44,10 @@ describe("ReviewController", () => {
       const mockData = { items: [], summary: {}, pagination: {} };
       mockReviewService.find = jest.fn().mockResolvedValue(mockData);
 
-      const result: ResponseDTO<any> = await controller.read({ id } as ParamDTO, query);
+      const result: ResponseDTO<ReviewResponseBundle> = await controller.read(
+        { id } as ParamDTO,
+        query,
+      );
 
       expect(mockReviewService.find).toHaveBeenCalledWith(id, query);
       expect(result).toEqual({
@@ -54,7 +65,7 @@ describe("ReviewController", () => {
       const mockData = { id: 1, ...body };
       mockReviewService.register = jest.fn().mockResolvedValue(mockData);
 
-      const result: ResponseDTO<any> = await controller.create({ id } as ParamDTO, body);
+      const result: ResponseDTO<ReviewDTO> = await controller.create({ id } as ParamDTO, body);
 
       expect(mockReviewService.register).toHaveBeenCalledWith(id, body);
       expect(result).toEqual({
@@ -72,7 +83,10 @@ describe("ReviewController", () => {
       const mockData = { id, ...body };
       mockReviewService.edit = jest.fn().mockResolvedValue(mockData);
 
-      const result: ResponseDTO<any> = await controller.update({ id } as ParamDTO, body);
+      const result: ResponseDTO<ReviewResponseDTO> = await controller.update(
+        { id } as ParamDTO,
+        body,
+      );
 
       expect(mockReviewService.edit).toHaveBeenCalledWith(id, body);
       expect(result).toEqual({
@@ -88,7 +102,7 @@ describe("ReviewController", () => {
       const id = 1;
       mockReviewService.remove = jest.fn().mockResolvedValue(true);
 
-      const result: ResponseDTO<any> = await controller.delete({ id } as ParamDTO);
+      const result: ResponseDTO<null> = await controller.delete({ id } as ParamDTO);
 
       expect(mockReviewService.remove).toHaveBeenCalledWith(id);
       expect(result).toEqual({

@@ -66,7 +66,7 @@ export default class ProductOptionsService {
     });
 
     // 이미지 저장 결과 반환
-    return (({ product, option, ...rest }) => ({ ...rest, option_id: option?.id }))(
+    return (({ product: _product, option, ...rest }) => ({ ...rest, option_id: option?.id }))(
       saved_product_image,
     );
   }

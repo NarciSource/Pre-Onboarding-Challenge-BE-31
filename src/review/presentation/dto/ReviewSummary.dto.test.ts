@@ -49,8 +49,8 @@ describe("ReviewSummaryDTO", () => {
   it("distribution 필드가 객체가 아닐 경우 검증 실패", async () => {
     const invalidData = {
       ...validData,
-      distribution: "not_an_object" as any,
-    };
+      distribution: "not_an_object",
+    } as unknown as Partial<ReviewSummaryDTO>;
 
     const errors = await validateDTO(invalidData);
 
@@ -64,8 +64,8 @@ describe("ReviewSummaryDTO", () => {
       distribution: {
         1: 10,
         6: 5,
-      } as any,
-    };
+      },
+    } as unknown as Partial<ReviewSummaryDTO>;
 
     const errors = await validateDTO(invalidData);
 

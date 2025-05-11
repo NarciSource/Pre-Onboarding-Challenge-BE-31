@@ -9,21 +9,22 @@ describe("CategoryController", () => {
   let mockService: jest.Mocked<CategoryService>;
 
   beforeEach(async () => {
+    mockService = {
+      find_all_as_tree: jest.fn(),
+      find_products_by_category_id: jest.fn(),
+    } as unknown as jest.Mocked<CategoryService>;
+
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CategoryController],
       providers: [
         {
           provide: CategoryService,
-          useValue: {
-            getAllCategoriesAsTree: jest.fn(),
-            getProductsByCategoryId: jest.fn(),
-          },
+          useValue: mockService,
         },
       ],
     }).compile();
 
     mockController = module.get<CategoryController>(CategoryController);
-    mockService = module.get(CategoryService);
   });
 
   describe("readCategories", () => {

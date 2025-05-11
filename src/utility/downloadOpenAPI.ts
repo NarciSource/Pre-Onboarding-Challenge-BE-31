@@ -3,7 +3,7 @@ import { promises } from "fs";
 import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { EntityManager } from "typeorm";
-import * as YAML from "yamljs";
+import { stringify } from "yaml";
 
 import ProductModule from "@product/module";
 import CategoryModule from "@category/module";
@@ -26,7 +26,7 @@ export async function openapi() {
 
   const document = generatorSwagger(app);
 
-  const yamlDocument = YAML.stringify(document, 10, 2);
+  const yamlDocument = stringify(document, { indent: 2 });
 
   try {
     await promises.mkdir("./dist", { recursive: true });

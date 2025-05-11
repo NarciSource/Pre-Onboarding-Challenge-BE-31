@@ -14,7 +14,7 @@ export default class ConflictExceptionFilter implements ExceptionFilter {
     const message =
       typeof exception_response === "string"
         ? exception_response
-        : (exception_response as any).message;
+        : (exception_response as { message?: string }).message || "An unknown error occurred";
 
     response.status(status).json({
       success: false,

@@ -24,9 +24,7 @@ describe("ParamDTO", () => {
   });
 
   it("id가 정수가 아닌 경우 검증 실패", async () => {
-    const dto: Partial<ParamDTO> = {
-      id: "123" as any,
-    };
+    const dto = { id: "123" } as unknown as Partial<ParamDTO>;
 
     const errors = await validateDTO(dto);
 

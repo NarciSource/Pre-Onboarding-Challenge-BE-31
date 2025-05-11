@@ -2,7 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 
 import { BrowsingService } from "@browsing/application/services";
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import { ResponseDTO } from "../dto";
+import { MainResponseBundleDTO, ResponseDTO } from "../dto";
 import MainController from "./Main.controller";
 
 describe("MainController", () => {
@@ -39,7 +39,7 @@ describe("MainController", () => {
         featured_categories: mockFeaturedCategories,
       });
 
-      const result: ResponseDTO<any> = await controller.read_main_products();
+      const result: ResponseDTO<MainResponseBundleDTO> = await controller.read_main_products();
 
       expect(mockService.find).toHaveBeenCalled();
       expect(result).toEqual({

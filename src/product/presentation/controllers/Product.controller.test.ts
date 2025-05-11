@@ -3,7 +3,15 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { ProductService } from "@product/application/services";
 import { ProductEntity } from "@product/infrastructure/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import { ProductBodyDTO, ParamDTO, ProductQueryDTO, ResponseDTO } from "../dto";
+import { ProductCatalogDTO } from "@browsing/presentation/dto";
+import {
+  ProductBodyDTO,
+  ParamDTO,
+  ProductQueryDTO,
+  ResponseDTO,
+  ProductResponseDTO,
+  ProductResponseBundle,
+} from "../dto";
 import ProductController from "./Product.controller";
 
 describe("ProductController", () => {
@@ -31,9 +39,9 @@ describe("ProductController", () => {
     productService = module.get<ProductService>(ProductService);
   });
 
-  it("상품 생성", async () => {
+  it("상품 등록", async () => {
     const body = { name: "상품1" } as ProductBodyDTO;
-    const response: ResponseDTO<any> = {
+    const response: ResponseDTO<ProductResponseDTO> = {
       success: true,
       data: { id: 1, ...body },
       message: "상품이 성공적으로 등록되었습니다.",
@@ -46,7 +54,7 @@ describe("ProductController", () => {
     expect(productService.register).toHaveBeenCalledWith(body);
   });
 
-  it("모든 상품을 조회", async () => {
+  it("상품 목록 조회", async () => {
     const query = { page: 1, perPage: 10 } as ProductQueryDTO;
     const items = [
       {
@@ -58,7 +66,7 @@ describe("ProductController", () => {
       },
     ] as ProductSummaryView[];
     const pagination = { total_items: 1, total_pages: 1, current_page: 1, per_page: 10 };
-    const response: ResponseDTO<any> = {
+    const response: ResponseDTO<ProductResponseBundle> = {
       success: true,
       data: { items, pagination },
       message: "상품 목록을 성공적으로 조회했습니다.",
@@ -71,7 +79,7 @@ describe("ProductController", () => {
     expect(productService.find_all).toHaveBeenCalledWith(query);
   });
 
-  it("id로 상품을 조회", async () => {
+  it("상품 상세 조회", async () => {
     const param: ParamDTO = { id: 1 };
     const data = {
       id: 1,
@@ -81,7 +89,7 @@ describe("ProductController", () => {
       updated_at: new Date(),
       status: "available",
     } as ProductCatalogView;
-    const response: ResponseDTO<any> = {
+    const response: ResponseDTO<ProductCatalogDTO> = {
       success: true,
       data,
       message: "상품 상세 정보를 성공적으로 조회했습니다.",
@@ -94,7 +102,7 @@ describe("ProductController", () => {
     expect(productService.find).toHaveBeenCalledWith(param.id);
   });
 
-  it("상품을 수정", async () => {
+  it("상품 수정", async () => {
     const param: ParamDTO = { id: 1 };
     const body = { name: "상품1 수정" } as ProductBodyDTO;
     const data = {
@@ -103,7 +111,7 @@ describe("ProductController", () => {
       slug: "product-1",
       updated_at: new Date(),
     };
-    const response: ResponseDTO<any> = {
+    const response: ResponseDTO<ProductResponseDTO> = {
       success: true,
       data,
       message: "상품이 성공적으로 수정되었습니다.",
@@ -118,7 +126,7 @@ describe("ProductController", () => {
 
   it("상품을 삭제", async () => {
     const param = { id: 1 } as ParamDTO;
-    const response: ResponseDTO<any> = {
+    const response: ResponseDTO<null> = {
       success: true,
       data: null,
       message: "상품이 성공적으로 삭제되었습니다.",

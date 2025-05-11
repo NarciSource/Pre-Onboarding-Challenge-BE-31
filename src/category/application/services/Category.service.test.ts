@@ -1,16 +1,18 @@
 import { Test, TestingModule } from "@nestjs/testing";
 
+import { MockRepository, MockRepositoryProviders } from "src/__mocks__/repositoryMock";
+
 import { Category } from "@category/domain/entities";
 import CategoryService from "./Category.service";
 
 describe("CategoryService", () => {
   let service: CategoryService;
-  const mockCategoryRepository = global.mockCategoryRepository;
-  const mockProductSummaryRepository = global.mockProductSummaryRepository;
+  const mockCategoryRepository = global.mockCategoryRepository as MockRepository;
+  const mockProductSummaryRepository = global.mockProductSummaryRepository as MockRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CategoryService, ...global.mockRepositoryProviders],
+      providers: [CategoryService, ...(global.mockRepositoryProviders as MockRepositoryProviders)],
     }).compile();
 
     service = module.get<CategoryService>(CategoryService);

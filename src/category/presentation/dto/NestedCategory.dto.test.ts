@@ -45,7 +45,10 @@ describe("NestedCategoryDTO", () => {
   });
 
   it("children 필드가 배열이 아닌 경우 검증 실패", async () => {
-    const invalidData = { ...validData, children: "not_an_array" as any };
+    const invalidData = {
+      ...validData,
+      children: "not_an_array" as unknown as NestedCategoryDTO[],
+    };
 
     const errors = await validateDTO(invalidData);
 
@@ -60,7 +63,7 @@ describe("NestedCategoryDTO", () => {
         {
           id: "invalid_id",
           name: 123,
-        } as any,
+        } as unknown as NestedCategoryDTO,
       ],
     };
 

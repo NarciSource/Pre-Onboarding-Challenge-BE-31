@@ -56,7 +56,13 @@ export default class ProductQueryDTO {
   @IsOptional()
   @IsArray()
   @IsInt({ each: true })
-  @Transform(({ value }) => (typeof value === "string" ? value.split(",") : value).map(Number))
+  @Transform(({ value }: { value: string | number[] }) =>
+    Array.isArray(value)
+      ? value.map(Number)
+      : typeof value === "string"
+        ? value.split(",").map(Number)
+        : [],
+  )
   category?: number[];
 
   @ApiPropertyOptional({ description: "판매자 ID 필터", example: 1 })

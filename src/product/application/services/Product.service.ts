@@ -13,7 +13,8 @@ import {
   ProductTagEntity,
 } from "@product/infrastructure/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import { FilterDTO, ProductCatalogDTO, ProductInputDTO, ProductSummaryDTO } from "../dto";
+import { ProductCatalogDTO } from "@browsing/presentation/dto";
+import { FilterDTO, ProductInputDTO } from "../dto";
 
 @Injectable()
 export default class ProductService {
@@ -87,7 +88,7 @@ export default class ProductService {
       const saved_option_groups = await this.product_option_group_repository
         .with_transaction(manager)
         .save(
-          option_groups.map(({ options, ...group }) => ({
+          option_groups.map(({ options: _options, ...group }) => ({
             ...group,
             product: { id: product_id },
           })),
@@ -136,13 +137,13 @@ export default class ProductService {
   async find_all({ page = 1, per_page = 10, sort, ...rest }: FilterDTO) {
     const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
 
-    const items = (await this.product_summary_repository.find_by_filters({
+    const items = await this.product_summary_repository.find_by_filters({
       page,
       per_page,
       sort_field,
       sort_order,
       ...rest,
-    })) as ProductSummaryDTO[];
+    });
 
     // 페이지네이션 요약 정보
     const pagination = {

@@ -1,6 +1,5 @@
 const makeMockRepository = () => ({
   save: jest.fn(),
-  saves: jest.fn(),
   find: jest.fn(),
   findOne: jest.fn(),
   findOneBy: jest.fn(),
@@ -9,6 +8,8 @@ const makeMockRepository = () => ({
   update: jest.fn(),
   delete: jest.fn(),
 });
+
+export type MockRepository = ReturnType<typeof makeMockRepository>;
 
 export const mockProductRepository = makeMockRepository();
 export const mockProductDetailRepository = makeMockRepository();
@@ -24,7 +25,10 @@ export const mockProductSummaryRepository = makeMockRepository();
 export const mockProductCatalogRepository = makeMockRepository();
 export const mockCategoryCatalogRepository = makeMockRepository();
 
-export const mockRepositoryProviders = [
+export const mockRepositoryProviders: {
+  provide: string;
+  useValue: MockRepository;
+}[] = [
   {
     provide: "IProductRepository",
     useValue: mockProductRepository,
@@ -78,3 +82,5 @@ export const mockRepositoryProviders = [
     useValue: mockCategoryCatalogRepository,
   },
 ];
+
+export type MockRepositoryProviders = typeof mockRepositoryProviders;

@@ -1,18 +1,23 @@
 import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
+import { MockRepository, MockRepositoryProviders } from "src/__mocks__/repositoryMock";
+
 import { Product_Image, Product_Option } from "@product/domain/entities";
 import { ProductImageEntity } from "@product/infrastructure/entities";
 import ProductOptionsService from "./Product_Options.service";
 
 describe("ProductOptionsService", () => {
   let service: ProductOptionsService;
-  const mockProductOptionsRepository = global.mockProductOptionsRepository;
-  const mockProductImageRepository = global.mockProductImageRepository;
+  const mockProductOptionsRepository = global.mockProductOptionsRepository as MockRepository;
+  const mockProductImageRepository = global.mockProductImageRepository as MockRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProductOptionsService, ...global.mockRepositoryProviders],
+      providers: [
+        ProductOptionsService,
+        ...(global.mockRepositoryProviders as MockRepositoryProviders),
+      ],
     }).compile();
 
     service = module.get<ProductOptionsService>(ProductOptionsService);

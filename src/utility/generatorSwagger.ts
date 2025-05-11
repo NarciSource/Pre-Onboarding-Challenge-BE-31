@@ -1,7 +1,7 @@
 import { INestApplication } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
-export default function generatorSwagger(app: INestApplication<any>) {
+export default function generatorSwagger(app: INestApplication) {
   const swagger_config = new DocumentBuilder()
     .setTitle("API 명세서")
     .setDescription("CQRS 시스템 설계/구축 챌린지 - API 명세서")

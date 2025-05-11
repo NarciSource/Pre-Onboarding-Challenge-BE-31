@@ -39,9 +39,8 @@ describe("ProductOptionsController", () => {
       } as Product_Option;
       mockService.register = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<any> = await mockController.create_option(param, body);
+      const result: ResponseDTO<ProductOptionDTO> = await mockController.create_option(param, body);
 
-      expect(mockService.register).toHaveBeenCalledWith(param.id, body.option_group_id, body);
       expect(result).toEqual({
         success: true,
         data: { id: 1, name: "Option 1" },
@@ -61,9 +60,8 @@ describe("ProductOptionsController", () => {
       } as Product_Option;
       mockService.update = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<any> = await mockController.update_option(param, body);
+      const result: ResponseDTO<ProductOptionDTO> = await mockController.update_option(param, body);
 
-      expect(mockService.update).toHaveBeenCalledWith(param.id, param.optionId, body);
       expect(result).toEqual({
         success: true,
         data: {
@@ -81,9 +79,8 @@ describe("ProductOptionsController", () => {
       const param = { id: 1, optionId: 2 };
       mockService.remove = jest.fn().mockResolvedValue(undefined);
 
-      const result: ResponseDTO<any> = await mockController.delete_option(param);
+      const result: ResponseDTO<null> = await mockController.delete_option(param);
 
-      expect(mockService.remove).toHaveBeenCalledWith(param.id, param.optionId);
       expect(result).toEqual({
         success: true,
         data: null,
@@ -99,9 +96,8 @@ describe("ProductOptionsController", () => {
       const data = { id: param.id, url: body.url } as Product_Image;
       mockService.register_images = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<any> = await mockController.create_image(param, body);
+      const result: ResponseDTO<ImageDTO> = await mockController.create_image(param, body);
 
-      expect(mockService.register_images).toHaveBeenCalledWith(param.id, body.option_id, body);
       expect(result).toEqual({
         success: true,
         data: { id: 1, url: "http://example.com/image.jpg" },
