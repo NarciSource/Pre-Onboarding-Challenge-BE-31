@@ -83,6 +83,7 @@ wanted-preonboarding-challenge-backend-31
 │  │  │     └─ UnauthorizedExceptionFilter.ts
 │  │  └─ interceptors
 │  │     └─ ResponseInterceptor.ts
+│  │        └─ ResponseInterceptor.test.ts
 │  ├─ shared
 │  │  ├─ dto
 │  │  │  └─ index.ts
@@ -100,18 +101,18 @@ wanted-preonboarding-challenge-backend-31
 │  │  └─ repositories
 │  │     └─ index.ts
 │  │        ├─ BaseRepository.ts
-│  │        ├─ iBaseRepository.ts
-│  │        └─ IBrowsingRepository.ts
+│  │        ├─ IBaseRepository.ts
+│  │        ├─ IBrowsingRepository.ts
+│  │        ├─ base.repository.mixin.ts
+│  │        └─ createRepositoryProvider.ts
 │  ├─ product
 │  │  ├─ application
 │  │  │  ├─ dto
 │  │  │  │  └─ index.ts
 │  │  │  │     ├─ Filter.dto.ts
-│  │  │  │     ├─ ProductCatalog.dto.ts
 │  │  │  │     ├─ ProductCategory.dto.ts
 │  │  │  │     ├─ ProductInput.dto.ts
 │  │  │  │     ├─ ProductOptionGroup.dto.ts
-│  │  │  │     ├─ ProductSummary.dto.ts
 │  │  │  │     └─ ProductTag.dto.ts
 │  │  │  └─ services
 │  │  │     └─ index.ts
@@ -130,7 +131,7 @@ wanted-preonboarding-challenge-backend-31
 │  │  │        ├─ Product_Price.ts
 │  │  │        ├─ Seller.ts
 │  │  │        └─ Tag.ts
-│  │  └─ infrastructure
+│  │  ├─ infrastructure
 │  │  │  ├─ auth
 │  │  │  │  ├─ jwtInterceptor.ts
 │  │  │  │  └─ verifier.ts
@@ -158,25 +159,9 @@ wanted-preonboarding-challenge-backend-31
 │  │  │  │     │  └─ Seller.entity.test.ts
 │  │  │  │     └─ Tag.entity.ts
 │  │  │  │        └─ Tag.entity.test.ts
-│  │  │  ├─ repositories
-│  │  │  │  └─ index.ts
-│  │  │  │     ├─ Product.repository.ts
-│  │  │  │     │  └─ Product.repository.test.ts
-│  │  │  │     ├─ Product_Category.repository.ts
-│  │  │  │     │  └─ Product_Category.repository.test.ts
-│  │  │  │     ├─ Product_Detail.repository.ts
-│  │  │  │     │  └─ Product_Detail.repository.test.ts
-│  │  │  │     ├─ Product_Image.repository.ts
-│  │  │  │     │  └─ Product_Image.repository.test.ts
-│  │  │  │     ├─ Product_Options.repository.ts
-│  │  │  │     │  └─ Product_Options.repository.test.ts
-│  │  │  │     ├─ Product_Option_Group.repository.ts
-│  │  │  │     │  └─ Product_Option_Group.repository.test.ts
-│  │  │  │     ├─ Product_Price.repository.ts
-│  │  │  │     │  └─ Product_Price.repository.test.ts
-│  │  │  │     └─ Product_Tag.repository.ts
-│  │  │  │        └─ Product_Tag.repository.test.ts
-│  │  │  └─ provider.ts
+│  │  │  └─ repositories
+│  │  │     └─ index.ts
+│  │  │        └─ provider.ts
 │  │  ├─ module.ts
 │  │  └─ presentation
 │  │     ├─ controllers
@@ -231,11 +216,9 @@ wanted-preonboarding-challenge-backend-31
 │  │  │  │  └─ index.ts
 │  │  │  │     └─ Category.entity.ts
 │  │  │  │        └─ Category.entity.test.ts
-│  │  │  ├─ repositories
-│  │  │  │  └─ index.ts
-│  │  │  │     └─ Category.repository.ts
-│  │  │  │        └─ Category.repository.test.ts
-│  │  │  └─ provider.ts
+│  │  │  └─ repositories
+│  │  │     └─ index.ts
+│  │  │        └─ provider.ts
 │  │  ├─ module.ts
 │  │  └─ presentation
 │  │     ├─ controllers
@@ -273,11 +256,9 @@ wanted-preonboarding-challenge-backend-31
 │  │  │  │     │  └─ Review.entity.test.ts
 │  │  │  │     └─ User.entity.ts
 │  │  │  │        └─ User.entity.test.ts
-│  │  │  ├─ repositories
-│  │  │  │  └─ index.ts
-│  │  │  │     └─ Review.repository.ts
-│  │  │  │        └─ Review.repository.test.ts
-│  │  │  └─ provider.ts
+│  │  │  └─ repositories
+│  │  │     └─ index.ts
+│  │  │        └─ provider.ts
 │  │  ├─ module.ts
 │  │  └─ presentation
 │  │     ├─ controllers
@@ -300,6 +281,10 @@ wanted-preonboarding-challenge-backend-31
 │  │              └─ ReviewSummary.dto.test.ts
 │  ├─ browsing
 │  │  ├─ application
+│  │  │  ├─ dto
+│  │  │  │  └─ index.ts
+│  │  │  │     ├─ ProductCatalog.dto.ts
+│  │  │  │     └─ ProductSummary.dto.ts
 │  │  │  └─ services
 │  │  │     └─ index.ts
 │  │  │        └─ Browsing.service.ts
@@ -307,10 +292,12 @@ wanted-preonboarding-challenge-backend-31
 │  │  └─ infrastructure
 │  │  │  ├─ repositories
 │  │  │  │  └─ index.ts
-│  │  │  │     └─ Browsing.repository.ts
-│  │  │  │        └─ Browsing.repository.test.ts
+│  │  │  │     ├─ product_summary.repository.mixin.ts
+│  │  │  │     └─ provider.ts
 │  │  │  ├─ views
 │  │  │  │  └─ index.ts
+│  │  │  │     ├─ CategoryCatalog.view.ts
+│  │  │  │     │  └─ CategoryCatalog.view.test.ts
 │  │  │  │     ├─ ProductCatalog.view.ts
 │  │  │  │     │  └─ ProductCatalog.view.test.ts
 │  │  │  │     └─ ProductSummary.view.ts
