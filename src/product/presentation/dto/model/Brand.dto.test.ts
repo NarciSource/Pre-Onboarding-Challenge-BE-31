@@ -24,7 +24,8 @@ describe("BrandDTO", () => {
 
     const errors = await validateDTO(invalidData);
 
-    expect(errors).toHaveLength(4);
+    expect(errors).toHaveLength(5);
+    expect(errors).toContain("id");
     expect(errors).toContain("name");
     expect(errors).toContain("description");
     expect(errors).toContain("logo_url");

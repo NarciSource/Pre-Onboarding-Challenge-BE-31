@@ -6,9 +6,9 @@ export default class TagEntity {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
-  @Column({ type: "varchar", length: 100, nullable: false })
+  @Column({ type: "varchar", length: 100 })
   name: string;
 
-  @Column({ type: "varchar", length: 100, unique: true, nullable: false })
+  @Column({ type: "varchar", length: 100, unique: true })
   slug: string;
 }

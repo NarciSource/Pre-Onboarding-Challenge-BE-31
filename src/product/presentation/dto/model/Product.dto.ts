@@ -23,30 +23,29 @@ export default class ProductDTO {
   @IsString()
   slug: string;
 
-  @ApiProperty({ description: "짧은 설명", example: "최고급 소재로 만든 편안한 소파" })
+  @ApiProperty({
+    description: "짧은 설명",
+    example: "최고급 소재로 만든 편안한 소파",
+    nullable: true,
+  })
   @IsString()
-  short_description: string;
+  short_description: string | null;
 
   @ApiProperty({
     description: "상세 설명",
     example: "<p>이 소파는 최고급 소재로 제작되었으며...</p>",
+    nullable: true,
   })
   @IsString()
-  full_description: string;
-
-  @ApiProperty({ description: "상태", example: "ACTIVE" })
-  @IsIn(["ACTIVE", "OUT_OF_STOCK", "DELETED"], {
-    message: "status는 ACTIVE, OUT_OF_STOCK 또는 DELETED만 허용됩니다.",
-  })
-  status: string;
+  full_description: string | null;
 
   @ApiProperty({ description: "생성 일시", example: "2025-04-10T09:30:00Z" })
   @IsDate()
-  created_at?: Date;
+  created_at: Date;
 
   @ApiProperty({ description: "수정 일시", example: "2025-04-14T10:15:00Z" })
   @IsDate()
-  updated_at?: Date;
+  updated_at: Date;
 
   @ApiProperty({ description: "판매자 정보", type: SellerDTO })
   @IsDefined()
@@ -59,6 +58,12 @@ export default class ProductDTO {
   @ValidateNested()
   @Type(() => BrandDTO)
   brand: BrandDTO;
+
+  @ApiProperty({ description: "상태", example: "ACTIVE" })
+  @IsIn(["ACTIVE", "OUT_OF_STOCK", "DELETED"], {
+    message: "status는 ACTIVE, OUT_OF_STOCK 또는 DELETED만 허용됩니다.",
+  })
+  status: string;
 
   @ApiProperty({ description: "상세 정보", type: ProductDetailDTO })
   @IsDefined()

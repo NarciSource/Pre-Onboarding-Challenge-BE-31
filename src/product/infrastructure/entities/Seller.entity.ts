@@ -9,19 +9,19 @@ export default class SellerEntity {
   name: string;
 
   @Column({ type: "text", nullable: true })
-  description: string;
+  description: string | null;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  logo_url: string;
+  logo_url: string | null;
 
   @Column({ type: "decimal", precision: 3, scale: 2, nullable: true })
-  rating: number;
+  rating: number | null;
 
   @Column({ type: "varchar", length: 100, nullable: true })
-  contact_email: string;
+  contact_email: string | null;
 
   @Column({ type: "varchar", length: 20, nullable: true })
-  contact_phone: string;
+  contact_phone: string | null;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;

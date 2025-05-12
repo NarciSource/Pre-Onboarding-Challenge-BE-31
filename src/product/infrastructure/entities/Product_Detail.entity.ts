@@ -14,30 +14,30 @@ export default class ProductDetailEntity {
   product: ProductEntity;
 
   @Column("decimal", { precision: 10, scale: 2, nullable: true })
-  weight: number;
+  weight: number | null;
 
   @Column("jsonb", { nullable: true })
   dimensions: {
     width: number;
     height: number;
     depth: number;
-  };
+  } | null;
 
   @Column("text", { nullable: true })
-  materials: string;
+  materials: string | null;
 
   @Column("varchar", { length: 100, nullable: true })
-  country_of_origin: string;
+  country_of_origin: string | null;
 
   @Column("text", { nullable: true })
-  warranty_info: string;
+  warranty_info: string | null;
 
   @Column("text", { nullable: true })
-  care_instructions: string;
+  care_instructions: string | null;
 
   @Column("jsonb", { nullable: true })
   additional_info: {
     assembly_required: boolean;
     assembly_time: string;
-  };
+  } | null;
 }

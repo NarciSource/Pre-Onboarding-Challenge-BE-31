@@ -1,14 +1,17 @@
-import { ApiPropertyOptional, ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsInt, IsOptional, Min, IsArray, ValidateNested, IsString } from "class-validator";
+import { IsArray, IsInt, IsString, Min, ValidateNested } from "class-validator";
 
 import ProductOptionDTO from "./ProductOption.dto";
 
+class ProductOptionDTOForProductCatalog extends OmitType(ProductOptionDTO, [
+  "option_group_id",
+] as const) {}
+
 export default class ProductOptionGroupDTO {
-  @ApiPropertyOptional({ description: "옵션 그룹 ID", example: 1 })
+  @ApiProperty({ description: "옵션 그룹 ID", example: 1 })
   @IsInt()
-  @IsOptional()
-  id?: number;
+  id: number;
 
   @ApiProperty({ description: "옵션 그룹 이름", example: "색상" })
   @IsString()
@@ -16,12 +19,12 @@ export default class ProductOptionGroupDTO {
 
   @ApiProperty({ description: "표시 순서", example: 1 })
   @IsInt()
-  @Min(1)
+  @Min(0)
   display_order: number;
 
-  @ApiProperty({ description: "옵션 목록", type: [ProductOptionDTO] })
+  @ApiProperty({ description: "옵션 목록", type: [ProductOptionDTOForProductCatalog] })
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductOptionDTO)
-  options?: ProductOptionDTO[];
+  @Type(() => ProductOptionDTOForProductCatalog)
+  options: ProductOptionDTOForProductCatalog[];
 }

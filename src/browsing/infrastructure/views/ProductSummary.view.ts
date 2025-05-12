@@ -53,8 +53,8 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `jsonb_build_object(
-              'url', product_images.url,
-              'alt_text', product_images.alt_text
+                'url', product_images.url,
+                'alt_text', product_images.alt_text
               )`,
               "primary_image",
             )
@@ -93,17 +93,17 @@ export default class ProductSummaryView {
 
   @ViewColumn() slug: string;
 
-  @ViewColumn() short_description: string;
+  @ViewColumn() short_description: string | null;
 
   @ViewColumn() base_price: number;
 
-  @ViewColumn() sale_price: number;
+  @ViewColumn() sale_price: number | null;
 
   @ViewColumn() currency: string;
 
   @ViewColumn() primary_image: {
     url: string;
-    alt_text: string;
+    alt_text: string | null;
   };
 
   @ViewColumn() brand: {

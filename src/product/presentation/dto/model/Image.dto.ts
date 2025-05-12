@@ -1,19 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsBoolean, IsInt, IsOptional, IsString, IsUrl, Min } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsBoolean, IsInt, IsString, IsUrl, Min } from "class-validator";
 
 export default class ImageDTO {
-  @ApiPropertyOptional({ description: "이미지 ID", example: 1 })
+  @ApiProperty({ description: "이미지 ID", example: 1 })
   @IsInt()
-  @IsOptional()
-  id?: number;
+  id: number;
 
   @ApiProperty({ description: "이미지 URL", example: "https://example.com/images/sofa3.jpg" })
   @IsUrl()
   url: string;
 
-  @ApiProperty({ description: "이미지 대체 텍스트", example: "네이비 소파 측면" })
+  @ApiProperty({ description: "이미지 대체 텍스트", example: "네이비 소파 측면", nullable: true })
   @IsString()
-  alt_text: string;
+  alt_text: string | null;
 
   @ApiProperty({ description: "대표 이미지 여부", example: false })
   @IsBoolean()
@@ -21,11 +20,10 @@ export default class ImageDTO {
 
   @ApiProperty({ description: "이미지 표시 순서", example: 3 })
   @IsInt()
-  @Min(1)
+  @Min(0)
   display_order: number;
 
   @ApiProperty({ description: "옵션 ID", example: 35, nullable: true })
-  @IsOptional()
   @IsInt()
-  option_id?: number | null;
+  option_id: number | null;
 }

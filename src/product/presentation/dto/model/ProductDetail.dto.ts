@@ -40,36 +40,40 @@ export class AdditionalInfoDTO {
 }
 
 export default class ProductDetailDTO {
-  @ApiProperty({ description: "무게", example: 25.5 })
+  @ApiProperty({ description: "무게", example: 25.5, nullable: true })
   @IsNumber()
   @Min(0)
-  weight: number;
+  weight: number | null;
 
-  @ApiProperty({ description: "크기 정보", type: DimensionsDTO })
+  @ApiProperty({ description: "크기 정보", type: DimensionsDTO, nullable: true })
   @IsDefined()
   @ValidateNested()
   @Type(() => DimensionsDTO)
-  dimensions: DimensionsDTO;
+  dimensions: DimensionsDTO | null;
 
-  @ApiProperty({ description: "재료", example: "가죽, 목재, 폼" })
+  @ApiProperty({ description: "재료", example: "가죽, 목재, 폼", nullable: true })
   @IsString()
-  materials: string;
+  materials: string | null;
 
-  @ApiProperty({ description: "원산지", example: "대한민국" })
+  @ApiProperty({ description: "원산지", example: "대한민국", nullable: true })
   @IsString()
-  country_of_origin: string;
+  country_of_origin: string | null;
 
-  @ApiProperty({ description: "보증 정보", example: "2년 품질 보증" })
+  @ApiProperty({ description: "보증 정보", example: "2년 품질 보증", nullable: true })
   @IsString()
-  warranty_info: string;
+  warranty_info: string | null;
 
-  @ApiProperty({ description: "관리 지침", example: "마른 천으로 표면을 닦아주세요" })
+  @ApiProperty({
+    description: "관리 지침",
+    example: "마른 천으로 표면을 닦아주세요",
+    nullable: true,
+  })
   @IsString()
-  care_instructions: string;
+  care_instructions: string | null;
 
-  @ApiProperty({ description: "추가 정보", type: AdditionalInfoDTO })
+  @ApiProperty({ description: "추가 정보", type: AdditionalInfoDTO, nullable: true })
   @IsDefined()
   @ValidateNested()
   @Type(() => AdditionalInfoDTO)
-  additional_info: AdditionalInfoDTO;
+  additional_info: AdditionalInfoDTO | null;
 }

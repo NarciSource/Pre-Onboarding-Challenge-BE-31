@@ -15,6 +15,7 @@ import {
 } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
 import { ReviewEntity } from "@review/infrastructure/entities";
+import { CatalogCategoryDTO, CatalogProductOptionGroupsDTO, CatalogRatingDTO } from "../dto";
 
 @ViewEntity({
   expression: (dataSource: DataSource) => {
@@ -43,8 +44,8 @@ import { ReviewEntity } from "@review/infrastructure/entities";
         .addSelect("to_jsonb(product_details) - 'product_id' - 'id'", "detail")
 
         // 브랜드, 판매자 정보
-        .leftJoin(SellerEntity, "sellers", "sellers.id = products.seller_id")
         .leftJoin(BrandEntity, "brands", "brands.id = products.brand_id")
+        .leftJoin(SellerEntity, "sellers", "sellers.id = products.seller_id")
         .addSelect([
           "to_jsonb(brands) - 'slug' AS brand",
           "to_jsonb(sellers) - 'created_at' AS seller",
@@ -55,11 +56,11 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `jsonb_build_object(
-              'base_price', price.base_price,
-              'sale_price', price.sale_price,
-              'currency', price.currency,
-              'tax_rate', price.tax_rate,
-              'discount_percentage', FLOOR(((price.base_price - price.sale_price) * 100.0) / price.base_price)
+                'base_price', price.base_price,
+                'sale_price', price.sale_price,
+                'currency', price.currency,
+                'tax_rate', price.tax_rate,
+                'discount_percentage', FLOOR(((price.base_price - price.sale_price) * 100.0) / price.base_price)
               )`,
               "price",
             )
@@ -74,13 +75,13 @@ import { ReviewEntity } from "@review/infrastructure/entities";
               `array_agg(jsonb_build_object(
                 'id', categories.id,
                 'name', categories.name,
-              'slug', categories.slug,
-              'is_primary', product_categories.is_primary,
-              'parent', jsonb_build_object(
-                'id', parent.id,
-                'name', parent.name,
-                'slug', parent.slug
-                ))
+                'slug', categories.slug,
+                'is_primary', product_categories.is_primary,
+                'parent', jsonb_build_object(
+                  'id', parent.id,
+                  'name', parent.name,
+                  'slug', parent.slug
+                  ))
                 )`,
               "categories",
             )
@@ -109,15 +110,15 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `array_agg(jsonb_build_object(
-              'id', product_option_groups.id,
-              'name', product_option_groups.name,
-              'display_order', product_option_groups.display_order,
-              'options', (
-                SELECT jsonb_agg(to_jsonb(product_options) - 'option_group_id')
-                FROM product_options product_options
-                WHERE product_options.option_group_id = product_option_groups.id
-              ))
-            )`,
+                'id', product_option_groups.id,
+                'name', product_option_groups.name,
+                'display_order', product_option_groups.display_order,
+                'options', (
+                  SELECT jsonb_agg(to_jsonb(product_options) - 'option_group_id')
+                  FROM product_options product_options
+                  WHERE product_options.option_group_id = product_option_groups.id
+                ))
+              )`,
               "option_groups",
             )
             .from(ProductOptionGroupEntity, "product_option_groups")
@@ -138,16 +139,16 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `jsonb_build_object(
-              'average', ROUND(AVG(reviews.rating), 1),
-              'count', COUNT(reviews.id),
-              'distribution', jsonb_build_object(
-                '5', COUNT(CASE WHEN reviews.rating = 5 THEN 1 END),
-                '4', COUNT(CASE WHEN reviews.rating = 4 THEN 1 END),
-                '3', COUNT(CASE WHEN reviews.rating = 3 THEN 1 END),
-                '2', COUNT(CASE WHEN reviews.rating = 2 THEN 1 END),
-                '1', COUNT(CASE WHEN reviews.rating = 1 THEN 1 END)
-                )
-              )`,
+                'average', ROUND(AVG(reviews.rating), 1),
+                'count', COUNT(reviews.id),
+                'distribution', jsonb_build_object(
+                  '5', COUNT(CASE WHEN reviews.rating = 5 THEN 1 END),
+                  '4', COUNT(CASE WHEN reviews.rating = 4 THEN 1 END),
+                  '3', COUNT(CASE WHEN reviews.rating = 3 THEN 1 END),
+                  '2', COUNT(CASE WHEN reviews.rating = 2 THEN 1 END),
+                  '1', COUNT(CASE WHEN reviews.rating = 1 THEN 1 END)
+                  )
+                )`,
               "rating",
             )
             .from(ReviewEntity, "reviews")
@@ -164,37 +165,30 @@ export default class ProductCatalogView {
   @ViewColumn() id: number;
   @ViewColumn() name: string;
   @ViewColumn() slug: string;
-  @ViewColumn() short_description: string;
-  @ViewColumn() full_description: string;
+  @ViewColumn() short_description: string | null;
+  @ViewColumn() full_description: string | null;
   @ViewColumn() status: string;
   @ViewColumn() created_at: Date;
   @ViewColumn() updated_at: Date;
 
-  @ViewColumn() seller: SellerEntity;
+  @ViewColumn() brand: Omit<BrandEntity, "slug">;
 
-  @ViewColumn() brand: BrandEntity;
+  @ViewColumn() seller: Omit<SellerEntity, "created_at">;
 
-  @ViewColumn() detail: ProductDetailEntity;
+  @ViewColumn() detail: Omit<ProductDetailEntity, "id" | "product_id">;
 
-  @ViewColumn() price: ProductPriceEntity & { discount_percentage: number };
+  @ViewColumn() price: ProductPriceEntity & { discount_percentage: number | null };
 
-  @ViewColumn() categories: ProductCategoryEntity[];
+  @ViewColumn() categories: CatalogCategoryDTO[];
 
-  @ViewColumn() option_groups: ProductOptionGroupEntity[];
+  @ViewColumn() option_groups: CatalogProductOptionGroupsDTO[];
 
-  @ViewColumn() images: ProductImageEntity[];
+  @ViewColumn() images: Omit<
+    ProductImageEntity & { option_id: number | null },
+    "product" | "option"
+  >[];
 
   @ViewColumn() tags: TagEntity[];
 
-  @ViewColumn() rating: {
-    average: number;
-    count: number;
-    distribution: {
-      "5": number;
-      "4": number;
-      "3": number;
-      "2": number;
-      "1": number;
-    };
-  };
+  @ViewColumn() rating: CatalogRatingDTO;
 }

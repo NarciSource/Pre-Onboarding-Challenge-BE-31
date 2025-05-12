@@ -26,7 +26,8 @@ describe("SellerDTO", () => {
 
     const errors = await validateDTO(invalidData);
 
-    expect(errors).toHaveLength(6);
+    expect(errors).toHaveLength(7);
+    expect(errors).toContain("id");
     expect(errors).toContain("name");
     expect(errors).toContain("description");
     expect(errors).toContain("logo_url");

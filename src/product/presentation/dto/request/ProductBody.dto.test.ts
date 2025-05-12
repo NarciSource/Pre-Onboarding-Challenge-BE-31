@@ -5,7 +5,7 @@ import ProductBodyDTO from "./ProductBody.dto";
 describe("ProductBodyDTO", () => {
   const validateDTO = getValidateDTO(ProductBodyDTO);
 
-  const validData: Partial<ProductBodyDTO> = {
+  const validData: ProductBodyDTO = {
     name: "슈퍼 편안한 소파",
     slug: "super-comfortable-sofa",
     short_description: "최고급 소재로 만든 편안한 소파",
@@ -55,7 +55,7 @@ describe("ProductBodyDTO", () => {
         alt_text: "브라운 소파 정면",
         is_primary: true,
         display_order: 1,
-        option_id: null,
+        option_id: 3,
       },
     ],
     tags: [1, 4, 7],

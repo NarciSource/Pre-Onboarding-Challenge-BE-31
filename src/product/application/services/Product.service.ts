@@ -211,8 +211,8 @@ export default class ProductService {
       // 상품 제품 업데이트
       return this.repository.with_transaction(manager).update(
         {
-          product: { id: product_id },
-        } as Partial<ProductEntity>,
+          id: product_id,
+        },
         {
           seller: { id: seller_id },
           brand: { id: brand_id },

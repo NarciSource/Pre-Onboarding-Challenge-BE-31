@@ -12,7 +12,7 @@ export default class UserEntity {
   email: string;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  avatar_url: string;
+  avatar_url: string | null;
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at: Date;

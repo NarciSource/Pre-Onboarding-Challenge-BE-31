@@ -16,7 +16,7 @@ export default class ProductImageEntity {
   url: string;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  alt_text: string;
+  alt_text: string | null;
 
   @Column({ type: "boolean", default: false })
   is_primary: boolean;
@@ -29,5 +29,5 @@ export default class ProductImageEntity {
     nullable: true,
   })
   @JoinColumn({ name: "option_id" })
-  option: ProductOptionEntity;
+  option: ProductOptionEntity | null;
 }

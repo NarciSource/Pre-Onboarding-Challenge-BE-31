@@ -22,16 +22,16 @@ export default class ReviewEntity {
 
   @ManyToOne(() => UserEntity, { onDelete: "SET NULL", nullable: true })
   @JoinColumn({ name: "user_id" })
-  user: UserEntity;
+  user: UserEntity | null;
 
   @Column({ type: "int", nullable: false })
   rating: number;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  title: string;
+  title: string | null;
 
   @Column({ type: "text", nullable: true })
-  content: string;
+  content: string | null;
 
   @CreateDateColumn({ name: "created_at" })
   created_at: Date;

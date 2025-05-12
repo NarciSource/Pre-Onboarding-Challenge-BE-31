@@ -17,14 +17,14 @@ export default class ProductPriceEntity {
   base_price: number;
 
   @Column("decimal", { precision: 12, scale: 2, nullable: true })
-  sale_price: number;
+  sale_price: number | null;
 
   @Column("decimal", { precision: 12, scale: 2, nullable: true })
-  cost_price: number;
+  cost_price: number | null;
 
   @Column("varchar", { length: 3, default: "KRW" })
   currency: string;
 
   @Column("decimal", { precision: 5, scale: 2, nullable: true })
-  tax_rate: number;
+  tax_rate: number | null;
 }

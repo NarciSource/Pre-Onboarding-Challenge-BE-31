@@ -25,7 +25,7 @@ describe("ProductOptionsService", () => {
     const id = 1;
     const option_group_id = 2;
     const option = { name: "옵션1" } as Omit<Product_Option, "option_group_id">;
-    const savedOption = { id: 1, option_group_id, ...option } as Product_Option;
+    const savedOption = { option_group_id, ...option } as Product_Option;
 
     productOptionsRepository.save = jest.fn().mockResolvedValue(savedOption);
 
@@ -39,7 +39,6 @@ describe("ProductOptionsService", () => {
     const option_id = 1;
     const options = { name: "옵션 수정" } as Omit<Product_Option, "option_group_id">;
     const updatedOption = {
-      id: option_id,
       option_group: { id: 1 },
       ...options,
     } as Product_Option;
@@ -91,19 +90,12 @@ describe("ProductOptionsService", () => {
     const id = 1;
     const option_id = 1;
     const image = { url: "image-url" } as Omit<Product_Image, "product_id" | "option_id">;
-    const savedImage = {
-      id: 1,
-      product: { id },
-      option: { id: option_id },
-      ...image,
-    } as ProductImageEntity;
 
-    productImageRepository.save = jest.fn().mockResolvedValue(savedImage);
+    productImageRepository.save = jest.fn().mockResolvedValue(image);
 
     const result = await service.register_images(id, option_id, image);
 
     expect(result).toEqual({
-      id: 1,
       url: "image-url",
       option_id,
     });

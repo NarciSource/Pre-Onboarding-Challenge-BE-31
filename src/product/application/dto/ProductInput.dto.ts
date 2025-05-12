@@ -1,16 +1,23 @@
-import { Product, Product_Detail, Product_Image, Product_Price } from "@product/domain/entities";
-import ProductCategoryDTO from "./ProductCategory.dto";
-import ProductOptionGroupDTO from "./ProductOptionGroup.dto";
+import {
+  Product,
+  Product_Detail,
+  Product_Image,
+  Product_Option,
+  Product_Option_Group,
+  Product_Price,
+} from "@product/domain/entities";
 
 type ProductInputDTO = {
-  detail: Omit<Product_Detail, "product_id">;
-  price: Omit<Product_Price, "product_id">;
-  categories: Omit<ProductCategoryDTO, "product_id">[];
-  option_groups: Omit<ProductOptionGroupDTO, "product_id">[];
-  images: Omit<Product_Image, "product_id">[];
+  detail: Omit<Product_Detail, "id" | "product">;
+  price: Omit<Product_Price, "id" | "product">;
+  categories: { category_id: number; is_primary: boolean }[];
+  option_groups: (Omit<Product_Option_Group, "id" | "product"> & {
+    options: Omit<Product_Option, "id" | "option_group_id">[];
+  })[];
+  images: Omit<Product_Image & { option_id: number | null }, "id" | "product" | "option">[];
   tags: number[];
   seller_id: number;
   brand_id: number;
-} & Product;
+} & Omit<Product, "id" | "created_at" | "updated_at" | "seller" | "brand">;
 
 export default ProductInputDTO;

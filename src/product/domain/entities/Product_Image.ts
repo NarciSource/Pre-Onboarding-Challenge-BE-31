@@ -3,14 +3,12 @@ import Product_Option from "./Product_Option";
 
 export default class Product_Image {
   constructor(
+    public id: number,
+    public product: Product,
     public url: string,
-    public alt_text: string,
+    public alt_text: string | null,
     public is_primary: boolean,
     public display_order: number,
-    public product?: Product,
-    public option?: Product_Option,
-    public product_id?: number,
-    public option_id?: number | null,
-    public id?: number,
+    public option: Product_Option | null,
   ) {}
 }

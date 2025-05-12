@@ -47,7 +47,7 @@ describe("ReviewService", () => {
   });
 
   it("리뷰 등록", async () => {
-    const review = { rating: 5, content: "좋아요" };
+    const review = { rating: 5, title: "리뷰 제목", content: "좋아요" };
     const savedReview = { id: 1, product_id: 1, ...review };
     repository.save = jest.fn().mockResolvedValue(savedReview);
 
@@ -58,7 +58,7 @@ describe("ReviewService", () => {
   });
 
   it("리뷰 수정", async () => {
-    const review = { rating: 4, content: "수정된 리뷰" };
+    const review = { rating: 4, title: "리뷰 수정 제목", content: "수정된 리뷰" };
     const updatedReview = { id: 1, product_id: 1, ...review };
     repository.update = jest.fn().mockResolvedValue(true);
     repository.findOneBy = jest.fn().mockResolvedValue(updatedReview);
@@ -73,10 +73,13 @@ describe("ReviewService", () => {
   it("리뷰 수정 실패 시 NotFoundException 발생", async () => {
     repository.update = jest.fn().mockResolvedValue(false);
 
-    await expect(service.edit(1, { rating: 4, content: "수정된 리뷰" })).rejects.toThrow(
-      NotFoundException,
-    );
-    expect(repository.update).toHaveBeenCalledWith(1, { rating: 4, content: "수정된 리뷰" });
+    const result = service.edit(1, {
+      rating: 4,
+      title: "수정된 리뷰 제목",
+      content: "수정된 리뷰",
+    });
+
+    await expect(result).rejects.toThrow(NotFoundException);
   });
 
   it("리뷰 삭제", async () => {

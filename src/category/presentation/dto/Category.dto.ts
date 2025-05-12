@@ -13,49 +13,50 @@ import {
 class ParentCategoryDTO {
   @ApiProperty({ description: "카테고리 ID", example: 2 })
   @IsInt()
-  id?: number;
+  id: number;
 
   @ApiProperty({ description: "카테고리 이름", example: "거실 가구" })
   @IsString()
-  name?: string;
+  name: string;
 
   @ApiProperty({ description: "카테고리 슬러그", example: "living-room" })
   @IsString()
-  slug?: string;
+  slug: string;
 }
 
 export default class CategoryDTO {
   @ApiProperty({ description: "카테고리 ID", example: 5 })
   @IsInt()
-  id?: number;
+  id: number;
 
   @ApiProperty({ description: "카테고리 이름", example: "소파" })
   @IsString()
-  name?: string;
+  name: string;
 
   @ApiProperty({ description: "카테고리 슬러그", example: "sofa" })
   @IsString()
-  slug?: string;
+  slug: string;
 
   @ApiProperty({ description: "대표 카테고리 여부", example: true })
   @IsBoolean()
   is_primary: boolean;
 
-  @ApiProperty({ description: "카테고리 설명", example: "다양한 스타일의 소파" })
+  @ApiProperty({ description: "카테고리 설명", example: "다양한 스타일의 소파", nullable: true })
   @IsString()
-  description?: string;
+  description: string | null;
 
   @ApiProperty({ description: "카테고리 레벨", example: 3 })
   @IsInt()
   @Min(1)
-  level?: number;
+  level: number;
 
   @ApiProperty({
     description: "카테고리 이미지 URL",
     example: "https://example.com/categories/sofa.jpg",
+    nullable: true,
   })
   @IsUrl()
-  image_url?: string;
+  image_url: string | null;
 
   @ApiPropertyOptional({
     description: "부모 카테고리",

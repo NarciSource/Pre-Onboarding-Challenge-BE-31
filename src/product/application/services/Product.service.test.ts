@@ -97,6 +97,7 @@ describe("ProductService", () => {
     option_groups: [{ ...option_group, options }],
     images: [
       {
+        option_id: null,
         url: "https://example.com/images/sofa1.jpg",
         alt_text: "브라운 소파 정면",
         is_primary: true,
@@ -167,7 +168,16 @@ describe("ProductService", () => {
       expect.arrayContaining(options.map(expect.objectContaining)),
     );
     expect(mockProductImageSave).toHaveBeenCalledWith(
-      expect.arrayContaining(input.images.map(expect.objectContaining)),
+      expect.arrayContaining(
+        input.images.map(
+          ({ option_id: _option_id, ...image }) =>
+            expect.objectContaining({
+              ...image,
+              option: { id: undefined },
+              product: { id: 1 },
+            }) as ProductEntity,
+        ),
+      ),
     );
     expect(result).toEqual(
       expect.objectContaining({ id: 1, name: "상품명", slug: "product-slug" }),
@@ -309,7 +319,7 @@ describe("ProductService", () => {
       { category: { id: 5 }, is_primary: true },
     );
     expect(mockProductUpdate).toHaveBeenCalledWith(
-      { product: { id: product_id } },
+      { id: product_id },
       expect.objectContaining(product),
     );
     expect(result).toEqual(

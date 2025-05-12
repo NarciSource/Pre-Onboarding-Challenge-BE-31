@@ -51,11 +51,11 @@ export default class ReviewService {
     };
   }
 
-  async register(product_id: number, review: Omit<Review, "product_id">) {
+  async register(product_id: number, review: Pick<Review, "rating" | "title" | "content">) {
     return await this.repository.save({ product: { id: product_id }, ...review });
   }
 
-  async edit(id: number, review: Omit<Review, "product_id">) {
+  async edit(id: number, review: Pick<Review, "rating" | "title" | "content">) {
     const is_updated = await this.repository.update(id, review);
 
     if (!is_updated) {

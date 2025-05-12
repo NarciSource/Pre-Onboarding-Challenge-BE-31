@@ -30,7 +30,7 @@ class ProductOptionGroupForBodyDTO extends OmitType(ProductOptionGroupDTO, [
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductOptionBodyDTO)
-  options?: ProductOptionBodyDTO[];
+  options: ProductOptionBodyDTO[];
 }
 
 class ImageForBodyDTO extends OmitType(ImageDTO, ["id"] as const) {}

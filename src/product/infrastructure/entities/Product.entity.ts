@@ -23,10 +23,10 @@ export default class ProductEntity {
   slug: string;
 
   @Column({ type: "varchar", length: 500, nullable: true })
-  short_description?: string;
+  short_description: string | null;
 
   @Column({ type: "text", nullable: true })
-  full_description?: string;
+  full_description: string | null;
 
   @CreateDateColumn({
     type: "timestamp",

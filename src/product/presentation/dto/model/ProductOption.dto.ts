@@ -19,9 +19,9 @@ export default class ProductOptionDTO {
   @Min(0)
   additional_price: number;
 
-  @ApiProperty({ description: "SKU", example: "SOFA-BRN" })
+  @ApiProperty({ description: "SKU", example: "SOFA-BRN", nullable: true })
   @IsString()
-  sku: string;
+  sku: string | null;
 
   @ApiProperty({ description: "재고", example: 10 })
   @IsInt()
@@ -30,6 +30,6 @@ export default class ProductOptionDTO {
 
   @ApiProperty({ description: "표시 순서", example: 1 })
   @IsInt()
-  @Min(1)
+  @Min(0)
   display_order: number;
 }

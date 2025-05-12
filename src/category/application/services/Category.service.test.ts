@@ -107,7 +107,7 @@ describe("CategoryService", () => {
 
       const result = await service.find_products_by_category_id(1, filter);
 
-      expect(result.category).toEqual({ id: 1, name: "대분류1" });
+      expect(result.category).toEqual({ id: 1, name: "대분류1", parent: null });
     });
   });
 });

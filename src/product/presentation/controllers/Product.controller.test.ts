@@ -31,7 +31,7 @@ describe("ProductController", () => {
     const body = { name: "상품1" } as ProductBodyDTO;
     const response: ResponseDTO<ProductResponseDTO> = {
       success: true,
-      data: { id: 1, ...body },
+      data: { id: 1, created_at: new Date(), updated_at: new Date(), ...body },
       message: "상품이 성공적으로 등록되었습니다.",
     };
     service.register = jest.fn().mockResolvedValue(response.data as ProductEntity);
@@ -98,6 +98,7 @@ describe("ProductController", () => {
       name: "상품1",
       slug: "product-1",
       updated_at: new Date(),
+      created_at: new Date(),
     };
     const response: ResponseDTO<ProductResponseDTO> = {
       success: true,

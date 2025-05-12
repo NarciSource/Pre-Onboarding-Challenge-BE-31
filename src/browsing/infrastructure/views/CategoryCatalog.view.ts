@@ -33,7 +33,7 @@ export default class CategoryCatalogView {
 
   @ViewColumn() slug: string;
 
-  @ViewColumn() image_url: string;
+  @ViewColumn() image_url: string | null;
 
   @ViewColumn() product_count: number;
 }

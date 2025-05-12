@@ -25,11 +25,13 @@ describe("ProductPriceDTO", () => {
 
     const errors = await validateDTO(invalidData);
 
-    expect(errors).toHaveLength(4);
+    expect(errors).toHaveLength(6);
     expect(errors).toContain("base_price");
     expect(errors).toContain("sale_price");
+    expect(errors).toContain("cost_price");
     expect(errors).toContain("currency");
     expect(errors).toContain("tax_rate");
+    expect(errors).toContain("discount_percentage");
   });
 
   it("currency 필드가 3자리 대문자가 아닌 경우 검증 실패", async () => {

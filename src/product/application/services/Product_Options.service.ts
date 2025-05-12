@@ -16,7 +16,7 @@ export default class ProductOptionsService {
   async register(
     id: number,
     option_group_id: number,
-    option: Omit<Product_Option, "option_group_id">,
+    option: Omit<Product_Option, "id" | "option_group_id">,
   ) {
     const result = await this.repository.save({
       ...option,
@@ -34,7 +34,7 @@ export default class ProductOptionsService {
   async update(
     product_id: number,
     option_id: number,
-    options: Omit<Product_Option, "option_group_id">,
+    options: Omit<Product_Option, "id" | "option_group_id">,
   ) {
     const is_updated = await this.repository.update(option_id, options);
 
@@ -66,18 +66,19 @@ export default class ProductOptionsService {
 
   async register_images(
     id: number,
-    option_id: number,
-    image: Omit<Product_Image, "product_id" | "option_id">,
+    option_id: number | null,
+    image: Omit<Product_Image, "id" | "product" | "option">,
   ) {
     const saved_product_image = await this.product_image_repository.save({
       product: { id },
-      option: { id: option_id },
+      option: option_id ? { id: option_id } : null,
       ...image,
     });
 
     // 이미지 저장 결과 반환
-    return (({ product: _product, option, ...rest }) => ({ ...rest, option_id: option?.id }))(
-      saved_product_image,
-    );
+    return (({ product: _product, option: _option, ...rest }) => ({
+      ...rest,
+      option_id,
+    }))(saved_product_image);
   }
 }

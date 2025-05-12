@@ -34,16 +34,17 @@ describe("ProductOptionGroupDTO", () => {
 
     const errors = await validateDTO(invalidData);
 
-    expect(errors).toHaveLength(3);
+    expect(errors).toHaveLength(4);
+    expect(errors).toContain("id");
     expect(errors).toContain("name");
     expect(errors).toContain("display_order");
     expect(errors).toContain("options");
   });
 
-  it("display_order 필드가 1보다 작은 경우 검증 실패", async () => {
+  it("display_order 필드가 0보다 작은 경우 검증 실패", async () => {
     const invalidData = {
       ...validData,
-      display_order: 0,
+      display_order: -1,
     };
 
     const errors = await validateDTO(invalidData);

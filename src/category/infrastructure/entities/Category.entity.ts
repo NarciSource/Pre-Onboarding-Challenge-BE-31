@@ -12,15 +12,15 @@ export default class CategoryEntity {
   slug: string;
 
   @Column({ type: "text", nullable: true })
-  description: string;
+  description: string | null;
 
   @ManyToOne(() => CategoryEntity, (category) => category.id, { nullable: true })
   @JoinColumn({ name: "parent_id" })
-  parent?: CategoryEntity;
+  parent: CategoryEntity | null;
 
   @Column({ type: "integer", nullable: false })
   level: number;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  image_url: string;
+  image_url: string | null;
 }

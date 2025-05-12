@@ -16,6 +16,7 @@ import {
   ProductOptionBodyDTO,
   ProductOptionBodyWithGroupDTO,
   ProductOptionDTO,
+  ProductOptionImageBodyDTO,
   ResponseDTO,
 } from "../dto";
 
@@ -87,8 +88,11 @@ export default class ProductOptionsController {
   @ApiBadRequestResponse("상품 이미지 추가에 실패했습니다.")
   @Post(":id/images")
   @ResponseType(ResponseDTO<ImageDTO>)
-  async create_image(@Param() { id }: OptionParamDTO, @Body() body: ImageDTO) {
-    const data = await this.service.register_images(id, body.option_id!, body);
+  async create_image(
+    @Param() { id }: OptionParamDTO,
+    @Body() { option_id, ...body }: ProductOptionImageBodyDTO,
+  ) {
+    const data = await this.service.register_images(id, option_id, body);
 
     return {
       success: true,

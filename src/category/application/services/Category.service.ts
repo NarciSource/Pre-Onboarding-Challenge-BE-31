@@ -16,16 +16,18 @@ export default class CategoryService {
   ) {}
 
   async find_all_as_tree(level: number = 1) {
+    type NestedCategory = Omit<Category, "parent"> & { children?: NestedCategory[] };
+
     function build_tree(
       categories: Category[],
       level: number, // 1: 대분류, 2: 중분류, 3: 소분류
       parent_id?: number,
-    ) {
+    ): NestedCategory[] {
       if (level > 3) {
         return [];
       }
 
-      const result: (Category | { id: number; children: Category })[] = categories
+      const result = categories
         .filter((category) => category.parent?.id === parent_id)
         .map(({ id, parent: _parent, ...rest }) => {
           const children = build_tree(categories, level + 1, id);
@@ -67,7 +69,7 @@ export default class CategoryService {
       });
     }
     if (!has_sub) {
-      delete category?.parent;
+      category.parent = null;
     }
 
     // 아이템 필터링

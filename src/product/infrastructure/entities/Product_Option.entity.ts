@@ -18,7 +18,7 @@ export default class ProductOptionEntity {
   additional_price: number;
 
   @Column({ type: "varchar", length: 100, nullable: true })
-  sku: string;
+  sku: string | null;
 
   @Column({ type: "int", default: 0 })
   stock: number;

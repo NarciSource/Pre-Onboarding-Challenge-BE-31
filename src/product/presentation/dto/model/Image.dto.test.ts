@@ -5,7 +5,8 @@ import ImageDTO from "./Image.dto";
 describe("ImageDTO", () => {
   const validateDTO = getValidateDTO(ImageDTO);
 
-  const validData: Partial<ImageDTO> = {
+  const validData: ImageDTO = {
+    id: 1,
     url: "https://example.com/images/sofa3.jpg",
     alt_text: "네이비 소파 측면",
     is_primary: false,
@@ -24,11 +25,13 @@ describe("ImageDTO", () => {
 
     const errors = await validateDTO(invalidData);
 
-    expect(errors).toHaveLength(4);
+    expect(errors).toHaveLength(6);
+    expect(errors).toContain("id");
     expect(errors).toContain("url");
     expect(errors).toContain("alt_text");
     expect(errors).toContain("is_primary");
     expect(errors).toContain("display_order");
+    expect(errors).toContain("option_id");
   });
 
   it("is_primary 필드가 boolean이 아닌 경우 검증 실패", async () => {

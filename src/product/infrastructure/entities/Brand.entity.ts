@@ -13,11 +13,11 @@ export default class BrandEntity {
   slug: string;
 
   @Column({ type: "text", nullable: true })
-  description?: string;
+  description: string | null;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  logo_url?: string;
+  logo_url: string | null;
 
   @Column({ type: "varchar", length: 255, nullable: true })
-  website?: string;
+  website: string | null;
 }

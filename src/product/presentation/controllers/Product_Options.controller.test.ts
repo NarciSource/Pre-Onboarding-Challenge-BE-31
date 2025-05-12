@@ -5,11 +5,11 @@ import { get_module } from "__test-utils__/test-module";
 import { ProductOptionsService } from "@product/application/services";
 import { Product_Image, Product_Option } from "@product/domain/entities";
 import {
-  ImageDTO,
   OptionParamDTO,
   ProductOptionBodyDTO,
   ProductOptionBodyWithGroupDTO,
   ProductOptionDTO,
+  ProductOptionImageBodyDTO,
   ResponseDTO,
 } from "../dto";
 import ProductOptionsController from "./Product_Options.controller";
@@ -88,11 +88,17 @@ describe("ProductOptionsController", () => {
   describe("create_image", () => {
     it("상품 이미지 추가 성공", async () => {
       const param = { id: 1 } as OptionParamDTO;
-      const body = { option_id: 2, url: "http://example.com/image.jpg" } as ImageDTO;
+      const body = {
+        option_id: 2,
+        url: "http://example.com/image.jpg",
+      } as ProductOptionImageBodyDTO;
       const data = { id: param.id, url: body.url } as Product_Image;
       service.register_images = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<ImageDTO> = await controller.create_image(param, body);
+      const result: ResponseDTO<ProductOptionImageBodyDTO> = await controller.create_image(
+        param,
+        body,
+      );
 
       expect(result).toEqual({
         success: true,

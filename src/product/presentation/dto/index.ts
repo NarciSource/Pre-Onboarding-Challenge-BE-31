@@ -6,6 +6,7 @@ export {
   default as ProductOptionBodyDTO,
   ProductOptionBodyWithGroupDTO,
 } from "./request/ProductOptionBody.dto";
+export { default as ProductOptionImageBodyDTO } from "./request/ProductOptionImageBody.dto";
 
 export { default as BrandDTO } from "./model/Brand.dto";
 export { default as ImageDTO } from "./model/Image.dto";

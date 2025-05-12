@@ -1,11 +1,11 @@
 export default class Category {
   constructor(
+    public id: number,
     public name: string,
     public slug: string,
-    public description: string,
+    public description: string | null,
+    public parent: Category | null,
     public level: number,
-    public image_url: string,
-    public parent?: Category | null,
-    public id?: number,
+    public image_url: string | null,
   ) {}
 }

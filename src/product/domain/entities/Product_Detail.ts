@@ -1,20 +1,22 @@
+import Product from "./Product";
+
 export default class Product_Detail {
   constructor(
-    public weight: number,
+    public id: number,
+    public product: Product,
+    public weight: number | null,
     public dimensions: {
       width: number;
       height: number;
       depth: number;
-    },
-    public materials: string,
-    public country_of_origin: string,
-    public warranty_info: string,
-    public care_instructions: string,
+    } | null,
+    public materials: string | null,
+    public country_of_origin: string | null,
+    public warranty_info: string | null,
+    public care_instructions: string | null,
     public additional_info: {
       assembly_required: boolean;
       assembly_time: string;
-    },
-    public product_id?: number,
-    public id?: number,
+    } | null,
   ) {}
 }
