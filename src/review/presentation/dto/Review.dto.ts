@@ -1,6 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsInt, IsString, IsUrl, Min, ValidateNested } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsInt,
+  IsString,
+  IsUrl,
+  Max,
+  Min,
+  ValidateNested,
+} from "class-validator";
 
 class UserDTO {
   @ApiProperty({ description: "사용자 ID", example: 250 })
@@ -31,7 +40,8 @@ export default class ReviewDTO {
 
   @ApiProperty({ description: "평점", example: 5 })
   @IsInt()
-  @Min(0)
+  @Min(1)
+  @Max(5)
   rating: number;
 
   @ApiProperty({ description: "리뷰 제목", example: "완벽한 소파입니다!" })

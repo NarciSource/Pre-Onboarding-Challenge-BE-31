@@ -30,8 +30,8 @@ describe("ReviewService", () => {
     const result = await service.find(1, filter);
 
     expect(result.items).toEqual(reviews);
-    expect(result.summary.average_rating).toBe(4.5);
-    expect(result.summary.total_count).toBe(2);
+    expect(result.summary.average).toBe(4.5);
+    expect(result.summary.count).toBe(2);
     expect(result.summary.distribution[5]).toBe(1);
     expect(result.summary.distribution[4]).toBe(1);
     expect(repository.find).toHaveBeenCalledWith({

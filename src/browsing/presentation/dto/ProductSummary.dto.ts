@@ -1,70 +1,57 @@
-import { ApiProperty, PickType } from "@nestjs/swagger";
+import { ApiProperty, IntersectionType, PickType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import {
-  IsBoolean,
-  IsDefined,
-  IsInt,
-  IsNumber,
-  Matches,
-  Max,
-  Min,
-  ValidateNested,
-} from "class-validator";
+import { IsBoolean, IsDefined, IsInt, IsNumber, Max, Min, ValidateNested } from "class-validator";
 
 import BrandDTO from "@product/presentation/dto/model/Brand.dto";
 import ImageDTO from "@product/presentation/dto/model/Image.dto";
+import ProductDTO from "@product/presentation/dto/model/Product.dto";
+import ProductPriceDTO from "@product/presentation/dto/model/ProductPrice.dto";
 import SellerDTO from "@product/presentation/dto/model/Seller.dto";
-import ProductCatalogDTO from "./ProductCatalog.dto";
 
-class ProductSummaryOfBrandDTO extends PickType(BrandDTO, ["id", "name"] as const) {}
-class ProductSummaryOfSellerDTO extends PickType(SellerDTO, ["id", "name"] as const) {}
-class ProductSummaryOfImageDTO extends PickType(ImageDTO, ["url", "alt_text"] as const) {}
-
-export default class ProductSummaryDTO extends PickType(ProductCatalogDTO, [
+class BrandDTOForProductSummary extends PickType(BrandDTO, ["id", "name"] as const) {}
+class SellerDTOForProductSummary extends PickType(SellerDTO, ["id", "name"] as const) {}
+class ImageDTOForProductSummary extends PickType(ImageDTO, ["url", "alt_text"] as const) {}
+class ProductPriceDTOForProductSummary extends PickType(ProductPriceDTO, [
+  "base_price",
+  "sale_price",
+  "currency",
+] as const) {}
+class ProductDTOForProductSummary extends PickType(ProductDTO, [
   "id",
   "name",
   "slug",
   "short_description",
   "status",
   "created_at",
-] as const) {
-  @ApiProperty({ description: "기본 가격", example: 599000 })
-  @IsInt()
-  @Min(0)
-  base_price: number;
+] as const) {}
 
-  @ApiProperty({ description: "할인 가격", example: 499000 })
-  @IsInt()
-  @Min(0)
-  sale_price: number;
-
-  @ApiProperty({ description: "통화", example: "KRW" })
-  @Matches(/^[A-Z]{3}$/, { message: "통화 코드는 3자리 대문자여야 합니다 (예: USD, KRW)" })
-  currency: string;
-
-  @ApiProperty({ description: "주 이미지", type: ProductSummaryOfImageDTO })
+export default class ProductSummaryDTO extends IntersectionType(
+  ProductDTOForProductSummary,
+  ProductPriceDTOForProductSummary,
+) {
+  @ApiProperty({ description: "주 이미지", type: ImageDTOForProductSummary })
   @IsDefined()
   @ValidateNested()
-  @Type(() => ProductSummaryOfImageDTO)
-  primary_image: ProductSummaryOfImageDTO;
+  @Type(() => ImageDTOForProductSummary)
+  primary_image: ImageDTOForProductSummary;
 
-  @ApiProperty({ description: "브랜드", type: ProductSummaryOfBrandDTO })
+  @ApiProperty({ description: "브랜드", type: BrandDTOForProductSummary })
   @IsDefined()
   @ValidateNested()
-  @Type(() => ProductSummaryOfBrandDTO)
-  brand: ProductSummaryOfBrandDTO;
+  @Type(() => BrandDTOForProductSummary)
+  brand: BrandDTOForProductSummary;
 
-  @ApiProperty({ description: "판매자", type: ProductSummaryOfSellerDTO })
+  @ApiProperty({ description: "판매자", type: SellerDTOForProductSummary })
   @IsDefined()
   @ValidateNested()
-  @Type(() => ProductSummaryOfSellerDTO)
-  seller: ProductSummaryOfSellerDTO;
+  @Type(() => SellerDTOForProductSummary)
+  seller: SellerDTOForProductSummary;
 
   @ApiProperty({ description: "재고 유무", example: true })
   @IsBoolean()
   in_stock: boolean;
 
-  @ApiProperty({ description: "평점", example: 4.7 })
+  @ApiProperty({ description: "리뷰 평균 평점", example: 4.7 })
   @IsNumber()
   @Min(1)
   @Max(5)

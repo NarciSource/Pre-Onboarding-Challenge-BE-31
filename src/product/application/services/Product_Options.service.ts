@@ -17,20 +17,25 @@ export default class ProductOptionsService {
     id: number,
     option_group_id: number,
     option: Omit<Product_Option, "option_group_id">,
-  ): Promise<Product_Option> {
-    return await this.repository.save({
+  ) {
+    const result = await this.repository.save({
       ...option,
       option_group: {
         id: option_group_id,
       },
     });
+
+    return {
+      ...result,
+      option_group_id,
+    };
   }
 
   async update(
     product_id: number,
     option_id: number,
     options: Omit<Product_Option, "option_group_id">,
-  ): Promise<Product_Option> {
+  ) {
     const is_updated = await this.repository.update(option_id, options);
 
     if (!is_updated) {
@@ -40,7 +45,12 @@ export default class ProductOptionsService {
       });
     }
 
-    return (await this.repository.findOneBy({ id: option_id }))!;
+    const updated = (await this.repository.findOneBy({ id: option_id }))!;
+
+    return {
+      ...updated,
+      option_group_id: updated.option_group?.id,
+    };
   }
 
   async remove(product_id: number, option_id: number): Promise<void> {

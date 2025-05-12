@@ -7,11 +7,7 @@ export class ParamDTO {
   id: number;
 }
 
-export class OptionParamDTO {
-  @ApiProperty({ description: "고유 식별자", example: "123" })
-  @IsInt()
-  id: number;
-
+export class OptionParamDTO extends ParamDTO {
   @ApiProperty({ description: "옵션에 대한 식별자", example: "456" })
   @IsInt()
   optionId: number;

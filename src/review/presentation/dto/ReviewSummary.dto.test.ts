@@ -6,8 +6,8 @@ describe("ReviewSummaryDTO", () => {
   const validateDTO = getValidateDTO(ReviewSummaryDTO);
 
   const validData: Partial<ReviewSummaryDTO> = {
-    average_rating: 4.5,
-    total_count: 150,
+    average: 4.5,
+    count: 150,
     distribution: {
       1: 10,
       2: 20,
@@ -23,27 +23,27 @@ describe("ReviewSummaryDTO", () => {
     const errors = await validateDTO(invalidData);
 
     expect(errors).toHaveLength(3);
-    expect(errors).toContain("average_rating");
-    expect(errors).toContain("total_count");
+    expect(errors).toContain("average");
+    expect(errors).toContain("count");
     expect(errors).toContain("distribution");
   });
 
-  it("average_rating 필드가 범위를 벗어난 경우 검증 실패", async () => {
-    const invalidData = { ...validData, average_rating: 6 };
+  it("average 필드가 범위를 벗어난 경우 검증 실패", async () => {
+    const invalidData = { ...validData, average: 6 };
 
     const errors = await validateDTO(invalidData);
 
     expect(errors.length).toBeGreaterThan(0);
-    expect(errors).toContain("average_rating");
+    expect(errors).toContain("average");
   });
 
-  it("total_count 필드가 음수일 경우 검증 실패", async () => {
-    const invalidData = { ...validData, total_count: -10 };
+  it("count 필드가 음수일 경우 검증 실패", async () => {
+    const invalidData = { ...validData, count: -10 };
 
     const errors = await validateDTO(invalidData);
 
     expect(errors.length).toBeGreaterThan(0);
-    expect(errors).toContain("total_count");
+    expect(errors).toContain("count");
   });
 
   it("distribution 필드가 객체가 아닐 경우 검증 실패", async () => {
@@ -91,21 +91,21 @@ describe("ReviewSummaryDTO", () => {
     expect(errors).toContain("distribution");
   });
 
-  it("average_rating 필드가 숫자가 아닐 경우 검증 실패", async () => {
-    const invalidData = { ...validData, average_rating: "not_a_number" as unknown as number };
+  it("average 필드가 숫자가 아닐 경우 검증 실패", async () => {
+    const invalidData = { ...validData, average: "not_a_number" as unknown as number };
 
     const errors = await validateDTO(invalidData);
 
     expect(errors.length).toBeGreaterThan(0);
-    expect(errors).toContain("average_rating");
+    expect(errors).toContain("average");
   });
 
-  it("total_count 필드가 정수가 아닐 경우 검증 실패", async () => {
-    const invalidData = { ...validData, total_count: 10.5 };
+  it("count 필드가 정수가 아닐 경우 검증 실패", async () => {
+    const invalidData = { ...validData, count: 10.5 };
 
     const errors = await validateDTO(invalidData);
 
     expect(errors.length).toBeGreaterThan(0);
-    expect(errors).toContain("total_count");
+    expect(errors).toContain("count");
   });
 });

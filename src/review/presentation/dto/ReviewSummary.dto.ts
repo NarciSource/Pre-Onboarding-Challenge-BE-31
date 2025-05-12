@@ -1,17 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsNumber, Max, Min } from "class-validator";
+import { IsDefined, IsInt, IsNumber, Max, Min } from "class-validator";
 
 export default class ReviewSummaryDTO {
   @ApiProperty({ description: "리뷰 평균 평점", example: 4.5 })
   @IsNumber()
   @Min(1)
   @Max(5)
-  average_rating: number;
+  average: number;
 
   @ApiProperty({ description: "리뷰 개수", example: 100 })
   @IsInt()
   @Min(0)
-  total_count: number;
+  count: number;
 
   @ApiProperty({
     description: "리뷰 평점 분포",
@@ -23,6 +23,7 @@ export default class ReviewSummaryDTO {
       5: 15,
     },
   })
+  @IsDefined()
   @IsInt({ each: true })
   distribution: {
     1: number;

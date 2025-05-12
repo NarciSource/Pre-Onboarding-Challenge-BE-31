@@ -1,8 +1,8 @@
 import { PickType } from "@nestjs/swagger";
 
-import { ProductCatalogDTO } from "@browsing/presentation/dto";
+import ProductDTO from "../model/Product.dto";
 
-export default class ProductResponseDTO extends PickType(ProductCatalogDTO, [
+export default class ProductResponseDTO extends PickType(ProductDTO, [
   "id",
   "name",
   "slug",

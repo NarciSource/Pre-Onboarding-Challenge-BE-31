@@ -27,9 +27,9 @@ export default class ReviewService {
     });
 
     const summary = {
-      average_rating:
+      average:
         reviews.map((review) => review.rating).reduce((a, b) => a + b, 0) / reviews.length || 0,
-      total_count: reviews.length,
+      count: reviews.length,
       distribution: {
         1: reviews.filter((review) => review.rating === 1).length,
         2: reviews.filter((review) => review.rating === 2).length,

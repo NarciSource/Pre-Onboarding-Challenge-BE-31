@@ -1,19 +1,12 @@
-import { ApiProperty, PickType } from "@nestjs/swagger";
+import { ApiProperty, OmitType, PickType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import {
-  IsArray,
-  IsBoolean,
-  IsDefined,
-  IsIn,
-  IsInt,
-  IsString,
-  ValidateNested,
-} from "class-validator";
+import { IsArray, IsBoolean, IsDefined, IsInt, ValidateNested } from "class-validator";
 
 import ImageDTO from "../model/Image.dto";
-import ProductDetailDTO from "../model/ProductDetail.dto";
+import ProductDTO from "../model/Product.dto";
 import ProductOptionGroupDTO from "../model/ProductOptionGroup.dto";
 import ProductPriceDTO from "../model/ProductPrice.dto";
+import ProductOptionBodyDTO from "./ProductOptionBody.dto";
 
 class CategoryOfProductBodyDTO {
   @ApiProperty({ description: "카테고리 ID", example: 5 })
@@ -27,34 +20,29 @@ class CategoryOfProductBodyDTO {
 
 type TagId = number;
 
-class PriceForProductBodyDTO extends PickType(ProductPriceDTO, [
-  "base_price",
-  "sale_price",
-  "cost_price",
-  "currency",
-  "tax_rate",
-] as const) {}
+class PriceForProductBodyDTO extends OmitType(ProductPriceDTO, ["discount_percentage"] as const) {}
 
-export default class ProductBodyDTO {
-  @ApiProperty({ description: "상품 이름", example: "슈퍼 편안한 소파" })
-  @IsString()
-  name: string;
+class ProductOptionGroupForBodyDTO extends OmitType(ProductOptionGroupDTO, [
+  "id",
+  "options",
+] as const) {
+  @ApiProperty({ description: "옵션 목록", type: [ProductOptionBodyDTO] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductOptionBodyDTO)
+  options?: ProductOptionBodyDTO[];
+}
 
-  @ApiProperty({ description: "슬러그", example: "super-comfortable-sofa" })
-  @IsString()
-  slug: string;
+class ImageForBodyDTO extends OmitType(ImageDTO, ["id"] as const) {}
 
-  @ApiProperty({ description: "짧은 설명", example: "최고급 소재로 만든 편안한 소파" })
-  @IsString()
-  short_description: string;
-
-  @ApiProperty({
-    description: "상세 설명",
-    example: "<p>이 소파는 최고급 소재로 제작되었으며...</p>",
-  })
-  @IsString()
-  full_description: string;
-
+export default class ProductBodyDTO extends PickType(ProductDTO, [
+  "name",
+  "slug",
+  "short_description",
+  "full_description",
+  "status",
+  "detail",
+]) {
   @ApiProperty({ description: "판매자 ID", example: 1 })
   @IsInt()
   seller_id: number;
@@ -62,18 +50,6 @@ export default class ProductBodyDTO {
   @ApiProperty({ description: "브랜드 ID", example: 2 })
   @IsInt()
   brand_id: number;
-
-  @ApiProperty({ description: "상태", example: "ACTIVE" })
-  @IsIn(["ACTIVE", "OUT_OF_STOCK", "DELETED"], {
-    message: "status는 ACTIVE, OUT_OF_STOCK 또는 DELETED만 허용됩니다.",
-  })
-  status: string;
-
-  @ApiProperty({ description: "상세 정보", type: ProductDetailDTO })
-  @IsDefined()
-  @ValidateNested()
-  @Type(() => ProductDetailDTO)
-  detail: ProductDetailDTO;
 
   @ApiProperty({ description: "가격 정보", type: PriceForProductBodyDTO })
   @IsDefined()
@@ -87,17 +63,17 @@ export default class ProductBodyDTO {
   @Type(() => CategoryOfProductBodyDTO)
   categories: CategoryOfProductBodyDTO[];
 
-  @ApiProperty({ description: "옵션 그룹 목록", type: [ProductOptionGroupDTO] })
+  @ApiProperty({ description: "옵션 그룹 목록", type: [ProductOptionGroupForBodyDTO] })
   @ValidateNested({ each: true })
   @IsArray()
-  @Type(() => ProductOptionGroupDTO)
-  option_groups: ProductOptionGroupDTO[];
+  @Type(() => ProductOptionGroupForBodyDTO)
+  option_groups: ProductOptionGroupForBodyDTO[];
 
-  @ApiProperty({ description: "이미지 목록", type: [ImageDTO] })
+  @ApiProperty({ description: "이미지 목록", type: [ImageForBodyDTO] })
   @ValidateNested({ each: true })
   @IsArray()
-  @Type(() => ImageDTO)
-  images: ImageDTO[];
+  @Type(() => ImageForBodyDTO)
+  images: ImageForBodyDTO[];
 
   @ApiProperty({ description: "태그 목록", example: [1, 4, 7] })
   @IsArray()

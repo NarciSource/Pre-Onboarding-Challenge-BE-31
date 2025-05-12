@@ -4,7 +4,14 @@ import { get_module } from "__test-utils__/test-module";
 
 import { ProductOptionsService } from "@product/application/services";
 import { Product_Image, Product_Option } from "@product/domain/entities";
-import { ImageDTO, OptionParamDTO, ProductOptionDTO, ResponseDTO } from "../dto";
+import {
+  ImageDTO,
+  OptionParamDTO,
+  ProductOptionBodyDTO,
+  ProductOptionBodyWithGroupDTO,
+  ProductOptionDTO,
+  ResponseDTO,
+} from "../dto";
 import ProductOptionsController from "./Product_Options.controller";
 
 describe("ProductOptionsController", () => {
@@ -18,10 +25,10 @@ describe("ProductOptionsController", () => {
     service = module.get(ProductOptionsService);
   });
 
-  describe("addOptions", () => {
+  describe("create_option", () => {
     it("상품 옵션 추가 성공", async () => {
       const param = { id: 1 };
-      const body = { name: "Option 1" } as ProductOptionDTO;
+      const body = { name: "Option 1" } as ProductOptionBodyWithGroupDTO;
       const data = {
         id: param.id,
         ...body,
@@ -38,10 +45,10 @@ describe("ProductOptionsController", () => {
     });
   });
 
-  describe("updateOptions", () => {
+  describe("update_option", () => {
     it("상품 옵션 수정 성공", async () => {
       const param = { id: 1, optionId: 2 };
-      const body = { name: "Updated Option" } as ProductOptionDTO;
+      const body = { name: "Updated Option" } as ProductOptionBodyDTO;
       const data = {
         id: param.id,
         option_group_id: param.optionId,
@@ -63,7 +70,7 @@ describe("ProductOptionsController", () => {
     });
   });
 
-  describe("deleteOptions", () => {
+  describe("delete_option", () => {
     it("상품 옵션 삭제 성공", async () => {
       const param = { id: 1, optionId: 2 };
       service.remove = jest.fn().mockResolvedValue(undefined);
@@ -78,7 +85,7 @@ describe("ProductOptionsController", () => {
     });
   });
 
-  describe("addImages", () => {
+  describe("create_image", () => {
     it("상품 이미지 추가 성공", async () => {
       const param = { id: 1 } as OptionParamDTO;
       const body = { option_id: 2, url: "http://example.com/image.jpg" } as ImageDTO;

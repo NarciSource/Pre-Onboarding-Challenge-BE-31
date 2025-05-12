@@ -10,7 +10,7 @@ describe("ReviewResponseBundleDTO", () => {
 
   const validData: Partial<ReviewResponseBundleDTO> = {
     items: [{ content: "리뷰 내용" }] as ReviewDTO[],
-    summary: { average_rating: 0 } as ReviewSummaryDTO,
+    summary: { average: 0 } as ReviewSummaryDTO,
     pagination: {
       total_items: 100,
       total_pages: 10,

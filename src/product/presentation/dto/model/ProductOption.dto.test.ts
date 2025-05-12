@@ -5,7 +5,8 @@ import ProductOptionDTO from "./ProductOption.dto";
 describe("ProductOption", () => {
   const validateDTO = getValidateDTO(ProductOptionDTO);
 
-  const validData: Partial<ProductOptionDTO> = {
+  const validData: ProductOptionDTO = {
+    id: 1,
     option_group_id: 35,
     name: "네이비 블루",
     additional_price: 25000,
@@ -25,7 +26,7 @@ describe("ProductOption", () => {
 
     const errors = await validateDTO(invalidData);
 
-    expect(errors).toHaveLength(5);
+    expect(errors).toHaveLength(7);
     expect(errors).toContain("name");
     expect(errors).toContain("additional_price");
     expect(errors).toContain("sku");

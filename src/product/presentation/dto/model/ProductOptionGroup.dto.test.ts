@@ -7,6 +7,7 @@ describe("ProductOptionGroupDTO", () => {
   const validateDTO = getValidateDTO(ProductOptionGroupDTO);
 
   const validOption: ProductOptionDTO = {
+    id: 1,
     option_group_id: 35,
     name: "네이비 블루",
     additional_price: 25000,

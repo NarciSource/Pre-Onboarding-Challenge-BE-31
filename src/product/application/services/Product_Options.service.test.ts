@@ -38,14 +38,21 @@ describe("ProductOptionsService", () => {
     const product_id = 1;
     const option_id = 1;
     const options = { name: "옵션 수정" } as Omit<Product_Option, "option_group_id">;
-    const updatedOption = { id: option_id, ...options } as Product_Option;
+    const updatedOption = {
+      id: option_id,
+      option_group: { id: 1 },
+      ...options,
+    } as Product_Option;
 
     productOptionsRepository.update = jest.fn().mockResolvedValue(true);
     productOptionsRepository.findOneBy = jest.fn().mockResolvedValue(updatedOption);
 
     const result = await service.update(product_id, option_id, options);
 
-    expect(result).toEqual(updatedOption);
+    expect(result).toEqual({
+      option_group_id: 1,
+      ...updatedOption,
+    });
   });
 
   it("옵션 수정 실패 시 NotFoundException 발생", async () => {

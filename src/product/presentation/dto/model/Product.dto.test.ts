@@ -9,13 +9,12 @@ import {
   TagDTO,
   ProductOptionGroupDTO,
 } from "@product/presentation/dto";
-import { CategoryDTO } from "@category/presentation/dto";
-import ProductCatalogDTO from "./ProductCatalog.dto";
+import ProductDTO from "./Product.dto";
 
 describe("ProductCatalogDTO", () => {
-  const validateDTO = getValidateDTO(ProductCatalogDTO);
+  const validateDTO = getValidateDTO(ProductDTO);
 
-  const validData: Partial<ProductCatalogDTO> = {
+  const validData: Partial<ProductDTO> = {
     id: 123,
     name: "슈퍼 편안한 소파",
     slug: "super-comfortable-sofa",
@@ -28,7 +27,6 @@ describe("ProductCatalogDTO", () => {
     brand: {} as BrandDTO,
     detail: {} as ProductDetailDTO,
     price: {} as ProductPriceDTO,
-    categories: [{}] as CategoryDTO[],
     option_groups: [{}] as ProductOptionGroupDTO[],
     images: [{}] as ImageDTO[],
     tags: [{}] as TagDTO[],
@@ -40,14 +38,6 @@ describe("ProductCatalogDTO", () => {
     const errors = await validateDTO(invalidData);
 
     expect(errors).toContain("status");
-  });
-
-  it("categories 필드가 배열이 아닌 경우 검증 실패", async () => {
-    const invalidData = { ...validData, categories: "not_an_array" as unknown as CategoryDTO[] };
-
-    const errors = await validateDTO(invalidData);
-
-    expect(errors).toContain("categories");
   });
 
   it("images 필드가 배열이 아닌 경우 검증 실패", async () => {

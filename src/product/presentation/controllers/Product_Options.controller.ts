@@ -9,7 +9,15 @@ import {
   ResponseType,
 } from "@libs/decorators";
 import { ProductOptionsService } from "@product/application/services";
-import { ImageDTO, OptionParamDTO, ParamDTO, ProductOptionDTO, ResponseDTO } from "../dto";
+import {
+  ImageDTO,
+  OptionParamDTO,
+  ParamDTO,
+  ProductOptionBodyDTO,
+  ProductOptionBodyWithGroupDTO,
+  ProductOptionDTO,
+  ResponseDTO,
+} from "../dto";
 
 @ApiTags("상품 옵션 관리")
 @ApiBearerAuth()
@@ -26,9 +34,9 @@ export default class ProductOptionsController {
   @ResponseType(ResponseDTO<ProductOptionDTO>)
   async create_option(
     @Param() { id }: ParamDTO,
-    @Body() { option_group_id, ...body }: ProductOptionDTO,
+    @Body() { option_group_id, ...body }: ProductOptionBodyWithGroupDTO,
   ) {
-    const data = await this.service.register(id, option_group_id!, body);
+    const data = await this.service.register(id, option_group_id, body);
 
     return {
       success: true,
@@ -44,7 +52,10 @@ export default class ProductOptionsController {
   @ApiBadRequestResponse("상품 옵션 수정에 실패했습니다.")
   @Put(":id/options/:optionId")
   @ResponseType(ResponseDTO<ProductOptionDTO>)
-  async update_option(@Param() { id, optionId }: OptionParamDTO, @Body() body: ProductOptionDTO) {
+  async update_option(
+    @Param() { id, optionId }: OptionParamDTO,
+    @Body() body: ProductOptionBodyDTO,
+  ) {
     const data = await this.service.update(id, optionId, body);
 
     return {

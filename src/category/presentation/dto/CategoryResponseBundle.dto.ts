@@ -1,20 +1,12 @@
-import { ApiProperty, PickType } from "@nestjs/swagger";
+import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsArray, IsDefined, ValidateNested } from "class-validator";
 
 import { PaginationSummaryDTO } from "@shared/dto";
-import { ProductSummaryDTO } from "@browsing/presentation/dto";
+import ProductSummaryDTO from "@browsing/presentation/dto/ProductSummary.dto";
 import CategoryDTO from "./Category.dto";
 
-export class CategoryResponseDTO extends PickType(CategoryDTO, [
-  "id",
-  "name",
-  "slug",
-  "description",
-  "level",
-  "image_url",
-  "parent",
-] as const) {}
+export class CategoryResponseDTO extends OmitType(CategoryDTO, ["is_primary"] as const) {}
 
 export default class CategoryResponseBundleDTO {
   @ApiProperty({ description: "카테고리 정보", type: CategoryResponseDTO })
