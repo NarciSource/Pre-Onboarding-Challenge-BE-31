@@ -44,14 +44,14 @@ export default class ProductService {
   ) {}
 
   async register({
+    seller_id,
+    brand_id,
     detail,
     price,
     categories,
     option_groups,
     images,
     tags: tag_ids,
-    seller_id,
-    brand_id,
     ...product
   }: ProductInputDTO) {
     // 상품 등록 트랜잭션 처리
@@ -86,24 +86,22 @@ export default class ProductService {
       );
 
       // 상품 옵션 등록
-      const saved_option_groups = await this.product_option_group_repository
-        .with_transaction(manager)
-        .save(
-          option_groups.map(({ options: _options, ...group }) => ({
-            ...group,
+      for (const { options, ...group_data } of option_groups) {
+        const option_group_entity = await this.product_option_group_repository
+          .with_transaction(manager)
+          .save({
+            ...group_data,
             product: { id: product_id },
-          })),
-        );
-      await this.product_options_repository.with_transaction(manager).save(
-        option_groups.flatMap(
-          ({ options }, index) =>
-            options?.map((option) => ({
-              ...option,
-              product: { id: product_id },
-              option_group: { id: saved_option_groups[index].id },
-            })) ?? [],
-        ),
-      );
+          });
+
+        for (const option of options) {
+          await this.product_options_repository.with_transaction(manager).save({
+            ...option,
+            product: { id: product_id },
+            option_group: option_group_entity,
+          });
+        }
+      }
 
       await this.product_option_group_repository
         .with_transaction(manager)
@@ -185,7 +183,17 @@ export default class ProductService {
 
   async edit(
     product_id: number,
-    { detail, seller_id, brand_id, price, categories, ...product }: ProductInputDTO,
+    {
+      seller_id,
+      brand_id,
+      detail,
+      price,
+      categories,
+      option_groups,
+      images,
+      tags: tag_ids,
+      ...product
+    }: ProductInputDTO,
   ) {
     const updated = await this.entity_manager.transaction(async (manager) => {
       // 에러 핸들링을 위한 헬퍼 함수
@@ -229,13 +237,52 @@ export default class ProductService {
       await update_or_fail(this.product_price_repository, { product: { id: product_id } }, price);
 
       // 상품 카테고리 업데이트
-      for (const { category_id, is_primary } of categories) {
+      for (const { category_id, ...category } of categories) {
         await update_or_fail(
           this.product_category_repository,
           { product: { id: product_id }, category: { id: category_id } },
-          { is_primary },
+          category,
         );
       }
+
+      // 상품 옵션 그룹 업데이트
+      for (const { options, ...group_data } of option_groups) {
+        await update_or_fail(
+          this.product_option_group_repository,
+          { product: { id: product_id } },
+          group_data,
+        );
+
+        const option_group_entity = await this.product_option_group_repository.findOneBy({
+          product: { id: product_id },
+        });
+
+        // 상품 옵션 업데이트
+        await this.product_options_repository.delete({ option_group: option_group_entity! });
+        await this.product_options_repository.with_transaction(manager).save(
+          options.map((option) => ({
+            ...option,
+            option_group: option_group_entity!,
+          })),
+        );
+      }
+
+      // 상품 이미지 업데이트
+      for (const { option_id, ...image } of images) {
+        await update_or_fail(
+          this.product_image_repository,
+          { product: { id: product_id }, option: { id: option_id ?? undefined } },
+          image,
+        );
+      }
+
+      // 상품 태그 업데이트
+      await this.product_tag_repository
+        .with_transaction(manager)
+        .delete({ product: { id: product_id } });
+      await this.product_tag_repository
+        .with_transaction(manager)
+        .save(tag_ids.map((id) => ({ tag: { id }, product: { id: product_id } })));
 
       // 업데이트 반환
       return product_entity;
