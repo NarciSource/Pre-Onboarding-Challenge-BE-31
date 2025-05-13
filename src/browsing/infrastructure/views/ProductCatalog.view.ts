@@ -15,7 +15,6 @@ import {
 } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
 import { ReviewEntity } from "@review/infrastructure/entities";
-import { CatalogCategoryDTO, CatalogProductOptionGroupsDTO, CatalogRatingDTO } from "../dto";
 
 @ViewEntity({
   expression: (dataSource: DataSource) => {
@@ -177,18 +176,41 @@ export default class ProductCatalogView {
 
   @ViewColumn() detail: Omit<ProductDetailEntity, "id" | "product_id">;
 
-  @ViewColumn() price: ProductPriceEntity & { discount_percentage: number | null };
+  @ViewColumn() price: Omit<ProductPriceEntity, "id" | "product" | "cost_price"> & {
+    discount_percentage: number | null;
+  };
 
-  @ViewColumn() categories: CatalogCategoryDTO[];
+  @ViewColumn() categories: Category[];
 
-  @ViewColumn() option_groups: CatalogProductOptionGroupsDTO[];
+  @ViewColumn() option_groups: OptionGroups[];
 
-  @ViewColumn() images: Omit<
-    ProductImageEntity & { option_id: number | null },
-    "product" | "option"
-  >[];
+  @ViewColumn() images: (Omit<ProductImageEntity, "product" | "option"> & {
+    option_id: number | null;
+  })[];
 
   @ViewColumn() tags: TagEntity[];
 
-  @ViewColumn() rating: CatalogRatingDTO;
+  @ViewColumn() rating: Rating;
 }
+
+type SimpleCategory = Pick<CategoryEntity, "id" | "name" | "slug">;
+type Category = SimpleCategory & {
+  is_primary: boolean;
+  parent: SimpleCategory | null;
+};
+
+type OptionGroups = Omit<ProductOptionGroupEntity, "product"> & {
+  options: Omit<ProductOptionEntity, "option_group">[];
+};
+
+type Rating = {
+  average: number;
+  count: number;
+  distribution: {
+    "5": number;
+    "4": number;
+    "3": number;
+    "2": number;
+    "1": number;
+  };
+};
