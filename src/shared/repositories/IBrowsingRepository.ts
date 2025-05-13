@@ -1,4 +1,5 @@
 import {
+  EntityManager,
   FindOperator,
   FindOptionsOrder,
   FindOptionsWhere,
@@ -7,6 +8,8 @@ import {
 } from "typeorm";
 
 export default interface IBrowsingRepository<T extends ObjectLiteral> extends Repository<T> {
+  with_transaction(manager: EntityManager): this;
+
   find(options?: {
     where?: FindOptionsWhere<T> & {
       categories?: FindOperator<number[]>;

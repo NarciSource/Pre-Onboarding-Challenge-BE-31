@@ -1,4 +1,5 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@shared/repositories";
 import { Review } from "@review/domain/entities";
@@ -8,6 +9,7 @@ import { FilterDTO } from "../dto";
 @Injectable()
 export default class ReviewService {
   constructor(
+    private readonly entity_manager: EntityManager,
     @Inject("IReviewRepository")
     private readonly repository: IBaseRepository<ReviewEntity>,
   ) {}
@@ -52,26 +54,43 @@ export default class ReviewService {
   }
 
   async register(product_id: number, review: Pick<Review, "rating" | "title" | "content">) {
-    return await this.repository.save({ product: { id: product_id }, ...review });
+    const created = await this.entity_manager.transaction(async (manager) => {
+      const { id } = await this.repository
+        .with_transaction(manager)
+        .save({ product: { id: product_id }, ...review });
+
+      return await this.repository
+        .with_transaction(manager)
+        .findOne({ where: { id }, relations: ["user"] });
+    });
+
+    return created!;
   }
 
-  async edit(id: number, review: Pick<Review, "rating" | "title" | "content">) {
-    const is_updated = await this.repository.update(id, review);
+  async edit(review_id: number, review: Pick<Review, "rating" | "title" | "content">) {
+    const updated = await this.entity_manager.transaction(async (manager) => {
+      const { affected } = await this.repository
+        .with_transaction(manager)
+        .update(review_id, review);
 
-    if (!is_updated) {
-      throw new NotFoundException({
-        message: "요청한 리소스를 찾을 수 없습니다.",
-        details: { resourceType: "Review", resourceId: id },
-      });
-    }
+      if (!affected) {
+        throw new NotFoundException({
+          message: "요청한 리소스를 찾을 수 없습니다.",
+          details: { resourceType: "Review", resourceId: review_id },
+        });
+      }
 
-    return (await this.repository.findOneBy({ id }))!;
+      return await this.repository.with_transaction(manager).findOneBy({ id: review_id });
+    });
+
+    const { id, rating, title, content, updated_at } = updated!;
+    return { id, rating, title, content, updated_at };
   }
 
   async remove(id: number) {
-    const is_deleted = await this.repository.delete(id);
+    const { affected } = await this.repository.delete(id);
 
-    if (!is_deleted) {
+    if (!affected) {
       throw new NotFoundException({
         message: "요청한 리소스를 찾을 수 없습니다.",
         details: { resourceType: "Review", resourceId: id },

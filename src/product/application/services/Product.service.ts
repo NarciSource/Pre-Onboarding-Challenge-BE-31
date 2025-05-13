@@ -1,5 +1,6 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { Between, EntityManager, In, Like } from "typeorm";
+import { Between, EntityManager, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import {
@@ -124,14 +125,9 @@ export default class ProductService {
 
       return product_entity;
     });
-    // 상품 등록 결과 반환
-    return (({ id, name, slug, created_at, updated_at }) => ({
-      id: id,
-      name,
-      slug,
-      created_at,
-      updated_at,
-    }))(product_entity);
+    // 반환 형식 변환
+    const { id, name, slug, created_at, updated_at } = product_entity;
+    return { id, name, slug, created_at, updated_at };
   }
 
   async find_all({
@@ -176,7 +172,7 @@ export default class ProductService {
   }
 
   async find(id: number) {
-    const product = await this.product_catalog_repository.findOne({ where: { id } });
+    const product = await this.product_catalog_repository.findOneBy({ id });
 
     if (!product) {
       throw new NotFoundException({
@@ -191,59 +187,69 @@ export default class ProductService {
     product_id: number,
     { detail, seller_id, brand_id, price, categories, ...product }: ProductInputDTO,
   ) {
-    const is_updated = await this.entity_manager.transaction(async (manager) => {
-      // 상품 디테일 업데이트
-      await this.product_detail_repository.with_transaction(manager).update(product_id, detail);
+    const updated = await this.entity_manager.transaction(async (manager) => {
+      // 에러 핸들링을 위한 헬퍼 함수
+      async function update_or_fail<T extends ObjectLiteral>(
+        repo: IBaseRepository<T>,
+        where: FindOptionsWhere<T>,
+        data: QueryDeepPartialEntity<T>,
+      ) {
+        const { affected } = await repo.with_transaction(manager).update(where, data);
+        if (!affected) {
+          throw new NotFoundException({
+            message: `이 제품에 해당하는 ${repo.metadata.tableName} 리소스를 찾을 수 없습니다.`,
+            details: { resourceType: repo.metadata.tableName },
+          });
+        }
+      }
 
-      // 상품 가격 업데이트
-      await this.product_price_repository.with_transaction(manager).update(product_id, price);
+      // 정합성 체크
+      const product_entity = await this.repository
+        .with_transaction(manager)
+        .findOneBy({ id: product_id });
 
-      // 상품 카테고리 업데이트
-      for (const { category_id, is_primary } of categories) {
-        await this.product_category_repository.with_transaction(manager).update(
-          {
-            product: { id: product_id },
-          },
-          { is_primary, category: { id: category_id } },
-        );
+      if (!product_entity) {
+        throw new NotFoundException({
+          message: "요청한 리소스를 찾을 수 없습니다.",
+          details: { resourceType: "Product", resourceId: product_id },
+        });
       }
 
       // 상품 제품 업데이트
-      return this.repository.with_transaction(manager).update(
-        {
-          id: product_id,
-        },
-        {
-          seller: { id: seller_id },
-          brand: { id: brand_id },
-          ...product,
-        },
+      await update_or_fail(
+        this.repository,
+        { id: product_id },
+        { seller: { id: seller_id }, brand: { id: brand_id }, ...product },
       );
+
+      // 상품 디테일 업데이트
+      await update_or_fail(this.product_detail_repository, { product: { id: product_id } }, detail);
+
+      // 상품 가격 업데이트
+      await update_or_fail(this.product_price_repository, { product: { id: product_id } }, price);
+
+      // 상품 카테고리 업데이트
+      for (const { category_id, is_primary } of categories) {
+        await update_or_fail(
+          this.product_category_repository,
+          { product: { id: product_id }, category: { id: category_id } },
+          { is_primary },
+        );
+      }
+
+      // 업데이트 반환
+      return product_entity;
     });
 
-    if (!is_updated) {
-      throw new NotFoundException({
-        message: "요청한 리소스를 찾을 수 없습니다.",
-        details: { resourceType: "Product", resourceId: product_id },
-      });
-    }
-
-    const updated_product = await this.product_catalog_repository.findOne({
-      where: { id: product_id },
-    });
-
-    return (({ id, name, slug, updated_at }) => ({
-      id,
-      name,
-      slug,
-      updated_at,
-    }))(updated_product!);
+    // 반환 형식 변환
+    const { id, name, slug, updated_at } = updated;
+    return { id, name, slug, updated_at };
   }
 
   async remove(id: number) {
-    const is_deleted = await this.repository.delete(id);
+    const { affected } = await this.repository.delete(id);
 
-    if (!is_deleted) {
+    if (!affected) {
       throw new NotFoundException({
         message: "요청한 리소스를 찾을 수 없습니다.",
         details: { resourceType: "Product", resourceId: id },
