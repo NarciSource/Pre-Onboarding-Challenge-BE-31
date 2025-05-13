@@ -94,13 +94,13 @@ export default class ProductService {
             product: { id: product_id },
           });
 
-        for (const option of options) {
-          await this.product_options_repository.with_transaction(manager).save({
+        await this.product_options_repository.with_transaction(manager).save(
+          options.map((option) => ({
             ...option,
             product: { id: product_id },
             option_group: option_group_entity,
-          });
-        }
+          })),
+        );
       }
 
       await this.product_option_group_repository
@@ -253,12 +253,16 @@ export default class ProductService {
           group_data,
         );
 
-        const option_group_entity = await this.product_option_group_repository.findOneBy({
-          product: { id: product_id },
-        });
+        const option_group_entity = await this.product_option_group_repository
+          .with_transaction(manager)
+          .findOneBy({
+            product: { id: product_id },
+          });
 
         // 상품 옵션 업데이트
-        await this.product_options_repository.delete({ option_group: option_group_entity! });
+        await this.product_options_repository
+          .with_transaction(manager)
+          .delete({ option_group: option_group_entity! });
         await this.product_options_repository.with_transaction(manager).save(
           options.map((option) => ({
             ...option,

@@ -282,6 +282,9 @@ describe("ProductService", () => {
       detailRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
       priceRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
       categoryRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      optionGroupRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      optionsRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      imageRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
 
       // Act
       const result = await service.edit(product_id, input);
