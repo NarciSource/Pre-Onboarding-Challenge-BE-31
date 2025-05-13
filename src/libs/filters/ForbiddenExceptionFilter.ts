@@ -10,12 +10,17 @@ export default class ForbiddenExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     const status = exception.getStatus();
+    const body = exception.getResponse() as {
+      message: string;
+      details?: string[];
+    };
 
     response.status(status).json({
       success: false,
       error: {
         code: ErrorCode.FORBIDDEN,
-        message: "해당 작업을 수행할 권한이 없습니다.",
+        message: body.message ?? "해당 작업을 수행할 권한이 없습니다.",
+        details: body.details ?? [],
       },
     });
   }

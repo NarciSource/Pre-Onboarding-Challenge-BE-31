@@ -10,12 +10,17 @@ export default class InternalServerErrorExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     const status = exception.getStatus();
+    const body = exception.getResponse() as {
+      message: string;
+      details?: string[];
+    };
 
     response.status(status).json({
       success: false,
       error: {
         code: ErrorCode.INTERNAL_ERROR,
-        message: "서버 내부 오류가 발생했습니다.",
+        message: body.message ?? "서버 내부 오류가 발생했습니다.",
+        details: body.details ?? [],
       },
     });
   }
