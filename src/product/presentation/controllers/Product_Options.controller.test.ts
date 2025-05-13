@@ -5,6 +5,7 @@ import { get_module } from "__test-utils__/test-module";
 import { ProductOptionsService } from "@product/application/services";
 import { Product_Image, Product_Option } from "@product/domain/entities";
 import {
+  ImageDTO,
   OptionParamDTO,
   ProductOptionBodyDTO,
   ProductOptionBodyWithGroupDTO,
@@ -95,10 +96,7 @@ describe("ProductOptionsController", () => {
       const data = { id: param.id, url: body.url } as Product_Image;
       service.register_images = jest.fn().mockResolvedValue(data);
 
-      const result: ResponseDTO<ProductOptionImageBodyDTO> = await controller.create_image(
-        param,
-        body,
-      );
+      const result: ResponseDTO<ImageDTO> = await controller.create_image(param, body);
 
       expect(result).toEqual({
         success: true,
