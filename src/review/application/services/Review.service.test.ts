@@ -17,83 +17,93 @@ describe("ReviewService", () => {
 
     service = module.get(ReviewService);
     repository = module.get("IReviewRepository");
+    repository.with_transaction = jest.fn().mockReturnValue(repository);
   });
 
-  it("리뷰 조회", async () => {
-    const reviews = [
-      { id: 1, product_id: 1, rating: 5, content: "좋아요" },
-      { id: 2, product_id: 1, rating: 4, content: "괜찮아요" },
-    ];
-    repository.find = jest.fn().mockResolvedValue(reviews);
+  describe("find", () => {
+    it("리뷰 조회", async () => {
+      const reviews = [
+        { id: 1, product_id: 1, rating: 5, content: "좋아요" },
+        { id: 2, product_id: 1, rating: 4, content: "괜찮아요" },
+      ];
+      repository.find = jest.fn().mockResolvedValue(reviews);
 
-    const filter: FilterDTO = { page: 1, per_page: 10, rating: 3, sort: "rating:DESC" };
-    const result = await service.find(1, filter);
+      const filter: FilterDTO = { page: 1, per_page: 10, rating: 3, sort: "rating:DESC" };
+      const result = await service.find(1, filter);
 
-    expect(result.items).toEqual(reviews);
-    expect(result.summary.average).toBe(4.5);
-    expect(result.summary.count).toBe(2);
-    expect(result.summary.distribution[5]).toBe(1);
-    expect(result.summary.distribution[4]).toBe(1);
-    expect(repository.find).toHaveBeenCalledWith({
-      where: {
-        product: { id: 1 },
-        rating: 3,
-      },
-      relations: ["user"],
-      order: { rating: "DESC" },
-      skip: 0,
-      take: 10,
+      expect(result.items).toEqual(reviews);
+      expect(result.summary.average).toBe(4.5);
+      expect(result.summary.count).toBe(2);
+      expect(result.summary.distribution[5]).toBe(1);
+      expect(result.summary.distribution[4]).toBe(1);
+      expect(repository.find).toHaveBeenCalledWith({
+        where: {
+          product: { id: 1 },
+          rating: 3,
+        },
+        relations: ["user"],
+        order: { rating: "DESC" },
+        skip: 0,
+        take: 10,
+      });
     });
   });
 
-  it("리뷰 등록", async () => {
-    const review = { rating: 5, title: "리뷰 제목", content: "좋아요" };
-    const savedReview = { id: 1, product_id: 1, ...review };
-    repository.save = jest.fn().mockResolvedValue(savedReview);
+  describe("register", () => {
+    it("리뷰 등록", async () => {
+      const review = { rating: 5, title: "리뷰 제목", content: "좋아요" };
+      const savedReview = { id: 1, product_id: 1, ...review };
+      repository.save = jest.fn().mockResolvedValue(savedReview);
+      repository.findOne = jest.fn().mockResolvedValue(savedReview);
 
-    const result = await service.register(1, review);
+      const result = await service.register(1, review);
 
-    expect(result).toEqual(savedReview);
-    expect(repository.save).toHaveBeenCalledWith({ product: { id: 1 }, ...review });
+      expect(result).toEqual(savedReview);
+      expect(repository.save).toHaveBeenCalledWith({ product: { id: 1 }, ...review });
+    });
   });
 
-  it("리뷰 수정", async () => {
-    const review = { rating: 4, title: "리뷰 수정 제목", content: "수정된 리뷰" };
-    const updatedReview = { id: 1, product_id: 1, ...review };
-    repository.update = jest.fn().mockResolvedValue(true);
-    repository.findOneBy = jest.fn().mockResolvedValue(updatedReview);
+  describe("edit", () => {
+    it("리뷰 수정", async () => {
+      const review = { rating: 4, title: "리뷰 수정 제목", content: "수정된 리뷰" };
+      const updatedReview = { id: 1, ...review };
+      repository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      repository.findOneBy = jest.fn().mockResolvedValue(updatedReview);
 
-    const result = await service.edit(1, review);
+      const result = await service.edit(1, review);
 
-    expect(result).toEqual(updatedReview);
-    expect(repository.update).toHaveBeenCalledWith(1, review);
-    expect(repository.findOneBy).toHaveBeenCalledWith({ id: 1 });
-  });
-
-  it("리뷰 수정 실패 시 NotFoundException 발생", async () => {
-    repository.update = jest.fn().mockResolvedValue(false);
-
-    const result = service.edit(1, {
-      rating: 4,
-      title: "수정된 리뷰 제목",
-      content: "수정된 리뷰",
+      expect(result).toEqual(expect.objectContaining(updatedReview));
+      expect(repository.update).toHaveBeenCalledWith(1, review);
+      expect(repository.findOneBy).toHaveBeenCalledWith({ id: 1 });
     });
 
-    await expect(result).rejects.toThrow(NotFoundException);
+    it("리뷰 수정 실패 시 NotFoundException 발생", async () => {
+      repository.update = jest.fn().mockResolvedValue({ affected: 0 });
+
+      const result = service.edit(1, {
+        rating: 4,
+        title: "수정된 리뷰 제목",
+        content: "수정된 리뷰",
+      });
+
+      await expect(result).rejects.toThrow(NotFoundException);
+    });
   });
 
-  it("리뷰 삭제", async () => {
-    repository.delete = jest.fn().mockResolvedValue(true);
+  describe("remove", () => {
+    it("리뷰 삭제", async () => {
+      repository.delete = jest.fn().mockResolvedValue({ affected: 1 });
 
-    await service.remove(1);
+      await service.remove(1);
 
-    expect(repository.delete).toHaveBeenCalledWith(1);
-  });
+      expect(repository.delete).toHaveBeenCalledWith(1);
+    });
 
-  it("리뷰 삭제 실패 시 NotFoundException 발생", async () => {
-    repository.delete = jest.fn().mockResolvedValue(false);
+    it("리뷰 삭제 실패 시 NotFoundException 발생", async () => {
+      repository.delete = jest.fn().mockResolvedValue({ affected: 0 });
 
-    await expect(service.remove(1)).rejects.toThrow(NotFoundException);
-    expect(repository.delete).toHaveBeenCalledWith(1);
+      await expect(service.remove(1)).rejects.toThrow(NotFoundException);
+      expect(repository.delete).toHaveBeenCalledWith(1);
+    });
   });
 });

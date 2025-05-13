@@ -1,6 +1,6 @@
 import { NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
-import { Between, EntityManager, In, Like } from "typeorm";
+import { Between, In, Like } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
@@ -12,33 +12,41 @@ import ProductService from "./Product.service";
 
 describe("ProductService", () => {
   let service: ProductService;
-  let entityManager: EntityManager;
   let productRepository: IBaseRepository<ProductEntity>;
-  let productDetailRepository: IBaseRepository<ProductEntity>;
-  let productPriceRepository: IBaseRepository<ProductEntity>;
-  let productCategoryRepository: IBaseRepository<ProductEntity>;
-  let productOptionsRepository: IBaseRepository<ProductEntity>;
-  let productOptionGroupRepository: IBaseRepository<ProductEntity>;
-  let productImageRepository: IBaseRepository<ProductEntity>;
-  let productTagRepository: IBaseRepository<ProductEntity>;
-  let productCatalogRepository: IBrowsingRepository<ProductCatalogView>;
-  let productSummaryRepository: IBrowsingRepository<ProductSummaryView>;
+  let detailRepository: IBaseRepository<ProductEntity>;
+  let priceRepository: IBaseRepository<ProductEntity>;
+  let categoryRepository: IBaseRepository<ProductEntity>;
+  let optionsRepository: IBaseRepository<ProductEntity>;
+  let optionGroupRepository: IBaseRepository<ProductEntity>;
+  let imageRepository: IBaseRepository<ProductEntity>;
+  let tagRepository: IBaseRepository<ProductEntity>;
+  let catalogRepository: IBrowsingRepository<ProductCatalogView>;
+  let summaryRepository: IBrowsingRepository<ProductSummaryView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     service = module.get<ProductService>(ProductService);
-    entityManager = module.get(EntityManager);
+
     productRepository = module.get("IProductRepository");
-    productDetailRepository = module.get("IProductDetailRepository");
-    productPriceRepository = module.get("IProductPriceRepository");
-    productCategoryRepository = module.get("IProductCategoryRepository");
-    productOptionsRepository = module.get("IProductOptionsRepository");
-    productOptionGroupRepository = module.get("IProductOptionGroupRepository");
-    productImageRepository = module.get("IProductImageRepository");
-    productTagRepository = module.get("IProductTagRepository");
-    productCatalogRepository = module.get("IProductCatalogRepository");
-    productSummaryRepository = module.get("IProductSummaryRepository");
+    detailRepository = module.get("IProductDetailRepository");
+    priceRepository = module.get("IProductPriceRepository");
+    categoryRepository = module.get("IProductCategoryRepository");
+    optionsRepository = module.get("IProductOptionsRepository");
+    optionGroupRepository = module.get("IProductOptionGroupRepository");
+    imageRepository = module.get("IProductImageRepository");
+    tagRepository = module.get("IProductTagRepository");
+    catalogRepository = module.get("IProductCatalogRepository");
+    summaryRepository = module.get("IProductSummaryRepository");
+
+    productRepository.with_transaction = jest.fn().mockReturnValue(productRepository);
+    detailRepository.with_transaction = jest.fn().mockReturnValue(detailRepository);
+    priceRepository.with_transaction = jest.fn().mockReturnValue(priceRepository);
+    categoryRepository.with_transaction = jest.fn().mockReturnValue(categoryRepository);
+    optionsRepository.with_transaction = jest.fn().mockReturnValue(optionsRepository);
+    optionGroupRepository.with_transaction = jest.fn().mockReturnValue(optionGroupRepository);
+    imageRepository.with_transaction = jest.fn().mockReturnValue(imageRepository);
+    tagRepository.with_transaction = jest.fn().mockReturnValue(tagRepository);
   });
 
   const options = [
@@ -107,243 +115,224 @@ describe("ProductService", () => {
     tags: [1, 4, 7],
   };
 
-  it("상품 등록", async () => {
-    // Arrange
-    const mockProductSave = jest.fn().mockResolvedValue({
-      id: 1,
-      name: "상품명",
-      slug: "product-slug",
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
-    const mockProductDetailSave = jest.fn();
-    const mockProductPriceSave = jest.fn();
-    const mockProductCategorySave = jest.fn();
-    const mockProductOptionGroupSave = jest
-      .fn()
-      .mockResolvedValue([{ id: 1, name: "색상", display_order: 1 }]);
-    const mockProductOptionsSave = jest.fn();
-    const mockProductImageSave = jest.fn();
-    const mockProductTagSave = jest.fn();
+  describe("register", () => {
+    it("상품 등록", async () => {
+      // Arrange
+      productRepository.save = jest.fn().mockResolvedValue({
+        id: 1,
+        name: "상품명",
+        slug: "product-slug",
+        created_at: new Date(),
+        updated_at: new Date(),
+      });
+      detailRepository.save = jest.fn();
+      priceRepository.save = jest.fn();
+      categoryRepository.save = jest.fn();
+      optionGroupRepository.save = jest
+        .fn()
+        .mockResolvedValue([{ id: 1, name: "색상", display_order: 1 }]);
+      optionsRepository.save = jest.fn();
+      imageRepository.save = jest.fn();
+      tagRepository.save = jest.fn();
 
-    productRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductSave,
-    });
-    productDetailRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductDetailSave,
-    });
-    productPriceRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductPriceSave,
-    });
-    productCategoryRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductCategorySave,
-    });
-    productOptionGroupRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductOptionGroupSave,
-    });
-    productOptionsRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductOptionsSave,
-    });
-    productImageRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductImageSave,
-    });
-    productTagRepository.with_transaction = jest.fn().mockReturnValue({
-      save: mockProductTagSave,
-    });
+      // Act
+      const result = await service.register(input);
 
-    // Act
-    const result = await service.register(input);
-
-    // Assert
-    expect(mockProductSave).toHaveBeenCalledWith(expect.objectContaining(product));
-    expect(mockProductDetailSave).toHaveBeenCalledWith(expect.objectContaining(input.detail));
-    expect(mockProductPriceSave).toHaveBeenCalledWith(expect.objectContaining(input.price));
-    expect(mockProductCategorySave).toHaveBeenCalledWith(
-      expect.arrayContaining([expect.objectContaining({ category: { id: 5 }, is_primary: true })]),
-    );
-    expect(mockProductOptionGroupSave).toHaveBeenCalledWith(
-      expect.arrayContaining([expect.objectContaining(option_group)]),
-    );
-    expect(mockProductOptionsSave).toHaveBeenCalledWith(
-      expect.arrayContaining(options.map(expect.objectContaining)),
-    );
-    expect(mockProductImageSave).toHaveBeenCalledWith(
-      expect.arrayContaining(
-        input.images.map(
-          ({ option_id: _option_id, ...image }) =>
-            expect.objectContaining({
-              ...image,
-              option: { id: undefined },
-              product: { id: 1 },
-            }) as ProductEntity,
+      // Assert
+      expect(productRepository.save).toHaveBeenCalledWith(expect.objectContaining(product));
+      expect(detailRepository.save).toHaveBeenCalledWith(expect.objectContaining(input.detail));
+      expect(priceRepository.save).toHaveBeenCalledWith(expect.objectContaining(input.price));
+      expect(categoryRepository.save).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({ category: { id: 5 }, is_primary: true }),
+        ]),
+      );
+      expect(optionGroupRepository.save).toHaveBeenCalledWith(
+        expect.arrayContaining([expect.objectContaining(option_group)]),
+      );
+      expect(optionsRepository.save).toHaveBeenCalledWith(
+        expect.arrayContaining(options.map(expect.objectContaining)),
+      );
+      expect(imageRepository.save).toHaveBeenCalledWith(
+        expect.arrayContaining(
+          input.images.map(
+            ({ option_id: _option_id, ...image }) =>
+              expect.objectContaining({
+                ...image,
+                option: { id: undefined },
+                product: { id: 1 },
+              }) as ProductEntity,
+          ),
         ),
-      ),
-    );
-    expect(result).toEqual(
-      expect.objectContaining({ id: 1, name: "상품명", slug: "product-slug" }),
-    );
+      );
+      expect(result).toEqual(
+        expect.objectContaining({ id: 1, name: "상품명", slug: "product-slug" }),
+      );
+    });
   });
 
-  it("상품 목록 조회", async () => {
-    const filterDTO: FilterDTO = {
-      page: 1,
-      per_page: 10,
-      sort: "created_at:ASC",
-      min_price: 100,
-      max_price: 1000000,
-      category: [1, 2],
-      in_stock: true,
-      search: "상품",
-    };
-    const mockProducts = [
-      { id: 1, name: "상품1", slug: "product-1" },
-      { id: 2, name: "상품2", slug: "product-2" },
-    ];
-    productSummaryRepository.find = jest.fn().mockResolvedValue(mockProducts);
-
-    const result = await service.find_all(filterDTO);
-
-    expect(result).toEqual({
-      items: mockProducts,
-      pagination: {
-        total_items: mockProducts.length,
-        total_pages: 1,
-        current_page: 1,
+  describe("find_all", () => {
+    it("상품 목록 조회", async () => {
+      const filterDTO: FilterDTO = {
+        page: 1,
         per_page: 10,
-      },
-    });
-    expect(productSummaryRepository.find).toHaveBeenCalledWith({
-      order: { created_at: "ASC" },
-      skip: 0,
-      take: 10,
-      where: {
-        base_price: Between(100, 1000000),
-        categories: In([1, 2]),
+        sort: "created_at:ASC",
+        min_price: 100,
+        max_price: 1000000,
+        category: [1, 2],
         in_stock: true,
-        name: Like("%상품%"),
-        status: undefined,
-      },
+        search: "상품",
+      };
+      const mockProducts = [
+        { id: 1, name: "상품1", slug: "product-1" },
+        { id: 2, name: "상품2", slug: "product-2" },
+      ];
+      summaryRepository.find = jest.fn().mockResolvedValue(mockProducts);
+
+      const result = await service.find_all(filterDTO);
+
+      expect(result).toEqual({
+        items: mockProducts,
+        pagination: {
+          total_items: mockProducts.length,
+          total_pages: 1,
+          current_page: 1,
+          per_page: 10,
+        },
+      });
+      expect(summaryRepository.find).toHaveBeenCalledWith({
+        order: { created_at: "ASC" },
+        skip: 0,
+        take: 10,
+        where: {
+          base_price: Between(100, 1000000),
+          categories: In([1, 2]),
+          in_stock: true,
+          name: Like("%상품%"),
+          status: undefined,
+        },
+      });
+    });
+
+    it("상품 목록 조회 시 기본값 적용", async () => {
+      const mockProducts = [
+        { id: 1, name: "상품1", slug: "product-1" },
+        { id: 2, name: "상품2", slug: "product-2" },
+      ];
+      summaryRepository.find = jest.fn().mockResolvedValue(mockProducts);
+
+      const result = await service.find_all({});
+
+      expect(result).toEqual({
+        items: mockProducts,
+        pagination: {
+          total_items: mockProducts.length,
+          total_pages: 1,
+          current_page: 1,
+          per_page: 10,
+        },
+      });
+      expect(summaryRepository.find).toHaveBeenCalledWith({
+        order: { created_at: "DESC" },
+        skip: 0,
+        take: 10,
+        where: {
+          base_price: Between(0, Number.MAX_SAFE_INTEGER),
+          categories: In([]),
+          in_stock: undefined,
+          name: Like("%%"),
+          status: undefined,
+        },
+      });
     });
   });
 
-  it("상품 목록 조회 시 기본값 적용", async () => {
-    const mockProducts = [
-      { id: 1, name: "상품1", slug: "product-1" },
-      { id: 2, name: "상품2", slug: "product-2" },
-    ];
-    productSummaryRepository.find = jest.fn().mockResolvedValue(mockProducts);
+  describe("find", () => {
+    it("상품 조회", async () => {
+      const product = { id: 1, name: "상품명" };
+      catalogRepository.findOneBy = jest.fn().mockResolvedValue(product);
 
-    const result = await service.find_all({});
+      const result = await service.find(1);
 
-    expect(result).toEqual({
-      items: mockProducts,
-      pagination: {
-        total_items: mockProducts.length,
-        total_pages: 1,
-        current_page: 1,
-        per_page: 10,
-      },
+      expect(result).toEqual(product);
+      expect(catalogRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
     });
-    expect(productSummaryRepository.find).toHaveBeenCalledWith({
-      order: { created_at: "DESC" },
-      skip: 0,
-      take: 10,
-      where: {
-        base_price: Between(0, Number.MAX_SAFE_INTEGER),
-        categories: In([]),
-        in_stock: undefined,
-        name: Like("%%"),
-        status: undefined,
-      },
+
+    it("상품 조회 실패 시 NotFoundException 발생", async () => {
+      catalogRepository.findOneBy = jest.fn().mockResolvedValue(null);
+
+      const findPromise = service.find(1);
+
+      await expect(findPromise).rejects.toThrow(NotFoundException);
+      expect(catalogRepository.findOneBy).toHaveBeenCalledWith({ id: 1 });
     });
   });
 
-  it("상품 조회", async () => {
-    const product = { id: 1, name: "상품명" };
-    productCatalogRepository.findOne = jest.fn().mockResolvedValue(product);
+  describe("edit", () => {
+    it("상품 수정", async () => {
+      // Arrange
+      const product_id = 2;
+      productRepository.findOneBy = jest.fn().mockResolvedValue({
+        id: product_id,
+        name: "수정된 상품명",
+        slug: "updated-slug",
+        updated_at: new Date(),
+      });
+      productRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      detailRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      priceRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
+      categoryRepository.update = jest.fn().mockResolvedValue({ affected: 1 });
 
-    const result = await service.find(1);
+      // Act
+      const result = await service.edit(product_id, input);
 
-    expect(result).toEqual(product);
-    expect(productCatalogRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  });
-
-  it("상품 조회 실패 시 NotFoundException 발생", async () => {
-    productCatalogRepository.findOne = jest.fn().mockResolvedValue(null);
-
-    await expect(service.find(1)).rejects.toThrow(NotFoundException);
-    expect(productCatalogRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-  });
-
-  it("상품 수정", async () => {
-    // Arrange
-    const product_id = 2;
-    const mockProductDetailUpdate = jest.fn();
-    const mockProductPriceUpdate = jest.fn();
-    const mockProductCategoryUpdate = jest.fn();
-    const mockProductUpdate = jest.fn().mockResolvedValue(true);
-
-    productDetailRepository.with_transaction = jest.fn().mockReturnValue({
-      update: mockProductDetailUpdate,
-    });
-    productPriceRepository.with_transaction = jest.fn().mockReturnValue({
-      update: mockProductPriceUpdate,
-    });
-    productCategoryRepository.with_transaction = jest.fn().mockReturnValue({
-      update: mockProductCategoryUpdate,
-    });
-    productRepository.with_transaction = jest.fn().mockReturnValue({
-      update: mockProductUpdate,
-    });
-    productCatalogRepository.findOne = jest.fn().mockResolvedValue({
-      id: product_id,
-      name: "수정된 상품명",
-      slug: "updated-slug",
-      updated_at: new Date(),
+      // Assert
+      expect(detailRepository.update).toHaveBeenCalledWith(
+        { product: { id: product_id } },
+        expect.objectContaining(input.detail),
+      );
+      expect(priceRepository.update).toHaveBeenCalledWith(
+        { product: { id: product_id } },
+        expect.objectContaining(input.price),
+      );
+      expect(categoryRepository.update).toHaveBeenCalledWith(
+        { product: { id: product_id }, category: { id: 5 } },
+        { is_primary: true },
+      );
+      expect(productRepository.update).toHaveBeenCalledWith(
+        { id: product_id },
+        expect.objectContaining(product),
+      );
+      expect(result).toEqual(
+        expect.objectContaining({ id: 2, name: "수정된 상품명", slug: "updated-slug" }),
+      );
     });
 
-    // Act
-    const result = await service.edit(product_id, input);
+    it("찾을 수 없는 상품으로 수정 시 NotFoundException 발생", async () => {
+      const product_id = 2;
+      productRepository.findOneBy = jest.fn().mockResolvedValue(null);
 
-    // Assert
-    expect(mockProductDetailUpdate).toHaveBeenCalledWith(
-      product_id,
-      expect.objectContaining(input.detail),
-    );
-    expect(mockProductPriceUpdate).toHaveBeenCalledWith(
-      product_id,
-      expect.objectContaining(input.price),
-    );
-    expect(mockProductCategoryUpdate).toHaveBeenCalledWith(
-      { product: { id: product_id } },
-      { category: { id: 5 }, is_primary: true },
-    );
-    expect(mockProductUpdate).toHaveBeenCalledWith(
-      { id: product_id },
-      expect.objectContaining(product),
-    );
-    expect(result).toEqual(
-      expect.objectContaining({ id: 2, name: "수정된 상품명", slug: "updated-slug" }),
-    );
+      const editPromise = service.edit(product_id, input);
+
+      await expect(editPromise).rejects.toThrow(NotFoundException);
+    });
   });
 
-  it("상품 수정 실패 시 NotFoundException 발생", async () => {
-    entityManager.transaction = jest.fn().mockResolvedValue(false);
+  describe("remove", () => {
+    it("상품 삭제", async () => {
+      productRepository.delete = jest.fn().mockResolvedValue({ affected: 1 });
+      await service.remove(1);
 
-    await expect(service.edit(1, {} as ProductInputDTO)).rejects.toThrow(NotFoundException);
-  });
+      expect(productRepository.delete).toHaveBeenCalledWith(1);
+    });
 
-  it("상품 삭제", async () => {
-    productRepository.delete = jest.fn().mockResolvedValue(true);
-    await service.remove(1);
+    it("상품 삭제 실패 시 NotFoundException 발생", async () => {
+      productRepository.delete = jest.fn().mockResolvedValue({ affected: 0 });
 
-    expect(productRepository.delete).toHaveBeenCalledWith(1);
-  });
+      const removePromise = service.remove(1);
 
-  it("상품 삭제 실패 시 NotFoundException 발생", async () => {
-    productRepository.delete = jest.fn().mockResolvedValue(false);
-
-    await expect(service.remove(1)).rejects.toThrow(NotFoundException);
-    expect(productRepository.delete).toHaveBeenCalledWith(1);
+      await expect(removePromise).rejects.toThrow(NotFoundException);
+      expect(productRepository.delete).toHaveBeenCalledWith(1);
+    });
   });
 });
