@@ -97,7 +97,7 @@ describe("ProductOptionsService", () => {
         .mockResolvedValue({ id: option_id, option_group: { product: { id: product_id } } });
       optionsRepository.save = jest.fn().mockResolvedValue(updatedOption);
 
-      const result = await service.update(product_id, option_id, options);
+      const result = await service.edit(product_id, option_id, options);
 
       expect(result).toEqual({
         ...options,
@@ -112,7 +112,7 @@ describe("ProductOptionsService", () => {
 
       optionsRepository.findOne = jest.fn().mockResolvedValue(null);
 
-      const updatePromise = service.update(product_id, option_id, options);
+      const updatePromise = service.edit(product_id, option_id, options);
 
       await expect(updatePromise).rejects.toThrow(NotFoundException);
     });
@@ -126,7 +126,7 @@ describe("ProductOptionsService", () => {
         .fn()
         .mockResolvedValue({ id: option_id, option_group: { product: { id: 2 } } });
 
-      const updatePromise = service.update(product_id, option_id, options);
+      const updatePromise = service.edit(product_id, option_id, options);
 
       await expect(updatePromise).rejects.toThrow(ForbiddenException);
     });

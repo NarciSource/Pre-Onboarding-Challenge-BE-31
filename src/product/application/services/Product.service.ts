@@ -2,6 +2,7 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { Between, EntityManager, FindOptionsWhere, In, Like, ObjectLiteral } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
+import { FilterDTO } from "@shared/dto";
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import {
   ProductCategoryEntity,
@@ -16,10 +17,10 @@ import {
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
 import { CommandHandler, ProductInputDTO } from "../command";
-import { FilterDTO } from "../dto";
+import { QueryHandler } from "../query";
 
 @Injectable()
-export default class ProductService implements CommandHandler {
+export default class ProductService implements CommandHandler, QueryHandler {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")

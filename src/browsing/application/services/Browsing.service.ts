@@ -2,9 +2,10 @@ import { Inject, Injectable } from "@nestjs/common";
 
 import { IBrowsingRepository } from "@shared/repositories";
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
+import { QueryHandler } from "../query";
 
 @Injectable()
-export default class BrowsingService {
+export default class BrowsingService implements QueryHandler {
   constructor(
     @Inject("ICategoryCatalogRepository")
     private readonly category_catalog_repository: IBrowsingRepository<CategoryCatalogView>,

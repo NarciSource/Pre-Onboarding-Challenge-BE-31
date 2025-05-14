@@ -1,13 +1,15 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { EntityManager } from "typeorm";
 
+import { FilterDTO } from "@shared/dto";
 import { IBaseRepository } from "@shared/repositories";
 import { Review } from "@review/domain/entities";
 import { ReviewEntity } from "@review/infrastructure/entities";
-import { FilterDTO } from "../dto";
+import { CommandHandler } from "../command";
+import { QueryHandler } from "../query";
 
 @Injectable()
-export default class ReviewService {
+export default class ReviewService implements CommandHandler, QueryHandler {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IReviewRepository")

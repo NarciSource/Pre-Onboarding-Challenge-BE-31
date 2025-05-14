@@ -55,7 +55,7 @@ describe("ProductOptionsController", () => {
         option_group_id: param.optionId,
         ...body,
       } as Product_Option;
-      service.update = jest.fn().mockResolvedValue(data);
+      service.edit = jest.fn().mockResolvedValue(data);
 
       const result: ResponseDTO<ProductOptionDTO> = await controller.update_option(param, body);
 

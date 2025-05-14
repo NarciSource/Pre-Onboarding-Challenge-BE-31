@@ -57,7 +57,7 @@ export default class ProductOptionsController {
     @Param() { id, optionId }: OptionParamDTO,
     @Body() body: ProductOptionBodyDTO,
   ) {
-    const data = await this.service.update(id, optionId, body);
+    const data = await this.service.edit(id, optionId, body);
 
     return {
       success: true,

@@ -5,9 +5,10 @@ import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
 import { ProductSummaryView } from "@browsing/infrastructure/views";
+import { QueryHandler } from "../query";
 
 @Injectable()
-export default class CategoryService {
+export default class CategoryService implements QueryHandler {
   constructor(
     @Inject("ICategoryRepository")
     private readonly repository: IBaseRepository<CategoryEntity>,

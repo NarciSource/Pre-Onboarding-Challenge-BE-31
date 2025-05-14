@@ -14,9 +14,10 @@ import {
   ProductOptionEntity,
   ProductOptionGroupEntity,
 } from "@product/infrastructure/entities";
+import { OptionsCommandHandler } from "../command";
 
 @Injectable()
-export default class ProductOptionsService {
+export default class ProductOptionsService implements OptionsCommandHandler {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductOptionsRepository")
@@ -69,7 +70,7 @@ export default class ProductOptionsService {
     return { ...result, option_group_id: option_group.id };
   }
 
-  async update(
+  async edit(
     product_id: number,
     option_id: number,
     options: Omit<Product_Option, "id" | "option_group_id">,

@@ -3,9 +3,9 @@ import { TestingModule } from "@nestjs/testing";
 
 import { get_module } from "__test-utils__/test-module";
 
+import { FilterDTO } from "@shared/dto";
 import { IBaseRepository } from "@shared/repositories";
 import { ReviewEntity } from "@review/infrastructure/entities";
-import { FilterDTO } from "../dto";
 import ReviewService from "./Review.service";
 
 describe("ReviewService", () => {
