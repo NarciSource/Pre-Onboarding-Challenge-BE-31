@@ -15,10 +15,11 @@ import {
 } from "@product/infrastructure/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
-import { FilterDTO, ProductInputDTO } from "../dto";
+import { CommandHandler, ProductInputDTO } from "../command";
+import { FilterDTO } from "../dto";
 
 @Injectable()
-export default class ProductService {
+export default class ProductService implements CommandHandler {
   constructor(
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")

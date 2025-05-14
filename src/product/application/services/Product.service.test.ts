@@ -7,7 +7,8 @@ import { get_module } from "__test-utils__/test-module";
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { ProductEntity } from "@product/infrastructure/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import { FilterDTO, ProductInputDTO } from "../dto";
+import { ProductInputDTO } from "../command";
+import { FilterDTO } from "../dto";
 import ProductService from "./Product.service";
 
 describe("ProductService", () => {
