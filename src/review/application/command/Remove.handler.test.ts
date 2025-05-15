@@ -1,0 +1,39 @@
+import { NotFoundException } from "@nestjs/common";
+import { TestingModule } from "@nestjs/testing";
+
+import { get_module } from "__test-utils__/test-module";
+
+import { IBaseRepository } from "@shared/repositories";
+import { ReviewEntity } from "@review/infrastructure/entities";
+import RemoveHandler from "./Remove.handler";
+
+describe("RemoveHandler", () => {
+  let handler: RemoveHandler;
+  let repository: IBaseRepository<ReviewEntity>;
+
+  beforeAll(async () => {
+    const module: TestingModule = await get_module();
+
+    handler = module.get<RemoveHandler>(RemoveHandler);
+
+    repository = module.get("IReviewRepository");
+    repository.with_transaction = jest.fn().mockReturnValue(repository);
+  });
+
+  it("리뷰 삭제", async () => {
+    repository.delete = jest.fn().mockResolvedValue({ affected: 1 });
+
+    await handler.execute({ id: 1 });
+
+    expect(repository.delete).toHaveBeenCalledWith(1);
+  });
+
+  it("리뷰 삭제 실패 시 NotFoundException 발생", async () => {
+    repository.delete = jest.fn().mockResolvedValue({ affected: 0 });
+
+    const removePromise = handler.execute({ id: 1 });
+
+    await expect(removePromise).rejects.toThrow(NotFoundException);
+    expect(repository.delete).toHaveBeenCalledWith(1);
+  });
+});

@@ -1,8 +1,8 @@
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import { get_module } from "__test-utils__/test-module";
 
-import { ReviewService } from "@review/application/services";
 import {
   ParamDTO,
   ResponseDTO,
@@ -16,28 +16,30 @@ import ReviewController from "./Review.controller";
 
 describe("ReviewController", () => {
   let controller: ReviewController;
-  let service: ReviewService;
+  let commandBus: CommandBus;
+  let queryBus: QueryBus;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     controller = module.get(ReviewController);
-    service = module.get(ReviewService);
+    commandBus = module.get(CommandBus);
+    queryBus = module.get(QueryBus);
   });
 
   describe("read", () => {
     it("상품 리뷰 조회 성공", async () => {
-      const id = 1;
-      const query: ReviewQueryDTO = { page: 1, perPage: 10 };
+      const product_id = 1;
+      const dto: ReviewQueryDTO = { page: 1, perPage: 10 };
       const mockData = { items: [], summary: {}, pagination: {} };
-      service.find = jest.fn().mockResolvedValue(mockData);
+      queryBus.execute = jest.fn().mockResolvedValue(mockData);
 
       const result: ResponseDTO<ReviewResponseBundle> = await controller.read(
-        { id } as ParamDTO,
-        query,
+        { id: product_id } as ParamDTO,
+        dto,
       );
 
-      expect(service.find).toHaveBeenCalledWith(id, query);
+      expect(queryBus.execute).toHaveBeenCalledWith({ product_id, dto });
       expect(result).toEqual({
         success: true,
         data: mockData,
@@ -48,14 +50,17 @@ describe("ReviewController", () => {
 
   describe("create", () => {
     it("리뷰 작성 성공", async () => {
-      const id = 1;
-      const body: ReviewBodyDTO = { title: "좋은 상품", content: "만족합니다", rating: 5 };
-      const mockData = { id: 1, ...body };
-      service.register = jest.fn().mockResolvedValue(mockData);
+      const product_id = 1;
+      const dto: ReviewBodyDTO = { title: "좋은 상품", content: "만족합니다", rating: 5 };
+      const mockData = { id: 1, ...dto };
+      commandBus.execute = jest.fn().mockResolvedValue(mockData);
 
-      const result: ResponseDTO<ReviewDTO> = await controller.create({ id } as ParamDTO, body);
+      const result: ResponseDTO<ReviewDTO> = await controller.create(
+        { id: product_id } as ParamDTO,
+        dto,
+      );
 
-      expect(service.register).toHaveBeenCalledWith(id, body);
+      expect(commandBus.execute).toHaveBeenCalledWith({ product_id, dto });
       expect(result).toEqual({
         success: true,
         data: mockData,
@@ -67,16 +72,16 @@ describe("ReviewController", () => {
   describe("update", () => {
     it("리뷰 수정 성공", async () => {
       const id = 1;
-      const body: ReviewBodyDTO = { title: "수정된 제목", content: "수정된 내용", rating: 4 };
-      const mockData = { id, ...body };
-      service.edit = jest.fn().mockResolvedValue(mockData);
+      const dto: ReviewBodyDTO = { title: "수정된 제목", content: "수정된 내용", rating: 4 };
+      const mockData = { id, ...dto };
+      commandBus.execute = jest.fn().mockResolvedValue(mockData);
 
       const result: ResponseDTO<ReviewResponseDTO> = await controller.update(
         { id } as ParamDTO,
-        body,
+        dto,
       );
 
-      expect(service.edit).toHaveBeenCalledWith(id, body);
+      expect(commandBus.execute).toHaveBeenCalledWith({ id, dto });
       expect(result).toEqual({
         success: true,
         data: mockData,
@@ -88,11 +93,11 @@ describe("ReviewController", () => {
   describe("delete", () => {
     it("리뷰 삭제 성공", async () => {
       const id = 1;
-      service.remove = jest.fn().mockResolvedValue(true);
+      commandBus.execute = jest.fn().mockResolvedValue(true);
 
       const result: ResponseDTO<null> = await controller.delete({ id } as ParamDTO);
 
-      expect(service.remove).toHaveBeenCalledWith(id);
+      expect(commandBus.execute).toHaveBeenCalledWith({ id });
       expect(result).toEqual({
         success: true,
         data: null,

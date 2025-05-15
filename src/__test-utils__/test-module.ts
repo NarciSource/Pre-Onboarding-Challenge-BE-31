@@ -15,7 +15,8 @@ import * as category_entities from "@category/infrastructure/entities";
 import { repository_providers as category_repository_providers } from "@category/infrastructure/repositories";
 import * as category_controllers from "@category/presentation/controllers";
 
-import * as review_services from "@review/application/services";
+import * as review_commands from "@review/application/command";
+import * as review_queries from "@review/application/query";
 import * as review_entities from "@review/infrastructure/entities";
 import { repository_providers as review_repository_providers } from "@review/infrastructure/repositories";
 import * as review_controllers from "@review/presentation/controllers";
@@ -79,7 +80,8 @@ export async function get_module() {
       ...browsing_repository_providers,
       ...Object.values(product_commands),
       ...Object.values(product_queries),
-      ...Object.values(review_services),
+      ...Object.values(review_commands),
+      ...Object.values(review_queries),
       ...Object.values(category_queries),
       ...Object.values(browsing_services),
     ],
