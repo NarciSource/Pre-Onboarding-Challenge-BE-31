@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
+import { QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import {
@@ -8,7 +9,7 @@ import {
   ResponseType,
 } from "@libs/decorators";
 import { to_FilterDTO } from "@shared/mappers";
-import { CategoryService } from "@category/application/services";
+import { FindAllQuery, FindProductsQuery } from "@category/application/query";
 import {
   CategoryQueryDTO,
   CategoryResponseBundleDTO,
@@ -22,7 +23,7 @@ import {
 @Controller("categories")
 @ApiErrorResponse()
 export default class CategoryController {
-  constructor(private readonly service: CategoryService) {}
+  constructor(private readonly query_bus: QueryBus) {}
 
   @ApiOperation({ summary: "카테고리 목록 조회" })
   @ApiStandardResponse("카테고리 목록을 성공적으로 조회했습니다.", NestedCategoryDTO)
@@ -30,7 +31,9 @@ export default class CategoryController {
   @Get()
   @ResponseType(ResponseDTO<NestedCategoryDTO[]>)
   async read_categories(@Query() { level }: { level: number }) {
-    const data = await this.service.find_all_as_tree(level);
+    const query = new FindAllQuery(level);
+
+    const data: NestedCategoryDTO[] = await this.query_bus.execute(query);
 
     return {
       success: true,
@@ -47,8 +50,10 @@ export default class CategoryController {
   @ApiBadRequestResponse("특정 카테고리의 상품 목록 조회에 실패했습니다.")
   @Get(":id/products")
   @ResponseType(ResponseDTO<CategoryResponseBundleDTO>)
-  async read_products(@Param() { id }: ParamDTO, @Query() query: CategoryQueryDTO) {
-    const data = await this.service.find_products_by_category_id(id, to_FilterDTO(query));
+  async read_products(@Param() { id }: ParamDTO, @Query() query_dto: CategoryQueryDTO) {
+    const query = new FindProductsQuery(id, to_FilterDTO(query_dto));
+
+    const data: CategoryResponseBundleDTO = await this.query_bus.execute(query);
 
     return {
       success: true,

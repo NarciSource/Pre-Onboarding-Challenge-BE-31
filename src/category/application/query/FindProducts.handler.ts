@@ -1,14 +1,14 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, NotFoundException } from "@nestjs/common";
+import { QueryHandler, IQueryHandler } from "@nestjs/cqrs";
 import { In } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
-import { Category } from "@category/domain/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
 import { ProductSummaryView } from "@browsing/infrastructure/views";
-import { QueryHandler } from "../query";
+import FindProductsQuery from "./FindProducts.query";
 
-@Injectable()
-export default class CategoryService implements QueryHandler {
+@QueryHandler(FindProductsQuery)
+export default class FindProductsHandler implements IQueryHandler<FindProductsQuery> {
   constructor(
     @Inject("ICategoryRepository")
     private readonly repository: IBaseRepository<CategoryEntity>,
@@ -16,45 +16,10 @@ export default class CategoryService implements QueryHandler {
     private readonly summary_repository: IBrowsingRepository<ProductSummaryView>,
   ) {}
 
-  async find_all_as_tree(level: number = 1) {
-    type NestedCategory = Omit<Category, "parent"> & { children?: NestedCategory[] };
-
-    function build_tree(
-      categories: Category[],
-      level: number, // 1: 대분류, 2: 중분류, 3: 소분류
-      parent_id?: number,
-    ): NestedCategory[] {
-      if (level > 3) {
-        return [];
-      }
-
-      const result = categories
-        .filter((category) => category.parent?.id === parent_id)
-        .map(({ id, parent: _parent, ...rest }) => {
-          const children = build_tree(categories, level + 1, id);
-
-          return {
-            id,
-            ...rest,
-            ...(children.length > 0 && { children }),
-          };
-        });
-      return result;
-    }
-
-    // 카테고리 정보 조회
-    const categories = await this.repository.find({
-      relations: ["parent"],
-    });
-
-    // 카테고리 트리 구조로 변환
-    return build_tree(categories, level);
-  }
-
-  async find_products_by_category_id(
-    category_id: number,
-    { page = 1, per_page = 10, sort = "created_at:desc", has_sub = true },
-  ) {
+  async execute({
+    category_id,
+    dto: { page = 1, per_page = 10, sort = "created_at:desc", has_sub = true },
+  }: FindProductsQuery) {
     const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
 
     // 카테고리 정보 조회
