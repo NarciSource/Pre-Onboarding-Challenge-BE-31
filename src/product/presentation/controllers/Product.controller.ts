@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import {
@@ -9,7 +10,8 @@ import {
   ResponseType,
 } from "@libs/decorators";
 import { to_FilterDTO } from "@shared/mappers";
-import { ProductService } from "@product/application/services";
+import { EditCommand, RegisterCommand, RemoveCommand } from "@product/application/command";
+import { FindAllQuery, FindQuery } from "@product/application/query";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
 import {
   ParamDTO,
@@ -25,7 +27,10 @@ import {
 @Controller("products")
 @ApiErrorResponse()
 export default class ProductController {
-  constructor(private readonly service: ProductService) {}
+  constructor(
+    private readonly query_bus: QueryBus,
+    private readonly command_bus: CommandBus,
+  ) {}
 
   @ApiOperation({ summary: "상품 등록" })
   @ApiCreatedResponse("상품이 성공적으로 등록되었습니다.", ProductResponseDTO)
@@ -33,7 +38,10 @@ export default class ProductController {
   @Post()
   @ResponseType(ResponseDTO<ProductResponseDTO>)
   async create(@Body() body: ProductBodyDTO) {
-    const data = await this.service.register(body);
+    // 상품 등록 커맨드
+    const command = new RegisterCommand(body);
+    // 커맨드 버스로 실행
+    const data: ProductResponseDTO = await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -47,8 +55,11 @@ export default class ProductController {
   @ApiBadRequestResponse("상품 목록 조회에 실패했습니다.")
   @Get()
   @ResponseType(ResponseDTO<ProductResponseBundle>)
-  async read_all(@Query() query: ProductQueryDTO) {
-    const data = await this.service.find_all(to_FilterDTO(query));
+  async read_all(@Query() query_dto: ProductQueryDTO) {
+    // 상품 목록 조회 쿼리
+    const query = new FindAllQuery(to_FilterDTO(query_dto));
+    // 쿼리 버스로 실행
+    const data: ProductResponseBundle = await this.query_bus.execute(query);
 
     return {
       success: true,
@@ -63,7 +74,9 @@ export default class ProductController {
   @Get(":id")
   @ResponseType(ResponseDTO<ProductCatalogDTO>)
   async read(@Param() { id }: ParamDTO) {
-    const data = await this.service.find(id);
+    const query = new FindQuery(id);
+
+    const data: ProductCatalogDTO = await this.query_bus.execute(query);
 
     return {
       success: true,
@@ -78,7 +91,9 @@ export default class ProductController {
   @Put(":id")
   @ResponseType(ResponseDTO<ProductResponseDTO>)
   async update(@Param() { id }: ParamDTO, @Body() body: ProductBodyDTO) {
-    const data = await this.service.edit(id, body);
+    const command = new EditCommand(id, body);
+
+    const data: ProductResponseDTO = await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -92,7 +107,9 @@ export default class ProductController {
   @ApiBadRequestResponse("상품 삭제에 실패했습니다.")
   @Delete(":id")
   async delete(@Param() { id }: ParamDTO) {
-    await this.service.remove(id);
+    const command = new RemoveCommand(id);
+
+    await this.command_bus.execute(command);
 
     return {
       success: true,

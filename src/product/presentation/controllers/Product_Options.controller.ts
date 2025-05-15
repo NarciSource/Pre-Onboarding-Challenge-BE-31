@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Param, Post, Put } from "@nestjs/common";
+import { CommandBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 
 import {
@@ -8,7 +9,12 @@ import {
   ApiStandardResponse,
   ResponseType,
 } from "@libs/decorators";
-import { ProductOptionsService } from "@product/application/services";
+import {
+  ImageRegisterCommand,
+  OptionEditCommand,
+  OptionRegisterCommand,
+  OptionRemoveCommand,
+} from "@product/application/command";
 import {
   ImageDTO,
   OptionParamDTO,
@@ -25,7 +31,7 @@ import {
 @Controller("products")
 @ApiErrorResponse()
 export default class ProductOptionsController {
-  constructor(private readonly service: ProductOptionsService) {}
+  constructor(private readonly command_bus: CommandBus) {}
 
   @ApiOperation({ summary: "상품 옵션 추가" })
   @ApiParam({ name: "id", description: "상품 ID" })
@@ -37,7 +43,9 @@ export default class ProductOptionsController {
     @Param() { id }: ParamDTO,
     @Body() { option_group_id, ...body }: ProductOptionBodyWithGroupDTO,
   ) {
-    const data = await this.service.register(id, option_group_id, body);
+    const command = new OptionRegisterCommand(id, option_group_id, body);
+
+    const data: ProductOptionDTO = await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -57,7 +65,9 @@ export default class ProductOptionsController {
     @Param() { id, optionId }: OptionParamDTO,
     @Body() body: ProductOptionBodyDTO,
   ) {
-    const data = await this.service.edit(id, optionId, body);
+    const command = new OptionEditCommand(id, optionId, body);
+
+    const data: ProductOptionDTO = await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -73,7 +83,9 @@ export default class ProductOptionsController {
   @ApiBadRequestResponse("상품 옵션 삭제에 실패했습니다.")
   @Delete(":id/options/:optionId")
   async delete_option(@Param() { id, optionId }: OptionParamDTO) {
-    await this.service.remove(id, optionId);
+    const command = new OptionRemoveCommand(id, optionId);
+
+    await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -92,7 +104,9 @@ export default class ProductOptionsController {
     @Param() { id }: OptionParamDTO,
     @Body() { option_id, ...body }: ProductOptionImageBodyDTO,
   ) {
-    const data = await this.service.register_images(id, option_id, body);
+    const command = new ImageRegisterCommand(id, option_id, body);
+
+    const data: ImageDTO = await this.command_bus.execute(command);
 
     return {
       success: true,

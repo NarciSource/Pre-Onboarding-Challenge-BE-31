@@ -1,1 +1,4 @@
-export { default as QueryHandler } from "./Query.handler";
+export { default as FindAllHandler } from "./FindAll.handler";
+export { default as FindAllQuery } from "./FindAll.query";
+export { default as FindHandler } from "./Find.handler";
+export { default as FindQuery } from "./Find.query";
