@@ -1,9 +1,11 @@
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { DataSource } from "typeorm";
 
-import * as product_services from "@product/application/services";
+import * as product_commands from "@product/application/command";
+import * as product_queries from "@product/application/query";
 import * as product_entities from "@product/infrastructure/entities";
 import { repository_providers as product_repository_providers } from "@product/infrastructure/repositories";
 import * as product_controllers from "@product/presentation/controllers";
@@ -63,11 +65,20 @@ export async function get_module() {
       ]),
     ],
     providers: [
+      {
+        provide: CommandBus,
+        useValue: { execute: jest.fn() },
+      },
+      {
+        provide: QueryBus,
+        useValue: { execute: jest.fn() },
+      },
       ...product_repository_providers,
       ...category_repository_providers,
       ...review_repository_providers,
       ...browsing_repository_providers,
-      ...Object.values(product_services),
+      ...Object.values(product_commands),
+      ...Object.values(product_queries),
       ...Object.values(review_services),
       ...Object.values(category_services),
       ...Object.values(browsing_services),

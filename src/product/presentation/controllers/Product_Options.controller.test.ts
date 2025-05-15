@@ -1,8 +1,8 @@
+import { CommandBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import { get_module } from "__test-utils__/test-module";
 
-import { ProductOptionsService } from "@product/application/services";
 import { Product_Image, Product_Option } from "@product/domain/entities";
 import {
   ImageDTO,
@@ -17,13 +17,13 @@ import ProductOptionsController from "./Product_Options.controller";
 
 describe("ProductOptionsController", () => {
   let controller: ProductOptionsController;
-  let service: jest.Mocked<ProductOptionsService>;
+  let commandBus: CommandBus;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     controller = module.get(ProductOptionsController);
-    service = module.get(ProductOptionsService);
+    commandBus = module.get(CommandBus);
   });
 
   describe("create_option", () => {
@@ -34,7 +34,7 @@ describe("ProductOptionsController", () => {
         id: param.id,
         ...body,
       } as Product_Option;
-      service.register = jest.fn().mockResolvedValue(data);
+      commandBus.execute = jest.fn().mockResolvedValue(data);
 
       const result: ResponseDTO<ProductOptionDTO> = await controller.create_option(param, body);
 
@@ -55,7 +55,7 @@ describe("ProductOptionsController", () => {
         option_group_id: param.optionId,
         ...body,
       } as Product_Option;
-      service.edit = jest.fn().mockResolvedValue(data);
+      commandBus.execute = jest.fn().mockResolvedValue(data);
 
       const result: ResponseDTO<ProductOptionDTO> = await controller.update_option(param, body);
 
@@ -74,7 +74,7 @@ describe("ProductOptionsController", () => {
   describe("delete_option", () => {
     it("상품 옵션 삭제 성공", async () => {
       const param = { id: 1, optionId: 2 };
-      service.remove = jest.fn().mockResolvedValue(undefined);
+      commandBus.execute = jest.fn().mockResolvedValue(undefined);
 
       const result: ResponseDTO<null> = await controller.delete_option(param);
 
@@ -94,7 +94,7 @@ describe("ProductOptionsController", () => {
         url: "http://example.com/image.jpg",
       } as ProductOptionImageBodyDTO;
       const data = { id: param.id, url: body.url } as Product_Image;
-      service.register_images = jest.fn().mockResolvedValue(data);
+      commandBus.execute = jest.fn().mockResolvedValue(data);
 
       const result: ResponseDTO<ImageDTO> = await controller.create_image(param, body);
 

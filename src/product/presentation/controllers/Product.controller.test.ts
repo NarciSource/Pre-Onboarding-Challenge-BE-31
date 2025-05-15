@@ -1,8 +1,8 @@
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import { get_module } from "__test-utils__/test-module";
 
-import { ProductService } from "@product/application/services";
 import { ProductEntity } from "@product/infrastructure/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
@@ -18,13 +18,15 @@ import ProductController from "./Product.controller";
 
 describe("ProductController", () => {
   let controller: ProductController;
-  let service: ProductService;
+  let commandBus: CommandBus;
+  let queryBus: QueryBus;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     controller = module.get(ProductController);
-    service = module.get(ProductService);
+    commandBus = module.get(CommandBus);
+    queryBus = module.get(QueryBus);
   });
 
   it("상품 등록", async () => {
@@ -34,12 +36,12 @@ describe("ProductController", () => {
       data: { id: 1, created_at: new Date(), updated_at: new Date(), ...body },
       message: "상품이 성공적으로 등록되었습니다.",
     };
-    service.register = jest.fn().mockResolvedValue(response.data as ProductEntity);
+    commandBus.execute = jest.fn().mockResolvedValue(response.data as ProductEntity);
 
     const result = await controller.create(body);
 
     expect(result).toEqual(response);
-    expect(service.register).toHaveBeenCalledWith(body);
+    expect(commandBus.execute).toHaveBeenCalledWith({ dto: body });
   });
 
   it("상품 목록 조회", async () => {
@@ -59,12 +61,12 @@ describe("ProductController", () => {
       data: { items, pagination },
       message: "상품 목록을 성공적으로 조회했습니다.",
     };
-    service.find_all = jest.fn().mockResolvedValue({ items, pagination });
+    queryBus.execute = jest.fn().mockResolvedValue({ items, pagination });
 
     const result = await controller.read_all(query);
 
     expect(result).toEqual(response);
-    expect(service.find_all).toHaveBeenCalledWith(query);
+    expect(queryBus.execute).toHaveBeenCalledWith({ dto: query });
   });
 
   it("상품 상세 조회", async () => {
@@ -82,12 +84,12 @@ describe("ProductController", () => {
       data,
       message: "상품 상세 정보를 성공적으로 조회했습니다.",
     };
-    service.find = jest.fn().mockResolvedValue(data);
+    queryBus.execute = jest.fn().mockResolvedValue(data);
 
     const result = await controller.read(param);
 
     expect(result).toEqual(response);
-    expect(service.find).toHaveBeenCalledWith(param.id);
+    expect(queryBus.execute).toHaveBeenCalledWith({ id: param.id });
   });
 
   it("상품 수정", async () => {
@@ -105,12 +107,12 @@ describe("ProductController", () => {
       data,
       message: "상품이 성공적으로 수정되었습니다.",
     };
-    service.edit = jest.fn().mockResolvedValue(data);
+    commandBus.execute = jest.fn().mockResolvedValue(data);
 
     const result = await controller.update(param, body);
 
     expect(result).toEqual(response);
-    expect(service.edit).toHaveBeenCalledWith(param.id, body);
+    expect(commandBus.execute).toHaveBeenCalledWith({ id: param.id, dto: body });
   });
 
   it("상품을 삭제", async () => {
@@ -120,11 +122,11 @@ describe("ProductController", () => {
       data: null,
       message: "상품이 성공적으로 삭제되었습니다.",
     };
-    service.remove = jest.fn().mockResolvedValue(undefined);
+    commandBus.execute = jest.fn().mockResolvedValue(undefined);
 
     const result = await controller.delete(param);
 
     expect(result).toEqual(response);
-    expect(service.remove).toHaveBeenCalledWith(param.id);
+    expect(commandBus.execute).toHaveBeenCalledWith({ id: param.id });
   });
 });
