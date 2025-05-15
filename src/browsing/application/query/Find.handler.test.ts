@@ -4,17 +4,18 @@ import { get_module } from "__test-utils__/test-module";
 
 import { IBrowsingRepository } from "@shared/repositories";
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import BrowsingService from "./Browsing.service";
+import FindHandler from "./Find.handler";
 
-describe("BrowsingService", () => {
-  let service: BrowsingService;
+describe("FindHandler", () => {
+  let handler: FindHandler;
   let categoryCatalogRepository: IBrowsingRepository<CategoryCatalogView>;
   let productSummaryRepository: IBrowsingRepository<ProductSummaryView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
-    service = module.get<BrowsingService>(BrowsingService);
+    handler = module.get<FindHandler>(FindHandler);
+
     categoryCatalogRepository = module.get("ICategoryCatalogRepository");
     productSummaryRepository = module.get("IProductSummaryRepository");
   });
@@ -39,7 +40,7 @@ describe("BrowsingService", () => {
       .mockResolvedValueOnce(mockPopularProducts);
     categoryCatalogRepository.find = jest.fn().mockResolvedValue(mockFeaturedCategories);
 
-    const result = await service.find();
+    const result = await handler.execute();
 
     expect(result).toEqual({
       new_products: mockNewProducts,

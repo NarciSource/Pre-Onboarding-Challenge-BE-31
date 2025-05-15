@@ -21,7 +21,7 @@ import * as review_entities from "@review/infrastructure/entities";
 import { repository_providers as review_repository_providers } from "@review/infrastructure/repositories";
 import * as review_controllers from "@review/presentation/controllers";
 
-import * as browsing_services from "@browsing/application/services";
+import * as browsing_queries from "@browsing/application/query";
 import browsing_repository_providers from "@browsing/infrastructure/repositories/provider";
 import * as views from "@browsing/infrastructure/views";
 import * as browsing_controllers from "@browsing/presentation/controllers";
@@ -83,7 +83,7 @@ export async function get_module() {
       ...Object.values(review_commands),
       ...Object.values(review_queries),
       ...Object.values(category_queries),
-      ...Object.values(browsing_services),
+      ...Object.values(browsing_queries),
     ],
     controllers: [
       ...Object.values(product_controllers),
