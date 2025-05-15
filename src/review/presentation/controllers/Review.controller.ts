@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { QueryBus, CommandBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import {
@@ -10,7 +11,8 @@ import {
   ResponseType,
 } from "@libs/decorators";
 import { to_FilterDTO } from "@shared/mappers";
-import { ReviewService } from "@review/application/services";
+import { EditCommand, RegisterCommand, RemoveCommand } from "@review/application/command";
+import { FindQuery } from "@review/application/query";
 import {
   ReviewResponseBundle,
   ResponseDTO,
@@ -26,7 +28,10 @@ import {
 @Controller("")
 @ApiErrorResponse()
 export default class ReviewController {
-  constructor(private readonly service: ReviewService) {}
+  constructor(
+    private readonly query_bus: QueryBus,
+    private readonly command_bus: CommandBus,
+  ) {}
 
   @ApiOperation({ summary: "상품 리뷰 조회" })
   @ApiStandardResponse("상품 리뷰를 성공적으로 조회했습니다.", ReviewResponseBundle)
@@ -34,10 +39,12 @@ export default class ReviewController {
   @Get("products/:id/reviews")
   @ResponseType(ResponseDTO<ReviewResponseBundle>)
   async read(
-    @Param() { id }: ParamDTO,
-    @Query() query: ReviewQueryDTO,
+    @Param() { id: product_id }: ParamDTO,
+    @Query() query_dto: ReviewQueryDTO,
   ): Promise<ResponseDTO<ReviewResponseBundle>> {
-    const data = await this.service.find(id, to_FilterDTO(query));
+    const query = new FindQuery(product_id, to_FilterDTO(query_dto));
+
+    const data: ReviewResponseBundle = await this.query_bus.execute(query);
 
     return {
       success: true,
@@ -52,10 +59,12 @@ export default class ReviewController {
   @Post("products/:id/reviews")
   @ResponseType(ResponseDTO<ReviewDTO>)
   async create(
-    @Param() { id }: ParamDTO,
+    @Param() { id: product_id }: ParamDTO,
     @Body() body: ReviewBodyDTO,
   ): Promise<ResponseDTO<ReviewDTO>> {
-    const data = await this.service.register(id, body);
+    const command = new RegisterCommand(product_id, body);
+
+    const data: ReviewDTO = await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -73,7 +82,9 @@ export default class ReviewController {
     @Param() { id }: ParamDTO,
     @Body() body: ReviewBodyDTO,
   ): Promise<ResponseDTO<ReviewResponseDTO>> {
-    const data = await this.service.edit(id, body);
+    const command = new EditCommand(id, body);
+
+    const data: ReviewResponseDTO = await this.command_bus.execute(command);
 
     return {
       success: true,
@@ -87,7 +98,9 @@ export default class ReviewController {
   @ApiForbiddenResponse("다른 사용자의 리뷰를 삭제할 권한이 없습니다.")
   @Delete("reviews/:id")
   async delete(@Param() { id }: ParamDTO) {
-    await this.service.remove(id);
+    const command = new RemoveCommand(id);
+
+    await this.command_bus.execute(command);
 
     return {
       success: true,
