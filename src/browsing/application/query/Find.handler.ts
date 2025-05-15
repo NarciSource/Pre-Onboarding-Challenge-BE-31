@@ -1,11 +1,12 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject } from "@nestjs/common";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBrowsingRepository } from "@shared/repositories";
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
-import { QueryHandler } from "../query";
+import FindQuery from "./Find.query";
 
-@Injectable()
-export default class BrowsingService implements QueryHandler {
+@QueryHandler(FindQuery)
+export default class FindHandler implements IQueryHandler<FindQuery> {
   constructor(
     @Inject("ICategoryCatalogRepository")
     private readonly category_catalog_repository: IBrowsingRepository<CategoryCatalogView>,
@@ -13,7 +14,7 @@ export default class BrowsingService implements QueryHandler {
     private readonly product_summary_repository: IBrowsingRepository<ProductSummaryView>,
   ) {}
 
-  async find() {
+  async execute() {
     const new_products = await this.product_summary_repository.find({
       order: { created_at: "DESC" },
     });
