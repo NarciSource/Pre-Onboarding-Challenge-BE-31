@@ -10,7 +10,7 @@ import * as product_entities from "@product/infrastructure/entities";
 import { repository_providers as product_repository_providers } from "@product/infrastructure/repositories";
 import * as product_controllers from "@product/presentation/controllers";
 
-import * as category_services from "@category/application/services";
+import * as category_queries from "@category/application/query";
 import * as category_entities from "@category/infrastructure/entities";
 import { repository_providers as category_repository_providers } from "@category/infrastructure/repositories";
 import * as category_controllers from "@category/presentation/controllers";
@@ -80,7 +80,7 @@ export async function get_module() {
       ...Object.values(product_commands),
       ...Object.values(product_queries),
       ...Object.values(review_services),
-      ...Object.values(category_services),
+      ...Object.values(category_queries),
       ...Object.values(browsing_services),
     ],
     controllers: [

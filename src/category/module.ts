@@ -1,14 +1,16 @@
 import { Module } from "@nestjs/common";
+import { CqrsModule } from "@nestjs/cqrs";
 
 import ProductModule from "@product/module";
 import BrowsingModule from "@browsing/module";
-import * as services from "./application/services";
+
+import * as queries from "./application/query";
 import { repository_providers } from "./infrastructure/repositories";
 import * as controllers from "./presentation/controllers";
 
 @Module({
-  imports: [ProductModule, BrowsingModule],
-  providers: [...Object.values(services), ...repository_providers],
+  imports: [CqrsModule, ProductModule, BrowsingModule],
+  providers: [...Object.values(queries), ...repository_providers],
   controllers: [...Object.values(controllers)],
 })
 export default class CategoryModule {}
