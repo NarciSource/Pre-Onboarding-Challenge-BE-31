@@ -8,8 +8,8 @@ import {
   SellerEntity,
   ProductOptionGroupEntity,
   ProductOptionEntity,
-} from "@product/infrastructure/entities";
-import { ReviewEntity } from "@review/infrastructure/entities";
+} from "@product/infrastructure/rdb/entities";
+import { ReviewEntity } from "@review/infrastructure/rdb/entities";
 
 @ViewEntity({
   expression: (dataSource: DataSource) => {

@@ -4,7 +4,7 @@ import { TestingModule } from "@nestjs/testing";
 import { get_module } from "__test-utils__/test-module";
 
 import { IBrowsingRepository } from "@shared/repositories";
-import { ProductCatalogView } from "@browsing/infrastructure/views";
+import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {

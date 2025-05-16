@@ -5,7 +5,7 @@ import BrowsingModule from "@browsing/module";
 
 import * as commands from "./application/command";
 import * as queries from "./application/query";
-import { repository_providers } from "./infrastructure/repositories";
+import { repository_providers } from "./infrastructure/rdb/repositories";
 import * as controllers from "./presentation/controllers";
 
 @Module({

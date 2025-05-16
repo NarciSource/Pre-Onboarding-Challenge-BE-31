@@ -3,7 +3,7 @@ import { TestingModule } from "@nestjs/testing";
 import { get_module } from "__test-utils__/test-module";
 
 import { IBrowsingRepository } from "@shared/repositories";
-import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
+import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {

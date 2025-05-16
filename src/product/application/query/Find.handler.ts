@@ -2,7 +2,7 @@ import { Inject, NotFoundException } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBrowsingRepository } from "@shared/repositories";
-import { ProductCatalogView } from "@browsing/infrastructure/views";
+import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
 import FindQuery from "./Find.query";
 

@@ -1,7 +1,7 @@
 import { ViewColumn, ViewEntity } from "typeorm";
 
-import { ProductCategoryEntity, ProductEntity } from "@product/infrastructure/entities";
-import { CategoryEntity } from "@category/infrastructure/entities";
+import { ProductCategoryEntity, ProductEntity } from "@product/infrastructure/rdb/entities";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 
 @ViewEntity({
   expression: (dataSource) => {

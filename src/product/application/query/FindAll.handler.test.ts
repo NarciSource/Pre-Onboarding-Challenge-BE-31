@@ -5,7 +5,7 @@ import { get_module } from "__test-utils__/test-module";
 
 import { FilterDTO } from "@shared/dto";
 import { IBrowsingRepository } from "@shared/repositories";
-import { ProductSummaryView } from "@browsing/infrastructure/views";
+import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindAllHandler from "./FindAll.handler";
 
 describe("FindAllHandler", () => {

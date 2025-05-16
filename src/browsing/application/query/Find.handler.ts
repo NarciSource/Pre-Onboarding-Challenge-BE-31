@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBrowsingRepository } from "@shared/repositories";
-import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/views";
+import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindQuery from "./Find.query";
 
 @QueryHandler(FindQuery)

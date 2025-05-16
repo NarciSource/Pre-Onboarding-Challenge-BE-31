@@ -3,8 +3,8 @@ import { QueryHandler, IQueryHandler } from "@nestjs/cqrs";
 import { In } from "typeorm";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
-import { CategoryEntity } from "@category/infrastructure/entities";
-import { ProductSummaryView } from "@browsing/infrastructure/views";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
+import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindProductsQuery from "./FindProducts.query";
 
 @QueryHandler(FindProductsQuery)

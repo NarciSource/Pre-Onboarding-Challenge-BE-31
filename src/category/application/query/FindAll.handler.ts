@@ -3,7 +3,7 @@ import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBaseRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
-import { CategoryEntity } from "@category/infrastructure/entities";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import FindAllQuery from "./FindAll.query";
 
 @QueryHandler(FindAllQuery)
