@@ -7,13 +7,15 @@ import {
   Repository,
 } from "typeorm";
 
-export default interface IBrowsingRepository<T extends ObjectLiteral> extends Repository<T> {
+export type ExtendedFindOptionsWhere<T> = FindOptionsWhere<T> & {
+  categories?: FindOperator<number[]>;
+};
+
+export default interface IViewRepository<T extends ObjectLiteral> extends Repository<T> {
   with_transaction(manager: EntityManager): this;
 
   find(options?: {
-    where?: FindOptionsWhere<T> & {
-      categories?: FindOperator<number[]>;
-    };
+    where?: ExtendedFindOptionsWhere<T>;
     order?: FindOptionsOrder<T>;
     skip?: number;
     take?: number;

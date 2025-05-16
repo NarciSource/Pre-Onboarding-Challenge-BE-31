@@ -1,17 +1,17 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IBrowsingRepository } from "@shared/repositories";
+import { IViewRepository } from "@shared/repositories";
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindQuery from "./Find.query";
 
 @QueryHandler(FindQuery)
 export default class FindHandler implements IQueryHandler<FindQuery> {
   constructor(
-    @Inject("ICategoryCatalogRepository")
-    private readonly category_catalog_repository: IBrowsingRepository<CategoryCatalogView>,
-    @Inject("IProductSummaryRepository")
-    private readonly product_summary_repository: IBrowsingRepository<ProductSummaryView>,
+    @Inject("ICategoryCatalogViewRepository")
+    private readonly category_catalog_repository: IViewRepository<CategoryCatalogView>,
+    @Inject("IProductSummaryViewRepository")
+    private readonly product_summary_repository: IViewRepository<ProductSummaryView>,
   ) {}
 
   async execute() {

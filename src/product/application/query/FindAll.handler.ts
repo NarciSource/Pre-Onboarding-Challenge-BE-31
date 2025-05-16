@@ -2,15 +2,15 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { Between, In, Like } from "typeorm";
 
-import { IBrowsingRepository } from "@shared/repositories";
+import { IViewRepository } from "@shared/repositories";
 import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindAllQuery from "./FindAll.query";
 
 @QueryHandler(FindAllQuery)
 export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
   constructor(
-    @Inject("IProductSummaryRepository")
-    private readonly product_summary_repository: IBrowsingRepository<ProductSummaryView>,
+    @Inject("IProductSummaryViewRepository")
+    private readonly product_summary_repository: IViewRepository<ProductSummaryView>,
   ) {}
 
   async execute({

@@ -4,10 +4,10 @@ import { product_summary_repository_mixin } from ".";
 
 export default [
   createRepositoryProvider(
-    "IProductSummaryRepository",
+    "IProductSummaryViewRepository",
     ProductSummaryView,
     product_summary_repository_mixin,
   ),
-  createRepositoryProvider("IProductCatalogRepository", ProductCatalogView),
-  createRepositoryProvider("ICategoryCatalogRepository", CategoryCatalogView),
+  createRepositoryProvider("IProductCatalogViewRepository", ProductCatalogView),
+  createRepositoryProvider("ICategoryCatalogViewRepository", CategoryCatalogView),
 ];

@@ -1,5 +1,6 @@
-import { EntityManager, FindOperator, FindOptionsOrder, FindOptionsWhere } from "typeorm";
+import { EntityManager, FindOperator, FindOptionsOrder } from "typeorm";
 
+import { ExtendedFindOptionsWhere } from "@shared/repositories/IViewRepository";
 import { ProductCategoryEntity } from "@product/infrastructure/rdb/entities";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import { ProductSummaryDTO } from "@browsing/presentation/dto";
@@ -11,9 +12,7 @@ const product_summary_repository_mixin = {
       manager: EntityManager;
     },
     options?: {
-      where?: FindOptionsWhere<ProductSummaryView> & {
-        categories?: FindOperator<number[]>;
-      };
+      where?: ExtendedFindOptionsWhere<ProductSummaryView>;
       order?: FindOptionsOrder<ProductSummaryView>;
       skip?: number;
       take?: number;

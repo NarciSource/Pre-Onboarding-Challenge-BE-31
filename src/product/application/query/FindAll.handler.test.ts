@@ -4,20 +4,20 @@ import { Between, In, Like } from "typeorm";
 import { get_module } from "__test-utils__/test-module";
 
 import { FilterDTO } from "@shared/dto";
-import { IBrowsingRepository } from "@shared/repositories";
+import { IViewRepository } from "@shared/repositories";
 import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindAllHandler from "./FindAll.handler";
 
 describe("FindAllHandler", () => {
   let handler: FindAllHandler;
-  let summaryRepository: IBrowsingRepository<ProductSummaryView>;
+  let summaryRepository: IViewRepository<ProductSummaryView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     handler = module.get<FindAllHandler>(FindAllHandler);
 
-    summaryRepository = module.get("IProductSummaryRepository");
+    summaryRepository = module.get("IProductSummaryViewRepository");
   });
 
   it("상품 목록 조회", async () => {

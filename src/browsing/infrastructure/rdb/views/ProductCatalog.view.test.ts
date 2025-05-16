@@ -3,18 +3,18 @@ import { DataSource } from "typeorm";
 
 import { get_module } from "__test-utils__/test-module";
 
-import { IBrowsingRepository } from "@shared/repositories";
+import { IViewRepository } from "@shared/repositories";
 import ProductCatalogView from "./ProductCatalog.view";
 
 describe("ProductCatalogView", () => {
   let dataSource: DataSource;
-  let repository: IBrowsingRepository<ProductCatalogView>;
+  let repository: IViewRepository<ProductCatalogView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     dataSource = module.get(DataSource);
-    repository = module.get("IProductCatalogRepository");
+    repository = module.get("IProductCatalogViewRepository");
   });
 
   describe("ProductCatalogView 정의", () => {

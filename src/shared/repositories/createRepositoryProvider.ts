@@ -3,12 +3,12 @@ import { ObjectLiteral, EntityTarget, DataSource } from "typeorm";
 
 import base_repository_mixin from "./base.repository.mixin";
 import IBaseRepository from "./IBaseRepository";
-import IBrowsingRepository from "./IBrowsingRepository";
+import IViewRepository from "./IViewRepository";
 
 export default function createRepositoryProvider<T extends ObjectLiteral>(
   token: string,
   entity: EntityTarget<T>,
-  repository?: Partial<IBaseRepository<T> | IBrowsingRepository<T>>,
+  repository?: Partial<IBaseRepository<T> | IViewRepository<T>>,
 ): Provider {
   return {
     provide: token,

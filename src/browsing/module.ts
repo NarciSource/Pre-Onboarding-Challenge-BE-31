@@ -9,6 +9,10 @@ import * as controllers from "./presentation/controllers";
   imports: [CqrsModule],
   providers: [...Object.values(queries), ...repository_providers],
   controllers: [...Object.values(controllers)],
-  exports: ["IProductSummaryRepository", "IProductCatalogRepository", "ICategoryCatalogRepository"],
+  exports: [
+    "IProductSummaryViewRepository",
+    "IProductCatalogViewRepository",
+    "ICategoryCatalogViewRepository",
+  ],
 })
 export default class BrowsingModule {}

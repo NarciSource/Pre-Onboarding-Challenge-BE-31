@@ -2,22 +2,22 @@ import { TestingModule } from "@nestjs/testing";
 
 import { get_module } from "__test-utils__/test-module";
 
-import { IBrowsingRepository } from "@shared/repositories";
+import { IViewRepository } from "@shared/repositories";
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {
   let handler: FindHandler;
-  let categoryCatalogRepository: IBrowsingRepository<CategoryCatalogView>;
-  let productSummaryRepository: IBrowsingRepository<ProductSummaryView>;
+  let categoryCatalogRepository: IViewRepository<CategoryCatalogView>;
+  let productSummaryRepository: IViewRepository<ProductSummaryView>;
 
   beforeAll(async () => {
     const module: TestingModule = await get_module();
 
     handler = module.get<FindHandler>(FindHandler);
 
-    categoryCatalogRepository = module.get("ICategoryCatalogRepository");
-    productSummaryRepository = module.get("IProductSummaryRepository");
+    categoryCatalogRepository = module.get("ICategoryCatalogViewRepository");
+    productSummaryRepository = module.get("IProductSummaryViewRepository");
   });
 
   it("신상품, 인기상품, 추천 카테고리 조회", async () => {

@@ -1,7 +1,7 @@
 import { Inject, NotFoundException } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IBrowsingRepository } from "@shared/repositories";
+import { IViewRepository } from "@shared/repositories";
 import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
 import FindQuery from "./Find.query";
@@ -9,8 +9,8 @@ import FindQuery from "./Find.query";
 @QueryHandler(FindQuery)
 export default class FindHandler implements IQueryHandler<FindQuery> {
   constructor(
-    @Inject("IProductCatalogRepository")
-    private readonly repository: IBrowsingRepository<ProductCatalogView>,
+    @Inject("IProductCatalogViewRepository")
+    private readonly repository: IViewRepository<ProductCatalogView>,
   ) {}
 
   async execute({ id }: FindQuery) {

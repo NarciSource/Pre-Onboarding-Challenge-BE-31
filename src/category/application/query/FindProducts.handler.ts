@@ -2,7 +2,7 @@ import { Inject, NotFoundException } from "@nestjs/common";
 import { QueryHandler, IQueryHandler } from "@nestjs/cqrs";
 import { In } from "typeorm";
 
-import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
+import { IBaseRepository, IViewRepository } from "@shared/repositories";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindProductsQuery from "./FindProducts.query";
@@ -12,8 +12,8 @@ export default class FindProductsHandler implements IQueryHandler<FindProductsQu
   constructor(
     @Inject("ICategoryRepository")
     private readonly repository: IBaseRepository<CategoryEntity>,
-    @Inject("IProductSummaryRepository")
-    private readonly summary_repository: IBrowsingRepository<ProductSummaryView>,
+    @Inject("IProductSummaryViewRepository")
+    private readonly summary_repository: IViewRepository<ProductSummaryView>,
   ) {}
 
   async execute({
