@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBaseRepository } from "@shared/repositories";
-import { ReviewEntity } from "@review/infrastructure/entities";
+import { ReviewEntity } from "@review/infrastructure/rdb/entities";
 import FindQuery from "./Find.query";
 
 @QueryHandler(FindQuery)

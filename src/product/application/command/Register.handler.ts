@@ -12,7 +12,7 @@ import {
   ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
-} from "@product/infrastructure/entities";
+} from "@product/infrastructure/rdb/entities";
 import RegisterCommand from "./Register.command";
 
 @CommandHandler(RegisterCommand)

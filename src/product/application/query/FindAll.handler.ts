@@ -3,7 +3,7 @@ import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { Between, In, Like } from "typeorm";
 
 import { IBrowsingRepository } from "@shared/repositories";
-import { ProductSummaryView } from "@browsing/infrastructure/views";
+import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindAllQuery from "./FindAll.query";
 
 @QueryHandler(FindAllQuery)

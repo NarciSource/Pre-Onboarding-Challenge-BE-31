@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
-import { CategoryEntity } from "@category/infrastructure/entities";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import ProductEntity from "./Product.entity";
 
 @Entity("product_categories")

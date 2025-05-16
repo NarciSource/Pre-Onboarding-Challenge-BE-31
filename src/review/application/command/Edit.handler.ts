@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@shared/repositories";
-import { ReviewEntity } from "@review/infrastructure/entities";
+import { ReviewEntity } from "@review/infrastructure/rdb/entities";
 import EditCommand from "./Edit.command";
 
 @CommandHandler(EditCommand)

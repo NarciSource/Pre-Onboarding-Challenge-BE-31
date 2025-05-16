@@ -6,24 +6,24 @@ import { DataSource } from "typeorm";
 
 import * as product_commands from "@product/application/command";
 import * as product_queries from "@product/application/query";
-import * as product_entities from "@product/infrastructure/entities";
-import { repository_providers as product_repository_providers } from "@product/infrastructure/repositories";
+import * as product_entities from "@product/infrastructure/rdb/entities";
+import { repository_providers as product_repository_providers } from "@product/infrastructure/rdb/repositories";
 import * as product_controllers from "@product/presentation/controllers";
 
 import * as category_queries from "@category/application/query";
-import * as category_entities from "@category/infrastructure/entities";
-import { repository_providers as category_repository_providers } from "@category/infrastructure/repositories";
+import * as category_entities from "@category/infrastructure/rdb/entities";
+import { repository_providers as category_repository_providers } from "@category/infrastructure/rdb/repositories";
 import * as category_controllers from "@category/presentation/controllers";
 
 import * as review_commands from "@review/application/command";
 import * as review_queries from "@review/application/query";
-import * as review_entities from "@review/infrastructure/entities";
-import { repository_providers as review_repository_providers } from "@review/infrastructure/repositories";
+import * as review_entities from "@review/infrastructure/rdb/entities";
+import { repository_providers as review_repository_providers } from "@review/infrastructure/rdb/repositories";
 import * as review_controllers from "@review/presentation/controllers";
 
 import * as browsing_queries from "@browsing/application/query";
-import browsing_repository_providers from "@browsing/infrastructure/repositories/provider";
-import * as views from "@browsing/infrastructure/views";
+import browsing_repository_providers from "@browsing/infrastructure/rdb/repositories/provider";
+import * as views from "@browsing/infrastructure/rdb/views";
 import * as browsing_controllers from "@browsing/presentation/controllers";
 
 let container: StartedPostgreSqlContainer;

@@ -12,9 +12,9 @@ import {
   ProductTagEntity,
   SellerEntity,
   TagEntity,
-} from "@product/infrastructure/entities";
-import { CategoryEntity } from "@category/infrastructure/entities";
-import { ReviewEntity } from "@review/infrastructure/entities";
+} from "@product/infrastructure/rdb/entities";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
+import { ReviewEntity } from "@review/infrastructure/rdb/entities";
 
 @ViewEntity({
   expression: (dataSource: DataSource) => {

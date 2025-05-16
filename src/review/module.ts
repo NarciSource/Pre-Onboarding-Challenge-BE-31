@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
 
 import * as queries from "./application/query";
-import { repository_providers } from "./infrastructure/repositories";
+import { repository_providers } from "./infrastructure/rdb/repositories";
 import * as controllers from "./presentation/controllers";
 
 @Module({

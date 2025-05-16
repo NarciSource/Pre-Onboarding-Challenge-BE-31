@@ -1,7 +1,7 @@
 import { EntityManager, FindOperator, FindOptionsOrder, FindOptionsWhere } from "typeorm";
 
-import { ProductCategoryEntity } from "@product/infrastructure/entities";
-import { CategoryEntity } from "@category/infrastructure/entities";
+import { ProductCategoryEntity } from "@product/infrastructure/rdb/entities";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import { ProductSummaryDTO } from "@browsing/presentation/dto";
 import { ProductSummaryView } from "../views";
 

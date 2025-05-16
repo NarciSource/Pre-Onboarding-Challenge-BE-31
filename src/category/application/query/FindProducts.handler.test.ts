@@ -4,8 +4,8 @@ import { get_module } from "__test-utils__/test-module";
 
 import { IBaseRepository, IBrowsingRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
-import { CategoryEntity } from "@category/infrastructure/entities";
-import { ProductSummaryView } from "@browsing/infrastructure/views";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
+import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import FindProductsHandler from "./FindProducts.handler";
 
 describe("FindProductsHandler", () => {

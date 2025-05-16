@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@shared/repositories";
-import { ProductOptionEntity, ProductOptionGroupEntity } from "@product/infrastructure/entities";
+import { ProductOptionEntity, ProductOptionGroupEntity } from "@product/infrastructure/rdb/entities";
 import OptionRegisterCommand from "./OptionRegister.command";
 
 @CommandHandler(OptionRegisterCommand)

@@ -13,7 +13,7 @@ import {
   ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
-} from "@product/infrastructure/entities";
+} from "@product/infrastructure/rdb/entities";
 import EditCommand from "./Edit.command";
 
 @CommandHandler(EditCommand)

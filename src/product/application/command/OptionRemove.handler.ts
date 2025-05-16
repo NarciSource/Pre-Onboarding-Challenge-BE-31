@@ -8,7 +8,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@shared/repositories";
-import { ProductOptionEntity } from "@product/infrastructure/entities";
+import { ProductOptionEntity } from "@product/infrastructure/rdb/entities";
 import OptionRemoveCommand from "./OptionRemove.command";
 
 @CommandHandler(OptionRemoveCommand)
