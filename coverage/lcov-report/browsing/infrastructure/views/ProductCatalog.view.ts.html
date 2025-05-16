@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.5% </span>
+                <span class="strong">84.53% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>163/200</span>
+                <span class='fraction'>164/194</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.5% </span>
+                <span class="strong">84.53% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>163/200</span>
+                <span class='fraction'>164/194</span>
             </div>
         
             
@@ -257,13 +257,8 @@
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
 <a name='L194'></a><a href='#L194'>194</a>
-<a name='L195'></a><a href='#L195'>195</a>
-<a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a>
-<a name='L198'></a><a href='#L198'>198</a>
-<a name='L199'></a><a href='#L199'>199</a>
-<a name='L200'></a><a href='#L200'>200</a>
-<a name='L201'></a><a href='#L201'>201</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L195'></a><a href='#L195'>195</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -426,13 +421,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -480,6 +468,7 @@ import {
 } from "@product/infrastructure/entities";
 import { CategoryEntity } from "@category/infrastructure/entities";
 import { ReviewEntity } from "@review/infrastructure/entities";
+import { CatalogCategoryDTO, CatalogProductOptionGroupsDTO, CatalogRatingDTO } from "../dto";
 &nbsp;
 @ViewEntity({
   expression: (dataSource: DataSource) =&gt; {
@@ -508,8 +497,8 @@ import { ReviewEntity } from "@review/infrastructure/entities";
         .addSelect("to_jsonb(product_details) - 'product_id' - 'id'", "detail")
 &nbsp;
         // 브랜드, 판매자 정보
-        .leftJoin(SellerEntity, "sellers", "sellers.id = products.seller_id")
         .leftJoin(BrandEntity, "brands", "brands.id = products.brand_id")
+        .leftJoin(SellerEntity, "sellers", "sellers.id = products.seller_id")
         .addSelect([
           "to_jsonb(brands) - 'slug' AS brand",
           "to_jsonb(sellers) - 'created_at' AS seller",
@@ -520,11 +509,11 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `jsonb_build_object(
-              'base_price', price.base_price,
-              'sale_price', price.sale_price,
-              'currency', price.currency,
-              'tax_rate', price.tax_rate,
-              'discount_percentage', FLOOR(((price.base_price - price.sale_price) * 100.0) / price.base_price)
+                'base_price', price.base_price,
+                'sale_price', price.sale_price,
+                'currency', price.currency,
+                'tax_rate', price.tax_rate,
+                'discount_percentage', FLOOR(((price.base_price - price.sale_price) * 100.0) / price.base_price)
               )`,
               "price",
             )
@@ -539,13 +528,13 @@ import { ReviewEntity } from "@review/infrastructure/entities";
               `array_agg(jsonb_build_object(
                 'id', categories.id,
                 'name', categories.name,
-              'slug', categories.slug,
-              'is_primary', product_categories.is_primary,
-              'parent', jsonb_build_object(
-                'id', parent.id,
-                'name', parent.name,
-                'slug', parent.slug
-                ))
+                'slug', categories.slug,
+                'is_primary', product_categories.is_primary,
+                'parent', jsonb_build_object(
+                  'id', parent.id,
+                  'name', parent.name,
+                  'slug', parent.slug
+                  ))
                 )`,
               "categories",
             )
@@ -574,15 +563,15 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `array_agg(jsonb_build_object(
-              'id', product_option_groups.id,
-              'name', product_option_groups.name,
-              'display_order', product_option_groups.display_order,
-              'options', (
-                SELECT jsonb_agg(to_jsonb(product_options) - 'option_group_id')
-                FROM product_options product_options
-                WHERE product_options.option_group_id = product_option_groups.id
-              ))
-            )`,
+                'id', product_option_groups.id,
+                'name', product_option_groups.name,
+                'display_order', product_option_groups.display_order,
+                'options', (
+                  SELECT jsonb_agg(to_jsonb(product_options) - 'option_group_id')
+                  FROM product_options product_options
+                  WHERE product_options.option_group_id = product_option_groups.id
+                ))
+              )`,
               "option_groups",
             )
             .from(ProductOptionGroupEntity, "product_option_groups")
@@ -603,16 +592,16 @@ import { ReviewEntity } from "@review/infrastructure/entities";
           return subQuery
             .select(
               `jsonb_build_object(
-              'average', ROUND(AVG(reviews.rating), 1),
-              'count', COUNT(reviews.id),
-              'distribution', jsonb_build_object(
-                '5', COUNT(CASE WHEN reviews.rating = 5 THEN 1 END),
-                '4', COUNT(CASE WHEN reviews.rating = 4 THEN 1 END),
-                '3', COUNT(CASE WHEN reviews.rating = 3 THEN 1 END),
-                '2', COUNT(CASE WHEN reviews.rating = 2 THEN 1 END),
-                '1', COUNT(CASE WHEN reviews.rating = 1 THEN 1 END)
-                )
-              )`,
+                'average', ROUND(AVG(reviews.rating), 1),
+                'count', COUNT(reviews.id),
+                'distribution', jsonb_build_object(
+                  '5', COUNT(CASE WHEN reviews.rating = 5 THEN 1 END),
+                  '4', COUNT(CASE WHEN reviews.rating = 4 THEN 1 END),
+                  '3', COUNT(CASE WHEN reviews.rating = 3 THEN 1 END),
+                  '2', COUNT(CASE WHEN reviews.rating = 2 THEN 1 END),
+                  '1', COUNT(CASE WHEN reviews.rating = 1 THEN 1 END)
+                  )
+                )`,
               "rating",
             )
             .from(ReviewEntity, "reviews")
@@ -629,39 +618,32 @@ export default class ProductCatalogView<span class="fstat-no" title="function no
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() id: number;</span>
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() name: string;</span>
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() slug: string;</span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() short_description: string;</span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() full_description: string;</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() short_description: string | null;</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() full_description: string | null;</span>
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() status: string;</span>
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() created_at: Date;</span>
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() updated_at: Date;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() seller: SellerEntity;</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() brand: Omit&lt;BrandEntity, "slug"&gt;;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() brand: BrandEntity;</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() seller: Omit&lt;SellerEntity, "created_at"&gt;;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() detail: ProductDetailEntity;</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() detail: Omit&lt;ProductDetailEntity, "id" | "product_id"&gt;;</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() price: ProductPriceEntity &amp; { discount_percentage: number };</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() price: ProductPriceEntity &amp; { discount_percentage: number | null };</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() categories: ProductCategoryEntity[];</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() categories: CatalogCategoryDTO[];</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() option_groups: ProductOptionGroupEntity[];</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() option_groups: CatalogProductOptionGroupsDTO[];</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() images: ProductImageEntity[];</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() images: Omit&lt;</span>
+<span class="cstat-no" title="statement not covered" >    ProductImageEntity &amp; { option_id: number | null },</span>
+<span class="cstat-no" title="statement not covered" >    "product" | "option"</span>
+<span class="cstat-no" title="statement not covered" >  &gt;[];</span>
 <span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >  @ViewColumn() tags: TagEntity[];</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  @ViewColumn() rating: {</span>
-<span class="cstat-no" title="statement not covered" >    average: number;</span>
-<span class="cstat-no" title="statement not covered" >    count: number;</span>
-<span class="cstat-no" title="statement not covered" >    distribution: {</span>
-<span class="cstat-no" title="statement not covered" >      "5": number;</span>
-<span class="cstat-no" title="statement not covered" >      "4": number;</span>
-<span class="cstat-no" title="statement not covered" >      "3": number;</span>
-<span class="cstat-no" title="statement not covered" >      "2": number;</span>
-<span class="cstat-no" title="statement not covered" >      "1": number;</span>
-<span class="cstat-no" title="statement not covered" >    };</span>
-<span class="cstat-no" title="statement not covered" >  };</span>
+<span class="cstat-no" title="statement not covered" >  @ViewColumn() rating: CatalogRatingDTO;</span>
 <span class="cstat-no" title="statement not covered" >}</span>
 &nbsp;</pre></td></tr></table></pre>
 
@@ -670,7 +652,7 @@ export default class ProductCatalogView<span class="fstat-no" title="function no
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-13T18:34:01.234Z
+                at 2025-05-16T14:08:51.118Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
