@@ -18,4 +18,10 @@ export default interface IBrowsingRepository<T extends ObjectLiteral> extends Re
     skip?: number;
     take?: number;
   }): Promise<T[]>;
+
+  findOne(options?: {
+    where?:
+      | (FindOptionsWhere<T> & { categories?: FindOperator<number[]> })
+      | (FindOptionsWhere<T> & { categories?: FindOperator<number[]> })[];
+  }): Promise<T | null>;
 }

@@ -2,7 +2,7 @@ import { join } from "path";
 
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
-export const type_orm_config = {
+export default {
   useFactory: (): TypeOrmModuleOptions => {
     const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE } = process.env;
 
