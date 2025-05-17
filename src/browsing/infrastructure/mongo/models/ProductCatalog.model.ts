@@ -1,5 +1,4 @@
 import { Prop, Schema } from "@nestjs/mongoose";
-import { Document } from "mongoose";
 
 import BrandModel from "./Brand.model";
 import CategoryModel from "./Category.model";
@@ -12,7 +11,7 @@ import SellerModel from "./Seller.model";
 import TagModel from "./Tag.model";
 
 @Schema()
-export default class ProductCatalogModel extends Document {
+export default class ProductCatalogModel {
   @Prop({ unique: true })
   declare id: number;
 

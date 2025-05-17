@@ -1,6 +1,5 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop } from "@nestjs/mongoose";
 
-@Schema({ _id: false })
 class RatingDistributionModel {
   @Prop()
   "5": number;
@@ -18,7 +17,6 @@ class RatingDistributionModel {
   "1": number;
 }
 
-@Schema({ _id: false })
 export default class RatingModel {
   @Prop()
   average: number;

@@ -1,6 +1,5 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop } from "@nestjs/mongoose";
 
-@Schema({ _id: false })
 export default class TagModel {
   @Prop()
   id: number;

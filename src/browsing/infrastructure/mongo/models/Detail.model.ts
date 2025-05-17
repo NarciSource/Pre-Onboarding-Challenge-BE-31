@@ -1,6 +1,5 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop } from "@nestjs/mongoose";
 
-@Schema({ _id: false })
 export class DimensionsModel {
   @Prop()
   width: number;
@@ -12,7 +11,6 @@ export class DimensionsModel {
   depth: number;
 }
 
-@Schema({ _id: false })
 export class AdditionalInfoModel {
   @Prop()
   assembly_required: boolean;
@@ -21,7 +19,6 @@ export class AdditionalInfoModel {
   assembly_time: string;
 }
 
-@Schema({ _id: false })
 export default class ProductDetailModel {
   @Prop({ type: Number })
   weight: number | null;

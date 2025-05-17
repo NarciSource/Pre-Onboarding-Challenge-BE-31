@@ -1,8 +1,22 @@
 import { Prop, Schema } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+
+export class Image {
+  @Prop() url: string;
+  @Prop({ type: String }) alt_text: string | null;
+}
+
+export class Seller {
+  @Prop() id: number;
+  @Prop() name: string;
+}
+
+export class Brand {
+  @Prop() id: number;
+  @Prop() name: string;
+}
 
 @Schema()
-export default class ProductSummaryModel extends Document {
+export default class ProductSummaryModel {
   @Prop({ unique: true })
   declare id: number;
 
@@ -24,34 +38,19 @@ export default class ProductSummaryModel extends Document {
   @Prop()
   currency: string;
 
-  @Prop({
-    type: {
-      url: { type: String },
-      alt_text: { type: String },
-    },
-  })
+  @Prop({ type: Image })
   primary_image: {
     url: string;
     alt_text: string | null;
   };
 
-  @Prop({
-    type: {
-      id: { type: Number },
-      name: { type: String },
-    },
-  })
+  @Prop({ type: Brand })
   brand: {
     id: number;
     name: string;
   };
 
-  @Prop({
-    type: {
-      id: { type: Number },
-      name: { type: String },
-    },
-  })
+  @Prop({ type: Seller })
   seller: {
     id: number;
     name: string;

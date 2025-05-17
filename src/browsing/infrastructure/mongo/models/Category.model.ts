@@ -1,6 +1,5 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop } from "@nestjs/mongoose";
 
-@Schema({ _id: false })
 export class ParentCategory {
   @Prop()
   id: number;
@@ -12,7 +11,6 @@ export class ParentCategory {
   slug: string;
 }
 
-@Schema({ _id: false })
 export default class CategoryModel {
   @Prop()
   id: number;

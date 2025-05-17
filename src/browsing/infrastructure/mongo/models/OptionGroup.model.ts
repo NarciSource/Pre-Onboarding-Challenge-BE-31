@@ -1,7 +1,6 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop } from "@nestjs/mongoose";
 import { OptionModel } from "./Option.model";
 
-@Schema({ _id: false })
 export default class OptionGroupModel {
   @Prop()
   id: number;
