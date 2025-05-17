@@ -1,13 +1,9 @@
 import { Inject, NotFoundException } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import {
-  CategoryCatalogModel,
-  ProductCatalogModel,
-  ProductSummaryModel,
-} from "@browsing/infrastructure/mongo/models";
-import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import { IQueryRepository, IViewRepository } from "@shared/repositories";
+import { ProductCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import QueryUpdateEvent from "./QueryUpdate.event";
 
 @EventsHandler(QueryUpdateEvent)

@@ -1,16 +1,16 @@
 import { Inject, NotFoundException } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IViewRepository } from "@shared/repositories";
-import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
+import { IQueryRepository } from "@shared/repositories";
+import { ProductCatalogModel } from "@browsing/infrastructure/mongo/models";
 import { ProductCatalogDTO } from "@browsing/presentation/dto";
 import FindQuery from "./Find.query";
 
 @QueryHandler(FindQuery)
 export default class FindHandler implements IQueryHandler<FindQuery> {
   constructor(
-    @Inject("IProductCatalogViewRepository")
-    private readonly repository: IViewRepository<ProductCatalogView>,
+    @Inject("IProductCatalogQueryRepository")
+    private readonly repository: IQueryRepository<ProductCatalogModel>,
   ) {}
 
   async execute({ id }: FindQuery) {

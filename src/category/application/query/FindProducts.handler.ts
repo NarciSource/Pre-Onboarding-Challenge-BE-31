@@ -1,10 +1,9 @@
 import { Inject, NotFoundException } from "@nestjs/common";
-import { QueryHandler, IQueryHandler } from "@nestjs/cqrs";
-import { In } from "typeorm";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IBaseRepository, IViewRepository } from "@shared/repositories";
+import { IBaseRepository, IQueryRepository } from "@shared/repositories";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
-import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
+import { ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
 import FindProductsQuery from "./FindProducts.query";
 
 @QueryHandler(FindProductsQuery)
@@ -12,15 +11,18 @@ export default class FindProductsHandler implements IQueryHandler<FindProductsQu
   constructor(
     @Inject("ICategoryRepository")
     private readonly repository: IBaseRepository<CategoryEntity>,
-    @Inject("IProductSummaryViewRepository")
-    private readonly summary_repository: IViewRepository<ProductSummaryView>,
+    @Inject("IProductSummaryQueryRepository")
+    private readonly summary_repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
   async execute({
     category_id,
     dto: { page = 1, per_page = 10, sort = "created_at:desc", has_sub = true },
   }: FindProductsQuery) {
-    const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
+    const [sort_field, sort_order] = (sort?.split(":") ?? ["created_at", "DESC"]) as [
+      string,
+      "ASC" | "DESC",
+    ];
 
     // 카테고리 정보 조회
     const category = await this.repository.findOne({
@@ -40,9 +42,7 @@ export default class FindProductsHandler implements IQueryHandler<FindProductsQu
 
     // 아이템 필터링
     const items = await this.summary_repository.find({
-      where: {
-        categories: In([category_id]),
-      },
+      where: { categories: { $in: [category_id] } },
       order: { [sort_field]: sort_order },
       skip: (page - 1) * per_page,
       take: per_page,

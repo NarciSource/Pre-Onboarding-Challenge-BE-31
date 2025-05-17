@@ -1,16 +1,15 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { Between, In, Like } from "typeorm";
 
-import { IViewRepository } from "@shared/repositories";
-import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
+import { IQueryRepository } from "@shared/repositories";
+import { ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
 import FindAllQuery from "./FindAll.query";
 
 @QueryHandler(FindAllQuery)
 export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
   constructor(
-    @Inject("IProductSummaryViewRepository")
-    private readonly product_summary_repository: IViewRepository<ProductSummaryView>,
+    @Inject("IProductSummaryQueryRepository")
+    private readonly repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
   async execute({
@@ -28,17 +27,23 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
       search,
     },
   }: FindAllQuery) {
-    const [sort_field, sort_order] = sort?.split(":") ?? ["created_at", "DESC"];
+    const [sort_field, sort_order] = (sort?.split(":") ?? ["created_at", "DESC"]) as [
+      string,
+      "ASC" | "DESC",
+    ];
 
-    const items = await this.product_summary_repository.find({
+    const items = await this.repository.find({
       where: {
-        status,
-        base_price: Between(min_price ?? 0, max_price ?? Number.MAX_SAFE_INTEGER),
-        categories: In(categories ?? []),
+        ...(status ? { status } : {}),
+        base_price: {
+          $gte: min_price ?? 0,
+          $lte: max_price ?? Number.MAX_SAFE_INTEGER,
+        },
+        ...(categories?.length ? { categories: { $in: categories } } : {}),
         ...(seller_id ? { seller: { id: seller_id } } : {}),
         ...(brand_id ? { brand: { id: brand_id } } : {}),
         in_stock,
-        name: Like(`%${search ?? ""}%`),
+        name: { $regex: search ?? "", $options: "i" },
       },
       order: { [sort_field]: sort_order },
       skip: (page - 1) * per_page,
