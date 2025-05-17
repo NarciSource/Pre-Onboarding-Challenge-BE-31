@@ -1,18 +1,18 @@
 import { Inject, NotFoundException } from "@nestjs/common";
-import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, EventBus, ICommandHandler } from "@nestjs/cqrs";
 
-import { IBaseRepository, IQueryRepository } from "@shared/repositories";
+import { IBaseRepository } from "@shared/repositories";
 import { ProductEntity } from "@product/infrastructure/rdb/entities";
-import { ProductCatalogModel } from "@browsing/infrastructure/mongo/models";
+import { QueryRemoveEvent } from "@browsing/application/event";
 import RemoveCommand from "./Remove.command";
 
 @CommandHandler(RemoveCommand)
 export default class RemoveHandler implements ICommandHandler<RemoveCommand> {
   constructor(
+    private readonly event_bus: EventBus,
+
     @Inject("IProductRepository")
     private readonly repository: IBaseRepository<ProductEntity>,
-    @Inject("IProductCatalogQueryRepository")
-    private readonly catalog_query_repository: IQueryRepository<ProductCatalogModel>,
   ) {}
 
   async execute({ id }: RemoveCommand): Promise<void> {
@@ -29,7 +29,9 @@ export default class RemoveHandler implements ICommandHandler<RemoveCommand> {
       /**
        * 쿼리 레포지토리로 수동 업데이트
        */
-      await this.catalog_query_repository.delete(id);
+      const event = new QueryRemoveEvent(id);
+
+      await this.event_bus.publish(event);
     }
   }
 }
