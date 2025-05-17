@@ -27,16 +27,17 @@ export default class RegisterHandler implements ICommandHandler<RegisterCommand>
         .with_transaction(manager)
         .findOne({ where: { id }, relations: ["user"] });
 
-      {
-        /**
-         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-         */
-        const event = new QueryUpdateEvent(product_id, manager);
-
-        await this.event_bus.publish(event);
-      }
       return created;
     });
+
+    {
+      /**
+       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+       */
+      const event = new QueryUpdateEvent(product_id);
+
+      await this.event_bus.publish(event);
+    }
 
     return created!;
   }

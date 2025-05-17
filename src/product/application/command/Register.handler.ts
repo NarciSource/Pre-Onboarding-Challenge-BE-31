@@ -120,17 +120,17 @@ export default class RegisterHandler implements ICommandHandler<RegisterCommand>
         .with_transaction(manager)
         .save(tag_ids.map((id) => ({ tag: { id }, product: { id: product_id } })));
 
-      {
-        /**
-         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-         */
-        const event = new QueryRegisterEvent(product_entity.id, manager);
-
-        await this.event_bus.publish(event);
-      }
-
       return product_entity;
     });
+
+    {
+      /**
+       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+       */
+      const event = new QueryRegisterEvent(product_entity.id);
+
+      await this.event_bus.publish(event);
+    }
 
     // 반환 형식 변환
     const { id, name, slug, created_at, updated_at } = product_entity;

@@ -46,17 +46,17 @@ export default class OptionEditHandler implements ICommandHandler<OptionEditComm
       Object.assign(option_entity, options);
       const updated = await this.repository.with_transaction(manager).save(option_entity);
 
-      {
-        /**
-         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-         */
-        const event = new QueryUpdateEvent(product_id, manager);
-
-        await this.event_bus.publish(event);
-      }
-
       return updated;
     });
+
+    {
+      /**
+       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+       */
+      const event = new QueryUpdateEvent(product_id);
+
+      await this.event_bus.publish(event);
+    }
 
     // 반환 형식 변환
     const { option_group, ...rest } = updated;

@@ -148,18 +148,18 @@ export default class EditHandler implements ICommandHandler<EditCommand> {
         .with_transaction(manager)
         .save(tag_ids.map((id) => ({ tag: { id }, product: { id: id } })));
 
-      {
-        /**
-         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-         */
-        const event = new QueryUpdateEvent(product_id, manager);
-
-        await this.event_bus.publish(event);
-      }
-
       // 업데이트 반환
       return product_entity;
     });
+
+    {
+      /**
+       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+       */
+      const event = new QueryUpdateEvent(product_id);
+
+      await this.event_bus.publish(event);
+    }
 
     // 반환 형식 변환
     const { id, name, slug, updated_at } = updated;

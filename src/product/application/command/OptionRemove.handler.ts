@@ -48,17 +48,17 @@ export default class OptionRemoveHandler implements ICommandHandler<OptionRemove
 
       const { affected } = await this.repository.with_transaction(manager).delete(option_id);
 
-      {
-        /**
-         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-         */
-        const event = new QueryUpdateEvent(product_id, manager);
-
-        await this.event_bus.publish(event);
-      }
-
       return affected !== 0;
     });
+
+    {
+      /**
+       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+       */
+      const event = new QueryUpdateEvent(product_id);
+
+      await this.event_bus.publish(event);
+    }
 
     if (!delete_success) {
       throw new InternalServerErrorException("옵션 삭제에 실패했습니다.");

@@ -32,19 +32,19 @@ export default class EditHandler implements ICommandHandler<EditCommand> {
         .with_transaction(manager)
         .findOne({ where: { id: review_id }, relations: ["product"] });
 
-      {
-        /**
-         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-         */
-        if (updated?.product.id) {
-          const event = new QueryUpdateEvent(updated?.product.id, manager);
-
-          await this.event_bus.publish(event);
-        }
-      }
-
       return updated;
     });
+
+    {
+      /**
+       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+       */
+      if (updated?.product.id) {
+        const event = new QueryUpdateEvent(updated?.product.id);
+
+        await this.event_bus.publish(event);
+      }
+    }
 
     const { id, rating, title, content, updated_at } = updated!;
     return { id, rating, title, content, updated_at };

@@ -1,9 +1,13 @@
 import { Inject, NotFoundException } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository, IViewRepository } from "@shared/repositories";
-import { ProductCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import {
+  CategoryCatalogModel,
+  ProductCatalogModel,
+  ProductSummaryModel,
+} from "@browsing/infrastructure/mongo/models";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
+import { IQueryRepository, IViewRepository } from "@shared/repositories";
 import QueryUpdateEvent from "./QueryUpdate.event";
 
 @EventsHandler(QueryUpdateEvent)
@@ -20,17 +24,10 @@ export default class QueryUpdateHandler {
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
-  async handle({ id, manager }: QueryUpdateEvent): Promise<void> {
+  async handle({ id }: QueryUpdateEvent): Promise<void> {
     {
       {
-        let catalog: ProductCatalogView | null = null;
-        if (manager) {
-          catalog = await this.product_catalog_view_repository
-            .with_transaction(manager)
-            .findOneBy({ id });
-        } else {
-          catalog = await this.product_catalog_view_repository.findOneBy({ id });
-        }
+        const catalog = await this.product_catalog_view_repository.findOneBy({ id });
 
         if (!catalog) {
           throw new NotFoundException({
@@ -43,14 +40,7 @@ export default class QueryUpdateHandler {
       }
 
       {
-        let summary: ProductSummaryView | null = null;
-        if (manager) {
-          summary = await this.product_summary_view_repository
-            .with_transaction(manager)
-            .findOneBy({ id });
-        } else {
-          summary = await this.product_summary_view_repository.findOneBy({ id });
-        }
+        const summary = await this.product_summary_view_repository.findOneBy({ id });
 
         if (!summary) {
           throw new NotFoundException({
