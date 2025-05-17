@@ -1,8 +1,8 @@
-import { Inject } from "@nestjs/common";
+import { Inject, NotFoundException } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
-import { IBaseRepository } from "@shared/repositories";
+import { IBaseRepository, IViewRepository, IQueryRepository } from "@shared/repositories";
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
@@ -13,6 +13,8 @@ import {
   ProductPriceEntity,
   ProductTagEntity,
 } from "@product/infrastructure/rdb/entities";
+import { ProductCatalogModel } from "@browsing/infrastructure/mongo/models";
+import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
 import RegisterCommand from "./Register.command";
 
 @CommandHandler(RegisterCommand)
@@ -35,6 +37,10 @@ export default class RegisterHandler implements ICommandHandler<RegisterCommand>
     private readonly product_image_repository: IBaseRepository<ProductImageEntity>,
     @Inject("IProductTagRepository")
     private readonly product_tag_repository: IBaseRepository<ProductTagEntity>,
+    @Inject("IProductCatalogViewRepository")
+    private readonly catalog_view_repository: IViewRepository<ProductCatalogView>,
+    @Inject("IProductCatalogQueryRepository")
+    private readonly catalog_query_repository: IQueryRepository<ProductCatalogModel>,
   ) {}
 
   async execute({
@@ -117,8 +123,27 @@ export default class RegisterHandler implements ICommandHandler<RegisterCommand>
         .with_transaction(manager)
         .save(tag_ids.map((id) => ({ tag: { id }, product: { id: product_id } })));
 
+      {
+        /**
+         * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
+         */
+        const catalog = await this.catalog_view_repository.with_transaction(manager).findOneBy({
+          id: product_id,
+        });
+
+        if (!catalog) {
+          throw new NotFoundException({
+            message: "상품 카탈로그를 찾을 수 없습니다.",
+            details: { resourceType: "ProductCatalog", resourceId: product_id },
+          });
+        }
+
+        await this.catalog_query_repository.save(catalog);
+      }
+
       return product_entity;
     });
+
     // 반환 형식 변환
     const { id, name, slug, created_at, updated_at } = product_entity;
     return { id, name, slug, created_at, updated_at };
