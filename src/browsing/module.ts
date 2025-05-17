@@ -24,6 +24,8 @@ import * as controllers from "./presentation/controllers";
     "IProductCatalogViewRepository",
     "ICategoryCatalogViewRepository",
     "IProductCatalogQueryRepository",
+    "IProductSummaryQueryRepository",
+    "ICategoryCatalogQueryRepository",
     ...Object.values(events),
   ],
 })
