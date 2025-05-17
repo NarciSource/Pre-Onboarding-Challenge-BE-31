@@ -1,6 +1,6 @@
-import { EntityManager, FindOperator, FindOptionsOrder } from "typeorm";
+import { EntityManager, FindOperator } from "typeorm";
 
-import { ExtendedFindOptionsWhere } from "@shared/repositories/IViewRepository";
+import { FindOptions } from "@shared/repositories/IViewRepository";
 import { ProductCategoryEntity } from "@product/infrastructure/rdb/entities";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import { ProductSummaryDTO } from "@browsing/presentation/dto";
@@ -8,15 +8,8 @@ import { ProductSummaryView } from "../views";
 
 const product_summary_repository_mixin = {
   async find(
-    this: {
-      manager: EntityManager;
-    },
-    options?: {
-      where?: ExtendedFindOptionsWhere<ProductSummaryView>;
-      order?: FindOptionsOrder<ProductSummaryView>;
-      skip?: number;
-      take?: number;
-    },
+    this: { manager: EntityManager },
+    options?: FindOptions<ProductSummaryView>,
   ): Promise<ProductSummaryDTO[]> {
     const query = this.manager
       .getRepository(ProductSummaryView)

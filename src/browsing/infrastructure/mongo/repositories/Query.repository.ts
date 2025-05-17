@@ -1,18 +1,27 @@
 import { Injectable } from "@nestjs/common";
 import { FilterQuery, Model, Document } from "mongoose";
 
-import IQueryRepository from "@shared/repositories/IQueryRepository";
+import IQueryRepository, { FindOptions } from "@shared/repositories/IQueryRepository";
 
 @Injectable()
 export default class QueryRepository<T extends Document> implements IQueryRepository<T> {
   constructor(private readonly model: Model<T>) {}
 
-  async find(filter: FilterQuery<T> = {}) {
-    return this.model.find(filter).exec();
+  async find({ where = {}, order = {}, take = 0, skip = 0 }: FindOptions<T>): Promise<T[]> {
+    const sort = {};
+    for (const key in order) {
+      if (order[key] === "ASC") {
+        sort[key] = 1;
+      } else if (order[key] === "DESC") {
+        sort[key] = -1;
+      }
+    }
+
+    return this.model.find(where).sort(sort).limit(take).skip(skip).exec() as Promise<T[]>;
   }
 
-  async findById(id: number) {
-    return this.model.findOne({ id }).exec();
+  async findOneBy(where: FilterQuery<T>): Promise<T | null> {
+    return this.model.findOne(where).exec() as Promise<T>;
   }
 
   async save(data: Partial<T>) {
