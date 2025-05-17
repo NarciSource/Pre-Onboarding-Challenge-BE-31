@@ -1,14 +1,14 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 
-import BrandModel from "./Brand.model";
-import CategoryModel from "./Category.model";
-import ProductDetailModel from "./Detail.model";
-import ImageModel from "./Image.model";
-import OptionGroupModel from "./OptionGroup.model";
-import PriceModel from "./Price.model";
-import RatingModel from "./Rating.model";
-import SellerModel from "./Seller.model";
-import TagModel from "./Tag.model";
+import BrandModel from "./sub/Brand.model";
+import CategoryModel from "./sub/Category.model";
+import ProductDetailModel from "./sub/Detail.model";
+import ImageModel from "./sub/Image.model";
+import OptionGroupModel from "./sub/OptionGroup.model";
+import PriceModel from "./sub/Price.model";
+import RatingModel from "./sub/Rating.model";
+import SellerModel from "./sub/Seller.model";
+import TagModel from "./sub/Tag.model";
 
 @Schema()
 export default class ProductCatalogModel {
