@@ -14,7 +14,7 @@ export class ParentCategory {
 
 @Schema({ _id: false })
 export default class CategoryModel {
-  @Prop({ unique: true })
+  @Prop()
   id: number;
 
   @Prop()

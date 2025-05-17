@@ -2,7 +2,7 @@ import { Prop, Schema } from "@nestjs/mongoose";
 
 @Schema({ _id: false })
 export default class ImageModel {
-  @Prop({ unique: true })
+  @Prop()
   id: number;
 
   @Prop()

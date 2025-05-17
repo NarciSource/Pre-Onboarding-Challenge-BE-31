@@ -2,7 +2,7 @@ import { Prop, Schema } from "@nestjs/mongoose";
 
 @Schema()
 export class OptionModel {
-  @Prop({ unique: true })
+  @Prop()
   id: number;
 
   @Prop()

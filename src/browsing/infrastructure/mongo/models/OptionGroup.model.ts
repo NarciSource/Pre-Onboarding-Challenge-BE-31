@@ -3,7 +3,7 @@ import { OptionModel } from "./Option.model";
 
 @Schema({ _id: false })
 export default class OptionGroupModel {
-  @Prop({ unique: true })
+  @Prop()
   id: number;
 
   @Prop()
