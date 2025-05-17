@@ -17,7 +17,7 @@ export default class ProductCatalogRepository implements IQueryRepository<Produc
   }
 
   async findById(id: number) {
-    return this.model.findById(id).exec();
+    return this.model.findOne({ id }).exec();
   }
 
   async save(data: Partial<ProductCatalogModel>) {
@@ -25,10 +25,10 @@ export default class ProductCatalogRepository implements IQueryRepository<Produc
   }
 
   async update(id: number, data: Partial<ProductCatalogModel>) {
-    return this.model.findByIdAndUpdate(id, data, { new: true }).exec();
+    return this.model.findOneAndUpdate({ id }, data, { new: true }).exec();
   }
 
   async delete(id: number) {
-    return this.model.findByIdAndDelete(id).exec();
+    return this.model.findOneAndDelete({ id }).exec();
   }
 }
