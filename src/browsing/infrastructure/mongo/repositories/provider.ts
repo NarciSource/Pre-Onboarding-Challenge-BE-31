@@ -1,8 +1,6 @@
-import ProductCatalogQueryRepository from "./ProductCatalog.repository";
+import { ProductCatalogModel } from "../models";
+import { createQueryRepositoryProvider } from "./createRepositoryProvider";
 
 export default [
-  {
-    provide: "IProductCatalogQueryRepository",
-    useClass: ProductCatalogQueryRepository,
-  },
+  createQueryRepositoryProvider("IProductCatalogQueryRepository", ProductCatalogModel),
 ];
