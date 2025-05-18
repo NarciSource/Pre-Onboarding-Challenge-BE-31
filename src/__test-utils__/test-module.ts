@@ -2,8 +2,6 @@ import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { MongoDBContainer, StartedMongoDBContainer } from "@testcontainers/mongodb";
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { DataSource } from "typeorm";
 
 import * as product_commands from "@product/application/command";
@@ -30,39 +28,29 @@ import view_repository_providers from "@browsing/infrastructure/rdb/repositories
 import * as views from "@browsing/infrastructure/rdb/views";
 import * as browsing_controllers from "@browsing/presentation/controllers";
 
-let postgres_container: StartedPostgreSqlContainer;
-let mongo_container: StartedMongoDBContainer;
 let test_module: TestingModule;
 
 export async function get_module() {
   if (test_module) {
     return test_module;
   }
-  postgres_container = await new PostgreSqlContainer()
-    .withDatabase("testdb")
-    .withUsername("testuser")
-    .withPassword("testpassword")
-    .start();
-
-  mongo_container = await new MongoDBContainer().start();
 
   test_module = await Test.createTestingModule({
     imports: [
       TypeOrmModule.forRootAsync({
         useFactory: () => ({
           type: "postgres",
-          host: postgres_container.getHost(),
-          port: postgres_container.getPort(),
-          username: postgres_container.getUsername(),
-          password: postgres_container.getPassword(),
-          database: postgres_container.getDatabase(),
+          host: process.env.TEST_POSTGRES_HOST,
+          port: Number(process.env.TEST_POSTGRES_PORT),
+          username: process.env.TEST_POSTGRES_USERNAME,
+          password: process.env.TEST_POSTGRES_PASSWORD,
+          database: process.env.TEST_POSTGRES_DB,
           entities: [
             ...Object.values(product_entities),
             ...Object.values(category_entities),
             ...Object.values(review_entities),
             ...Object.values(views),
           ],
-          synchronize: true,
         }),
       }),
       TypeOrmModule.forFeature([
@@ -73,7 +61,7 @@ export async function get_module() {
       ]),
       MongooseModule.forRootAsync({
         useFactory: () => {
-          return { uri: `${mongo_container.getConnectionString()}?directConnection=true` };
+          return { uri: `${process.env.TEST_MONGO_URI}?directConnection=true` };
         },
       }),
       MongooseModule.forFeature(model_providers),
@@ -118,8 +106,5 @@ export async function stop_test_module() {
   if (test_module) {
     const dataSource = test_module.get<DataSource>(DataSource);
     await dataSource.destroy();
-  }
-  if (postgres_container) {
-    await postgres_container.stop();
   }
 }
