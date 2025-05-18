@@ -2,16 +2,16 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { IBaseRepository, IViewRepository } from "@shared/repositories";
+import { IBaseRepository, IQueryRepository } from "@shared/repositories";
 import { Category } from "@category/domain/entities";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
-import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
+import { ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
 import FindProductsHandler from "./FindProducts.handler";
 
 describe("FindProductsHandler", () => {
   let handler: FindProductsHandler;
   let categoryRepository: IBaseRepository<CategoryEntity>;
-  let productSummaryRepository: IViewRepository<ProductSummaryView>;
+  let productSummaryRepository: IQueryRepository<ProductSummaryModel>;
 
   beforeAll(async () => {
     const module: TestingModule = await test_module;
@@ -19,7 +19,7 @@ describe("FindProductsHandler", () => {
     handler = module.get<FindProductsHandler>(FindProductsHandler);
 
     categoryRepository = module.get("ICategoryRepository");
-    productSummaryRepository = module.get("IProductSummaryViewRepository");
+    productSummaryRepository = module.get("IProductSummaryQueryRepository");
   });
 
   const category = { id: 1, name: "대분류1", parent: { id: 0 } } as Category;

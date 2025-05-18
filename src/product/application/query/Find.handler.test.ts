@@ -3,20 +3,20 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { IViewRepository } from "@shared/repositories";
-import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
+import { IQueryRepository } from "@shared/repositories";
+import { ProductCatalogModel } from "@browsing/infrastructure/mongo/models";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {
   let handler: FindHandler;
-  let catalogRepository: IViewRepository<ProductCatalogView>;
+  let catalogRepository: IQueryRepository<ProductCatalogModel>;
 
   beforeAll(async () => {
     const module: TestingModule = await test_module;
 
     handler = module.get<FindHandler>(FindHandler);
 
-    catalogRepository = module.get("IProductCatalogViewRepository");
+    catalogRepository = module.get("IProductCatalogQueryRepository");
   });
 
   it("상품 조회", async () => {

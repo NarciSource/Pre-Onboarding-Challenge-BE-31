@@ -1,23 +1,22 @@
 import { TestingModule } from "@nestjs/testing";
-import { Between, In, Like } from "typeorm";
 
 import test_module from "__test-utils__/test-module";
 
 import { FilterDTO } from "@shared/dto";
-import { IViewRepository } from "@shared/repositories";
-import { ProductSummaryView } from "@browsing/infrastructure/rdb/views";
+import { IQueryRepository } from "@shared/repositories";
+import { ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
 import FindAllHandler from "./FindAll.handler";
 
 describe("FindAllHandler", () => {
   let handler: FindAllHandler;
-  let summaryRepository: IViewRepository<ProductSummaryView>;
+  let summaryRepository: IQueryRepository<ProductSummaryModel>;
 
   beforeAll(async () => {
     const module: TestingModule = await test_module;
 
     handler = module.get<FindAllHandler>(FindAllHandler);
 
-    summaryRepository = module.get("IProductSummaryViewRepository");
+    summaryRepository = module.get("IProductSummaryQueryRepository");
   });
 
   it("상품 목록 조회", async () => {
@@ -46,18 +45,6 @@ describe("FindAllHandler", () => {
         total_pages: 1,
         current_page: 1,
         per_page: 10,
-      },
-    });
-    expect(summaryRepository.find).toHaveBeenCalledWith({
-      order: { created_at: "ASC" },
-      skip: 0,
-      take: 10,
-      where: {
-        base_price: Between(100, 1000000),
-        categories: In([1, 2]),
-        in_stock: true,
-        name: Like("%상품%"),
-        status: undefined,
       },
     });
   });

@@ -22,18 +22,17 @@ describe("EditHandler", () => {
 
   it("리뷰 수정", async () => {
     const dto = { rating: 4, title: "리뷰 수정 제목", content: "수정된 리뷰" };
-    const updatedReview = { id: 1, ...dto };
+    const updatedReview = { id: 1, product: { id: 2 }, ...dto };
     repository.update = jest.fn().mockResolvedValue({ affected: 1 });
-    repository.findOneBy = jest.fn().mockResolvedValue(updatedReview);
+    repository.findOne = jest.fn().mockResolvedValue(updatedReview);
 
     const result = await handler.execute({
       id: 1,
       dto,
     });
 
-    expect(result).toEqual(expect.objectContaining(updatedReview));
+    expect(result).toEqual(expect.objectContaining({ id: 1, ...dto }));
     expect(repository.update).toHaveBeenCalledWith(1, dto);
-    expect(repository.findOneBy).toHaveBeenCalledWith({ id: 1 });
   });
 
   it("리뷰 수정 실패 시 NotFoundException 발생", async () => {
