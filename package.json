@@ -1,6 +1,6 @@
 {
-  "name": "wanted-preonboarding-challenge-backend-31",
-  "version": "1.0.1",
+  "name": "pre-onboarding-challenge-be-31",
+  "version": "1.3.2",
   "description": "CQRS 시스템 설계/구축 챌린지",
   "author": "NarciSource",
   "private": false,
@@ -77,10 +77,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NarciSource/wanted-preonboarding-challenge-backend-31.git"
+    "url": "git+https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31.git"
   },
   "bugs": {
-    "url": "https://github.com/NarciSource/wanted-preonboarding-challenge-backend-31/issues"
+    "url": "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/issues"
   },
-  "homepage": "https://github.com/NarciSource/wanted-preonboarding-challenge-backend-31#readme"
+  "homepage": "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31#readme"
 }
