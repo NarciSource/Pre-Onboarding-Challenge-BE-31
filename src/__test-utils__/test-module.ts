@@ -20,6 +20,7 @@ import * as review_entities from "@review/infrastructure/rdb/entities";
 import { repository_providers as review_repository_providers } from "@review/infrastructure/rdb/repositories";
 import * as review_controllers from "@review/presentation/controllers";
 
+import * as browsing_events from "@browsing/application/event";
 import * as browsing_queries from "@browsing/application/query";
 import { model_providers } from "@browsing/infrastructure/mongo/models";
 import query_repository_providers from "@browsing/infrastructure/mongo/repositories/provider";
@@ -81,6 +82,7 @@ const test_module = Test.createTestingModule({
     ...Object.values(review_commands),
     ...Object.values(review_queries),
     ...Object.values(category_queries),
+    ...Object.values(browsing_events),
     ...Object.values(browsing_queries),
   ],
   controllers: [

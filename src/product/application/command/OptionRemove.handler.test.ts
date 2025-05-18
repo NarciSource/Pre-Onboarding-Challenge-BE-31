@@ -3,6 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from "@nestjs/common";
+import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
@@ -12,17 +13,21 @@ import {
   ProductOptionEntity,
   ProductOptionGroupEntity,
 } from "@product/infrastructure/rdb/entities";
+import { QueryUpdateEvent } from "@browsing/application/event";
 import OptionRemoveHandler from "./OptionRemove.handler";
 
 describe("OptionRemoveHandler", () => {
   let handler: OptionRemoveHandler;
+  let event_bus: EventBus;
+
   let optionGroupRepository: IBaseRepository<ProductOptionGroupEntity>;
   let optionsRepository: IBaseRepository<ProductOptionEntity>;
 
   beforeAll(async () => {
     const module: TestingModule = await test_module;
 
-    handler = module.get<OptionRemoveHandler>(OptionRemoveHandler);
+    handler = module.get(OptionRemoveHandler);
+    event_bus = module.get(EventBus);
 
     optionGroupRepository = module.get("IProductOptionGroupRepository");
     optionsRepository = module.get("IProductOptionsRepository");
@@ -43,6 +48,7 @@ describe("OptionRemoveHandler", () => {
     await handler.execute({ product_id, option_id });
 
     expect(optionsRepository.delete).toHaveBeenCalledWith(option_id);
+    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryUpdateEvent));
   });
 
   it("찾을 수 없는 옵션으로 삭제 실패 시 NotFoundException 발생", async () => {

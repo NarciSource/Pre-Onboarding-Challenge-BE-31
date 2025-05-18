@@ -1,4 +1,5 @@
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
@@ -9,17 +10,21 @@ import {
   ProductOptionEntity,
   ProductOptionGroupEntity,
 } from "@product/infrastructure/rdb/entities";
+import { QueryUpdateEvent } from "@browsing/application/event";
 import OptionEditHandler from "./OptionEdit.handler";
 
 describe("OptionEditHandler", () => {
   let handler: OptionEditHandler;
+  let event_bus: EventBus;
+
   let optionGroupRepository: IBaseRepository<ProductOptionGroupEntity>;
   let optionsRepository: IBaseRepository<ProductOptionEntity>;
 
   beforeAll(async () => {
     const module: TestingModule = await test_module;
 
-    handler = module.get<OptionEditHandler>(OptionEditHandler);
+    handler = module.get(OptionEditHandler);
+    event_bus = module.get(EventBus);
 
     optionGroupRepository = module.get("IProductOptionGroupRepository");
     optionsRepository = module.get("IProductOptionsRepository");
@@ -48,6 +53,7 @@ describe("OptionEditHandler", () => {
       ...options,
       option_group_id: updatedOption.option_group.id,
     });
+    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryUpdateEvent));
   });
 
   it("찾을 수 없는 옵션으로 수정 실패 시 NotFoundException 발생", async () => {

@@ -1,14 +1,18 @@
 import { NotFoundException } from "@nestjs/common";
+import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
 import { ProductEntity } from "@product/infrastructure/rdb/entities";
+import { QueryUpdateEvent } from "@browsing/application/event";
 import EditHandler from "./Edit.handler";
 
 describe("EditHandler", () => {
   let handler: EditHandler;
+  let event_bus: EventBus;
+
   let productRepository: IBaseRepository<ProductEntity>;
   let detailRepository: IBaseRepository<ProductEntity>;
   let priceRepository: IBaseRepository<ProductEntity>;
@@ -21,7 +25,8 @@ describe("EditHandler", () => {
   beforeAll(async () => {
     const module: TestingModule = await test_module;
 
-    handler = module.get<EditHandler>(EditHandler);
+    handler = module.get(EditHandler);
+    event_bus = module.get(EventBus);
 
     productRepository = module.get("IProductRepository");
     detailRepository = module.get("IProductDetailRepository");
@@ -32,6 +37,7 @@ describe("EditHandler", () => {
     imageRepository = module.get("IProductImageRepository");
     tagRepository = module.get("IProductTagRepository");
 
+    event_bus.publish = jest.fn();
     productRepository.with_transaction = jest.fn().mockReturnValue(productRepository);
     detailRepository.with_transaction = jest.fn().mockReturnValue(detailRepository);
     priceRepository.with_transaction = jest.fn().mockReturnValue(priceRepository);
@@ -153,6 +159,7 @@ describe("EditHandler", () => {
     expect(result).toEqual(
       expect.objectContaining({ id: 2, name: "수정된 상품명", slug: "updated-slug" }),
     );
+    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryUpdateEvent));
   });
 
   it("찾을 수 없는 상품으로 수정 시 NotFoundException 발생", async () => {
