@@ -59,24 +59,31 @@ services:
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
 
+  # 분산 시스템을 위한 중앙 집중식 서비스
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.9.0
+    container_name: coordinator
+    networks:
+      - network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka
     networks:
       - network
     environment:
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092 # Kafka 내부에서 사용하는 바인딩 주소
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 # Kafka 외부에서 사용하는 바인딩 주소
-      KAFKA_NODE_ID: 1 # KRaft 모드에서 브로커ID & 컨트롤러ID 역할
-      KAFKA_PROCESS_ROLES: broker,controller # broker와 controller 역할을 모두 수행 (KRaft 모드)
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093 # KRaft 모드에서 controller quorum voter 설정
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_BROKER_ID: 1 # 브로커 ID
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Kafka 내부에서 사용하는 topic replication factor
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true" # 자동으로 topic을 생성
-      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     volumes:
       - kafka-data:/var/lib/kafka/data
 
