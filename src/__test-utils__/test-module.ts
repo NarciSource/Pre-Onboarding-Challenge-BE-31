@@ -73,7 +73,7 @@ export async function get_module() {
       ]),
       MongooseModule.forRootAsync({
         useFactory: () => {
-          return { uri: mongo_container.getConnectionString() };
+          return { uri: `${mongo_container.getConnectionString()}?directConnection=true` };
         },
       }),
       MongooseModule.forFeature(model_providers),
