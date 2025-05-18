@@ -1,7 +1,4 @@
-set -a
-source .env
-set +a
-cd "$(dirname "$0")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 for connector in \
     postgres-brand-connector.json \
@@ -11,6 +8,6 @@ for connector in \
     postgres-seller-connector.json \
     postgres-tag-connector.json
 do
-    envsubst < "$connector" | \
-    curl -X POST -H "Content-Type: application/json" --data @- http://localhost:${CDC_PORT}/connectors
+    envsubst < "$SCRIPT_DIR/$connector" | \
+    curl -X POST -H "Content-Type: application/json" --data @- http://${CDC_HOST}:${CDC_PORT}/connectors
 done

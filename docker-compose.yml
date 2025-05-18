@@ -126,6 +126,29 @@ services:
       CONNECT_METRICS_ENABLED: "false"
       CONNECT_REST_ADVERTISED_HOST_NAME: debezium
 
+  connector-init:
+    image: bitnami/kubectl:latest
+    container_name: connector-init
+    networks:
+      - network
+    depends_on:
+      - debezium
+    env_file:
+      - .env
+    environment:
+      PG_HOST: rds
+      PG_PORT: 5432
+      CDC_HOST: debezium
+      CDC_PORT: 8083
+    volumes:
+      - ./config/connectors:/connectors
+    entrypoint: >
+      sh -c "
+        echo 'Waiting for Debezium to be ready...';
+        until curl -s http://debezium:8083/connectors; do sleep 2; done;
+        echo 'Register connector';
+        sh ./connectors/register.sh;"
+
 networks:
   network:
     driver: bridge
