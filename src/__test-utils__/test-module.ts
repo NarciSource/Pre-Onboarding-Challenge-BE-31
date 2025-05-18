@@ -1,8 +1,7 @@
 import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Test, TestingModule } from "@nestjs/testing";
+import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { DataSource } from "typeorm";
 
 import * as product_commands from "@product/application/command";
 import * as product_queries from "@product/application/query";
@@ -28,83 +27,68 @@ import view_repository_providers from "@browsing/infrastructure/rdb/repositories
 import * as views from "@browsing/infrastructure/rdb/views";
 import * as browsing_controllers from "@browsing/presentation/controllers";
 
-let test_module: TestingModule;
-
-export async function get_module() {
-  if (test_module) {
-    return test_module;
-  }
-
-  test_module = await Test.createTestingModule({
-    imports: [
-      TypeOrmModule.forRootAsync({
-        useFactory: () => ({
-          type: "postgres",
-          host: process.env.TEST_POSTGRES_HOST,
-          port: Number(process.env.TEST_POSTGRES_PORT),
-          username: process.env.TEST_POSTGRES_USERNAME,
-          password: process.env.TEST_POSTGRES_PASSWORD,
-          database: process.env.TEST_POSTGRES_DB,
-          entities: [
-            ...Object.values(product_entities),
-            ...Object.values(category_entities),
-            ...Object.values(review_entities),
-            ...Object.values(views),
-          ],
-        }),
+const test_module = Test.createTestingModule({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: "postgres",
+        host: process.env.TEST_POSTGRES_HOST,
+        port: Number(process.env.TEST_POSTGRES_PORT),
+        username: process.env.TEST_POSTGRES_USERNAME,
+        password: process.env.TEST_POSTGRES_PASSWORD,
+        database: process.env.TEST_POSTGRES_DB,
+        entities: [
+          ...Object.values(product_entities),
+          ...Object.values(category_entities),
+          ...Object.values(review_entities),
+          ...Object.values(views),
+        ],
       }),
-      TypeOrmModule.forFeature([
-        ...Object.values(product_entities),
-        ...Object.values(category_entities),
-        ...Object.values(review_entities),
-        ...Object.values(views),
-      ]),
-      MongooseModule.forRootAsync({
-        useFactory: () => {
-          return { uri: `${process.env.TEST_MONGO_URI}?directConnection=true` };
-        },
-      }),
-      MongooseModule.forFeature(model_providers),
-    ],
-    providers: [
-      {
-        provide: EventBus,
-        useValue: { publish: jest.fn() },
+    }),
+    TypeOrmModule.forFeature([
+      ...Object.values(product_entities),
+      ...Object.values(category_entities),
+      ...Object.values(review_entities),
+      ...Object.values(views),
+    ]),
+    MongooseModule.forRootAsync({
+      useFactory: () => {
+        return { uri: `${process.env.TEST_MONGO_URI}?directConnection=true` };
       },
-      {
-        provide: CommandBus,
-        useValue: { execute: jest.fn() },
-      },
-      {
-        provide: QueryBus,
-        useValue: { execute: jest.fn() },
-      },
-      ...product_repository_providers,
-      ...category_repository_providers,
-      ...review_repository_providers,
-      ...view_repository_providers,
-      ...query_repository_providers,
-      ...Object.values(product_commands),
-      ...Object.values(product_queries),
-      ...Object.values(review_commands),
-      ...Object.values(review_queries),
-      ...Object.values(category_queries),
-      ...Object.values(browsing_queries),
-    ],
-    controllers: [
-      ...Object.values(product_controllers),
-      ...Object.values(category_controllers),
-      ...Object.values(review_controllers),
-      ...Object.values(browsing_controllers),
-    ],
-  }).compile();
+    }),
+    MongooseModule.forFeature(model_providers),
+  ],
+  providers: [
+    {
+      provide: EventBus,
+      useValue: { publish: jest.fn() },
+    },
+    {
+      provide: CommandBus,
+      useValue: { execute: jest.fn() },
+    },
+    {
+      provide: QueryBus,
+      useValue: { execute: jest.fn() },
+    },
+    ...product_repository_providers,
+    ...category_repository_providers,
+    ...review_repository_providers,
+    ...view_repository_providers,
+    ...query_repository_providers,
+    ...Object.values(product_commands),
+    ...Object.values(product_queries),
+    ...Object.values(review_commands),
+    ...Object.values(review_queries),
+    ...Object.values(category_queries),
+    ...Object.values(browsing_queries),
+  ],
+  controllers: [
+    ...Object.values(product_controllers),
+    ...Object.values(category_controllers),
+    ...Object.values(review_controllers),
+    ...Object.values(browsing_controllers),
+  ],
+}).compile();
 
-  return test_module;
-}
-
-export async function stop_test_module() {
-  if (test_module) {
-    const dataSource = test_module.get<DataSource>(DataSource);
-    await dataSource.destroy();
-  }
-}
+export default test_module;

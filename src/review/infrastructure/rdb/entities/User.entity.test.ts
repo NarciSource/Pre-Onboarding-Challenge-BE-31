@@ -1,7 +1,7 @@
 import { TestingModule } from "@nestjs/testing";
 import { DataSource, UpdateResult } from "typeorm";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
 import UserEntity from "./User.entity";
@@ -11,7 +11,7 @@ describe("UserEntity", () => {
   let repository: IBaseRepository<UserEntity>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     dataSource = module.get(DataSource);
     repository = module.get("IUserRepository");

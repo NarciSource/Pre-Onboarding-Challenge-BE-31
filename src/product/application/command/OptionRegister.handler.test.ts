@@ -1,7 +1,7 @@
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
 import { Product_Option } from "@product/domain/entities";
@@ -17,7 +17,7 @@ describe("OptionRegisterHandler", () => {
   let optionsRepository: IBaseRepository<ProductOptionEntity>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     handler = module.get<OptionRegisterHandler>(OptionRegisterHandler);
 

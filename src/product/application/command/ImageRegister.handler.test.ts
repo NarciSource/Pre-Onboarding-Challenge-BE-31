@@ -1,6 +1,6 @@
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
 import { Product_Image } from "@product/domain/entities";
@@ -12,7 +12,7 @@ describe("ImageRegisterHandler", () => {
   let imageRepository: IBaseRepository<ProductEntity>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     handler = module.get<ImageRegisterHandler>(ImageRegisterHandler);
 

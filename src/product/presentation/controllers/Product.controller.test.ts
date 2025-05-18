@@ -1,7 +1,7 @@
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { ProductEntity } from "@product/infrastructure/rdb/entities";
 import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
@@ -22,7 +22,7 @@ describe("ProductController", () => {
   let queryBus: QueryBus;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     controller = module.get(ProductController);
     commandBus = module.get(CommandBus);

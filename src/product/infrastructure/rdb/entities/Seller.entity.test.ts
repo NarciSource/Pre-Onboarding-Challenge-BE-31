@@ -2,7 +2,7 @@ import { TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { DataSource, Repository, UpdateResult } from "typeorm";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import SellerEntity from "./Seller.entity";
 
@@ -11,7 +11,7 @@ describe("SellerEntity", () => {
   let repository: Repository<SellerEntity>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     data_source = module.get<DataSource>(DataSource);
     repository = module.get<Repository<SellerEntity>>(getRepositoryToken(SellerEntity));

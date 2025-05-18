@@ -1,7 +1,7 @@
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import {
   ParamDTO,
@@ -20,7 +20,7 @@ describe("ReviewController", () => {
   let queryBus: QueryBus;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     controller = module.get(ReviewController);
     commandBus = module.get(CommandBus);

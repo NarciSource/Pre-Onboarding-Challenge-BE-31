@@ -1,7 +1,7 @@
 import { TestingModule } from "@nestjs/testing";
 import { Between, In, Like } from "typeorm";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { FilterDTO } from "@shared/dto";
 import { IViewRepository } from "@shared/repositories";
@@ -13,7 +13,7 @@ describe("FindAllHandler", () => {
   let summaryRepository: IViewRepository<ProductSummaryView>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     handler = module.get<FindAllHandler>(FindAllHandler);
 

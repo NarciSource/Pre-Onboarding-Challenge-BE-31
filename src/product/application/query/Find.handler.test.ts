@@ -1,7 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { IViewRepository } from "@shared/repositories";
 import { ProductCatalogView } from "@browsing/infrastructure/rdb/views";
@@ -12,7 +12,7 @@ describe("FindHandler", () => {
   let catalogRepository: IViewRepository<ProductCatalogView>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     handler = module.get<FindHandler>(FindHandler);
 

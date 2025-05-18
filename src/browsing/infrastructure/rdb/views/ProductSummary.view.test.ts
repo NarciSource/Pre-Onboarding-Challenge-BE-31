@@ -1,7 +1,7 @@
 import { TestingModule } from "@nestjs/testing";
 import { DataSource } from "typeorm";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { IViewRepository } from "@shared/repositories";
 import ProductSummaryView from "./ProductSummary.view";
@@ -11,7 +11,7 @@ describe("ProductSummaryView", () => {
   let repository: IViewRepository<ProductSummaryView>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     dataSource = module.get(DataSource);
     repository = module.get("IProductSummaryViewRepository");

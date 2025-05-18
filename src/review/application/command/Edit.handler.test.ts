@@ -1,7 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
 import { ReviewEntity } from "@review/infrastructure/rdb/entities";
@@ -12,7 +12,7 @@ describe("EditHandler", () => {
   let repository: IBaseRepository<ReviewEntity>;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     handler = module.get<EditHandler>(EditHandler);
 

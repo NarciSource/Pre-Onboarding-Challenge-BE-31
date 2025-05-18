@@ -1,7 +1,7 @@
 import { QueryBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
-import { get_module } from "__test-utils__/test-module";
+import test_module from "__test-utils__/test-module";
 
 import { CategoryCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
 import { MainResponseBundleDTO, ResponseDTO } from "../dto";
@@ -12,7 +12,7 @@ describe("MainController", () => {
   let queryBus: QueryBus;
 
   beforeAll(async () => {
-    const module: TestingModule = await get_module();
+    const module: TestingModule = await test_module;
 
     controller = module.get(MainController);
     queryBus = module.get(QueryBus);
