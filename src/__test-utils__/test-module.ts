@@ -1,6 +1,8 @@
-import { CommandBus, QueryBus } from "@nestjs/cqrs";
+import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
+import { MongooseModule } from "@nestjs/mongoose";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { MongoDBContainer, StartedMongoDBContainer } from "@testcontainers/mongodb";
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
 import { DataSource } from "typeorm";
 
@@ -22,33 +24,38 @@ import { repository_providers as review_repository_providers } from "@review/inf
 import * as review_controllers from "@review/presentation/controllers";
 
 import * as browsing_queries from "@browsing/application/query";
-import browsing_repository_providers from "@browsing/infrastructure/rdb/repositories/provider";
+import { model_providers } from "@browsing/infrastructure/mongo/models";
+import query_repository_providers from "@browsing/infrastructure/mongo/repositories/provider";
+import view_repository_providers from "@browsing/infrastructure/rdb/repositories/provider";
 import * as views from "@browsing/infrastructure/rdb/views";
 import * as browsing_controllers from "@browsing/presentation/controllers";
 
-let container: StartedPostgreSqlContainer;
+let postgres_container: StartedPostgreSqlContainer;
+let mongo_container: StartedMongoDBContainer;
 let test_module: TestingModule;
 
 export async function get_module() {
   if (test_module) {
     return test_module;
   }
-  container = await new PostgreSqlContainer()
+  postgres_container = await new PostgreSqlContainer()
     .withDatabase("testdb")
     .withUsername("testuser")
     .withPassword("testpassword")
     .start();
+
+  mongo_container = await new MongoDBContainer().start();
 
   test_module = await Test.createTestingModule({
     imports: [
       TypeOrmModule.forRootAsync({
         useFactory: () => ({
           type: "postgres",
-          host: container.getHost(),
-          port: container.getPort(),
-          username: container.getUsername(),
-          password: container.getPassword(),
-          database: container.getDatabase(),
+          host: postgres_container.getHost(),
+          port: postgres_container.getPort(),
+          username: postgres_container.getUsername(),
+          password: postgres_container.getPassword(),
+          database: postgres_container.getDatabase(),
           entities: [
             ...Object.values(product_entities),
             ...Object.values(category_entities),
@@ -64,8 +71,18 @@ export async function get_module() {
         ...Object.values(review_entities),
         ...Object.values(views),
       ]),
+      MongooseModule.forRootAsync({
+        useFactory: () => {
+          return { uri: mongo_container.getConnectionString() };
+        },
+      }),
+      MongooseModule.forFeature(model_providers),
     ],
     providers: [
+      {
+        provide: EventBus,
+        useValue: { publish: jest.fn() },
+      },
       {
         provide: CommandBus,
         useValue: { execute: jest.fn() },
@@ -77,7 +94,8 @@ export async function get_module() {
       ...product_repository_providers,
       ...category_repository_providers,
       ...review_repository_providers,
-      ...browsing_repository_providers,
+      ...view_repository_providers,
+      ...query_repository_providers,
       ...Object.values(product_commands),
       ...Object.values(product_queries),
       ...Object.values(review_commands),
@@ -101,7 +119,7 @@ export async function stop_test_module() {
     const dataSource = test_module.get<DataSource>(DataSource);
     await dataSource.destroy();
   }
-  if (container) {
-    await container.stop();
+  if (postgres_container) {
+    await postgres_container.stop();
   }
 }
