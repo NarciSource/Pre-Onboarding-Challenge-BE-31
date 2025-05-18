@@ -15,6 +15,15 @@ services:
     volumes:
       - ./data:/docker-entrypoint-initdb.d
       - ./pg-data:/var/lib/postgresql/data
+    # Debezium CDC를 위한 설정 추가
+    command: # postgresql.conf의 설정을 덮어쓰기
+      - "postgres"
+      - "-c"
+      - "wal_level=logical" # Debezium이 이벤트를 캡처할 수 있도록
+      - "-c"
+      - "max_wal_senders=10" # 복제 클라이언트 수 
+      - "-c"
+      - "max_replication_slots=10" # Debezium이 슬롯을 만들 수 있게
 
   mongo:
     image: mongo:latest
