@@ -16,14 +16,14 @@ export default class CategoryModel {
   id: number;
 
   @Prop()
-  name: string;
+  name?: string;
 
   @Prop()
-  slug: string;
+  slug?: string;
 
   @Prop()
   is_primary: boolean;
 
   @Prop({ type: ParentCategory })
-  parent: ParentCategory | null;
+  parent?: ParentCategory | null;
 }

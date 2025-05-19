@@ -11,10 +11,12 @@ export default class ProductCategoryEntity {
   @ManyToOne(() => ProductEntity, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
+  product_id: number;
 
   @ManyToOne(() => CategoryEntity, { onDelete: "CASCADE" })
   @JoinColumn({ name: "category_id" })
   category: CategoryEntity;
+  category_id: number;
 
   @Column({ type: "boolean", default: false })
   is_primary: boolean;

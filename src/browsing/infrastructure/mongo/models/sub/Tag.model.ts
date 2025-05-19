@@ -5,8 +5,8 @@ export default class TagModel {
   id: number;
 
   @Prop()
-  name: string;
+  name?: string;
 
   @Prop()
-  slug: string;
+  slug?: string;
 }
