@@ -1,7 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { TableEntity } from "@kafka-consumer/dto";
 import { IQueryRepository } from "@shared/repositories";
 import {
   ProductEntity,
@@ -23,23 +22,25 @@ export default class ProductUpsertHandler {
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
-  async handle({ table, data }: ProductUpsertEvent<TableEntity>) {
+  async handle({ table, after }: ProductUpsertEvent) {
     switch (table) {
       case "products": {
-        const product = data as ProductEntity;
+        const product = after as ProductEntity;
 
         await this.catalog_query_repository.update(product.id, product);
         await this.summary_query_repository.update(product.id, product);
         break;
       }
+
       case "product_details": {
-        const { product_id, ...detail } = data as ProductDetailEntity;
+        const { product_id, ...detail } = after as ProductDetailEntity;
 
         await this.catalog_query_repository.update(product_id, { detail });
         break;
       }
+
       case "product_categories": {
-        const { product_id, category_id, is_primary } = data as ProductCategoryEntity;
+        const { product_id, category_id, is_primary } = after as ProductCategoryEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
         const categories = catalog?.categories ?? [];
@@ -54,8 +55,9 @@ export default class ProductUpsertHandler {
         });
         break;
       }
+
       case "product_prices": {
-        const { product_id, ...price } = data as ProductPriceEntity;
+        const { product_id, ...price } = after as ProductPriceEntity;
 
         const discount_percentage =
           ((price.base_price - (price.sale_price ?? 0)) * 100) / price.base_price;
@@ -66,8 +68,9 @@ export default class ProductUpsertHandler {
         await this.summary_query_repository.update(product_id, price);
         break;
       }
+
       case "product_option_groups": {
-        const { id, product_id, name, display_order } = data as ProductOptionGroupEntity;
+        const { id, product_id, name, display_order } = after as ProductOptionGroupEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
         const option_group = catalog?.option_groups ?? [];
@@ -82,8 +85,9 @@ export default class ProductUpsertHandler {
         });
         break;
       }
+
       case "product_tags": {
-        const { product_id, tag_id } = data as ProductTagEntity;
+        const { product_id, tag_id } = after as ProductTagEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
         const tags = catalog?.tags ?? [];

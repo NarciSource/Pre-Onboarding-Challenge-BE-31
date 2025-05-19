@@ -1,3 +1,3 @@
-export default class ProductDeleteEvent {
-  constructor(public readonly id: number) {}
-}
+import ProjectionEvent from "../ProjectionEvent";
+
+export default class ProductDeleteEvent extends ProjectionEvent {}

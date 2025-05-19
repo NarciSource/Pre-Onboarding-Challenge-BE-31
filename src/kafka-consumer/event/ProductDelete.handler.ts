@@ -14,8 +14,9 @@ export default class ProductDeleteHandler {
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
-  async handle({ id }: ProductDeleteEvent) {
-    await this.catalog_query_repository.delete(id);
-    await this.summary_query_repository.delete(id);
+  async handle({ before }: ProductDeleteEvent) {
+    await this.catalog_query_repository.delete(before.id);
+
+    await this.summary_query_repository.delete(before.id);
   }
 }
