@@ -16,5 +16,7 @@ export default interface IQueryRepository<T> {
 
   update(id: number, data: Partial<T>): Promise<void>;
 
+  updateMany(where: FilterQuery<T>, data: Partial<T>): Promise<void>;
+
   delete(id: number): Promise<void>;
 }
