@@ -2,23 +2,29 @@
   "name": "seller-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+
     "database.hostname": "${PG_HOST}",
     "database.port": "${PG_PORT}",
     "database.user": "${PG_USERNAME}",
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
-    "topic.prefix": "seller",
+
     "slot.name": "seller_slot",
     "plugin.name": "pgoutput",
+    
     "snapshot.mode": "initial",
     "table.include.list": "public.sellers",
-    "transforms": "RouteByTable",
-    "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.RouteByTable.regex": "seller.public.(.*)",
-    "transforms.RouteByTable.replacement": "seller-events",
+
+    "topic.prefix": "seller",
+
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false"
+    "value.converter.schemas.enable": "false",
+
+    "transforms": "RouteByTable",
+    "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.RouteByTable.regex": "seller.public.(.*)",
+    "transforms.RouteByTable.replacement": "seller-events"
   }
 }
