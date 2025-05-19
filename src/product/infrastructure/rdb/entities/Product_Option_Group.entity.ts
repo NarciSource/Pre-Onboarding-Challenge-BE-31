@@ -10,6 +10,7 @@ export default class ProductOptionGroupEntity {
   @ManyToOne(() => ProductEntity, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
+  product_id: number;
 
   @Column({ type: "varchar", length: 100 })
   name: string;

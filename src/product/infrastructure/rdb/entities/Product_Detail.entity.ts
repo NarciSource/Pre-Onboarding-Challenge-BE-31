@@ -7,11 +7,10 @@ export default class ProductDetailEntity {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
-  @OneToOne(() => ProductEntity, (product) => product.id, {
-    onDelete: "CASCADE",
-  })
+  @OneToOne(() => ProductEntity, (product) => product.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
+  product_id: number;
 
   @Column("decimal", { precision: 10, scale: 2, nullable: true })
   weight: number | null;

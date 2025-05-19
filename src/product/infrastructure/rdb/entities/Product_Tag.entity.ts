@@ -8,13 +8,13 @@ export default class ProductTagEntity {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.id, {
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(() => ProductEntity, (product) => product.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
+  product_id: number;
 
   @ManyToOne(() => TagEntity, (tag) => tag.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "tag_id" })
   tag: TagEntity;
+  tag_id: number;
 }
