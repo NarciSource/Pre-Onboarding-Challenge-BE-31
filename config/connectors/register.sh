@@ -1,11 +1,10 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 for connector in \
-    postgres-brand-connector.json \
+    postgres-merchant-connector.json \
     postgres-category-connector.json \
     postgres-product-connector.json \
     postgres-product-option-connector.json \
-    postgres-seller-connector.json \
     postgres-tag-connector.json
 do
     envsubst < "$SCRIPT_DIR/$connector" | \
