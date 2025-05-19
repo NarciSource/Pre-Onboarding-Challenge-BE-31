@@ -1,5 +1,5 @@
 {
-  "name": "brand-connector",
+  "name": "merchant-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,13 +9,13 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "brand_slot",
+    "slot.name": "merchant_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
-    "table.include.list": "public.brands",
+    "table.include.list": "public.brands,public.sellers",
 
-    "topic.prefix": "brand",
+    "topic.prefix": "merchant",
 
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
@@ -24,7 +24,7 @@
 
     "transforms": "RouteByTable",
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.RouteByTable.regex": "brand.public.(.*)",
-    "transforms.RouteByTable.replacement": "brand-events"
+    "transforms.RouteByTable.regex": "merchant.public.(.*)",
+    "transforms.RouteByTable.replacement": "merchant-events"
   }
 }

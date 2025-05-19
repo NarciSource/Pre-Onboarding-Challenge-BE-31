@@ -1,4 +1,6 @@
 import {
+  BrandEntity,
+  SellerEntity,
   ProductCategoryEntity,
   ProductDetailEntity,
   ProductEntity,
@@ -45,6 +47,8 @@ export interface TableEntityMap {
   product_prices: ProductPriceEntity;
   product_option_groups: ProductOptionGroupEntity;
   product_tags: ProductTagEntity;
+  brands: BrandEntity;
+  sellers: SellerEntity;
   reviews: ReviewEntity;
 }
 

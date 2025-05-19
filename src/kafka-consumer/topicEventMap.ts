@@ -1,5 +1,5 @@
 import { DebeziumOperation } from "./dto";
-import { ProductDeleteEvent, ProductUpsertEvent } from "./event";
+import { MerchantUpsertEvent, ProductDeleteEvent, ProductUpsertEvent } from "./event";
 import ProjectionEvent from "./ProjectionEvent";
 
 type EventConstructor = new (...args: unknown[]) => ProjectionEvent;
@@ -16,6 +16,11 @@ const topicEventMap: EventMapping = {
     u: ProductUpsertEvent,
     r: ProductUpsertEvent,
     d: ProductDeleteEvent,
+  },
+  "merchant-events": {
+    c: MerchantUpsertEvent,
+    u: MerchantUpsertEvent,
+    r: MerchantUpsertEvent,
   },
 };
 
