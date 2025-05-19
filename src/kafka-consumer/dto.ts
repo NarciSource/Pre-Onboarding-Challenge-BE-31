@@ -1,3 +1,13 @@
+import {
+  ProductCategoryEntity,
+  ProductDetailEntity,
+  ProductEntity,
+  ProductOptionGroupEntity,
+  ProductPriceEntity,
+  ProductTagEntity,
+} from "@product/infrastructure/rdb/entities";
+import { ReviewEntity } from "@review/infrastructure/rdb/entities";
+
 export enum DebeziumOperation {
   CREATE = "c",
   UPDATE = "u",
@@ -18,7 +28,7 @@ export interface DebeziumMessage<T> {
     db: string;
     sequence?: string;
     schema: string;
-    table: string;
+    table: TableEntity;
     txId?: number;
     lsn?: number;
     xmin?: number | null;
@@ -27,3 +37,16 @@ export interface DebeziumMessage<T> {
   ts_us?: number;
   ts_ns?: number;
 }
+
+export interface TableEntityMap {
+  products: ProductEntity;
+  product_details: ProductDetailEntity;
+  product_categories: ProductCategoryEntity;
+  product_prices: ProductPriceEntity;
+  product_option_groups: ProductOptionGroupEntity;
+  product_tags: ProductTagEntity;
+  reviews: ReviewEntity;
+}
+
+export type TableEntity = keyof TableEntityMap;
+export type TableEntityType<T extends TableEntity> = TableEntityMap[T];
