@@ -21,6 +21,7 @@
       "__test-utils__/*": ["./src/__test-utils__/*"],
       "@utility/*": ["./src/utility/*"],
       "@libs/*": ["./src/libs/*"],
+      "@kafka-consumer/*": ["./src/kafka-consumer/*"],
       "@shared/*": ["./src/shared/*"],
       "@product/*": ["./src/product/*"],
       "@category/*": ["./src/category/*"],
