@@ -3,8 +3,8 @@ import { ConfigService } from "@nestjs/config";
 import { EventBus } from "@nestjs/cqrs";
 import { Consumer, Kafka, KafkaMessage } from "kafkajs";
 
-import { DebeziumMessage, DebeziumOperation, TableEntity, TableEntityMap } from "./dto";
-import { ProductDeleteEvent, ProductUpsertEvent } from "./event";
+import { DebeziumMessage, TableEntity, TableEntityMap } from "./dto";
+import topicEventMap, { TopicName } from "./topicEventMap";
 
 @Injectable()
 export default class KafkaConsumerService implements OnModuleInit {
@@ -30,12 +30,12 @@ export default class KafkaConsumerService implements OnModuleInit {
 
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        if (topic !== "product-events" || !message.value) {
+        if (!message.value) {
           this.logger.warn(`Invalid or null message on topic: ${topic} partition: ${partition}`);
           return;
         }
 
-        await this.dispatch(message);
+        await this.dispatch(topic, message);
       },
     });
 
@@ -48,7 +48,7 @@ export default class KafkaConsumerService implements OnModuleInit {
     this.logger.log("Kafka consumer stopped");
   }
 
-  async dispatch(message: KafkaMessage) {
+  async dispatch(topic: TopicName, message: KafkaMessage) {
     const { op, before, after, source } = JSON.parse(message.value!.toString()) as DebeziumMessage<
       TableEntityMap[TableEntity]
     >;
@@ -56,23 +56,14 @@ export default class KafkaConsumerService implements OnModuleInit {
     const id = after?.id ?? before?.id;
     if (!id) return;
 
-    switch (op) {
-      case DebeziumOperation.CREATE:
-      case DebeziumOperation.UPDATE:
-      case DebeziumOperation.READ: {
-        if (!after || !source.table) return;
-
-        const event = new ProductUpsertEvent(source.table, after);
-
-        await this.event_bus.publish(event);
-        break;
-      }
-      case DebeziumOperation.DELETE: {
-        const event = new ProductDeleteEvent(id);
-
-        await this.event_bus.publish(event);
-        break;
-      }
+    const EventClass = topicEventMap[topic][op];
+    if (!EventClass) {
+      this.logger.warn(`No EventClass found for topic: ${topic}, op: ${op}`);
+      return;
     }
+
+    const event = new EventClass(source.table, before, after);
+
+    await this.event_bus.publish(event);
   }
 }
