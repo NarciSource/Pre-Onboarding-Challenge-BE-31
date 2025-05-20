@@ -11,7 +11,7 @@ export type FilterDTO = {
   in_stock?: boolean;
   search?: string;
   has_sub?: boolean;
-  rating?: number;
+  rating?: 1 | 2 | 3 | 4 | 5;
 };
 
 export default FilterDTO;

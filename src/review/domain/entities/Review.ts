@@ -6,7 +6,7 @@ export default class Review {
     public id: number,
     public product: Product,
     public user: User | null,
-    public rating: number,
+    public rating: 1 | 2 | 3 | 4 | 5,
     public title: string | null,
     public content: string | null,
     public created_at: Date,
