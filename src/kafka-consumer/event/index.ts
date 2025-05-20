@@ -12,3 +12,7 @@ export { default as ReviewDeleteEvent } from "./ReviewDelete.event";
 export { default as ReviewDeleteHandler } from "./ReviewDelete.handler";
 export { default as ReviewUpdateEvent } from "./ReviewUpdate.event";
 export { default as ReviewUpdateHandler } from "./ReviewUpdate.handler";
+export { default as ProductOptionUpsertEvent } from "./ProductOptionUpsert.event";
+export { default as ProductOptionUpsertHandler } from "./ProductOptionUpsert.handler";
+export { default as ProductOptionDeleteEvent } from "./ProductOptionDelete.event";
+export { default as ProductOptionDeleteHandler } from "./ProductOptionDelete.handler";

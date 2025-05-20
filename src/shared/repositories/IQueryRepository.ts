@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 
 export type FindOptions<T> = {
   where?: FilterQuery<T>;
@@ -14,7 +14,7 @@ export default interface IQueryRepository<T> {
 
   save(data: Partial<T>): Promise<void>;
 
-  update(id: number, data: Partial<T>): Promise<void>;
+  update(id: number, data: UpdateQuery<T>): Promise<void>;
 
   updateMany(where: FilterQuery<T>, data: Partial<T>): Promise<void>;
 

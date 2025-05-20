@@ -25,10 +25,19 @@ export default class ProductUpsertHandler {
   async handle({ table, after }: ProductUpsertEvent) {
     switch (table) {
       case "products": {
-        const product = after as ProductEntity;
+        const { brand_id, seller_id, ...product } = after as ProductEntity;
 
-        await this.catalog_query_repository.update(product.id, product);
-        await this.summary_query_repository.update(product.id, product);
+        await this.catalog_query_repository.update(product.id, {
+          ...product,
+          brand: { id: brand_id },
+          seller: { id: seller_id },
+        });
+
+        await this.summary_query_repository.update(product.id, {
+          ...product,
+          brand: { id: brand_id },
+          seller: { id: seller_id },
+        });
         break;
       }
 
@@ -70,15 +79,17 @@ export default class ProductUpsertHandler {
       }
 
       case "product_option_groups": {
-        const { id, product_id, name, display_order } = after as ProductOptionGroupEntity;
+        const { id: option_group_id, product_id, ...rest } = after as ProductOptionGroupEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
-        const option_group = catalog?.option_groups ?? [];
+        const option_groups = catalog?.option_groups ?? [];
 
-        const updated_option_groups = [
-          ...option_group.filter((og) => og?.id !== id),
-          { id, name, display_order },
-        ];
+        const exists = option_groups.some((group) => group.id === option_group_id);
+        const updated_option_groups = exists
+          ? option_groups.map((group) =>
+              group.id === option_group_id ? { ...group, ...rest } : group,
+            )
+          : [...option_groups, { id: option_group_id, options: [], ...rest }];
 
         await this.catalog_query_repository.update(product_id, {
           option_groups: updated_option_groups,

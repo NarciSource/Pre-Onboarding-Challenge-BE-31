@@ -42,7 +42,7 @@ export default class ProductSummaryModel {
   primary_image: {
     url: string;
     alt_text: string | null;
-  };
+  } | null;
 
   @Prop({ type: Brand })
   brand: {

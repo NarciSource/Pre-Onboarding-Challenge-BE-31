@@ -12,5 +12,5 @@ export default class OptionGroupModel {
   display_order: number;
 
   @Prop({ type: [OptionModel] })
-  options?: OptionModel[];
+  options: OptionModel[];
 }

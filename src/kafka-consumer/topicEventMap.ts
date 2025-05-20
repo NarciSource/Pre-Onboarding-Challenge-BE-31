@@ -2,6 +2,8 @@ import { DebeziumOperation } from "./dto";
 import {
   MerchantUpsertEvent,
   ProductDeleteEvent,
+  ProductOptionDeleteEvent,
+  ProductOptionUpsertEvent,
   ProductUpsertEvent,
   ReviewCreateEvent,
   ReviewDeleteEvent,
@@ -34,6 +36,12 @@ const topicEventMap: EventMapping = {
     u: ReviewUpdateEvent,
     r: ReviewCreateEvent,
     d: ReviewDeleteEvent,
+  },
+  "product-option-events": {
+    c: ProductOptionUpsertEvent,
+    u: ProductOptionUpsertEvent,
+    r: ProductOptionUpsertEvent,
+    d: ProductOptionDeleteEvent,
   },
 };
 

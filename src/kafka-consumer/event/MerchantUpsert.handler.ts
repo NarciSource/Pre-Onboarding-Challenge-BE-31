@@ -18,16 +18,18 @@ export default class MerchantUpsertHandler {
   async handle({ table, after }: MerchantUpsertEvent) {
     switch (table) {
       case "brands": {
-        const { id: brand_id, name, description, logo_url, website } = after as BrandEntity;
+        const { id, name, description, logo_url, website } = after as BrandEntity;
 
         await this.catalog_query_repository.updateMany(
-          { brand: { id: brand_id } },
-          { brand: { id: brand_id, name, description, logo_url, website } },
+          { brand: { id } },
+          { brand: { id, name, description, logo_url, website } },
         );
 
         await this.summary_query_repository.updateMany(
-          { brand: { id: brand_id } },
-          { brand: { id: brand_id, name } },
+          {
+            brand: { id },
+          },
+          { brand: { id, name } },
         );
         break;
       }

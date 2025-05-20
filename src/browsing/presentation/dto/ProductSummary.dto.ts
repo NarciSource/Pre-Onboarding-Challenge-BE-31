@@ -29,7 +29,7 @@ export default class ProductSummaryDTO extends IntersectionType(
   ProductDTOForProductSummary,
   ProductPriceDTOForProductSummary,
 ) {
-  @ApiProperty({ description: "주 이미지", type: ImageDTOForProductSummary })
+  @ApiProperty({ description: "주 이미지", type: ImageDTOForProductSummary, nullable: true })
   @IsDefined()
   @ValidateNested()
   @Type(() => ImageDTOForProductSummary)
