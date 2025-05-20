@@ -19,6 +19,7 @@ export default class ReviewEntity {
   @ManyToOne(() => ProductEntity, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
+  product_id: number;
 
   @ManyToOne(() => UserEntity, { onDelete: "SET NULL", nullable: true })
   @JoinColumn({ name: "user_id" })

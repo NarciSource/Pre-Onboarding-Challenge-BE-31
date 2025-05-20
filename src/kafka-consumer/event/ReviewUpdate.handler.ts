@@ -1,0 +1,43 @@
+import { Inject } from "@nestjs/common";
+import { EventsHandler } from "@nestjs/cqrs";
+
+import { IQueryRepository } from "@shared/repositories";
+import { ReviewEntity } from "@review/infrastructure/rdb/entities";
+import { ProductCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import ReviewUpdateEvent from "./ReviewUpdate.event";
+
+@EventsHandler(ReviewUpdateEvent)
+export default class ReviewUpdateHandler {
+  constructor(
+    @Inject("IProductCatalogQueryRepository")
+    private readonly catalog_query_repository: IQueryRepository<ProductCatalogModel>,
+    @Inject("IProductSummaryQueryRepository")
+    private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
+  ) {}
+
+  async handle({ before, after }: ReviewUpdateEvent) {
+    const { rating: before_rating } = before as ReviewEntity;
+    const { id, product_id, rating: after_rating } = after as ReviewEntity;
+
+    const product = await this.catalog_query_repository.findOneBy({ id: product_id });
+    if (!product) return;
+
+    const { average, count, distribution } = product.rating ?? {
+      average: 0,
+      count: 0,
+      distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+    };
+
+    const updated_average = (average * count + after_rating - before_rating) / count;
+    distribution[before_rating] -= 1;
+    distribution[after_rating] += 1;
+
+    await this.catalog_query_repository.update(id, {
+      rating: { average: updated_average, count, distribution },
+    });
+
+    await this.summary_query_repository.update(id, {
+      rating: updated_average,
+    });
+  }
+}

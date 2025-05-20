@@ -1,5 +1,5 @@
 {
-  "name": "product-connector",
+  "name": "review-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,16 +9,13 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "product_slot",
+    "slot.name": "review_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
-    "table.include.list": "public.products,public.product_prices,public.product_categories,public.product_tags,public.product_details,public.product_option_groups",
+    "table.include.list": "public.reviews",
 
-    "topic.prefix": "product",
-    "message.key.columns": "public.products:id;public.product_prices:product_id;public.product_categories:product_id;public.product_tags:product_id;public.product_details:product_id;public.product_option_groups:product_id",
-
-    "decimal.handling.mode": "double",
+    "topic.prefix": "review",
 
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
@@ -27,7 +24,7 @@
 
     "transforms": "RouteByTable",
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.RouteByTable.regex": "product.public.(.*)",
-    "transforms.RouteByTable.replacement": "product-events"
+    "transforms.RouteByTable.regex": "review.public.(.*)",
+    "transforms.RouteByTable.replacement": "review-events"
   }
 }
