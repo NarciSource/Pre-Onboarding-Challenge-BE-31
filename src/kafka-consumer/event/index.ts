@@ -20,3 +20,6 @@ export { default as ProductOptionDeleteHandler } from "./ProductOptionDelete.han
 
 export { default as CategoryUpsertEvent } from "./CategoryUpsert.event";
 export { default as CategoryUpsertHandler } from "./CategoryUpsert.handler";
+
+export { default as TagUpsertEvent } from "./TagUpsert.event";
+export { default as TagUpsertHandler } from "./TagUpsert.handler";

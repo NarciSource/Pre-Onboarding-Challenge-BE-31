@@ -30,8 +30,8 @@ export default class KafkaConsumerService implements OnModuleInit {
     await this.consumer.subscribe({ topic: "product-option-events", fromBeginning: true });
     await this.consumer.subscribe({ topic: "merchant-events", fromBeginning: true });
     await this.consumer.subscribe({ topic: "review-events", fromBeginning: true });
-    await this.consumer.subscribe({ topic: "product-option-events", fromBeginning: true });
     await this.consumer.subscribe({ topic: "category-events", fromBeginning: true });
+    await this.consumer.subscribe({ topic: "tag-events", fromBeginning: true });
 
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
@@ -57,9 +57,6 @@ export default class KafkaConsumerService implements OnModuleInit {
     const { op, before, after, source } = JSON.parse(message.value!.toString()) as DebeziumMessage<
       TableEntityMap[TableEntity]
     >;
-
-    const id = after?.id ?? before?.id;
-    if (!id) return;
 
     const EventClass = topicEventMap[topic][op];
     if (!EventClass) {
