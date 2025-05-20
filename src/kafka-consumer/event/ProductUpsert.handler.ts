@@ -1,6 +1,7 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { CategoryModel } from "@kafka-consumer/model";
 import { IQueryRepository } from "@shared/repositories";
 import {
   ProductEntity,
@@ -20,6 +21,8 @@ export default class ProductUpsertHandler {
     private readonly catalog_query_repository: IQueryRepository<ProductCatalogModel>,
     @Inject("IProductSummaryQueryRepository")
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
+    @Inject("ICategoryStateRepository")
+    private readonly category_state_repository: IQueryRepository<CategoryModel>,
   ) {}
 
   async handle({ table, after }: ProductUpsertEvent) {
@@ -52,11 +55,16 @@ export default class ProductUpsertHandler {
         const { product_id, category_id, is_primary } = after as ProductCategoryEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
-        const categories = catalog?.categories ?? [];
+        const category = await this.category_state_repository.findOneBy({ id: category_id });
+
+        if (!category) {
+          console.warn(`Category with ID ${category_id} not found`);
+          return;
+        }
 
         const updated_categories = [
-          ...categories.filter((c) => c?.id !== category_id),
-          { id: category_id, is_primary },
+          ...(catalog?.categories ?? []).filter((c) => c?.id !== category_id),
+          { ...category, is_primary },
         ];
 
         await this.catalog_query_repository.update(product_id, {
