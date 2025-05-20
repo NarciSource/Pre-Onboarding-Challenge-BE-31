@@ -44,7 +44,7 @@ describe("ReviewDTO", () => {
   });
 
   it("rating 필드가 음수인 경우 검증 실패", async () => {
-    const invalidData = { ...validData, rating: -1 };
+    const invalidData = { ...validData, rating: -1 } as unknown as Partial<ReviewDTO>;
 
     const errors = await validateDTO(invalidData);
 

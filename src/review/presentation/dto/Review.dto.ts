@@ -17,7 +17,7 @@ export default class ReviewDTO {
   @IsInt()
   @Min(1)
   @Max(5)
-  rating: number;
+  rating: 1 | 2 | 3 | 4 | 5;
 
   @ApiProperty({ description: "리뷰 제목", example: "완벽한 소파입니다!", nullable: true })
   @IsString()

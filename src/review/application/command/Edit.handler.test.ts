@@ -5,6 +5,7 @@ import { TestingModule } from "@nestjs/testing";
 import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
+import { Review } from "@review/domain/entities";
 import { ReviewEntity } from "@review/infrastructure/rdb/entities";
 import { QueryUpdateEvent } from "@browsing/application/event";
 import EditHandler from "./Edit.handler";
@@ -26,7 +27,11 @@ describe("EditHandler", () => {
   });
 
   it("리뷰 수정", async () => {
-    const dto = { rating: 4, title: "리뷰 수정 제목", content: "수정된 리뷰" };
+    const dto: Pick<Review, "rating" | "title" | "content"> = {
+      rating: 4,
+      title: "리뷰 수정 제목",
+      content: "수정된 리뷰",
+    };
     const updatedReview = { id: 1, product: { id: 2 }, ...dto };
     repository.update = jest.fn().mockResolvedValue({ affected: 1 });
     repository.findOne = jest.fn().mockResolvedValue(updatedReview);

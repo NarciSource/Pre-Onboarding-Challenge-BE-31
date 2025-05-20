@@ -26,7 +26,7 @@ export default class ReviewEntity {
   user: UserEntity | null;
 
   @Column({ type: "int", nullable: false })
-  rating: number;
+  rating: 1 | 2 | 3 | 4 | 5;
 
   @Column({ type: "varchar", length: 255, nullable: true })
   title: string | null;

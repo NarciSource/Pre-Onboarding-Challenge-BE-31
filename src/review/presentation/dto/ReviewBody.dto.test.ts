@@ -32,7 +32,7 @@ describe("ReviewBodyDTO", () => {
     const invalidData = {
       ...validData,
       rating: 6,
-    };
+    } as unknown as ReviewBodyDTO;
 
     const errors = await validateDTO(invalidData);
 
