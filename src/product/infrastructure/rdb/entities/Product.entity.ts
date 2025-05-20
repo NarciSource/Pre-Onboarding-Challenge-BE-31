@@ -45,10 +45,12 @@ export default class ProductEntity {
   @ManyToOne(() => SellerEntity)
   @JoinColumn({ name: "seller_id" })
   seller: SellerEntity;
+  seller_id: number;
 
   @ManyToOne(() => BrandEntity)
   @JoinColumn({ name: "brand_id" })
   brand: BrandEntity;
+  brand_id: number;
 
   @Column({ type: "varchar", length: 20 })
   status: string;

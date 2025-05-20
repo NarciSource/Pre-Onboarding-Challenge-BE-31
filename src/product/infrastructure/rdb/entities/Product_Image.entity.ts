@@ -11,6 +11,7 @@ export default class ProductImageEntity {
   @ManyToOne(() => ProductEntity, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
   product: ProductEntity;
+  product_id: number;
 
   @Column({ type: "varchar", length: 255 })
   url: string;
@@ -30,4 +31,5 @@ export default class ProductImageEntity {
   })
   @JoinColumn({ name: "option_id" })
   option: ProductOptionEntity | null;
+  option_id: number | null;
 }

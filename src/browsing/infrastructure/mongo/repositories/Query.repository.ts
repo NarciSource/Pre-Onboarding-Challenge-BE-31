@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { FilterQuery, Model } from "mongoose";
+import { FilterQuery, Model, UpdateQuery } from "mongoose";
 
 import IQueryRepository, { FindOptions } from "@shared/repositories/IQueryRepository";
 
@@ -37,12 +37,12 @@ export default class QueryRepository<T> implements IQueryRepository<T> {
     await new this.model(data).save();
   }
 
-  async update(id: number, data: Partial<T>) {
+  async update(id: number, data: UpdateQuery<T>) {
     await this.model.updateOne({ id }, data, { upsert: true }).exec();
   }
 
   async updateMany(where: FilterQuery<T>, data: Partial<T>) {
-    await this.model.updateMany(where, data, { upsert: true }).exec();
+    await this.model.updateMany(where, data).exec();
   }
 
   async delete(id: number) {
