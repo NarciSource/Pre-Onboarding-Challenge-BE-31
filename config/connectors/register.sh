@@ -5,6 +5,7 @@ for connector in \
     postgres-category-connector.json \
     postgres-product-connector.json \
     postgres-product-option-connector.json \
+    postgres-review-connector.json \
     postgres-tag-connector.json
 do
     envsubst < "$SCRIPT_DIR/$connector" | \
