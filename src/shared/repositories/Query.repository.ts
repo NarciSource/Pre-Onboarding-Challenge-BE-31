@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { FilterQuery, Model, UpdateQuery } from "mongoose";
+import { FilterQuery, Model, PipelineStage, UpdateQuery } from "mongoose";
 
-import IQueryRepository, { FindOptions } from "@shared/repositories/IQueryRepository";
+import IQueryRepository, { FindOptions } from "./IQueryRepository";
 
 @Injectable()
 export default class QueryRepository<T> implements IQueryRepository<T> {
@@ -47,5 +47,15 @@ export default class QueryRepository<T> implements IQueryRepository<T> {
 
   async delete(id: number) {
     await this.model.deleteOne({ id }).exec();
+  }
+
+  async aggregate(pipeline?: PipelineStage[]) {
+    const docs = await this.model.aggregate(pipeline).exec();
+
+    return docs.map(({ _id, __v, ...rest }) => rest as T);
+  }
+
+  get model_name() {
+    return this.model.collection.name;
   }
 }

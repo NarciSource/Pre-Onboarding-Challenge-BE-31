@@ -1,4 +1,4 @@
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
 
 export type FindOptions<T> = {
   where?: FilterQuery<T>;
@@ -19,4 +19,8 @@ export default interface IQueryRepository<T> {
   updateMany(where: FilterQuery<T>, data: Partial<T>): Promise<void>;
 
   delete(id: number): Promise<void>;
+
+  aggregate(pipeline?: PipelineStage[]): Promise<T[]>;
+
+  get model_name(): string;
 }
