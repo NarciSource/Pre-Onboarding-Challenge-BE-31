@@ -55,12 +55,22 @@ export default class ProductUpsertHandler {
         const { product_id, category_id, is_primary } = after as ProductCategoryEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
-        const category = await this.category_state_repository.findOneBy({ id: category_id });
 
-        if (!category) {
-          console.warn(`Category with ID ${category_id} not found`);
-          return;
-        }
+        const [category] = await this.category_state_repository.aggregate([
+          { $match: { id: category_id } },
+          {
+            $lookup: {
+              from: this.category_state_repository.model_name,
+              let: { parentId: "$parent_id" },
+              pipeline: [
+                { $match: { $expr: { $eq: ["$id", "$$parentId"] } } },
+                { $project: { _id: 0, id: 1, name: 1, slug: 1 } },
+              ],
+              as: "parent",
+            },
+          },
+          { $unwind: { path: "$parent", preserveNullAndEmptyArrays: true } },
+        ]);
 
         const updated_categories = [
           ...(catalog?.categories ?? []).filter((c) => c?.id !== category_id),

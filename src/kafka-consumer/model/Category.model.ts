@@ -25,6 +25,7 @@ export default class CategoryModel {
   @Prop()
   is_primary: boolean;
 
-  @Prop({ type: ParentCategory })
+  @Prop({ type: Number })
+  parent_id?: number | null;
   parent?: ParentCategory | null;
 }
