@@ -1,5 +1,5 @@
+import { createQueryRepositoryProvider } from "@shared/repositories/createQueryRepositoryProvider";
 import { CategoryCatalogModel, ProductCatalogModel, ProductSummaryModel } from "../models";
-import { createQueryRepositoryProvider } from "./createRepositoryProvider";
 
 export default [
   createQueryRepositoryProvider("IProductCatalogQueryRepository", ProductCatalogModel),
