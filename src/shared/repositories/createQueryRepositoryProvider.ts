@@ -1,6 +1,7 @@
 import { Provider } from "@nestjs/common";
 import { getModelToken } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+
 import QueryRepository from "./Query.repository";
 
 export type MongooseDocumentClass<T> = {
