@@ -30,6 +30,8 @@ export default class KafkaConsumerService implements OnModuleInit {
     await this.consumer.subscribe({ topic: "product-option-events", fromBeginning: true });
     await this.consumer.subscribe({ topic: "merchant-events", fromBeginning: true });
     await this.consumer.subscribe({ topic: "review-events", fromBeginning: true });
+    await this.consumer.subscribe({ topic: "product-option-events", fromBeginning: true });
+    await this.consumer.subscribe({ topic: "category-events", fromBeginning: true });
 
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message }) => {

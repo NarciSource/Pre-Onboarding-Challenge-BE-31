@@ -10,6 +10,7 @@ import {
   ProductOptionEntity,
   ProductImageEntity,
 } from "@product/infrastructure/rdb/entities";
+import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import { ReviewEntity } from "@review/infrastructure/rdb/entities";
 
 export enum DebeziumOperation {
@@ -49,11 +50,12 @@ export interface TableEntityMap {
   product_prices: ProductPriceEntity;
   product_option_groups: ProductOptionGroupEntity;
   product_tags: ProductTagEntity;
+  product_options: ProductOptionEntity;
+  product_images: ProductImageEntity;
   brands: BrandEntity;
   sellers: SellerEntity;
   reviews: ReviewEntity;
-  product_options: ProductOptionEntity;
-  product_images: ProductImageEntity;
+  categories: CategoryEntity;
 }
 
 export type TableEntity = keyof TableEntityMap;

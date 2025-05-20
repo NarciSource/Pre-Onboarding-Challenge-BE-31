@@ -1,5 +1,6 @@
 import { DebeziumOperation } from "./dto";
 import {
+  CategoryUpsertEvent,
   MerchantUpsertEvent,
   ProductDeleteEvent,
   ProductOptionDeleteEvent,
@@ -42,6 +43,11 @@ const topicEventMap: EventMapping = {
     u: ProductOptionUpsertEvent,
     r: ProductOptionUpsertEvent,
     d: ProductOptionDeleteEvent,
+  },
+  "category-events": {
+    c: CategoryUpsertEvent,
+    u: CategoryUpsertEvent,
+    r: CategoryUpsertEvent,
   },
 };
 

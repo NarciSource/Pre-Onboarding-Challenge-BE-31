@@ -17,6 +17,7 @@ export default class CategoryEntity {
   @ManyToOne(() => CategoryEntity, (category) => category.id, { nullable: true })
   @JoinColumn({ name: "parent_id" })
   parent: CategoryEntity | null;
+  parent_id: number | null;
 
   @Column({ type: "integer", nullable: false })
   level: number;

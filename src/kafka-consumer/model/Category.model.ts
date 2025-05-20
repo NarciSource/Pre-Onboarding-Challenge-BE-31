@@ -1,4 +1,4 @@
-import { Prop } from "@nestjs/mongoose";
+import { Prop, Schema } from "@nestjs/mongoose";
 
 export class ParentCategory {
   @Prop()
@@ -11,9 +11,10 @@ export class ParentCategory {
   slug?: string;
 }
 
+@Schema()
 export default class CategoryModel {
-  @Prop()
-  id: number;
+  @Prop({ unique: true })
+  declare id: number;
 
   @Prop()
   name?: string;
