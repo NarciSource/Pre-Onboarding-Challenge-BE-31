@@ -1,0 +1,21 @@
+import { Inject } from "@nestjs/common";
+import { EventsHandler } from "@nestjs/cqrs";
+
+import { TagModel } from "@kafka-consumer/model";
+import { IQueryRepository } from "@shared/repositories";
+import { TagEntity } from "@product/infrastructure/rdb/entities";
+import TagUpsertEvent from "./TagUpsert.event";
+
+@EventsHandler(TagUpsertEvent)
+export default class TagUpsertHandler {
+  constructor(
+    @Inject("ITagStateRepository")
+    private readonly tag_state_repository: IQueryRepository<TagModel>,
+  ) {}
+
+  async handle({ after }: TagUpsertEvent) {
+    const tag = after as TagEntity;
+
+    await this.tag_state_repository.update(tag.id, tag);
+  }
+}

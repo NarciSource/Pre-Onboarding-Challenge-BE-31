@@ -9,6 +9,7 @@ import {
   ProductTagEntity,
   ProductOptionEntity,
   ProductImageEntity,
+  TagEntity,
 } from "@product/infrastructure/rdb/entities";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
 import { ReviewEntity } from "@review/infrastructure/rdb/entities";
@@ -56,6 +57,7 @@ export interface TableEntityMap {
   sellers: SellerEntity;
   reviews: ReviewEntity;
   categories: CategoryEntity;
+  tags: TagEntity;
 }
 
 export type TableEntity = keyof TableEntityMap;

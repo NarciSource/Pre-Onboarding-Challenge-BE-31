@@ -9,6 +9,7 @@ import {
   ReviewCreateEvent,
   ReviewDeleteEvent,
   ReviewUpdateEvent,
+  TagUpsertEvent,
 } from "./event";
 import ProjectionEvent from "./ProjectionEvent";
 
@@ -48,6 +49,11 @@ const topicEventMap: EventMapping = {
     c: CategoryUpsertEvent,
     u: CategoryUpsertEvent,
     r: CategoryUpsertEvent,
+  },
+  "tag-events": {
+    c: TagUpsertEvent,
+    u: TagUpsertEvent,
+    r: TagUpsertEvent,
   },
 };
 

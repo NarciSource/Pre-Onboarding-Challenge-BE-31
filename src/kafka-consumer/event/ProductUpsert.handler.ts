@@ -1,7 +1,7 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { CategoryModel } from "@kafka-consumer/model";
+import { CategoryModel, TagModel } from "@kafka-consumer/model";
 import { IQueryRepository } from "@shared/repositories";
 import {
   ProductEntity,
@@ -23,6 +23,8 @@ export default class ProductUpsertHandler {
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
     @Inject("ICategoryStateRepository")
     private readonly category_state_repository: IQueryRepository<CategoryModel>,
+    @Inject("ITagStateRepository")
+    private readonly tag_state_repository: IQueryRepository<TagModel>,
   ) {}
 
   async handle({ table, after }: ProductUpsertEvent) {
@@ -119,13 +121,12 @@ export default class ProductUpsertHandler {
         const { product_id, tag_id } = after as ProductTagEntity;
 
         const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
-        const tags = catalog?.tags ?? [];
 
-        const updated_tags = [...tags.filter((t) => t?.id !== tag_id), { id: tag_id }];
+        const tag = await this.tag_state_repository.findOneBy({ id: tag_id });
 
-        await this.catalog_query_repository.update(product_id, {
-          tags: updated_tags,
-        });
+        const updated_tags = [...(catalog?.tags ?? []).filter((t) => t?.id !== tag_id), tag];
+
+        await this.catalog_query_repository.update(product_id, { tags: updated_tags });
         break;
       }
     }
