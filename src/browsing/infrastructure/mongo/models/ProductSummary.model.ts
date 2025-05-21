@@ -60,13 +60,13 @@ export default class ProductSummaryModel {
   @Prop()
   status: string;
 
-  @Prop()
+  @Prop({ index: true })
   created_at: Date;
 
   @Prop({ select: false })
   stock: number;
 
-  @Prop()
+  @Prop({ index: true })
   rating: number;
 
   @Prop()
@@ -82,3 +82,8 @@ ProductSummarySchema.virtual("in_stock").get(function () {
   return this.stock > 0;
 });
 ProductSummarySchema.plugin(mongooseLeanVirtuals);
+
+ProductSummarySchema.index({ status: 1, base_price: 1, created_at: -1 })
+  .index({ seller_id: 1, base_price: 1, created_at: -1 })
+  .index({ brand_id: 1, base_price: 1, created_at: -1 })
+  .index({ categories: 1, created_at: -1 });

@@ -15,6 +15,6 @@ export default class CategoryCatalogModel extends Document {
   @Prop({ type: String })
   image_url: string | null;
 
-  @Prop()
+  @Prop({ index: true })
   product_count: number;
 }
