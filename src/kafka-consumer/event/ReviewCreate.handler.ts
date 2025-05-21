@@ -16,7 +16,7 @@ export default class ReviewCreateHandler {
   ) {}
 
   async handle({ after }: ReviewCreateEvent) {
-    const { id, product_id, rating } = after as ReviewEntity;
+    const { product_id, rating } = after as ReviewEntity;
 
     const product = await this.catalog_query_repository.findOne({ id: product_id });
     if (!product) return;
@@ -32,13 +32,13 @@ export default class ReviewCreateHandler {
     distribution[rating] += 1;
 
     await this.catalog_query_repository.updateOne(
-      { id },
+      { id: product_id },
       { rating: { average: updated_average, count: updated_count, distribution } },
       { upsert: true },
     );
 
     await this.summary_query_repository.updateOne(
-      { id },
+      { id: product_id },
       { rating: updated_average },
       { upsert: true },
     );
