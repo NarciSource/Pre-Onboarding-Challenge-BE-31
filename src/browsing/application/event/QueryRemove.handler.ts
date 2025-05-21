@@ -16,8 +16,8 @@ export default class QueryRemoveHandler {
 
   async handle({ id }: QueryRemoveEvent): Promise<void> {
     {
-      await this.catalog_query_repository.delete(id);
-      await this.summary_query_repository.delete(id);
+      await this.catalog_query_repository.delete({ id });
+      await this.summary_query_repository.delete({ id });
     }
   }
 }

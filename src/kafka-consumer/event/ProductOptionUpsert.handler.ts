@@ -20,7 +20,7 @@ export default class ProductOptionUpsertHandler {
       case "product_options": {
         const { id, option_group_id, ...rest } = after as ProductOptionEntity;
 
-        const catalog = await this.catalog_query_repository.findOneBy({
+        const catalog = await this.catalog_query_repository.findOne({
           option_groups: { id: option_group_id },
         });
         if (!catalog) return; // lazy update
@@ -34,28 +34,40 @@ export default class ProductOptionUpsertHandler {
             : group,
         );
 
-        await this.catalog_query_repository.update(catalog.id, { option_groups });
+        await this.catalog_query_repository.updateOne(
+          { id: catalog.id },
+          { option_groups },
+          { upsert: true },
+        );
         break;
       }
 
       case "product_images": {
         const { id, product_id, ...rest } = after as ProductImageEntity;
         {
-          const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
+          const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 
           const images = [
             ...(catalog?.images?.filter((image) => image.id !== id) ?? []),
             { id, ...rest },
           ];
 
-          await this.catalog_query_repository.update(product_id, { images });
+          await this.catalog_query_repository.updateOne(
+            { id: product_id },
+            { images },
+            { upsert: true },
+          );
         }
         {
           if (!rest.is_primary) break;
 
           const primary_image = { url: rest.url, alt_text: rest.alt_text };
 
-          await this.summary_query_repository.update(product_id, { primary_image });
+          await this.summary_query_repository.updateOne(
+            { id: product_id },
+            { primary_image },
+            { upsert: true },
+          );
         }
         break;
       }

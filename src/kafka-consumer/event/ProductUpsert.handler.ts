@@ -32,31 +32,43 @@ export default class ProductUpsertHandler {
       case "products": {
         const { brand_id, seller_id, ...product } = after as ProductEntity;
 
-        await this.catalog_query_repository.update(product.id, {
-          ...product,
-          brand: { id: brand_id },
-          seller: { id: seller_id },
-        });
+        await this.catalog_query_repository.updateOne(
+          { id: product.id },
+          {
+            ...product,
+            brand: { id: brand_id },
+            seller: { id: seller_id },
+          },
+          { upsert: true },
+        );
 
-        await this.summary_query_repository.update(product.id, {
-          ...product,
-          brand: { id: brand_id },
-          seller: { id: seller_id },
-        });
+        await this.summary_query_repository.updateOne(
+          { id: product.id },
+          {
+            ...product,
+            brand: { id: brand_id },
+            seller: { id: seller_id },
+          },
+          { upsert: true },
+        );
         break;
       }
 
       case "product_details": {
         const { product_id, ...detail } = after as ProductDetailEntity;
 
-        await this.catalog_query_repository.update(product_id, { detail });
+        await this.catalog_query_repository.updateOne(
+          { id: product_id },
+          { detail },
+          { upsert: true },
+        );
         break;
       }
 
       case "product_categories": {
         const { product_id, category_id, is_primary } = after as ProductCategoryEntity;
 
-        const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
+        const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 
         const [category] = await this.category_state_repository.aggregate([
           { $match: { id: category_id } },
@@ -79,9 +91,11 @@ export default class ProductUpsertHandler {
           { ...category, is_primary },
         ];
 
-        await this.catalog_query_repository.update(product_id, {
-          categories: updated_categories,
-        });
+        await this.catalog_query_repository.updateOne(
+          { id: product_id },
+          { categories: updated_categories },
+          { upsert: true },
+        );
         break;
       }
 
@@ -91,17 +105,19 @@ export default class ProductUpsertHandler {
         const discount_percentage =
           ((price.base_price - (price.sale_price ?? 0)) * 100) / price.base_price;
 
-        await this.catalog_query_repository.update(product_id, {
-          price: { ...price, discount_percentage },
-        });
-        await this.summary_query_repository.update(product_id, price);
+        await this.catalog_query_repository.updateOne(
+          { id: product_id },
+          { price: { ...price, discount_percentage } },
+          { upsert: true },
+        );
+        await this.summary_query_repository.updateOne({ id: product_id }, price);
         break;
       }
 
       case "product_option_groups": {
         const { id: option_group_id, product_id, ...rest } = after as ProductOptionGroupEntity;
 
-        const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
+        const catalog = await this.catalog_query_repository.findOne({ id: product_id });
         const option_groups = catalog?.option_groups ?? [];
 
         const exists = option_groups.some((group) => group.id === option_group_id);
@@ -111,22 +127,28 @@ export default class ProductUpsertHandler {
             )
           : [...option_groups, { id: option_group_id, options: [], ...rest }];
 
-        await this.catalog_query_repository.update(product_id, {
-          option_groups: updated_option_groups,
-        });
+        await this.catalog_query_repository.updateOne(
+          { id: product_id },
+          { option_groups: updated_option_groups },
+          { upsert: true },
+        );
         break;
       }
 
       case "product_tags": {
         const { product_id, tag_id } = after as ProductTagEntity;
 
-        const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
+        const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 
-        const tag = await this.tag_state_repository.findOneBy({ id: tag_id });
+        const tag = await this.tag_state_repository.findOne({ id: tag_id });
 
         const updated_tags = [...(catalog?.tags ?? []).filter((t) => t?.id !== tag_id), tag];
 
-        await this.catalog_query_repository.update(product_id, { tags: updated_tags });
+        await this.catalog_query_repository.updateOne(
+          { id: product_id },
+          { tags: updated_tags },
+          { upsert: true },
+        );
         break;
       }
     }

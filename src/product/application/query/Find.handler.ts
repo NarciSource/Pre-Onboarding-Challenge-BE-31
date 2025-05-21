@@ -14,7 +14,7 @@ export default class FindHandler implements IQueryHandler<FindQuery> {
   ) {}
 
   async execute({ id }: FindQuery) {
-    const product = await this.repository.findOneBy({ id });
+    const product = await this.repository.findOne({ id });
 
     if (!product) {
       throw new NotFoundException({

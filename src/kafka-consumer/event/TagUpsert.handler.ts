@@ -16,6 +16,6 @@ export default class TagUpsertHandler {
   async handle({ after }: TagUpsertEvent) {
     const tag = after as TagEntity;
 
-    await this.tag_state_repository.update(tag.id, tag);
+    await this.tag_state_repository.updateOne({ id: tag.id }, tag, { upsert: true });
   }
 }

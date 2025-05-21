@@ -32,7 +32,7 @@ export default class QueryUpdateHandler {
           });
         }
 
-        await this.catalog_query_repository.update(id, catalog);
+        await this.catalog_query_repository.updateOne({ id }, catalog);
       }
 
       {
@@ -45,7 +45,7 @@ export default class QueryUpdateHandler {
           });
         }
 
-        await this.summary_query_repository.update(id, summary);
+        await this.summary_query_repository.updateOne({ id }, summary);
       }
     }
   }

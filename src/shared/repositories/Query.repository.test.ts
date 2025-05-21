@@ -70,7 +70,7 @@ describe("QueryRepository", () => {
       const lean = jest.fn().mockReturnValue({ exec: jest.fn().mockResolvedValue(doc) });
       mockModel.findOne = jest.fn().mockReturnValue({ lean });
 
-      const result = await repository.findOneBy({ id: 1 });
+      const result = await repository.findOne({ id: 1 });
 
       expect(mockModel.findOne).toHaveBeenCalledWith({ id: 1 });
       expect(result).toEqual({ id: 1, name: "A" });
@@ -80,7 +80,7 @@ describe("QueryRepository", () => {
       const lean = jest.fn().mockReturnValue({ exec: jest.fn().mockResolvedValue(null) });
       mockModel.findOne = jest.fn().mockReturnValue({ lean });
 
-      const result = await repository.findOneBy({ id: 999 });
+      const result = await repository.findOne({ id: 999 });
 
       expect(result).toBeNull();
     });
@@ -112,7 +112,7 @@ describe("QueryRepository", () => {
         .fn()
         .mockReturnValue({ exec: jest.fn().mockResolvedValue(undefined) });
 
-      await repository.update(1, { name: "B" });
+      await repository.updateOne({ id: 1 }, { name: "B" });
 
       expect(mockModel.updateOne).toHaveBeenCalledWith({ id: 1 }, { name: "B" }, { upsert: true });
     });
@@ -124,7 +124,7 @@ describe("QueryRepository", () => {
         .fn()
         .mockReturnValue({ exec: jest.fn().mockResolvedValue(undefined) });
 
-      await repository.delete(1);
+      await repository.delete({ id: 1 });
 
       expect(mockModel.deleteOne).toHaveBeenCalledWith({ id: 1 });
     });

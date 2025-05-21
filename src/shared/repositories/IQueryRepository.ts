@@ -1,4 +1,14 @@
-import { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
+import {
+  FilterQuery,
+  MongooseBaseQueryOptions,
+  MongooseUpdateQueryOptions,
+  PipelineStage,
+  ProjectionType,
+  QueryOptions,
+  UpdateQuery,
+  UpdateWithAggregationPipeline,
+  UpdateWriteOpResult,
+} from "mongoose";
 
 export type FindOptions<T> = {
   where?: FilterQuery<T>;
@@ -8,19 +18,35 @@ export type FindOptions<T> = {
 };
 
 export default interface IQueryRepository<T> {
-  find({ where, order, take, skip }: FindOptions<T>): Promise<T[]>;
-
-  findOneBy(where: FilterQuery<T>): Promise<T | null>;
-
   save(data: Partial<T>): Promise<void>;
 
-  update(id: number, data: UpdateQuery<T>): Promise<void>;
+  updateOne(
+    where: FilterQuery<T>,
+    data: UpdateQuery<T> | UpdateWithAggregationPipeline,
+    options?: MongooseUpdateQueryOptions<T>,
+  ): Promise<UpdateWriteOpResult>;
 
-  updateMany(where: FilterQuery<T>, data: Partial<T>): Promise<void>;
+  update(
+    where: FilterQuery<T>,
+    data: UpdateQuery<T> | UpdateWithAggregationPipeline,
+    options?: MongooseUpdateQueryOptions<T>,
+  ): Promise<UpdateWriteOpResult>;
 
-  delete(id: number): Promise<void>;
+  findOne(
+    where: FilterQuery<T>,
+    projection?: ProjectionType<T> | null,
+    options?: QueryOptions<T> | null,
+  ): Promise<T | null>;
+
+  find(
+    { where, order, take, skip }: FindOptions<T>,
+    projection?: ProjectionType<T> | null,
+    options?: QueryOptions<T> | null,
+  ): Promise<T[]>;
 
   aggregate(pipeline?: PipelineStage[]): Promise<T[]>;
+
+  delete(filter?: FilterQuery<T>, options?: MongooseBaseQueryOptions<T>): Promise<void>;
 
   get model_name(): string;
 }

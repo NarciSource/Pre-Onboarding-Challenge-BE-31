@@ -20,12 +20,12 @@ export default class MerchantUpsertHandler {
       case "brands": {
         const { id, name, description, logo_url, website } = after as BrandEntity;
 
-        await this.catalog_query_repository.updateMany(
+        await this.catalog_query_repository.update(
           { brand: { id } },
           { brand: { id, name, description, logo_url, website } },
         );
 
-        await this.summary_query_repository.updateMany(
+        await this.summary_query_repository.update(
           {
             brand: { id },
           },
@@ -38,15 +38,12 @@ export default class MerchantUpsertHandler {
         const { id, name, description, logo_url, rating, contact_email, contact_phone } =
           after as SellerEntity;
 
-        await this.catalog_query_repository.updateMany(
+        await this.catalog_query_repository.update(
           { seller: { id } },
           { seller: { id, name, description, logo_url, rating, contact_email, contact_phone } },
         );
 
-        await this.summary_query_repository.updateMany(
-          { seller: { id } },
-          { seller: { id, name } },
-        );
+        await this.summary_query_repository.update({ seller: { id } }, { seller: { id, name } });
         break;
       }
     }
