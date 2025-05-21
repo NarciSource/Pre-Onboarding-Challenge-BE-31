@@ -1,6 +1,6 @@
 {
   "name": "pre-onboarding-challenge-be-31",
-  "version": "3.0.1",
+  "version": "4.0.1",
   "description": "CQRS 시스템 설계/구축 챌린지",
   "author": "NarciSource",
   "private": false,
@@ -36,6 +36,7 @@
     "class-validator": "^0.14.1",
     "kafkajs": "^2.2.4",
     "mongoose": "^8.14.3",
+    "mongoose-lean-virtuals": "^2.0.0",
     "pg": "^8.15.6",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",

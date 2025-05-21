@@ -15,35 +15,39 @@ export default class ProductOptionUpsertHandler {
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
-  async handle({ table, after }: ProductOptionUpsertEvent) {
+  async handle({ table, before, after }: ProductOptionUpsertEvent) {
     switch (table) {
       case "product_options": {
         const { id: option_id, option_group_id, ...rest } = after as ProductOptionEntity;
-
-        const { modifiedCount } = await this.catalog_query_repository.update(
-          {
-            "option_groups.id": option_group_id,
-            "option_groups.options.id": option_id,
-          },
-          {
-            $set: { "option_groups.$[group].options.$[option]": { id: option_id, ...rest } },
-          },
-          {
-            arrayFilters: [{ "group.id": option_group_id }, { "option.id": option_id }],
-          },
-        );
-
-        if (!modifiedCount) {
-          await this.catalog_query_repository.update(
+        {
+          const { modifiedCount } = await this.catalog_query_repository.update(
             {
               "option_groups.id": option_group_id,
+              "option_groups.options.id": option_id,
             },
             {
-              $push: { "option_groups.$[group].options": { id: option_id, ...rest } },
+              $set: { "option_groups.$[group].options.$[option]": { id: option_id, ...rest } },
             },
             {
-              arrayFilters: [{ "group.id": option_group_id }],
+              arrayFilters: [{ "group.id": option_group_id }, { "option.id": option_id }],
             },
+          );
+
+          if (!modifiedCount) {
+            await this.catalog_query_repository.update(
+              { "option_groups.id": option_group_id },
+              { $push: { "option_groups.$[group].options": { id: option_id, ...rest } } },
+              { arrayFilters: [{ "group.id": option_group_id }] },
+            );
+          }
+        }
+        {
+          const before_stock = (before as ProductOptionEntity)?.stock ?? 0;
+          const after_stock = (after as ProductOptionEntity)?.stock ?? 0;
+          await this.summary_query_repository.updateOne(
+            { id: option_group_id },
+            { $inc: { stock: after_stock - before_stock } },
+            { upsert: true },
           );
         }
         break;

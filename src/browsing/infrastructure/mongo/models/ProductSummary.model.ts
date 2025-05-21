@@ -1,4 +1,5 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
 export class Image {
   @Prop() url: string;
@@ -62,8 +63,8 @@ export default class ProductSummaryModel {
   @Prop()
   created_at: Date;
 
-  @Prop()
-  in_stock: boolean;
+  @Prop({ select: false })
+  stock: number;
 
   @Prop()
   rating: number;
@@ -74,3 +75,10 @@ export default class ProductSummaryModel {
   @Prop({ select: false })
   categories: number[];
 }
+
+export const ProductSummarySchema = SchemaFactory.createForClass(ProductSummaryModel);
+
+ProductSummarySchema.virtual("in_stock").get(function () {
+  return this.stock > 0;
+});
+ProductSummarySchema.plugin(mongooseLeanVirtuals);

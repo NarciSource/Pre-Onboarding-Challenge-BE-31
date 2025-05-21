@@ -36,7 +36,7 @@ export default class QueryRepository<T> implements IQueryRepository<T> {
       .sort(sort)
       .limit(take)
       .skip(skip)
-      .lean()
+      .lean({ virtuals: true })
       .exec();
 
     return docs.map(({ _id, __v, ...rest }) => rest) as T[];
