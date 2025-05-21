@@ -20,25 +20,26 @@ export default class ProductOptionUpsertHandler {
       case "product_options": {
         const { id, option_group_id, ...rest } = after as ProductOptionEntity;
 
-        const catalog = await this.catalog_query_repository.findOne({
-          option_groups: { id: option_group_id },
+        const catalogs = await this.catalog_query_repository.find({
+          where: { option_groups: { id: option_group_id } },
         });
-        if (!catalog) return; // lazy update
 
-        const option_groups = catalog.option_groups.map((group) =>
-          group.id === option_group_id
-            ? {
-                ...group,
-                options: [...group.options.filter((option) => option.id !== id), { id, ...rest }],
-              }
-            : group,
-        );
+        for (const catalog of catalogs) {
+          const option_groups = catalog.option_groups.map((group) =>
+            group.id === option_group_id
+              ? {
+                  ...group,
+                  options: [...group.options.filter((option) => option.id !== id), { id, ...rest }],
+                }
+              : group,
+          );
 
-        await this.catalog_query_repository.updateOne(
-          { id: catalog.id },
-          { option_groups },
-          { upsert: true },
-        );
+          await this.catalog_query_repository.updateOne(
+            { id: catalog.id },
+            { option_groups },
+            { upsert: true },
+          );
+        }
         break;
       }
 
