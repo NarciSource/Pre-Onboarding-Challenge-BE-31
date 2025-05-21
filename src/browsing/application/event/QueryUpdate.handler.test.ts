@@ -38,8 +38,8 @@ describe("QueryUpdateHandler", () => {
 
     catalogViewRepo.findOneBy = jest.fn().mockResolvedValue(catalog);
     summaryViewRepo.findOneBy = jest.fn().mockResolvedValue(summary);
-    catalogQueryRepo.update = jest.fn().mockResolvedValue(undefined);
-    summaryQueryRepo.update = jest.fn().mockResolvedValue(undefined);
+    catalogQueryRepo.updateOne = jest.fn().mockResolvedValue(undefined);
+    summaryQueryRepo.updateOne = jest.fn().mockResolvedValue(undefined);
 
     const event = new QueryUpdateEvent(id);
     const promise = handler.handle(event);
@@ -47,9 +47,9 @@ describe("QueryUpdateHandler", () => {
     await expect(promise).resolves.toBeUndefined();
 
     expect(catalogViewRepo.findOneBy).toHaveBeenCalledWith({ id });
-    expect(catalogQueryRepo.update).toHaveBeenCalledWith(id, catalog);
+    expect(catalogQueryRepo.updateOne).toHaveBeenCalledWith(id, catalog);
     expect(summaryViewRepo.findOneBy).toHaveBeenCalledWith({ id });
-    expect(summaryQueryRepo.update).toHaveBeenCalledWith(id, summary);
+    expect(summaryQueryRepo.updateOne).toHaveBeenCalledWith(id, summary);
   });
 
   it("카탈로그가 없으면 NotFoundException을 던진다", async () => {
@@ -61,9 +61,9 @@ describe("QueryUpdateHandler", () => {
 
     await expect(promise).rejects.toThrow(NotFoundException);
     expect(catalogViewRepo.findOneBy).toHaveBeenCalledWith({ id });
-    expect(catalogQueryRepo.update).not.toHaveBeenCalled();
+    expect(catalogQueryRepo.updateOne).not.toHaveBeenCalled();
     expect(summaryViewRepo.findOneBy).not.toHaveBeenCalled();
-    expect(summaryQueryRepo.update).not.toHaveBeenCalled();
+    expect(summaryQueryRepo.updateOne).not.toHaveBeenCalled();
   });
 
   it("요약 정보가 없으면 NotFoundException을 던진다", async () => {
@@ -71,7 +71,7 @@ describe("QueryUpdateHandler", () => {
     const catalog = { id, name: "카탈로그" } as ProductCatalogView;
 
     catalogViewRepo.findOneBy = jest.fn().mockResolvedValue(catalog);
-    catalogQueryRepo.update = jest.fn().mockResolvedValue(undefined);
+    catalogQueryRepo.updateOne = jest.fn().mockResolvedValue(undefined);
     summaryViewRepo.findOneBy = jest.fn().mockResolvedValue(null);
 
     const event = new QueryUpdateEvent(id);
@@ -79,8 +79,8 @@ describe("QueryUpdateHandler", () => {
 
     await expect(promise).rejects.toThrow(NotFoundException);
     expect(catalogViewRepo.findOneBy).toHaveBeenCalledWith({ id });
-    expect(catalogQueryRepo.update).toHaveBeenCalledWith(id, catalog);
+    expect(catalogQueryRepo.updateOne).toHaveBeenCalledWith(id, catalog);
     expect(summaryViewRepo.findOneBy).toHaveBeenCalledWith({ id });
-    expect(summaryQueryRepo.update).not.toHaveBeenCalled();
+    expect(summaryQueryRepo.updateOne).not.toHaveBeenCalled();
   });
 });

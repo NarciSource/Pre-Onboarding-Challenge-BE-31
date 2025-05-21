@@ -16,6 +16,6 @@ export default class CategoryUpsertHandler {
   async handle({ after }: CategoryUpsertEvent) {
     const category = after as CategoryEntity;
 
-    await this.category_state_repository.update(category.id, category);
+    await this.category_state_repository.updateOne({ id: category.id }, category, { upsert: true });
   }
 }

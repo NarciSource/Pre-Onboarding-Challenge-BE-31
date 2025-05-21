@@ -15,8 +15,8 @@ export default class ProductDeleteHandler {
   ) {}
 
   async handle({ before }: ProductDeleteEvent) {
-    await this.catalog_query_repository.delete(before.id);
+    await this.catalog_query_repository.delete({ id: before.id });
 
-    await this.summary_query_repository.delete(before.id);
+    await this.summary_query_repository.delete({ id: before.id });
   }
 }

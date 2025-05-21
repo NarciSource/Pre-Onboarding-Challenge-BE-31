@@ -1,5 +1,15 @@
 import { Injectable } from "@nestjs/common";
-import { FilterQuery, Model, PipelineStage, UpdateQuery } from "mongoose";
+import {
+  FilterQuery,
+  Model,
+  MongooseBaseQueryOptions,
+  MongooseUpdateQueryOptions,
+  PipelineStage,
+  ProjectionType,
+  QueryOptions,
+  UpdateQuery,
+  UpdateWithAggregationPipeline,
+} from "mongoose";
 
 import IQueryRepository, { FindOptions } from "./IQueryRepository";
 
@@ -7,7 +17,11 @@ import IQueryRepository, { FindOptions } from "./IQueryRepository";
 export default class QueryRepository<T> implements IQueryRepository<T> {
   constructor(private readonly model: Model<T>) {}
 
-  async find({ where = {}, order = {}, take = 0, skip = 0 }: FindOptions<T>): Promise<T[]> {
+  async find(
+    { where = {}, order = {}, take = 0, skip = 0 }: FindOptions<T>,
+    projection?: ProjectionType<T> | null,
+    options?: QueryOptions<T> | null,
+  ): Promise<T[]> {
     const sort = {};
     for (const key in order) {
       if (order[key] === "ASC") {
@@ -17,13 +31,23 @@ export default class QueryRepository<T> implements IQueryRepository<T> {
       }
     }
 
-    const docs = await this.model.find(where).sort(sort).limit(take).skip(skip).lean().exec();
+    const docs = await this.model
+      .find(where, projection, options)
+      .sort(sort)
+      .limit(take)
+      .skip(skip)
+      .lean()
+      .exec();
 
     return docs.map(({ _id, __v, ...rest }) => rest) as T[];
   }
 
-  async findOneBy(where: FilterQuery<T>): Promise<T | null> {
-    const docs = await this.model.findOne(where).lean().exec();
+  async findOne(
+    where: FilterQuery<T>,
+    projection?: ProjectionType<T> | null,
+    options?: QueryOptions<T> | null,
+  ): Promise<T | null> {
+    const docs = await this.model.findOne(where, projection, options).lean().exec();
 
     if (!docs) {
       return null;
@@ -37,16 +61,24 @@ export default class QueryRepository<T> implements IQueryRepository<T> {
     await new this.model(data).save();
   }
 
-  async update(id: number, data: UpdateQuery<T>) {
-    await this.model.updateOne({ id }, data, { upsert: true }).exec();
+  async updateOne(
+    where: FilterQuery<T>,
+    data: UpdateQuery<T> | UpdateWithAggregationPipeline,
+    options?: MongooseUpdateQueryOptions<T>,
+  ) {
+    return await this.model.updateOne(where, data, { upsert: true, ...options }).exec();
   }
 
-  async updateMany(where: FilterQuery<T>, data: Partial<T>) {
-    await this.model.updateMany(where, data).exec();
+  async update(
+    where: FilterQuery<T>,
+    data: UpdateQuery<T> | UpdateWithAggregationPipeline,
+    options?: MongooseUpdateQueryOptions<T>,
+  ) {
+    return await this.model.updateMany(where, data, options).exec();
   }
 
-  async delete(id: number) {
-    await this.model.deleteOne({ id }).exec();
+  async delete(filter?: FilterQuery<T>, options?: MongooseBaseQueryOptions<T>) {
+    await this.model.deleteOne(filter, options).exec();
   }
 
   async aggregate(pipeline?: PipelineStage[]) {

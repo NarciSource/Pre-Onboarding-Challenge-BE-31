@@ -19,7 +19,7 @@ export default class ReviewUpdateHandler {
     const { rating: before_rating } = before as ReviewEntity;
     const { id, product_id, rating: after_rating } = after as ReviewEntity;
 
-    const product = await this.catalog_query_repository.findOneBy({ id: product_id });
+    const product = await this.catalog_query_repository.findOne({ id: product_id });
     if (!product) return;
 
     const { average, count, distribution } = product.rating ?? {
@@ -32,12 +32,16 @@ export default class ReviewUpdateHandler {
     distribution[before_rating] -= 1;
     distribution[after_rating] += 1;
 
-    await this.catalog_query_repository.update(id, {
-      rating: { average: updated_average, count, distribution },
-    });
+    await this.catalog_query_repository.updateOne(
+      { id },
+      { rating: { average: updated_average, count, distribution } },
+      { upsert: true },
+    );
 
-    await this.summary_query_repository.update(id, {
-      rating: updated_average,
-    });
+    await this.summary_query_repository.updateOne(
+      { id },
+      { rating: updated_average },
+      { upsert: true },
+    );
   }
 }

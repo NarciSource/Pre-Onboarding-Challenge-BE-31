@@ -20,7 +20,7 @@ export default class ProductOptionDeleteHandler {
       case "product_options": {
         const { option_group_id } = after as ProductOptionEntity;
 
-        const catalog = await this.catalog_query_repository.findOneBy({
+        const catalog = await this.catalog_query_repository.findOne({
           option_groups: { id: option_group_id },
         });
         if (!catalog) return; // lazy update
@@ -34,7 +34,11 @@ export default class ProductOptionDeleteHandler {
             : group,
         );
 
-        await this.catalog_query_repository.update(catalog.id, { option_groups });
+        await this.catalog_query_repository.updateOne(
+          { id: catalog.id },
+          { option_groups },
+          { upsert: true },
+        );
         break;
       }
 
@@ -42,18 +46,26 @@ export default class ProductOptionDeleteHandler {
         {
           const { id, product_id } = before as ProductImageEntity;
 
-          const catalog = await this.catalog_query_repository.findOneBy({ id: product_id });
+          const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 
           const images = catalog?.images?.filter((image) => image.id !== id) ?? [];
 
-          await this.catalog_query_repository.update(product_id, { images });
+          await this.catalog_query_repository.updateOne(
+            { id: product_id },
+            { images },
+            { upsert: true },
+          );
         }
         {
           const { product_id, is_primary } = before as ProductImageEntity;
 
           if (!is_primary) break;
 
-          await this.summary_query_repository.update(product_id, { primary_image: null });
+          await this.summary_query_repository.updateOne(
+            { id: product_id },
+            { primary_image: null },
+            { upsert: true },
+          );
         }
       }
     }
