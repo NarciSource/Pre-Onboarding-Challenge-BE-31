@@ -18,26 +18,32 @@ export default class ProductOptionUpsertHandler {
   async handle({ table, after }: ProductOptionUpsertEvent) {
     switch (table) {
       case "product_options": {
-        const { id, option_group_id, ...rest } = after as ProductOptionEntity;
+        const { id: option_id, option_group_id, ...rest } = after as ProductOptionEntity;
 
-        const catalogs = await this.catalog_query_repository.find({
-          where: { option_groups: { id: option_group_id } },
-        });
+        const { modifiedCount } = await this.catalog_query_repository.update(
+          {
+            "option_groups.id": option_group_id,
+            "option_groups.options.id": option_id,
+          },
+          {
+            $set: { "option_groups.$[group].options.$[option]": { id: option_id, ...rest } },
+          },
+          {
+            arrayFilters: [{ "group.id": option_group_id }, { "option.id": option_id }],
+          },
+        );
 
-        for (const catalog of catalogs) {
-          const option_groups = catalog.option_groups.map((group) =>
-            group.id === option_group_id
-              ? {
-                  ...group,
-                  options: [...group.options.filter((option) => option.id !== id), { id, ...rest }],
-                }
-              : group,
-          );
-
-          await this.catalog_query_repository.updateOne(
-            { id: catalog.id },
-            { option_groups },
-            { upsert: true },
+        if (!modifiedCount) {
+          await this.catalog_query_repository.update(
+            {
+              "option_groups.id": option_group_id,
+            },
+            {
+              $push: { "option_groups.$[group].options": { id: option_id, ...rest } },
+            },
+            {
+              arrayFilters: [{ "group.id": option_group_id }],
+            },
           );
         }
         break;
