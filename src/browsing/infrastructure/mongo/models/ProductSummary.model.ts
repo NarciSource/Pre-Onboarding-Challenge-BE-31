@@ -70,4 +70,7 @@ export default class ProductSummaryModel {
 
   @Prop()
   review_count: number;
+
+  @Prop({ select: false })
+  categories: number[];
 }

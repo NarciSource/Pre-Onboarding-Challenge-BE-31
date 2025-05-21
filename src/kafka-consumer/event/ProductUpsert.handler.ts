@@ -97,6 +97,12 @@ export default class ProductUpsertHandler {
           { upsert: true },
         );
 
+        await this.summary_query_repository.updateOne(
+          { id: product_id },
+          { categories: updated_categories.map((c) => c.id) },
+          { upsert: true },
+        );
+
         await this.category_state_repository.updateOne(
           { id: category_id },
           { $inc: { product_count: 1 } },
