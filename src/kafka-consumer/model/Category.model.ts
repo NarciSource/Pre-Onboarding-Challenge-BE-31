@@ -22,10 +22,13 @@ export default class CategoryModel {
   @Prop()
   slug?: string;
 
-  @Prop()
-  is_primary: boolean;
-
   @Prop({ type: Number })
   parent_id?: number | null;
   parent?: ParentCategory | null;
+
+  @Prop({ type: String })
+  image_url: string | null;
+
+  @Prop()
+  product_count: number;
 }
