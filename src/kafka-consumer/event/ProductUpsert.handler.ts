@@ -117,21 +117,26 @@ export default class ProductUpsertHandler {
       case "product_option_groups": {
         const { id: option_group_id, product_id, ...rest } = after as ProductOptionGroupEntity;
 
-        const catalog = await this.catalog_query_repository.findOne({ id: product_id });
-        const option_groups = catalog?.option_groups ?? [];
-
-        const exists = option_groups.some((group) => group.id === option_group_id);
-        const updated_option_groups = exists
-          ? option_groups.map((group) =>
-              group.id === option_group_id ? { ...group, ...rest } : group,
-            )
-          : [...option_groups, { id: option_group_id, options: [], ...rest }];
-
-        await this.catalog_query_repository.updateOne(
-          { id: product_id },
-          { option_groups: updated_option_groups },
-          { upsert: true },
+        const { modifiedCount } = await this.catalog_query_repository.update(
+          {
+            id: product_id,
+            "option_groups.id": option_group_id,
+          },
+          {
+            $set: { "option_groups.$": { id: option_group_id, ...rest } },
+          },
         );
+
+        if (!modifiedCount) {
+          await this.catalog_query_repository.update(
+            {
+              id: product_id,
+            },
+            {
+              $push: { option_groups: { id: option_group_id, options: [], ...rest } },
+            },
+          );
+        }
         break;
       }
 
