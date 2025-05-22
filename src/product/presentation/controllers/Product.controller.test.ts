@@ -4,8 +4,7 @@ import { TestingModule } from "@nestjs/testing";
 import test_module from "__test-utils__/test-module";
 
 import { ProductEntity } from "@product/infrastructure/rdb/entities";
-import { ProductCatalogView, ProductSummaryView } from "@browsing/infrastructure/rdb/views";
-import { ProductCatalogDTO } from "@browsing/presentation/dto";
+import { ProductCatalogDTO, ProductSummaryDTO } from "@browsing/presentation/dto";
 import {
   ParamDTO,
   ProductBodyDTO,
@@ -54,7 +53,7 @@ describe("ProductController", () => {
         created_at: new Date(),
         status: "available",
       },
-    ] as ProductSummaryView[];
+    ] as ProductSummaryDTO[];
     const pagination = { total_items: 1, total_pages: 1, current_page: 1, per_page: 10 };
     const response: ResponseDTO<ProductResponseBundle> = {
       success: true,
@@ -78,7 +77,7 @@ describe("ProductController", () => {
       created_at: new Date(),
       updated_at: new Date(),
       status: "available",
-    } as ProductCatalogView;
+    } as ProductCatalogDTO;
     const response: ResponseDTO<ProductCatalogDTO> = {
       success: true,
       data,

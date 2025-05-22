@@ -23,8 +23,6 @@ import * as review_controllers from "@review/presentation/controllers";
 import * as browsing_queries from "@browsing/application/query";
 import { model_providers } from "@browsing/infrastructure/mongo/models";
 import query_repository_providers from "@browsing/infrastructure/mongo/repositories/provider";
-import view_repository_providers from "@browsing/infrastructure/rdb/repositories/provider";
-import * as views from "@browsing/infrastructure/rdb/views";
 import * as browsing_controllers from "@browsing/presentation/controllers";
 
 const test_module = Test.createTestingModule({
@@ -41,7 +39,6 @@ const test_module = Test.createTestingModule({
           ...Object.values(product_entities),
           ...Object.values(category_entities),
           ...Object.values(review_entities),
-          ...Object.values(views),
         ],
       }),
     }),
@@ -49,7 +46,6 @@ const test_module = Test.createTestingModule({
       ...Object.values(product_entities),
       ...Object.values(category_entities),
       ...Object.values(review_entities),
-      ...Object.values(views),
     ]),
     MongooseModule.forRootAsync({
       useFactory: () => {
@@ -74,7 +70,6 @@ const test_module = Test.createTestingModule({
     ...product_repository_providers,
     ...category_repository_providers,
     ...review_repository_providers,
-    ...view_repository_providers,
     ...query_repository_providers,
     ...Object.values(product_commands),
     ...Object.values(product_queries),
