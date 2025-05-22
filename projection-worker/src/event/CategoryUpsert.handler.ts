@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { CategoryModel } from "@kafka-consumer/model";
 import { IQueryRepository } from "@shared/repositories";
 import { CategoryEntity } from "@category/infrastructure/rdb/entities";
+import { CategoryModel } from "../model";
 import CategoryUpsertEvent from "./CategoryUpsert.event";
 
 @EventsHandler(CategoryUpsertEvent)

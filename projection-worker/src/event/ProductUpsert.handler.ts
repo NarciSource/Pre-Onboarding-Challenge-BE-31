@@ -1,7 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { CategoryModel, TagModel } from "@kafka-consumer/model";
 import { IQueryRepository } from "@shared/repositories";
 import {
   ProductEntity,
@@ -12,6 +11,7 @@ import {
   ProductTagEntity,
 } from "@product/infrastructure/rdb/entities";
 import { ProductCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { CategoryModel, TagModel } from "../model";
 import ProductUpsertEvent from "./ProductUpsert.event";
 
 @EventsHandler(ProductUpsertEvent)

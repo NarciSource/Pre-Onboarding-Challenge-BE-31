@@ -1,4 +1,4 @@
-import { TableEntityMap } from "@kafka-consumer/dto";
+import { TableEntityMap } from "./dto";
 
 export default abstract class ProjectionEvent<
   T extends keyof TableEntityMap = keyof TableEntityMap,

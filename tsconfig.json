@@ -1,32 +1,21 @@
 {
   "files": [],
-  "include": ["../api-server/**/*.ts", "jest.config.ts"],
+  "include": ["../api-server/**/*.ts", "../projection-worker/**/*.ts", "jest.config.ts"],
   "exclude": ["node_modules", "dist"],
 
   "compilerOptions": {
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    "baseUrl": "./api-server/src",
-
-    "paths": {
-      "__test-utils__/*": ["./__test-utils__/*"],
-      "@utility/*": ["./utility/*"],
-      "@libs/*": ["./libs/*"],
-      "@kafka-consumer/*": ["./kafka-consumer/*"],
-      "@shared/*": ["./shared/*"],
-      "@product/*": ["./product/*"],
-      "@category/*": ["./category/*"],
-      "@review/*": ["./review/*"],
-      "@browsing/*": ["./browsing/*"]
-    }
+    "emitDecoratorMetadata": true
   },
 
   "references": [
     {
       "path": "api-server"
+    },
+    {
+      "path": "projection-worker"
     }
   ]
 }
