@@ -1,5 +1,5 @@
 import { Inject, NotFoundException } from "@nestjs/common";
-import { CommandHandler, EventBus, ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager, FindOptionsWhere, ObjectLiteral } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
@@ -14,14 +14,11 @@ import {
   ProductPriceEntity,
   ProductTagEntity,
 } from "@product/infrastructure/rdb/entities";
-import { QueryUpdateEvent } from "@browsing/application/event";
 import EditCommand from "./Edit.command";
 
 @CommandHandler(EditCommand)
 export default class EditHandler implements ICommandHandler<EditCommand> {
   constructor(
-    private readonly event_bus: EventBus,
-
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")
     private readonly repository: IBaseRepository<ProductEntity>,
@@ -151,15 +148,6 @@ export default class EditHandler implements ICommandHandler<EditCommand> {
       // 업데이트 반환
       return product_entity;
     });
-
-    {
-      /**
-       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-       */
-      const event = new QueryUpdateEvent(product_id);
-
-      await this.event_bus.publish(event);
-    }
 
     // 반환 형식 변환
     const { id, name, slug, updated_at } = updated;
