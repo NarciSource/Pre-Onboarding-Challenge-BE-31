@@ -1,5 +1,5 @@
 import { Inject } from "@nestjs/common";
-import { CommandHandler, EventBus, ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@shared/repositories";
@@ -13,14 +13,11 @@ import {
   ProductPriceEntity,
   ProductTagEntity,
 } from "@product/infrastructure/rdb/entities";
-import { QueryRegisterEvent } from "@browsing/application/event";
 import RegisterCommand from "./Register.command";
 
 @CommandHandler(RegisterCommand)
 export default class RegisterHandler implements ICommandHandler<RegisterCommand> {
   constructor(
-    private readonly event_bus: EventBus,
-
     private readonly entity_manager: EntityManager,
     @Inject("IProductRepository")
     private readonly repository: IBaseRepository<ProductEntity>,
@@ -122,15 +119,6 @@ export default class RegisterHandler implements ICommandHandler<RegisterCommand>
 
       return product_entity;
     });
-
-    {
-      /**
-       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-       */
-      const event = new QueryRegisterEvent(product_entity.id);
-
-      await this.event_bus.publish(event);
-    }
 
     // 반환 형식 변환
     const { id, name, slug, created_at, updated_at } = product_entity;

@@ -1,4 +1,3 @@
-import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
@@ -6,12 +5,10 @@ import test_module from "__test-utils__/test-module";
 import { IBaseRepository } from "@shared/repositories";
 import { Review } from "@review/domain/entities";
 import { ReviewEntity } from "@review/infrastructure/rdb/entities";
-import { QueryUpdateEvent } from "@browsing/application/event";
 import RegisterHandler from "./Register.handler";
 
 describe("RegisterHandler", () => {
   let handler: RegisterHandler;
-  let event_bus: EventBus;
 
   let repository: IBaseRepository<ReviewEntity>;
 
@@ -19,7 +16,6 @@ describe("RegisterHandler", () => {
     const module: TestingModule = await test_module;
 
     handler = module.get(RegisterHandler);
-    event_bus = module.get(EventBus);
 
     repository = module.get("IReviewRepository");
     repository.with_transaction = jest.fn().mockReturnValue(repository);
@@ -42,6 +38,5 @@ describe("RegisterHandler", () => {
 
     expect(result).toEqual(savedReview);
     expect(repository.save).toHaveBeenCalledWith({ product: { id: 1 }, ...dto });
-    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryUpdateEvent));
   });
 });

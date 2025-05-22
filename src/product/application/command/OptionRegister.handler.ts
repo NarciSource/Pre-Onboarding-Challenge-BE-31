@@ -1,5 +1,5 @@
 import { ForbiddenException, Inject, NotFoundException } from "@nestjs/common";
-import { CommandHandler, EventBus, ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@shared/repositories";
@@ -7,14 +7,11 @@ import {
   ProductOptionEntity,
   ProductOptionGroupEntity,
 } from "@product/infrastructure/rdb/entities";
-import { QueryUpdateEvent } from "@browsing/application/event";
 import OptionRegisterCommand from "./OptionRegister.command";
 
 @CommandHandler(OptionRegisterCommand)
 export default class OptionRegisterHandler implements ICommandHandler<OptionRegisterCommand> {
   constructor(
-    private readonly event_bus: EventBus,
-
     private readonly entity_manager: EntityManager,
     @Inject("IProductOptionsRepository")
     private readonly repository: IBaseRepository<ProductOptionEntity>,
@@ -56,15 +53,6 @@ export default class OptionRegisterHandler implements ICommandHandler<OptionRegi
 
       return saved;
     });
-
-    {
-      /**
-       * 커맨드 뷰 레포지토리에서 쿼리 레포지토리로 수동 업데이트
-       */
-      const event = new QueryUpdateEvent(product_id);
-
-      await this.event_bus.publish(event);
-    }
 
     // 반환 형식 변환
     const { option_group, ...result } = saved;

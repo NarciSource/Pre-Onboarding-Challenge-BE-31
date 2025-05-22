@@ -1,5 +1,4 @@
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
-import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
@@ -10,12 +9,10 @@ import {
   ProductOptionEntity,
   ProductOptionGroupEntity,
 } from "@product/infrastructure/rdb/entities";
-import { QueryUpdateEvent } from "@browsing/application/event";
 import OptionRegisterHandler from "./OptionRegister.handler";
 
 describe("OptionRegisterHandler", () => {
   let handler: OptionRegisterHandler;
-  let event_bus: EventBus;
 
   let optionGroupRepository: IBaseRepository<ProductOptionGroupEntity>;
   let optionsRepository: IBaseRepository<ProductOptionEntity>;
@@ -24,7 +21,6 @@ describe("OptionRegisterHandler", () => {
     const module: TestingModule = await test_module;
 
     handler = module.get(OptionRegisterHandler);
-    event_bus = module.get(EventBus);
 
     optionGroupRepository = module.get("IProductOptionGroupRepository");
     optionsRepository = module.get("IProductOptionsRepository");
@@ -51,7 +47,6 @@ describe("OptionRegisterHandler", () => {
       ...options,
       option_group_id: option_group.id,
     });
-    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryUpdateEvent));
   });
 
   it("찾을 수 없는 옵션 그룹으로 등록 실패 시 NotFoundException 발생", async () => {
