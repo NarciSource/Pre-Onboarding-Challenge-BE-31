@@ -10,13 +10,16 @@
     "cqrs"
   ],
   "workspaces": [
-    "api-server"
+    "api-server",
+    "projection-worker"
   ],
   "scripts": {
     "build:api-server": "npm run build -workspace api-server",
-    "build": "npm run build:api-server",
+    "build:projection-worker": "npm run build -workspace projection-worker",
+    "build": "npm run build:api-server && npm run build:projection-worker",
     "start:api-server": "npm run start -workspace api-server",
-    "start": "npm run start:api-server",
+    "start:projection-worker": "npm run start -workspace projection-worker",
+    "start": "concurrently \"npm run start:api-server\" \"npm run start:projection-worker\"",
     "start:dev": "npm run start:dev -workspace api-server",
     "start:debug": "npm run start:debug -workspace api-server",
     "start:prod": "npm run start:prod -workspace api-server",
@@ -64,6 +67,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
+    "concurrently": "^9.1.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-import-resolver-typescript": "^4.3.4",

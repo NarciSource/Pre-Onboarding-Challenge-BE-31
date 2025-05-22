@@ -1,7 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { CategoryModel, TagModel } from "@kafka-consumer/model";
 import { IQueryRepository } from "@shared/repositories";
 import {
   ProductEntity,
@@ -12,6 +11,7 @@ import {
   ProductTagEntity,
 } from "@product/infrastructure/rdb/entities";
 import { ProductCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { CategoryModel, TagModel } from "../model";
 import ProductUpsertEvent from "./ProductUpsert.event";
 
 @EventsHandler(ProductUpsertEvent)
@@ -134,19 +134,13 @@ export default class ProductUpsertHandler {
             id: product_id,
             "option_groups.id": option_group_id,
           },
-          {
-            $set: { "option_groups.$": { id: option_group_id, ...rest } },
-          },
+          { $set: { "option_groups.$": { id: option_group_id, ...rest } } },
         );
 
         if (!modifiedCount) {
           await this.catalog_query_repository.update(
-            {
-              id: product_id,
-            },
-            {
-              $push: { option_groups: { id: option_group_id, options: [], ...rest } },
-            },
+            { id: product_id },
+            { $push: { option_groups: { id: option_group_id, options: [], ...rest } } },
           );
         }
         break;

@@ -1,0 +1,15 @@
+{
+  "name": "@pre-onboarding-challenge-be-31/projection-worker",
+  "version": "1.0.0",
+  "description": "Kafka Consumer Worker for Projection",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main"
+  },
+  "dependencies": {
+    "@pre-onboarding-challenge-be-31/api-server": "1.3.2"
+  }
+}

@@ -25,12 +25,7 @@ export default class MerchantUpsertHandler {
           { brand: { id, name, description, logo_url, website } },
         );
 
-        await this.summary_query_repository.update(
-          {
-            brand: { id },
-          },
-          { brand: { id, name } },
-        );
+        await this.summary_query_repository.update({ brand: { id } }, { brand: { id, name } });
         break;
       }
 

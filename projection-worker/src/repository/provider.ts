@@ -1,5 +1,5 @@
-import { CategoryModel, TagModel } from "@kafka-consumer/model";
 import { createQueryRepositoryProvider } from "@shared/repositories/createQueryRepositoryProvider";
+import { CategoryModel, TagModel } from "../model";
 
 export default [
   createQueryRepositoryProvider("ICategoryStateRepository", CategoryModel),

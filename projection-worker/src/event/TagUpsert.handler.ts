@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { TagModel } from "@kafka-consumer/model";
 import { IQueryRepository } from "@shared/repositories";
 import { TagEntity } from "@product/infrastructure/rdb/entities";
+import { TagModel } from "../model";
 import TagUpsertEvent from "./TagUpsert.event";
 
 @EventsHandler(TagUpsertEvent)

@@ -11,6 +11,15 @@
       "compilerOptions": {
         "tsConfigPath": "api-server/tsconfig.build.json"
       }
+    },
+    "worker": {
+      "type": "application",
+      "root": "projection-worker",
+      "entryFile": "main",
+      "sourceRoot": "projection-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "projection-worker/tsconfig.build.json"
+      }
     }
   },
   "compilerOptions": {

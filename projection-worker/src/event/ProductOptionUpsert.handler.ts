@@ -25,12 +25,8 @@ export default class ProductOptionUpsertHandler {
               "option_groups.id": option_group_id,
               "option_groups.options.id": option_id,
             },
-            {
-              $set: { "option_groups.$[group].options.$[option]": { id: option_id, ...rest } },
-            },
-            {
-              arrayFilters: [{ "group.id": option_group_id }, { "option.id": option_id }],
-            },
+            { $set: { "option_groups.$[group].options.$[option]": { id: option_id, ...rest } } },
+            { arrayFilters: [{ "group.id": option_group_id }, { "option.id": option_id }] },
           );
 
           if (!modifiedCount) {
@@ -72,11 +68,11 @@ export default class ProductOptionUpsertHandler {
         {
           if (!rest.is_primary) break;
 
-          const primary_image = { url: rest.url, alt_text: rest.alt_text };
+          const { url, alt_text } = rest;
 
           await this.summary_query_repository.updateOne(
             { id: product_id },
-            { primary_image },
+            { primary_image: { url, alt_text } },
             { upsert: true },
           );
         }
