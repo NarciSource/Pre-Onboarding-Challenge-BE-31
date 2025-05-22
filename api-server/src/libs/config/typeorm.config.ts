@@ -14,8 +14,8 @@ export default {
       password: PG_PASSWORD,
       database: PG_DATABASE,
       entities: [
-        join(process.cwd(), "dist", "**", "*.entity.js"),
-        join(process.cwd(), "dist", "**", "*.view.js"),
+        join(process.cwd(), "../", "**", "*.entity.js"),
+        join(process.cwd(), "../", "**", "*.view.js"),
       ],
       synchronize: true, // 개발
     };
