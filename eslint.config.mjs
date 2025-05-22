@@ -62,11 +62,6 @@ export default tseslint.config(
               position: "before",
             },
             {
-              pattern: "@kafka-consumer/**",
-              group: "internal",
-              position: "before",
-            },
-            {
               pattern: "@shared/**",
               group: "internal",
               position: "before",
