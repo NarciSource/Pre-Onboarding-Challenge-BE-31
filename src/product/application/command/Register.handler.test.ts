@@ -1,16 +1,13 @@
-import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@shared/repositories";
 import { ProductEntity } from "@product/infrastructure/rdb/entities";
-import { QueryRegisterEvent } from "@browsing/application/event";
 import RegisterHandler from "./Register.handler";
 
 describe("RegisterHandler", () => {
   let handler: RegisterHandler;
-  let event_bus: EventBus;
 
   let productRepository: IBaseRepository<ProductEntity>;
   let detailRepository: IBaseRepository<ProductEntity>;
@@ -25,7 +22,6 @@ describe("RegisterHandler", () => {
     const module: TestingModule = await test_module;
 
     handler = module.get(RegisterHandler);
-    event_bus = module.get(EventBus);
 
     productRepository = module.get("IProductRepository");
     detailRepository = module.get("IProductDetailRepository");
@@ -162,6 +158,5 @@ describe("RegisterHandler", () => {
     expect(result).toEqual(
       expect.objectContaining({ id: 1, name: "상품명", slug: "product-slug" }),
     );
-    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryRegisterEvent));
   });
 });

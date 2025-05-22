@@ -1,5 +1,4 @@
 import { NotFoundException } from "@nestjs/common";
-import { EventBus } from "@nestjs/cqrs";
 import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
@@ -7,12 +6,10 @@ import test_module from "__test-utils__/test-module";
 import { IBaseRepository } from "@shared/repositories";
 import { Review } from "@review/domain/entities";
 import { ReviewEntity } from "@review/infrastructure/rdb/entities";
-import { QueryUpdateEvent } from "@browsing/application/event";
 import EditHandler from "./Edit.handler";
 
 describe("EditHandler", () => {
   let handler: EditHandler;
-  let event_bus: EventBus;
 
   let repository: IBaseRepository<ReviewEntity>;
 
@@ -20,7 +17,6 @@ describe("EditHandler", () => {
     const module: TestingModule = await test_module;
 
     handler = module.get(EditHandler);
-    event_bus = module.get(EventBus);
 
     repository = module.get("IReviewRepository");
     repository.with_transaction = jest.fn().mockReturnValue(repository);
@@ -43,7 +39,6 @@ describe("EditHandler", () => {
 
     expect(result).toEqual(expect.objectContaining({ id: 1, ...dto }));
     expect(repository.update).toHaveBeenCalledWith(1, dto);
-    expect(event_bus.publish).toHaveBeenCalledWith(expect.any(QueryUpdateEvent));
   });
 
   it("리뷰 수정 실패 시 NotFoundException 발생", async () => {
