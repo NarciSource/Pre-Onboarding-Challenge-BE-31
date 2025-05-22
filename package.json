@@ -9,15 +9,20 @@
     "wanted",
     "cqrs"
   ],
+  "workspaces": [
+    "api-server"
+  ],
   "scripts": {
-    "build": "nest build",
+    "build:api-server": "npm run build -workspace api-server",
+    "build": "npm run build:api-server",
+    "start:api-server": "npm run start -workspace api-server",
+    "start": "npm run start:api-server",
+    "start:dev": "npm run start:dev -workspace api-server",
+    "start:debug": "npm run start:debug -workspace api-server",
+    "start:prod": "npm run start:prod -workspace api-server",
+    "generate-openapi": "npm run generate-openapi -workspace api-server",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "generate-openapi": "ts-node -P tsconfig.json --require tsconfig-paths/register src/utility/downloadOpenAPI.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

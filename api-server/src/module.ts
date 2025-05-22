@@ -14,7 +14,7 @@ import BrowsingModule from "@browsing/module";
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [".env"],
+      envFilePath: ["../.env"],
     }),
     KafkaConsumerModule,
     TypeOrmModule.forRootAsync(type_orm_config),
