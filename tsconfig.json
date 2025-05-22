@@ -1,33 +1,32 @@
 {
+  "files": [],
+  "include": ["../api-server/**/*.ts", "jest.config.ts"],
+  "exclude": ["node_modules", "dist"],
+
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2023",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "baseUrl": "./api-server/src",
+
     "paths": {
-      "__test-utils__/*": ["./src/__test-utils__/*"],
-      "@utility/*": ["./src/utility/*"],
-      "@libs/*": ["./src/libs/*"],
-      "@kafka-consumer/*": ["./src/kafka-consumer/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@product/*": ["./src/product/*"],
-      "@category/*": ["./src/category/*"],
-      "@review/*": ["./src/review/*"],
-      "@browsing/*": ["./src/browsing/*"]
+      "__test-utils__/*": ["./__test-utils__/*"],
+      "@utility/*": ["./utility/*"],
+      "@libs/*": ["./libs/*"],
+      "@kafka-consumer/*": ["./kafka-consumer/*"],
+      "@shared/*": ["./shared/*"],
+      "@product/*": ["./product/*"],
+      "@category/*": ["./category/*"],
+      "@review/*": ["./review/*"],
+      "@browsing/*": ["./browsing/*"]
     }
-  }
+  },
+
+  "references": [
+    {
+      "path": "api-server"
+    }
+  ]
 }

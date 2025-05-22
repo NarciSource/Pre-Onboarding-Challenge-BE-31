@@ -53,10 +53,10 @@ const config: Config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: "",
+  globalSetup: "./jest.global-setup.ts",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: "",
+  globalTeardown: "./jest.teardown.ts",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -80,7 +80,16 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    "^__test-utils__/(.*)$": "<rootDir>/src/__test-utils__/$1",
+    "^@utility/(.*)$": "<rootDir>/src/utility/$1",
+    "^@libs/(.*)$": "<rootDir>/src/libs/$1",
+    "^@shared/(.*)$": "<rootDir>/src/shared/$1",
+    "^@product/(.*)$": "<rootDir>/src/product/$1",
+    "^@category/(.*)$": "<rootDir>/src/category/$1",
+    "^@review/(.*)$": "<rootDir>/src/review/$1",
+    "^@browsing/(.*)$": "<rootDir>/src/browsing/$1",
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -95,7 +104,7 @@ const config: Config = {
   preset: "ts-jest",
 
   // Run tests from one or more projects
-  projects: ["<rootDir>/api"],
+  // projects: undefined,
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [
@@ -125,7 +134,7 @@ const config: Config = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: ".",
+  // rootDir: undefined,
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -157,10 +166,10 @@ const config: Config = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
+  testMatch: ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
