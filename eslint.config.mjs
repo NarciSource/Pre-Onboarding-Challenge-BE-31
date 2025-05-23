@@ -86,6 +86,11 @@ export default tseslint.config(
               group: "internal",
               position: "after",
             },
+            {
+              pattern: "@query/**",
+              group: "internal",
+              position: "after",
+            },
           ],
           pathGroupsExcludedImportTypes: ["builtin"],
           alphabetize: { order: "asc", caseInsensitive: true },

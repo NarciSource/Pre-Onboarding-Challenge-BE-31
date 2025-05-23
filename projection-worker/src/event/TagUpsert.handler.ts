@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository } from "@shared/repositories";
-import { TagEntity } from "@product/infrastructure/rdb/entities";
+import { IQueryRepository } from "@query/domain/repositories";
+import { TagEntity } from "@query/rdb/entities";
 import { TagModel } from "../model";
 import TagUpsertEvent from "./TagUpsert.event";
 

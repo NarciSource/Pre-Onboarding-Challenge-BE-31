@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository } from "@shared/repositories";
-import { CategoryEntity } from "@category/infrastructure/rdb/entities";
+import { IQueryRepository } from "@query/domain/repositories";
+import { CategoryEntity } from "@query/rdb/entities";
 import { CategoryModel } from "../model";
 import CategoryUpsertEvent from "./CategoryUpsert.event";
 

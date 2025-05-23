@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository } from "@shared/repositories";
-import { BrandEntity, SellerEntity } from "@product/infrastructure/rdb/entities";
-import { ProductCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { IQueryRepository } from "@query/domain/repositories";
+import { ProductCatalogModel, ProductSummaryModel } from "@query/mongo/models";
+import { BrandEntity, SellerEntity } from "@query/rdb/entities";
 import MerchantUpsertEvent from "./MerchantUpsert.event";
 
 @EventsHandler(MerchantUpsertEvent)

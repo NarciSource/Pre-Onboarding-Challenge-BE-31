@@ -3,11 +3,11 @@ import { ConfigModule } from "@nestjs/config";
 import { CqrsModule } from "@nestjs/cqrs";
 import { MongooseModule } from "@nestjs/mongoose";
 
-import { mongo_config } from "@libs/config";
-import BrowsingModule from "@browsing/module";
+import { mongo_config } from "@query/config";
+import { BrowsingModule } from "@query/module";
 import * as events from "./event";
 import { model_providers } from "./model";
-import { state_repository_providers } from "./repository";
+import state_repository_providers from "./repository/provider";
 import KafkaConsumerService from "./service";
 
 @Module({

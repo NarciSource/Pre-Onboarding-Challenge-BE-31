@@ -1,4 +1,4 @@
-import { createQueryRepositoryProvider } from "@shared/repositories/createQueryRepositoryProvider";
+import { createQueryRepositoryProvider } from "@query/repositories";
 import { CategoryModel, TagModel } from "../model";
 
 export default [
