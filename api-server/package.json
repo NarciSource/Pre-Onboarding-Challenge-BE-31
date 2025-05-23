@@ -4,6 +4,9 @@
   "description": "API 서버",
   "main": "dist/api/index.js",
   "types": "dist/api/index.d.ts",
+  "exports": {
+    "./repositories": "./src/browsing/repositories/index.ts"
+  },
   "scripts": {
     "build": "nest build",
     "start": "nest start",

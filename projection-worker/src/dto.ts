@@ -10,9 +10,9 @@ import {
   ProductOptionEntity,
   ProductImageEntity,
   TagEntity,
-} from "@product/infrastructure/rdb/entities";
-import { CategoryEntity } from "@category/infrastructure/rdb/entities";
-import { ReviewEntity } from "@review/infrastructure/rdb/entities";
+  CategoryEntity,
+  ReviewEntity,
+} from "@query/rdb/entities";
 
 export enum DebeziumOperation {
   CREATE = "c",

@@ -22,12 +22,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@libs/*": ["../api-server/src/libs/*"],
-      "@shared/*": ["../api-server/src/shared/*"],
-      "@product/*": ["../api-server/src/product/*"],
-      "@category/*": ["../api-server/src/category/*"],
-      "@review/*": ["../api-server/src/review/*"],
-      "@browsing/*": ["../api-server/src/browsing/*"]
+      "@query/*": ["../api-server"]
     }
   },
   "references": [{ "path": "../api-server" }],
