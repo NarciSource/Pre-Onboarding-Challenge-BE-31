@@ -4,6 +4,7 @@ import { EventsHandler } from "@nestjs/cqrs";
 import { IQueryRepository } from "@query/domain/repositories";
 import { ProductCatalogModel, ProductSummaryModel } from "@query/mongo/models";
 import { ProductImageEntity, ProductOptionEntity } from "@query/rdb/entities";
+
 import ProductOptionDeleteEvent from "./ProductOptionDelete.event";
 
 @EventsHandler(ProductOptionDeleteEvent)

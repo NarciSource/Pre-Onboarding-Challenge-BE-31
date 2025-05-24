@@ -4,10 +4,11 @@ import { EventsHandler } from "@nestjs/cqrs";
 import { IQueryRepository } from "@query/domain/repositories";
 import { ProductCatalogModel, ProductSummaryModel } from "@query/mongo/models";
 import { ReviewEntity } from "@query/rdb/entities";
-import ReviewCreateEvent from "./ReviewCreate.event";
 
-@EventsHandler(ReviewCreateEvent)
-export default class ReviewCreateHandler {
+import ReviewDeleteEvent from "./ReviewDelete.event";
+
+@EventsHandler(ReviewDeleteEvent)
+export default class ReviewDeleteHandler {
   constructor(
     @Inject("IProductCatalogQueryRepository")
     private readonly catalog_query_repository: IQueryRepository<ProductCatalogModel>,
@@ -15,8 +16,8 @@ export default class ReviewCreateHandler {
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
   ) {}
 
-  async handle({ after }: ReviewCreateEvent) {
-    const { product_id, rating } = after as ReviewEntity;
+  async handle({ before }: ReviewDeleteEvent) {
+    const { product_id, rating } = before as ReviewEntity;
 
     const product = await this.catalog_query_repository.findOne({ id: product_id });
     if (!product) return;
@@ -27,9 +28,9 @@ export default class ReviewCreateHandler {
       distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
     };
 
-    const updated_count = count + 1;
-    const updated_average = (average * count + rating) / updated_count;
-    distribution[rating] += 1;
+    const updated_count = count - 1;
+    const updated_average = (average * count - rating) / updated_count;
+    distribution[rating] -= 1;
 
     await this.catalog_query_repository.updateOne(
       { id: product_id },
