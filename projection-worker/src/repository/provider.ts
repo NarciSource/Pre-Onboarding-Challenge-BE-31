@@ -1,7 +1,7 @@
 import { createQueryRepositoryProvider } from "@query/repositories";
-import { CategoryModel, TagModel } from "../model";
+import { CategoryStateModel, TagStateModel } from "../model";
 
 export default [
-  createQueryRepositoryProvider("ICategoryStateRepository", CategoryModel),
-  createQueryRepositoryProvider("ITagStateRepository", TagModel),
+  createQueryRepositoryProvider("ICategoryStateRepository", CategoryStateModel),
+  createQueryRepositoryProvider("ITagStateRepository", TagStateModel),
 ];

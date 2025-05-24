@@ -1,7 +1,7 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 
 @Schema()
-export default class TagModel {
+export default class TagStateModel {
   @Prop({ unique: true })
   declare id: number;
 

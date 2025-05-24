@@ -10,6 +10,14 @@ import RatingModel from "./sub/Rating.model";
 import SellerModel from "./sub/Seller.model";
 import TagModel from "./sub/Tag.model";
 
+class ExtendedCategoryModel extends CategoryModel {
+  @Prop()
+  is_primary: boolean;
+
+  @Prop({ type: CategoryModel })
+  parent?: CategoryModel | null;
+}
+
 @Schema()
 export default class ProductCatalogModel {
   @Prop({ unique: true })
@@ -48,8 +56,8 @@ export default class ProductCatalogModel {
   @Prop({ type: PriceModel })
   price: PriceModel;
 
-  @Prop({ type: [CategoryModel] })
-  categories: CategoryModel[];
+  @Prop({ type: [ExtendedCategoryModel] })
+  categories: ExtendedCategoryModel[];
 
   @Prop({ type: [OptionGroupModel] })
   option_groups: OptionGroupModel[];

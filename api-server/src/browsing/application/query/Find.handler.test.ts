@@ -3,13 +3,13 @@ import { TestingModule } from "@nestjs/testing";
 import test_module from "__test-utils__/test-module";
 
 import { IQueryRepository } from "@shared/repositories";
-import { CategoryCatalogModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { FeaturedCategoryModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {
   let handler: FindHandler;
   let productSummaryRepository: IQueryRepository<ProductSummaryModel>;
-  let categoryCatalogRepository: IQueryRepository<CategoryCatalogModel>;
+  let categoryCatalogRepository: IQueryRepository<FeaturedCategoryModel>;
 
   beforeAll(async () => {
     const module: TestingModule = await test_module;
@@ -17,7 +17,7 @@ describe("FindHandler", () => {
     handler = module.get<FindHandler>(FindHandler);
 
     productSummaryRepository = module.get("IProductSummaryQueryRepository");
-    categoryCatalogRepository = module.get("ICategoryCatalogQueryRepository");
+    categoryCatalogRepository = module.get("IFeaturedCategoryQueryRepository");
   });
 
   it("신상품, 인기상품, 추천 카테고리 조회", async () => {

@@ -1,6 +1,6 @@
 import { SchemaFactory } from "@nestjs/mongoose";
 
-import CategoryCatalogModel from "./CategoryCatalog.model";
+import FeaturedCategoryModel from "./FeaturedCategory.model";
 import ProductCatalogModel from "./ProductCatalog.model";
 import ProductSummaryModel, { ProductSummarySchema } from "./ProductSummary.model";
 
@@ -14,7 +14,7 @@ export default [
     schema: ProductSummarySchema,
   },
   {
-    name: CategoryCatalogModel.name,
-    schema: SchemaFactory.createForClass(CategoryCatalogModel),
+    name: FeaturedCategoryModel.name,
+    schema: SchemaFactory.createForClass(FeaturedCategoryModel),
   },
 ];

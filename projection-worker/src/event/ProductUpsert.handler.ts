@@ -11,7 +11,7 @@ import {
   ProductOptionGroupEntity,
   ProductTagEntity,
 } from "@query/rdb/entities";
-import { CategoryModel, TagModel } from "../model";
+import { CategoryStateModel, TagStateModel } from "../model";
 import ProductUpsertEvent from "./ProductUpsert.event";
 
 @EventsHandler(ProductUpsertEvent)
@@ -22,9 +22,9 @@ export default class ProductUpsertHandler {
     @Inject("IProductSummaryQueryRepository")
     private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
     @Inject("ICategoryStateRepository")
-    private readonly category_state_repository: IQueryRepository<CategoryModel>,
+    private readonly category_state_repository: IQueryRepository<CategoryStateModel>,
     @Inject("ITagStateRepository")
-    private readonly tag_state_repository: IQueryRepository<TagModel>,
+    private readonly tag_state_repository: IQueryRepository<TagStateModel>,
   ) {}
 
   async handle({ table, after }: ProductUpsertEvent) {

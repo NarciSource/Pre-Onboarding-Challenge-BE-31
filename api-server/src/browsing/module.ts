@@ -15,7 +15,7 @@ import * as controllers from "./presentation/controllers";
   exports: [
     "IProductCatalogQueryRepository",
     "IProductSummaryQueryRepository",
-    "ICategoryCatalogQueryRepository",
+    "IFeaturedCategoryQueryRepository",
   ],
 })
 export default class BrowsingModule {}
