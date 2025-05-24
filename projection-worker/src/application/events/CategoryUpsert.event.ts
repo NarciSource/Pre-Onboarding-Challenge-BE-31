@@ -1,3 +1,3 @@
-import ProjectionEvent from "../ProjectionEvent";
+import ProjectionEvent from "./BaseEvent";
 
 export default class CategoryUpsertEvent extends ProjectionEvent {}

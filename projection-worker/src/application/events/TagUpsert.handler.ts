@@ -3,7 +3,8 @@ import { EventsHandler } from "@nestjs/cqrs";
 
 import { IQueryRepository } from "@query/domain/repositories";
 import { TagEntity } from "@query/rdb/entities";
-import { TagStateModel } from "../model";
+
+import { TagStateModel } from "../../infrastructure/model";
 import TagUpsertEvent from "./TagUpsert.event";
 
 @EventsHandler(TagUpsertEvent)

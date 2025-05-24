@@ -44,7 +44,7 @@ export interface DebeziumMessage<T> {
   ts_ns?: number;
 }
 
-export interface TableEntityMap {
+export default interface TableEntityMap {
   products: ProductEntity;
   product_details: ProductDetailEntity;
   product_categories: ProductCategoryEntity;

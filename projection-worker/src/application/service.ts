@@ -3,15 +3,15 @@ import { ConfigService } from "@nestjs/config";
 import { EventBus } from "@nestjs/cqrs";
 import { Consumer, Kafka, KafkaMessage } from "kafkajs";
 
-import { DebeziumMessage, TableEntity, TableEntityMap } from "./dto";
+import TableEntityMap, { DebeziumMessage, TableEntity } from "./TableEntityMap";
 import topicEventMap, { TopicName } from "./topicEventMap";
 
 @Injectable()
-export default class KafkaConsumerService implements OnModuleInit {
+export default class ConsumerService implements OnModuleInit {
   private readonly kafka: Kafka;
   private readonly consumer: Consumer;
 
-  private readonly logger = new Logger(KafkaConsumerService.name);
+  private readonly logger = new Logger(ConsumerService.name);
 
   constructor(
     private readonly config: ConfigService,
