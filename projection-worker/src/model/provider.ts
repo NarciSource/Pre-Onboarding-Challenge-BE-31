@@ -1,15 +1,15 @@
 import { SchemaFactory } from "@nestjs/mongoose";
 
-import CategoryModel from "./Category.model";
-import TagModel from "./Tag.model";
+import CategoryStateModel from "./CategoryState.model";
+import TagStateModel from "./TagState.model";
 
 export default [
   {
-    name: CategoryModel.name,
-    schema: SchemaFactory.createForClass(CategoryModel),
+    name: CategoryStateModel.name,
+    schema: SchemaFactory.createForClass(CategoryStateModel),
   },
   {
-    name: TagModel.name,
-    schema: SchemaFactory.createForClass(TagModel),
+    name: TagStateModel.name,
+    schema: SchemaFactory.createForClass(TagStateModel),
   },
 ];

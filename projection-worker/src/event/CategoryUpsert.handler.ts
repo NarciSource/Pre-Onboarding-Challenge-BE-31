@@ -3,14 +3,15 @@ import { EventsHandler } from "@nestjs/cqrs";
 
 import { IQueryRepository } from "@query/domain/repositories";
 import { CategoryEntity } from "@query/rdb/entities";
-import { CategoryModel } from "../model";
+
+import { CategoryStateModel } from "../model";
 import CategoryUpsertEvent from "./CategoryUpsert.event";
 
 @EventsHandler(CategoryUpsertEvent)
 export default class CategoryUpsertHandler {
   constructor(
     @Inject("ICategoryStateRepository")
-    private readonly category_state_repository: IQueryRepository<CategoryModel>,
+    private readonly category_state_repository: IQueryRepository<CategoryStateModel>,
   ) {}
 
   async handle({ after }: CategoryUpsertEvent) {
