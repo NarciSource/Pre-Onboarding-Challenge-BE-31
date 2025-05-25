@@ -1,6 +1,6 @@
 import { EntityManager, ObjectLiteral } from "typeorm";
 
-import IBaseRepository from "../../../../../libs/domain/src/repository/IBaseRepository";
+import IBaseRepository from "@libs/domain/repository/IBaseRepository";
 
 const base_repository_mixin = {
   with_transaction<T extends ObjectLiteral>(this: IBaseRepository<T>, manager: EntityManager) {

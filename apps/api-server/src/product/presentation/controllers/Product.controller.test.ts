@@ -3,7 +3,6 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { ProductEntity } from "product/infrastructure/rdb/entities";
 import { ProductCatalogDTO, ProductSummaryDTO } from "browsing/presentation/dto";
 import {
   ParamDTO,
@@ -35,7 +34,7 @@ describe("ProductController", () => {
       data: { id: 1, created_at: new Date(), updated_at: new Date(), ...body },
       message: "상품이 성공적으로 등록되었습니다.",
     };
-    commandBus.execute = jest.fn().mockResolvedValue(response.data as ProductEntity);
+    commandBus.execute = jest.fn().mockResolvedValue(response.data);
 
     const result = await controller.create(body);
 

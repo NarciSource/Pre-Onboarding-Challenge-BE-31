@@ -1,9 +1,8 @@
 import { Provider } from "@nestjs/common";
 import { ObjectLiteral, EntityTarget, DataSource } from "typeorm";
 
-import { IViewRepository } from "@libs/domain/repository";
+import { IViewRepository, IBaseRepository } from "@libs/domain/repository";
 
-import IBaseRepository from "../../../../../libs/domain/src/repository/IBaseRepository";
 import base_repository_mixin from "./base.repository.mixin";
 
 export default function createRepositoryProvider<T extends ObjectLiteral>(

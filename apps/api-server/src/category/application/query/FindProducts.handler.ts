@@ -3,8 +3,8 @@ import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBaseRepository, IQueryRepository } from "@libs/domain/repository";
 import { ProductSummaryModel } from "@libs/infrastructure/mongo/models";
+import { CategoryEntity } from "@libs/infrastructure/rdb/entities";
 
-import { CategoryEntity } from "category/infrastructure/rdb/entities";
 import FindProductsQuery from "./FindProducts.query";
 
 @QueryHandler(FindProductsQuery)

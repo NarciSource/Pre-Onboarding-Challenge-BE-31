@@ -3,7 +3,7 @@ import { EventsHandler } from "@nestjs/cqrs";
 
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { BrandEntity, SellerEntity } from "query/rdb/entities";
+import { BrandEntity, SellerEntity } from "@libs/infrastructure/rdb/entities";
 
 import MerchantUpsertEvent from "./MerchantUpsert.event";
 

@@ -3,8 +3,8 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@libs/domain/repository";
+import { ReviewEntity } from "@libs/infrastructure/rdb/entities";
 
-import { ReviewEntity } from "review/infrastructure/rdb/entities";
 import RegisterCommand from "./Register.command";
 
 @CommandHandler(RegisterCommand)

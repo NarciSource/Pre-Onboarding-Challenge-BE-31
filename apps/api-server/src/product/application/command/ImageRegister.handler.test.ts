@@ -3,8 +3,8 @@ import { TestingModule } from "@nestjs/testing";
 import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@libs/domain/repository";
+import { ProductEntity } from "@libs/infrastructure/rdb/entities";
 import { Product_Image } from "product/domain/entities";
-import { ProductEntity } from "product/infrastructure/rdb/entities";
 import ImageRegisterHandler from "./ImageRegister.handler";
 
 describe("ImageRegisterHandler", () => {

@@ -8,7 +8,7 @@ import { TestingModule } from "@nestjs/testing";
 import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@libs/domain/repository";
-import { ProductOptionEntity, ProductOptionGroupEntity } from "product/infrastructure/rdb/entities";
+import { ProductOptionEntity, ProductOptionGroupEntity } from "@libs/infrastructure/rdb/entities";
 import OptionRemoveHandler from "./OptionRemove.handler";
 
 describe("OptionRemoveHandler", () => {

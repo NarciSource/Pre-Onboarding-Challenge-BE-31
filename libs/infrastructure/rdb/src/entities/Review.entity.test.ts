@@ -4,7 +4,7 @@ import { DataSource, UpdateResult } from "typeorm";
 import test_module from "__test-utils__/test-module";
 
 import { IBaseRepository } from "@libs/domain/repository";
-import ProductEntity from "product/infrastructure/rdb/entities/Product.entity";
+import ProductEntity from "./Product.entity";
 import ReviewEntity from "./Review.entity";
 import UserEntity from "./User.entity";
 

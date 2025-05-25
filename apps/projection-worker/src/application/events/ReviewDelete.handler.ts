@@ -3,7 +3,7 @@ import { EventsHandler } from "@nestjs/cqrs";
 
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { ReviewEntity } from "query/rdb/entities";
+import { ReviewEntity } from "@libs/infrastructure/rdb/entities";
 
 import ReviewDeleteEvent from "./ReviewDelete.event";
 

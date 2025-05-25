@@ -1,8 +1,6 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
-import * as product_entities from "product/infrastructure/rdb/entities";
-import * as category_entities from "category/infrastructure/rdb/entities";
-import * as review_entities from "review/infrastructure/rdb/entities";
+import * as rdb_entities from "@libs/infrastructure/rdb/entities";
 
 export default {
   useFactory: (): TypeOrmModuleOptions => {
@@ -15,11 +13,7 @@ export default {
       username: PG_USERNAME,
       password: PG_PASSWORD,
       database: PG_DATABASE,
-      entities: [
-        ...Object.values(product_entities),
-        ...Object.values(category_entities),
-        ...Object.values(review_entities),
-      ],
+      entities: [...Object.values(rdb_entities)],
       synchronize: true, // 개발
     };
   },

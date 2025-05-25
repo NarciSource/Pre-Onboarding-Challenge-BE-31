@@ -2,8 +2,8 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBaseRepository } from "@libs/domain/repository";
+import { ReviewEntity } from "@libs/infrastructure/rdb/entities";
 
-import { ReviewEntity } from "review/infrastructure/rdb/entities";
 import FindQuery from "./Find.query";
 
 @QueryHandler(FindQuery)

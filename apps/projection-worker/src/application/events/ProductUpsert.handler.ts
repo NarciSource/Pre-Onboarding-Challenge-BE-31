@@ -10,7 +10,7 @@ import {
   ProductPriceEntity,
   ProductOptionGroupEntity,
   ProductTagEntity,
-} from "query/rdb/entities";
+} from "@libs/infrastructure/rdb/entities";
 
 import { CategoryStateModel, TagStateModel } from "../../infrastructure/model";
 import ProductUpsertEvent from "./ProductUpsert.event";

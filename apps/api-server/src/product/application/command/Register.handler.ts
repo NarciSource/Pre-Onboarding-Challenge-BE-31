@@ -3,7 +3,6 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
 import { IBaseRepository } from "@libs/domain/repository";
-
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
@@ -13,7 +12,8 @@ import {
   ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
-} from "product/infrastructure/rdb/entities";
+} from "@libs/infrastructure/rdb/entities";
+
 import RegisterCommand from "./Register.command";
 
 @CommandHandler(RegisterCommand)

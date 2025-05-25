@@ -2,8 +2,8 @@ import { Inject, NotFoundException } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
 import { IBaseRepository } from "@libs/domain/repository";
+import { ProductEntity } from "@libs/infrastructure/rdb/entities";
 
-import { ProductEntity } from "product/infrastructure/rdb/entities";
 import RemoveCommand from "./Remove.command";
 
 @CommandHandler(RemoveCommand)

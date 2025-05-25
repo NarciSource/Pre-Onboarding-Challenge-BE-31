@@ -34,6 +34,8 @@
       "@libs/domain/*": ["libs/domain/src/*"],
       "@libs/infrastructure/mongo": ["libs/infrastructure/mongo/src"],
       "@libs/infrastructure/mongo/*": ["libs/infrastructure/mongo/src/*"],
+      "@libs/infrastructure/rdb": ["libs/infrastructure/rdb/src"],
+      "@libs/infrastructure/rdb/*": ["libs/infrastructure/rdb/src/*"],
 
       "query/*": ["apps/api-server"],
       "utility/*": ["apps/api-server/src/utility/*"],

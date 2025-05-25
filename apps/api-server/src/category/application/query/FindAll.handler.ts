@@ -2,9 +2,9 @@ import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { IBaseRepository } from "@libs/domain/repository";
+import { CategoryEntity } from "@libs/infrastructure/rdb/entities";
 
 import { Category } from "category/domain/entities";
-import { CategoryEntity } from "category/infrastructure/rdb/entities";
 import FindAllQuery from "./FindAll.query";
 
 @QueryHandler(FindAllQuery)
