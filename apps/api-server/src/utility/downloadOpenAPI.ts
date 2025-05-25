@@ -29,14 +29,14 @@ export async function openapi() {
   const yamlDocument = stringify(document, { indent: 2 });
 
   try {
-    await promises.mkdir("./dist", { recursive: true });
+    await promises.mkdir("../../dist", { recursive: true });
   } catch (err) {
     console.error("Error creating directory", err);
     process.exit(1);
   }
 
   try {
-    await promises.writeFile("./dist/openapi.yaml", String(yamlDocument));
+    await promises.writeFile("../../dist/openapi.yaml", String(yamlDocument));
   } catch (err) {
     console.error("Error writing file", err);
     process.exit(1);
