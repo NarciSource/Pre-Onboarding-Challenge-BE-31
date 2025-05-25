@@ -3,7 +3,8 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager, FindOptionsWhere, ObjectLiteral } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { IBaseRepository } from "shared/repositories";
+import { IBaseRepository } from "@libs/domain/repository";
+
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
