@@ -1,7 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IBaseRepository } from "shared/repositories";
+import { IBaseRepository } from "@libs/domain/repository";
+
 import { ReviewEntity } from "review/infrastructure/rdb/entities";
 import FindQuery from "./Find.query";
 

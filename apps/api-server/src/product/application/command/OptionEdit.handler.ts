@@ -2,7 +2,8 @@ import { ForbiddenException, Inject, NotFoundException } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
-import { IBaseRepository } from "shared/repositories";
+import { IBaseRepository } from "@libs/domain/repository";
+
 import { ProductOptionEntity } from "product/infrastructure/rdb/entities";
 import OptionEditCommand from "./OptionEdit.command";
 
