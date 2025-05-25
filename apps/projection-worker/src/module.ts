@@ -14,7 +14,7 @@ import state_repository_providers from "./infrastructure/repository/provider";
 @Module({
   imports: [
     CqrsModule,
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ["../../.env"] }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: [".env"] }),
     MongooseModule.forRootAsync(mongo_config),
     MongooseModule.forFeature(model_providers),
     BrowsingModule,
