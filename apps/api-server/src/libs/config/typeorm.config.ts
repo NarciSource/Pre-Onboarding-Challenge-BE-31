@@ -1,6 +1,8 @@
-import { join } from "path";
-
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+
+import * as product_entities from "@product/infrastructure/rdb/entities";
+import * as category_entities from "@category/infrastructure/rdb/entities";
+import * as review_entities from "@review/infrastructure/rdb/entities";
 
 export default {
   useFactory: (): TypeOrmModuleOptions => {
@@ -14,8 +16,9 @@ export default {
       password: PG_PASSWORD,
       database: PG_DATABASE,
       entities: [
-        join(process.cwd(), "../", "**", "*.entity.js"),
-        join(process.cwd(), "../", "**", "*.view.js"),
+        ...Object.values(product_entities),
+        ...Object.values(category_entities),
+        ...Object.values(review_entities),
       ],
       synchronize: true, // 개발
     };
