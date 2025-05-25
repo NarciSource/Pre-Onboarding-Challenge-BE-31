@@ -2,8 +2,8 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
+import { FeaturedCategoryModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 import { IQueryRepository } from "shared/repositories";
-import { FeaturedCategoryModel, ProductSummaryModel } from "browsing/infrastructure/mongo/models";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {

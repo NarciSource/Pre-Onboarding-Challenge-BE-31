@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 import { IQueryRepository } from "query/domain/repositories";
-import { ProductCatalogModel, ProductSummaryModel } from "query/mongo/models";
 import { ReviewEntity } from "query/rdb/entities";
 
 import ReviewDeleteEvent from "./ReviewDelete.event";

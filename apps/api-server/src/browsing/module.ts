@@ -1,21 +1,14 @@
 import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
-import { MongooseModule } from "@nestjs/mongoose";
+
+import MongoQueryModule from "@libs/infrastructure/mongo/module";
 
 import * as queries from "./application/query";
-
-import { model_providers } from "./infrastructure/mongo/models";
-import { query_repository_providers } from "./infrastructure/mongo/repositories";
 import * as controllers from "./presentation/controllers";
 
 @Module({
-  imports: [CqrsModule, MongooseModule.forFeature(model_providers)],
-  providers: [...Object.values(queries), ...query_repository_providers],
+  imports: [CqrsModule, MongoQueryModule],
+  providers: [...Object.values(queries)],
   controllers: [...Object.values(controllers)],
-  exports: [
-    "IProductCatalogQueryRepository",
-    "IProductSummaryQueryRepository",
-    "IFeaturedCategoryQueryRepository",
-  ],
 })
 export default class BrowsingModule {}

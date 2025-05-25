@@ -27,8 +27,12 @@
     "baseUrl": "./",
     "paths": {
       "__test-utils__/*": ["apps/api-server/src/__test-utils__/*"],
+
       "@libs/config": ["libs/config/src"],
       "@libs/config/*": ["libs/config/src/*"],
+      "@libs/infrastructure/mongo": ["libs/infrastructure/mongo/src"],
+      "@libs/infrastructure/mongo/*": ["libs/infrastructure/mongo/src/*"],
+
       "query/*": ["apps/api-server"],
       "utility/*": ["apps/api-server/src/utility/*"],
       "libs/*": ["apps/api-server/src/libs/*"],
