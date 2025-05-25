@@ -1,4 +1,4 @@
-import { Product_Option } from "product/domain/entities";
+import { Product_Option } from "@libs/domain/entities";
 
 export default class OptionEditCommand {
   constructor(

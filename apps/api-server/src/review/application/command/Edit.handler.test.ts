@@ -3,9 +3,9 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
+import { Review } from "@libs/domain/entities";
 import { IBaseRepository } from "@libs/domain/repository";
 import { ReviewEntity } from "@libs/infrastructure/rdb/entities";
-import { Review } from "review/domain/entities";
 import EditHandler from "./Edit.handler";
 
 describe("EditHandler", () => {

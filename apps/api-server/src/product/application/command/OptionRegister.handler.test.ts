@@ -3,9 +3,9 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
+import { Product_Option } from "@libs/domain/entities";
 import { IBaseRepository } from "@libs/domain/repository";
 import { ProductOptionEntity, ProductOptionGroupEntity } from "@libs/infrastructure/rdb/entities";
-import { Product_Option } from "product/domain/entities";
 import OptionRegisterHandler from "./OptionRegister.handler";
 
 describe("OptionRegisterHandler", () => {

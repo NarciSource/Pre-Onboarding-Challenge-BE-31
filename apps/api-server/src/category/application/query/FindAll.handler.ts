@@ -1,10 +1,10 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
+import { Category } from "@libs/domain/entities";
 import { IBaseRepository } from "@libs/domain/repository";
 import { CategoryEntity } from "@libs/infrastructure/rdb/entities";
 
-import { Category } from "category/domain/entities";
 import FindAllQuery from "./FindAll.query";
 
 @QueryHandler(FindAllQuery)
