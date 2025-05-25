@@ -1,5 +1,5 @@
 {
-  "include": ["apps/**/*.ts", "jest.config.ts"],
+  "include": ["apps/**/*.ts", "libs/**/*.ts", "jest.config.ts"],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "module": "CommonJS",
@@ -27,6 +27,8 @@
     "baseUrl": "./",
     "paths": {
       "__test-utils__/*": ["apps/api-server/src/__test-utils__/*"],
+      "@libs/config": ["libs/config/src"],
+      "@libs/config/*": ["libs/config/src/*"],
       "query/*": ["apps/api-server"],
       "utility/*": ["apps/api-server/src/utility/*"],
       "libs/*": ["apps/api-server/src/libs/*"],

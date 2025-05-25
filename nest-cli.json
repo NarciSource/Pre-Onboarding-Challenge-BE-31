@@ -20,6 +20,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/projection-worker/tsconfig.build.json"
       }
+    },
+    "config": {
+      "type": "library",
+      "root": "libs/config",
+      "entryFile": "index",
+      "sourceRoot": "libs/config/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/config/tsconfig.lib.json"
+      }
     }
   },
   "compilerOptions": {
