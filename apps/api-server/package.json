@@ -2,8 +2,6 @@
   "name": "@pre-onboarding-challenge-be-31/api-server",
   "version": "1.3.2",
   "description": "API 서버",
-  "main": "dist/api/index.js",
-  "types": "dist/api/index.d.ts",
   "scripts": {
     "build": "nest build",
     "start": "nest start",

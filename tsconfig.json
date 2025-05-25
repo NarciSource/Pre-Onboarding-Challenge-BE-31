@@ -35,7 +35,6 @@
       "@libs/infrastructure/mongo": ["libs/infrastructure/mongo/src"],
       "@libs/infrastructure/mongo/*": ["libs/infrastructure/mongo/src/*"],
 
-      "query/*": ["apps/api-server"],
       "utility/*": ["apps/api-server/src/utility/*"],
       "libs/*": ["apps/api-server/src/libs/*"],
       "shared/*": ["apps/api-server/src/shared/*"],

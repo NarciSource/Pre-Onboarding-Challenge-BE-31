@@ -8,8 +8,5 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main"
-  },
-  "dependencies": {
-    "@pre-onboarding-challenge-be-31/api-server": "file:../api-server"
   }
 }

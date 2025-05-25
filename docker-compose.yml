@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+  # 커맨드 데이터베이스
   rds:
     image: postgres:latest
     container_name: rds
@@ -25,6 +26,7 @@ services:
       - "-c"
       - "max_replication_slots=10" # Debezium이 슬롯을 만들 수 있게
 
+  # 쿼리 데이터베이스
   mongo:
     image: mongo:latest
     container_name: mongo
@@ -39,9 +41,8 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  # e-commerce 서버 애플리케이션
   server:
-    depends_on:
-      - rds
     image: e-commerce-server:${VERSION}
     container_name: server
     build:
@@ -51,6 +52,10 @@ services:
       - network
     ports:
       - "${PORT}:3000"
+    depends_on:
+      - rds
+      - mongo
+      - kafka
     env_file:
       - .env
     environment:
@@ -63,10 +68,6 @@ services:
 
   # 프로젝션하는 컨슈머 서비스
   consumer:
-    depends_on:
-      - rds
-      - mongo
-      - kafka
     image: projection-consumer:${CONSUMER_VERSION}
     container_name: consumer
     build:
@@ -76,6 +77,10 @@ services:
       - network
     ports:
       - "${WORKER_PORT}:3001"
+    depends_on:
+      - rds
+      - mongo
+      - kafka
     env_file:
       - .env
     environment:
@@ -96,6 +101,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
+  # 분산 메시징 시스템
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka
@@ -103,6 +109,8 @@ services:
       - network
     ports:
       - "${KAFKA_PORT}:29092"
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_BROKER_ID: 1 # 브로커 ID
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -131,6 +139,7 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
 
+  # CDC - 변경 데이터 캡처
   debezium:
     image: debezium/connect:2.7.3.Final
     container_name: cdc
@@ -155,6 +164,7 @@ services:
       CONNECT_METRICS_ENABLED: "false"
       CONNECT_REST_ADVERTISED_HOST_NAME: debezium
 
+  # Debezium 커넥터 초기화 스크립트
   connector-init:
     image: bitnami/kubectl:latest
     container_name: connector-init
@@ -162,6 +172,7 @@ services:
       - network
     depends_on:
       - debezium
+      - rds
     env_file:
       - .env
     environment:
