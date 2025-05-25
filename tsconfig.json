@@ -1,6 +1,6 @@
 {
   "files": [],
-  "include": ["../api-server/**/*.ts", "../projection-worker/**/*.ts", "jest.config.ts"],
+  "include": ["../apps/**/*.ts", "jest.config.ts"],
   "exclude": ["node_modules", "dist"],
 
   "compilerOptions": {
@@ -12,10 +12,10 @@
 
   "references": [
     {
-      "path": "api-server"
+      "path": "apps/api-server"
     },
     {
-      "path": "projection-worker"
+      "path": "apps/projection-worker"
     }
   ]
 }
