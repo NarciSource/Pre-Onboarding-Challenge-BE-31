@@ -8,11 +8,13 @@ import {
   JoinColumn,
 } from "typeorm";
 
+import { Brand, Product, Seller } from "@libs/domain/entities";
+
 import BrandEntity from "./Brand.entity";
 import SellerEntity from "./Seller.entity";
 
 @Entity("products")
-export default class ProductEntity {
+export default class ProductEntity implements Product {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
@@ -44,12 +46,12 @@ export default class ProductEntity {
 
   @ManyToOne(() => SellerEntity)
   @JoinColumn({ name: "seller_id" })
-  seller: SellerEntity;
+  seller: Seller;
   seller_id: number;
 
   @ManyToOne(() => BrandEntity)
   @JoinColumn({ name: "brand_id" })
-  brand: BrandEntity;
+  brand: Brand;
   brand_id: number;
 
   @Column({ type: "varchar", length: 20 })

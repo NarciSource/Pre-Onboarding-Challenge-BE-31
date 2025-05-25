@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { Product_Option, Product_Image } from "@libs/domain/entities";
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { ProductImageEntity, ProductOptionEntity } from "query/rdb/entities";
 
 import ProductOptionUpsertEvent from "./ProductOptionUpsert.event";
 
@@ -19,7 +19,7 @@ export default class ProductOptionUpsertHandler {
   async handle({ table, after }: ProductOptionUpsertEvent) {
     switch (table) {
       case "product_options": {
-        const { id: option_id, option_group_id, ...rest } = after as ProductOptionEntity;
+        const { id: option_id, option_group_id, ...rest } = after as Product_Option;
 
         const { modifiedCount } = await this.catalog_query_repository.update(
           {
@@ -51,7 +51,7 @@ export default class ProductOptionUpsertHandler {
       }
 
       case "product_images": {
-        const { id, product_id, ...rest } = after as ProductImageEntity;
+        const { id, product_id, ...rest } = after as Product_Image;
         {
           const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 

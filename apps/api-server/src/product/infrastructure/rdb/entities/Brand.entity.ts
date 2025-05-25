@@ -1,8 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm";
 
+import { Brand } from "@libs/domain/entities";
+
 @Entity("brands")
 @Unique(["slug"])
-export default class BrandEntity {
+export default class BrandEntity implements Brand {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 

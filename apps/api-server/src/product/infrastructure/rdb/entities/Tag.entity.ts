@@ -1,8 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm";
 
+import { Tag } from "@libs/domain/entities";
+
 @Entity("tags")
 @Unique(["slug"])
-export default class TagEntity {
+export default class TagEntity implements Tag {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 

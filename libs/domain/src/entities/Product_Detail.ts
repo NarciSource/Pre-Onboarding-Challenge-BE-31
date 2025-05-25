@@ -4,6 +4,7 @@ export default class Product_Detail {
   constructor(
     public id: number,
     public product: Product,
+    public product_id: number,
     public weight: number | null,
     public dimensions: {
       width: number;

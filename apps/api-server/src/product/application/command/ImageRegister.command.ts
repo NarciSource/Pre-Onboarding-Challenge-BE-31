@@ -4,6 +4,9 @@ export default class ImageRegisterCommand {
   constructor(
     public readonly product_id: number,
     public readonly option_id: number | null,
-    public readonly image: Omit<Product_Image, "id" | "product" | "option">,
+    public readonly image: Omit<
+      Product_Image,
+      "id" | "product" | "product_id" | "option" | "option_id"
+    >,
   ) {}
 }

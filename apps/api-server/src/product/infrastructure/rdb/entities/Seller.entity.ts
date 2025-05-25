@@ -1,7 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
 
+import { Seller } from "@libs/domain/entities";
+
 @Entity("sellers")
-export default class SellerEntity {
+export default class SellerEntity implements Seller {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 

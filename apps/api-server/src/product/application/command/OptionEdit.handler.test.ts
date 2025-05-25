@@ -31,8 +31,8 @@ describe("OptionEditHandler", () => {
     const option_id = 1;
     const options = { name: "옵션 수정" } as Omit<Product_Option, "option_group_id">;
     const updatedOption = {
-      option_group: { id: 1 },
       ...options,
+      option_group: { id: 1 },
     };
 
     optionsRepository.findOne = jest

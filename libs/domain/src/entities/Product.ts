@@ -11,7 +11,9 @@ export default class Product {
     public created_at: Date,
     public updated_at: Date,
     public seller: Seller,
+    public seller_id: number,
     public brand: Brand,
+    public brand_id: number,
     public status: string,
   ) {}
 }
