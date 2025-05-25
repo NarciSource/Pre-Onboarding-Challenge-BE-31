@@ -1,18 +1,18 @@
 import {
-  BrandEntity,
-  SellerEntity,
-  ProductCategoryEntity,
-  ProductDetailEntity,
-  ProductEntity,
-  ProductOptionGroupEntity,
-  ProductPriceEntity,
-  ProductTagEntity,
-  ProductOptionEntity,
-  ProductImageEntity,
-  TagEntity,
-  CategoryEntity,
-  ReviewEntity,
-} from "@libs/infrastructure/rdb/entities";
+  Brand,
+  Category,
+  Product,
+  Product_Category,
+  Product_Detail,
+  Product_Image,
+  Product_Option,
+  Product_Option_Group,
+  Product_Price,
+  Product_Tag,
+  Review,
+  Seller,
+  Tag,
+} from "@libs/domain/entities";
 
 export enum DebeziumOperation {
   CREATE = "c",
@@ -45,19 +45,19 @@ export interface DebeziumMessage<T> {
 }
 
 export default interface TableEntityMap {
-  products: ProductEntity;
-  product_details: ProductDetailEntity;
-  product_categories: ProductCategoryEntity;
-  product_prices: ProductPriceEntity;
-  product_option_groups: ProductOptionGroupEntity;
-  product_tags: ProductTagEntity;
-  product_options: ProductOptionEntity;
-  product_images: ProductImageEntity;
-  brands: BrandEntity;
-  sellers: SellerEntity;
-  reviews: ReviewEntity;
-  categories: CategoryEntity;
-  tags: TagEntity;
+  products: Product;
+  product_details: Product_Detail;
+  product_categories: Product_Category;
+  product_prices: Product_Price;
+  product_option_groups: Product_Option_Group;
+  product_tags: Product_Tag;
+  product_options: Product_Option;
+  product_images: Product_Image;
+  brands: Brand;
+  sellers: Seller;
+  reviews: Review;
+  categories: Category;
+  tags: Tag;
 }
 
 export type TableEntity = keyof TableEntityMap;

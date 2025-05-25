@@ -1,7 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
+import { Category } from "@libs/domain/entities";
+
 @Entity("categories")
-export default class CategoryEntity {
+export default class CategoryEntity implements Category {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 

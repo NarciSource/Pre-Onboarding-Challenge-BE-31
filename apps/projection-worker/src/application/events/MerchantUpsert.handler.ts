@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { Brand, Seller } from "@libs/domain/entities";
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { BrandEntity, SellerEntity } from "@libs/infrastructure/rdb/entities";
 
 import MerchantUpsertEvent from "./MerchantUpsert.event";
 
@@ -19,7 +19,7 @@ export default class MerchantUpsertHandler {
   async handle({ table, after }: MerchantUpsertEvent) {
     switch (table) {
       case "brands": {
-        const { id, name, description, logo_url, website } = after as BrandEntity;
+        const { id, name, description, logo_url, website } = after as Brand;
 
         await this.catalog_query_repository.update(
           { brand: { id } },
@@ -32,7 +32,7 @@ export default class MerchantUpsertHandler {
 
       case "sellers": {
         const { id, name, description, logo_url, rating, contact_email, contact_phone } =
-          after as SellerEntity;
+          after as Seller;
 
         await this.catalog_query_repository.update(
           { seller: { id } },

@@ -1,15 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 
+import { Product, Product_Detail } from "@libs/domain/entities";
+
 import ProductEntity from "./Product.entity";
 
 @Entity("product_details")
-export default class ProductDetailEntity {
+export default class ProductDetailEntity implements Product_Detail {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
   @OneToOne(() => ProductEntity, (product) => product.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
-  product: ProductEntity;
+  product: Product;
   product_id: number;
 
   @Column("decimal", { precision: 10, scale: 2, nullable: true })

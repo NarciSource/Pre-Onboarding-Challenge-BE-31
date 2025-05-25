@@ -1,15 +1,11 @@
-import User from "@libs/domain/entities/User";
-
-export default class Seller extends User {
+export default class Seller {
   constructor(
     public id: number,
     public name: string,
-    public description: string,
-    public logo_url: string,
-    public rating: number,
-    public contact_email: string,
-    public contact_phone: string,
-  ) {
-    super(id, name, "", "", new Date());
-  }
+    public description: string | null,
+    public logo_url: string | null,
+    public rating: number | null,
+    public contact_email: string | null,
+    public contact_phone: string | null,
+  ) {}
 }

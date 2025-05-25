@@ -5,6 +5,7 @@ export default class Review {
   constructor(
     public id: number,
     public product: Product,
+    public product_id: number,
     public user: User | null,
     public rating: 1 | 2 | 3 | 4 | 5,
     public title: string | null,

@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { Product_Option, Product_Image } from "@libs/domain/entities";
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { ProductImageEntity, ProductOptionEntity } from "@libs/infrastructure/rdb/entities";
 
 import ProductOptionDeleteEvent from "./ProductOptionDelete.event";
 
@@ -19,7 +19,7 @@ export default class ProductOptionDeleteHandler {
   async handle({ table, before, after }: ProductOptionDeleteEvent) {
     switch (table) {
       case "product_options": {
-        const { option_group_id } = after as ProductOptionEntity;
+        const { option_group_id } = after as Product_Option;
 
         const catalog = await this.catalog_query_repository.findOne({
           option_groups: { id: option_group_id },
@@ -45,7 +45,7 @@ export default class ProductOptionDeleteHandler {
 
       case "product_images": {
         {
-          const { id, product_id } = before as ProductImageEntity;
+          const { id, product_id } = before as Product_Image;
 
           const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 
@@ -58,7 +58,7 @@ export default class ProductOptionDeleteHandler {
           );
         }
         {
-          const { product_id, is_primary } = before as ProductImageEntity;
+          const { product_id, is_primary } = before as Product_Image;
 
           if (!is_primary) break;
 

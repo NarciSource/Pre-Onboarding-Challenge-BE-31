@@ -1,7 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
 
+import { User } from "@libs/domain/entities";
+
 @Entity("users")
-export default class UserEntity {
+export default class UserEntity implements User {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 

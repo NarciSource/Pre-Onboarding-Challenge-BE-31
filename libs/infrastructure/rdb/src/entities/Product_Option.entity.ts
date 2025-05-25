@@ -1,15 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 
+import { Product_Option, Product_Option_Group } from "@libs/domain/entities";
+
 import ProductOptionGroupEntity from "./Product_Option_Group.entity";
 
 @Entity("product_options")
-export default class ProductOptionEntity {
+export default class ProductOptionEntity implements Product_Option {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
   @ManyToOne(() => ProductOptionGroupEntity, { onDelete: "CASCADE" })
   @JoinColumn({ name: "option_group_id" })
-  option_group: ProductOptionGroupEntity;
+  option_group: Product_Option_Group;
   option_group_id: number;
 
   @Column({ type: "varchar", length: 100 })

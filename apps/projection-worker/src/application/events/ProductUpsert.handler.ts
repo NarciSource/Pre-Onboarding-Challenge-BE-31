@@ -1,16 +1,16 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import {
+  Product,
+  Product_Detail,
+  Product_Category,
+  Product_Price,
+  Product_Option_Group,
+  Product_Tag,
+} from "@libs/domain/entities";
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import {
-  ProductEntity,
-  ProductDetailEntity,
-  ProductCategoryEntity,
-  ProductPriceEntity,
-  ProductOptionGroupEntity,
-  ProductTagEntity,
-} from "@libs/infrastructure/rdb/entities";
 
 import { CategoryStateModel, TagStateModel } from "../../infrastructure/model";
 import ProductUpsertEvent from "./ProductUpsert.event";
@@ -31,7 +31,7 @@ export default class ProductUpsertHandler {
   async handle({ table, after }: ProductUpsertEvent) {
     switch (table) {
       case "products": {
-        const { brand_id, seller_id, ...product } = after as ProductEntity;
+        const { brand_id, seller_id, ...product } = after as Product;
 
         await this.catalog_query_repository.updateOne(
           { id: product.id },
@@ -56,7 +56,7 @@ export default class ProductUpsertHandler {
       }
 
       case "product_details": {
-        const { product_id, ...detail } = after as ProductDetailEntity;
+        const { product_id, ...detail } = after as Product_Detail;
 
         await this.catalog_query_repository.updateOne(
           { id: product_id },
@@ -67,7 +67,7 @@ export default class ProductUpsertHandler {
       }
 
       case "product_categories": {
-        const { product_id, category_id, is_primary } = after as ProductCategoryEntity;
+        const { product_id, category_id, is_primary } = after as Product_Category;
 
         const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 
@@ -113,7 +113,7 @@ export default class ProductUpsertHandler {
       }
 
       case "product_prices": {
-        const { product_id, ...price } = after as ProductPriceEntity;
+        const { product_id, ...price } = after as Product_Price;
 
         const discount_percentage =
           ((price.base_price - (price.sale_price ?? 0)) * 100) / price.base_price;
@@ -128,7 +128,7 @@ export default class ProductUpsertHandler {
       }
 
       case "product_option_groups": {
-        const { id: option_group_id, product_id, ...rest } = after as ProductOptionGroupEntity;
+        const { id: option_group_id, product_id, ...rest } = after as Product_Option_Group;
 
         const { modifiedCount } = await this.catalog_query_repository.update(
           {
@@ -148,7 +148,7 @@ export default class ProductUpsertHandler {
       }
 
       case "product_tags": {
-        const { product_id, tag_id } = after as ProductTagEntity;
+        const { product_id, tag_id } = after as Product_Tag;
 
         const catalog = await this.catalog_query_repository.findOne({ id: product_id });
 

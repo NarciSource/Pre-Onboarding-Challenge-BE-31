@@ -1,9 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { Review } from "@libs/domain/entities";
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { ReviewEntity } from "@libs/infrastructure/rdb/entities";
 
 import ReviewDeleteEvent from "./ReviewDelete.event";
 
@@ -17,7 +17,7 @@ export default class ReviewDeleteHandler {
   ) {}
 
   async handle({ before }: ReviewDeleteEvent) {
-    const { product_id, rating } = before as ReviewEntity;
+    const { product_id, rating } = before as Review;
 
     const product = await this.catalog_query_repository.findOne({ id: product_id });
     if (!product) return;

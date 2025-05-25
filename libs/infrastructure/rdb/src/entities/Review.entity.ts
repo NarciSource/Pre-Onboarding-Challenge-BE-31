@@ -8,11 +8,13 @@ import {
   JoinColumn,
 } from "typeorm";
 
+import { Review } from "@libs/domain/entities";
+
 import ProductEntity from "./Product.entity";
 import UserEntity from "./User.entity";
 
 @Entity("reviews")
-export default class ReviewEntity {
+export default class ReviewEntity implements Review {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
   id: number;
 
