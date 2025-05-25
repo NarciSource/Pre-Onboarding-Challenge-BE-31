@@ -2,8 +2,8 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
+import { Category } from "@libs/domain/entities";
 import { IBaseRepository } from "@libs/domain/repository";
-import { Category } from "category/domain/entities";
 import { CategoryEntity } from "category/infrastructure/rdb/entities";
 import FindAllHandler from "./FindAll.handler";
 

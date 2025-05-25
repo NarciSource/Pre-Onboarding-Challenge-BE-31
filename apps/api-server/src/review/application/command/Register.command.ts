@@ -1,4 +1,4 @@
-import { Review } from "review/domain/entities";
+import { Review } from "@libs/domain/entities";
 
 export default class RegisterCommand {
   constructor(
