@@ -1,4 +1,3 @@
-export { default as mongo_config } from "libs/config/mongo.config";
 export { IQueryRepository } from "shared/repositories";
 export { createQueryRepositoryProvider } from "shared/repositories/createQueryRepositoryProvider";
 export * from "product/infrastructure/rdb/entities";
