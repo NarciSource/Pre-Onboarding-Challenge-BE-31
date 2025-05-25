@@ -9,7 +9,7 @@ export type MongooseDocumentClass<T> = {
   name: string;
 };
 
-export function createQueryRepositoryProvider<T>(
+export default function createQueryRepositoryProvider<T>(
   token: string,
   modelClass: MongooseDocumentClass<T>,
 ): Provider {

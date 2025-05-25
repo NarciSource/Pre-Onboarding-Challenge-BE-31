@@ -30,6 +30,8 @@
 
       "@libs/config": ["libs/config/src"],
       "@libs/config/*": ["libs/config/src/*"],
+      "@libs/domain": ["libs/domain/src"],
+      "@libs/domain/*": ["libs/domain/src/*"],
       "@libs/infrastructure/mongo": ["libs/infrastructure/mongo/src"],
       "@libs/infrastructure/mongo/*": ["libs/infrastructure/mongo/src/*"],
 

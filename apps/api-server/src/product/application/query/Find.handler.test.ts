@@ -3,8 +3,8 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
+import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel } from "@libs/infrastructure/mongo/models";
-import { IQueryRepository } from "shared/repositories";
 import FindHandler from "./Find.handler";
 
 describe("FindHandler", () => {

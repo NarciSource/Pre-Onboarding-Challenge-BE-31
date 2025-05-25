@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
+import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
-import { IQueryRepository } from "query/domain/repositories";
 
 import ProductDeleteEvent from "./ProductDelete.event";
 
