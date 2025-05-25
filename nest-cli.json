@@ -5,20 +5,20 @@
   "projects": {
     "api": {
       "type": "application",
-      "root": "api-server",
+      "root": "apps/api-server",
       "entryFile": "main",
-      "sourceRoot": "api-server/src",
+      "sourceRoot": "apps/api-server/src",
       "compilerOptions": {
-        "tsConfigPath": "api-server/tsconfig.build.json"
+        "tsConfigPath": "apps/api-server/tsconfig.build.json"
       }
     },
     "worker": {
       "type": "application",
-      "root": "projection-worker",
+      "root": "apps/projection-worker",
       "entryFile": "main",
-      "sourceRoot": "projection-worker/src",
+      "sourceRoot": "apps/projection-worker/src",
       "compilerOptions": {
-        "tsConfigPath": "projection-worker/tsconfig.build.json"
+        "tsConfigPath": "apps/projection-worker/tsconfig.build.json"
       }
     }
   },

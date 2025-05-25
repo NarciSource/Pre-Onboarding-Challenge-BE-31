@@ -5,8 +5,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY nest-cli.json ./
-COPY api-server/ api-server/
-COPY projection-worker/ projection-worker/
+COPY apps/api-server/ apps/api-server/
+COPY apps/projection-worker/ apps/projection-worker/
 
 RUN npm install
 

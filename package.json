@@ -10,20 +10,20 @@
     "cqrs"
   ],
   "workspaces": [
-    "api-server",
-    "projection-worker"
+    "apps/api-server",
+    "apps/projection-worker"
   ],
   "scripts": {
-    "build:api-server": "npm run build -workspace api-server",
-    "build:projection-worker": "npm run build -workspace projection-worker",
+    "build:api-server": "npm run build -workspace=apps/api-server",
+    "build:projection-worker": "npm run build -workspace=apps/projection-worker",
     "build": "npm run build:api-server && npm run build:projection-worker",
-    "start:api-server": "npm run start -workspace api-server",
-    "start:projection-worker": "npm run start -workspace projection-worker",
+    "start:api-server": "npm run start -workspace=apps/api-server",
+    "start:projection-worker": "npm run start -workspace=apps/projection-worker",
     "start": "concurrently \"npm run start:api-server\" \"npm run start:projection-worker\"",
-    "start:dev": "npm run start:dev -workspace api-server",
-    "start:debug": "npm run start:debug -workspace api-server",
-    "start:prod": "npm run start:prod -workspace api-server",
-    "generate-openapi": "npm run generate-openapi -workspace api-server",
+    "start:dev": "npm run start:dev -workspace=apps/api-server",
+    "start:debug": "npm run start:debug -workspace=apps/api-server",
+    "start:prod": "npm run start:prod -workspace=apps/api-server",
+    "generate-openapi": "npm run generate-openapi -workspace=apps/api-server",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
