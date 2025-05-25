@@ -1,8 +1,8 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
-import * as product_entities from "@product/infrastructure/rdb/entities";
-import * as category_entities from "@category/infrastructure/rdb/entities";
-import * as review_entities from "@review/infrastructure/rdb/entities";
+import * as product_entities from "product/infrastructure/rdb/entities";
+import * as category_entities from "category/infrastructure/rdb/entities";
+import * as review_entities from "review/infrastructure/rdb/entities";
 
 export default {
   useFactory: (): TypeOrmModuleOptions => {

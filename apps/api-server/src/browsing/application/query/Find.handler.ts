@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository } from "@shared/repositories";
-import { FeaturedCategoryModel, ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { IQueryRepository } from "shared/repositories";
+import { FeaturedCategoryModel, ProductSummaryModel } from "browsing/infrastructure/mongo/models";
 import FindQuery from "./Find.query";
 
 @QueryHandler(FindQuery)

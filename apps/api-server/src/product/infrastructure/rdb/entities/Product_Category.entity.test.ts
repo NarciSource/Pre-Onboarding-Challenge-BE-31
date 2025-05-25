@@ -4,7 +4,7 @@ import { DataSource, Repository, UpdateResult } from "typeorm";
 
 import test_module from "__test-utils__/test-module";
 
-import { CategoryEntity } from "@category/infrastructure/rdb/entities";
+import { CategoryEntity } from "category/infrastructure/rdb/entities";
 import ProductEntity from "./Product.entity";
 import ProductCategoryEntity from "./Product_Category.entity";
 

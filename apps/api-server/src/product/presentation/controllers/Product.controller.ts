@@ -8,11 +8,11 @@ import {
   ApiErrorResponse,
   ApiStandardResponse,
   ResponseType,
-} from "@libs/decorators";
-import { to_FilterDTO } from "@shared/mappers";
-import { EditCommand, RegisterCommand, RemoveCommand } from "@product/application/command";
-import { FindAllQuery, FindQuery } from "@product/application/query";
-import { ProductCatalogDTO } from "@browsing/presentation/dto";
+} from "libs/decorators";
+import { to_FilterDTO } from "shared/mappers";
+import { EditCommand, RegisterCommand, RemoveCommand } from "product/application/command";
+import { FindAllQuery, FindQuery } from "product/application/query";
+import { ProductCatalogDTO } from "browsing/presentation/dto";
 import {
   ParamDTO,
   ProductBodyDTO,

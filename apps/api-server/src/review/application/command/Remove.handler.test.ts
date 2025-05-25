@@ -3,8 +3,8 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { IBaseRepository } from "@shared/repositories";
-import { ReviewEntity } from "@review/infrastructure/rdb/entities";
+import { IBaseRepository } from "shared/repositories";
+import { ReviewEntity } from "review/infrastructure/rdb/entities";
 import RemoveHandler from "./Remove.handler";
 
 describe("RemoveHandler", () => {

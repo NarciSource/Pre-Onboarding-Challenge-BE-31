@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager } from "typeorm";
 
-import { IBaseRepository } from "@shared/repositories";
+import { IBaseRepository } from "shared/repositories";
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
@@ -12,7 +12,7 @@ import {
   ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
-} from "@product/infrastructure/rdb/entities";
+} from "product/infrastructure/rdb/entities";
 import RegisterCommand from "./Register.command";
 
 @CommandHandler(RegisterCommand)

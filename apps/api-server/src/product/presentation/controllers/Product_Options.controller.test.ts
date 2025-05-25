@@ -3,7 +3,7 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { Product_Image, Product_Option } from "@product/domain/entities";
+import { Product_Image, Product_Option } from "product/domain/entities";
 import {
   ImageDTO,
   OptionParamDTO,

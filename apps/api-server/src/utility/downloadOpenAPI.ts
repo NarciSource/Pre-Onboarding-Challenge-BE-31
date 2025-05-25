@@ -5,8 +5,8 @@ import { NestFactory } from "@nestjs/core";
 import { EntityManager } from "typeorm";
 import { stringify } from "yaml";
 
-import ProductModule from "@product/module";
-import CategoryModule from "@category/module";
+import ProductModule from "product/module";
+import CategoryModule from "category/module";
 import generatorSwagger from "./generatorSwagger";
 
 @Module({

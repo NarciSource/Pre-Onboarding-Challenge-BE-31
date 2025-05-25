@@ -5,7 +5,7 @@ import {
   Product_Option,
   Product_Option_Group,
   Product_Price,
-} from "@product/domain/entities";
+} from "product/domain/entities";
 
 export default class EditCommand {
   constructor(

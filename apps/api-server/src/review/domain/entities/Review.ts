@@ -1,4 +1,4 @@
-import { Product } from "@product/domain/entities";
+import { Product } from "product/domain/entities";
 import User from "./User";
 
 export default class Review {

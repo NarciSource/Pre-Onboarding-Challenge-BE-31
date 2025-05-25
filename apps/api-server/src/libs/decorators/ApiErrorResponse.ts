@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiExtraModels, ApiResponse, getSchemaPath } from "@nestjs/swagger";
 
-import ErrorDTO from "@shared/dto/Error.dto";
+import ErrorDTO from "shared/dto/Error.dto";
 import { HttpStatusToErrorCodeMap } from "../constants/ErrorCode";
 
 export function ApiBadRequestResponse(description = "입력 데이터가 유효하지 않습니다..") {

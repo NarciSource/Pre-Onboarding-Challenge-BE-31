@@ -2,11 +2,11 @@ import { ApiProperty, IntersectionType, PickType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsBoolean, IsDefined, IsInt, IsNumber, Max, Min, ValidateNested } from "class-validator";
 
-import BrandDTO from "@product/presentation/dto/model/Brand.dto";
-import ImageDTO from "@product/presentation/dto/model/Image.dto";
-import ProductDTO from "@product/presentation/dto/model/Product.dto";
-import ProductPriceDTO from "@product/presentation/dto/model/ProductPrice.dto";
-import SellerDTO from "@product/presentation/dto/model/Seller.dto";
+import BrandDTO from "product/presentation/dto/model/Brand.dto";
+import ImageDTO from "product/presentation/dto/model/Image.dto";
+import ProductDTO from "product/presentation/dto/model/Product.dto";
+import ProductPriceDTO from "product/presentation/dto/model/ProductPrice.dto";
+import SellerDTO from "product/presentation/dto/model/Seller.dto";
 
 class BrandDTOForProductSummary extends PickType(BrandDTO, ["id", "name"] as const) {}
 class SellerDTOForProductSummary extends PickType(SellerDTO, ["id", "name"] as const) {}

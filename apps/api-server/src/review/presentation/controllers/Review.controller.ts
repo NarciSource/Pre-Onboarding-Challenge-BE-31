@@ -9,10 +9,10 @@ import {
   ApiForbiddenResponse,
   ApiStandardResponse,
   ResponseType,
-} from "@libs/decorators";
-import { to_FilterDTO } from "@shared/mappers";
-import { EditCommand, RegisterCommand, RemoveCommand } from "@review/application/command";
-import { FindQuery } from "@review/application/query";
+} from "libs/decorators";
+import { to_FilterDTO } from "shared/mappers";
+import { EditCommand, RegisterCommand, RemoveCommand } from "review/application/command";
+import { FindQuery } from "review/application/query";
 import {
   ReviewResponseBundle,
   ResponseDTO,

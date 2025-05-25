@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
 
-import BrowsingModule from "@browsing/module";
+import BrowsingModule from "browsing/module";
 
 import * as commands from "./application/command";
 import * as queries from "./application/query";

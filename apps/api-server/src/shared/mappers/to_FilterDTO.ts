@@ -1,6 +1,6 @@
-import { ProductQueryDTO } from "@product/presentation/dto";
-import { CategoryQueryDTO } from "@category/presentation/dto";
-import { ReviewQueryDTO } from "@review/presentation/dto";
+import { ProductQueryDTO } from "product/presentation/dto";
+import { CategoryQueryDTO } from "category/presentation/dto";
+import { ReviewQueryDTO } from "review/presentation/dto";
 import { FilterDTO } from "../dto";
 
 const field_mapping = {

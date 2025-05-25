@@ -1,4 +1,4 @@
-import { FilterDTO } from "@shared/dto";
+import { FilterDTO } from "shared/dto";
 
 export default class FindQuery {
   constructor(

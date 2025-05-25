@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { EntityManager, FindOptionsWhere, ObjectLiteral } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { IBaseRepository } from "@shared/repositories";
+import { IBaseRepository } from "shared/repositories";
 import {
   ProductCategoryEntity,
   ProductDetailEntity,
@@ -13,7 +13,7 @@ import {
   ProductOptionGroupEntity,
   ProductPriceEntity,
   ProductTagEntity,
-} from "@product/infrastructure/rdb/entities";
+} from "product/infrastructure/rdb/entities";
 import EditCommand from "./Edit.command";
 
 @CommandHandler(EditCommand)
