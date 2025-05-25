@@ -3,6 +3,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { model_providers } from "@libs/infrastructure/mongo/models";
+
 import * as product_commands from "product/application/command";
 import * as product_queries from "product/application/query";
 import * as product_entities from "product/infrastructure/rdb/entities";
@@ -21,8 +23,7 @@ import { repository_providers as review_repository_providers } from "review/infr
 import * as review_controllers from "review/presentation/controllers";
 
 import * as browsing_queries from "browsing/application/query";
-import { model_providers } from "browsing/infrastructure/mongo/models";
-import query_repository_providers from "browsing/infrastructure/mongo/repositories/provider";
+import query_repository_providers from "@libs/infrastructure/mongo/repositories/provider";
 import * as browsing_controllers from "browsing/presentation/controllers";
 
 const test_module = Test.createTestingModule({

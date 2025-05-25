@@ -3,7 +3,3 @@ export { createQueryRepositoryProvider } from "shared/repositories/createQueryRe
 export * from "product/infrastructure/rdb/entities";
 export * from "category/infrastructure/rdb/entities";
 export * from "review/infrastructure/rdb/entities";
-export * from "browsing/infrastructure/mongo/repositories";
-export { default as BrowsingModule } from "browsing/module";
-export { ProductCatalogModel, ProductSummaryModel } from "browsing/infrastructure/mongo/models";
-export { default as CategoryModel } from "browsing/infrastructure/mongo/models/sub/Category.model";

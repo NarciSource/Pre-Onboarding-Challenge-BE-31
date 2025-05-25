@@ -1,8 +1,9 @@
 import { Inject, NotFoundException } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
+import { ProductCatalogModel } from "@libs/infrastructure/mongo/models";
+
 import { IQueryRepository } from "shared/repositories";
-import { ProductCatalogModel } from "browsing/infrastructure/mongo/models";
 import { ProductCatalogDTO } from "browsing/presentation/dto";
 import FindQuery from "./Find.query";
 
