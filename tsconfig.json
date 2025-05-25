@@ -1,21 +1,40 @@
 {
-  "files": [],
-  "include": ["../apps/**/*.ts", "jest.config.ts"],
+  "include": ["apps/**/*.ts", "jest.config.ts"],
   "exclude": ["node_modules", "dist"],
-
   "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2023",
+    "lib": ["ES2020"],
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  },
+    "resolveJsonModule": true,
 
-  "references": [
-    {
-      "path": "apps/api-server"
-    },
-    {
-      "path": "apps/projection-worker"
+    "sourceMap": true,
+    "removeComments": true,
+    "declaration": true,
+    "incremental": true,
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "skipLibCheck": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "__test-utils__/*": ["apps/api-server/src/__test-utils__/*"],
+      "@query/*": ["apps/api-server"],
+      "@utility/*": ["apps/api-server/src/utility/*"],
+      "@libs/*": ["apps/api-server/src/libs/*"],
+      "@shared/*": ["apps/api-server/src/shared/*"],
+      "@product/*": ["apps/api-server/src/product/*"],
+      "@category/*": ["apps/api-server/src/category/*"],
+      "@review/*": ["apps/api-server/src/review/*"],
+      "@browsing/*": ["apps/api-server/src/browsing/*"]
     }
-  ]
+  }
 }

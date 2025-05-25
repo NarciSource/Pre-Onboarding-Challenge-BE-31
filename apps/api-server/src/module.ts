@@ -13,7 +13,7 @@ import BrowsingModule from "@browsing/module";
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ["../../.env"],
+      envFilePath: [".env"],
     }),
     TypeOrmModule.forRootAsync(type_orm_config),
     MongooseModule.forRootAsync(mongo_config),
