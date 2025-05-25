@@ -2,9 +2,10 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
+import { IQueryRepository } from "@libs/domain/repository";
 import { ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 
-import { IBaseRepository, IQueryRepository } from "shared/repositories";
+import { IBaseRepository } from "shared/repositories";
 import { Category } from "category/domain/entities";
 import { CategoryEntity } from "category/infrastructure/rdb/entities";
 import FindProductsHandler from "./FindProducts.handler";

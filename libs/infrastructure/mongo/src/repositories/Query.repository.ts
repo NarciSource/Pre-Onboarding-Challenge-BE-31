@@ -11,7 +11,7 @@ import {
   UpdateWithAggregationPipeline,
 } from "mongoose";
 
-import IQueryRepository, { FindOptions } from "./IQueryRepository";
+import IQueryRepository, { FindOptions } from "@libs/domain/repository/IQueryRepository";
 
 @Injectable()
 export default class QueryRepository<T> implements IQueryRepository<T> {
