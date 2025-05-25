@@ -3,8 +3,8 @@ import { ConfigModule } from "@nestjs/config";
 import { CqrsModule } from "@nestjs/cqrs";
 import { MongooseModule } from "@nestjs/mongoose";
 
-import { mongo_config } from "@query/config";
-import { BrowsingModule } from "@query/module";
+import { mongo_config } from "query/config";
+import { BrowsingModule } from "query/module";
 
 import * as events from "./application/events";
 import ConsumerService from "./application/service";

@@ -1,4 +1,4 @@
-import { createQueryRepositoryProvider } from "@query/repositories";
+import { createQueryRepositoryProvider } from "query/repositories";
 
 import { CategoryStateModel, TagStateModel } from "../model";
 

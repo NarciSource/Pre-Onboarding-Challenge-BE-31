@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
 
-import ProductModule from "@product/module";
-import BrowsingModule from "@browsing/module";
+import ProductModule from "product/module";
+import BrowsingModule from "browsing/module";
 
 import * as queries from "./application/query";
 import { repository_providers } from "./infrastructure/rdb/repositories";

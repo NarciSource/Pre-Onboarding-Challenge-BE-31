@@ -3,27 +3,27 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import * as product_commands from "@product/application/command";
-import * as product_queries from "@product/application/query";
-import * as product_entities from "@product/infrastructure/rdb/entities";
-import { repository_providers as product_repository_providers } from "@product/infrastructure/rdb/repositories";
-import * as product_controllers from "@product/presentation/controllers";
+import * as product_commands from "product/application/command";
+import * as product_queries from "product/application/query";
+import * as product_entities from "product/infrastructure/rdb/entities";
+import { repository_providers as product_repository_providers } from "product/infrastructure/rdb/repositories";
+import * as product_controllers from "product/presentation/controllers";
 
-import * as category_queries from "@category/application/query";
-import * as category_entities from "@category/infrastructure/rdb/entities";
-import { repository_providers as category_repository_providers } from "@category/infrastructure/rdb/repositories";
-import * as category_controllers from "@category/presentation/controllers";
+import * as category_queries from "category/application/query";
+import * as category_entities from "category/infrastructure/rdb/entities";
+import { repository_providers as category_repository_providers } from "category/infrastructure/rdb/repositories";
+import * as category_controllers from "category/presentation/controllers";
 
-import * as review_commands from "@review/application/command";
-import * as review_queries from "@review/application/query";
-import * as review_entities from "@review/infrastructure/rdb/entities";
-import { repository_providers as review_repository_providers } from "@review/infrastructure/rdb/repositories";
-import * as review_controllers from "@review/presentation/controllers";
+import * as review_commands from "review/application/command";
+import * as review_queries from "review/application/query";
+import * as review_entities from "review/infrastructure/rdb/entities";
+import { repository_providers as review_repository_providers } from "review/infrastructure/rdb/repositories";
+import * as review_controllers from "review/presentation/controllers";
 
-import * as browsing_queries from "@browsing/application/query";
-import { model_providers } from "@browsing/infrastructure/mongo/models";
-import query_repository_providers from "@browsing/infrastructure/mongo/repositories/provider";
-import * as browsing_controllers from "@browsing/presentation/controllers";
+import * as browsing_queries from "browsing/application/query";
+import { model_providers } from "browsing/infrastructure/mongo/models";
+import query_repository_providers from "browsing/infrastructure/mongo/repositories/provider";
+import * as browsing_controllers from "browsing/presentation/controllers";
 
 const test_module = Test.createTestingModule({
   imports: [

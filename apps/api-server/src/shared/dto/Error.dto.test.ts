@@ -1,6 +1,6 @@
 import getValidateDTO from "__test-utils__/getValidateDTO";
 
-import ErrorCode, { HttpStatusToErrorCodeMap } from "@libs/constants/ErrorCode";
+import ErrorCode, { HttpStatusToErrorCodeMap } from "libs/constants/ErrorCode";
 import ErrorDTO, { ErrorDetails } from "./Error.dto";
 
 describe("ErrorDTO", () => {

@@ -1,4 +1,4 @@
-import { Product_Image } from "@product/domain/entities";
+import { Product_Image } from "product/domain/entities";
 
 export default class ImageRegisterCommand {
   constructor(

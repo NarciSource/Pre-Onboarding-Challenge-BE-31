@@ -3,7 +3,7 @@ import { DataSource, UpdateResult } from "typeorm";
 
 import test_module from "__test-utils__/test-module";
 
-import { IBaseRepository } from "@shared/repositories";
+import { IBaseRepository } from "shared/repositories";
 import CategoryEntity from "./Category.entity";
 
 describe("CategoryEntity", () => {

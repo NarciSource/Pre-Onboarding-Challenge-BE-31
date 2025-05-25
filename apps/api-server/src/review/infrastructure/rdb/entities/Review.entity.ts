@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from "typeorm";
 
-import ProductEntity from "@product/infrastructure/rdb/entities/Product.entity";
+import ProductEntity from "product/infrastructure/rdb/entities/Product.entity";
 import UserEntity from "./User.entity";
 
 @Entity("reviews")

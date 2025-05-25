@@ -8,7 +8,7 @@ import {
   SellerDTO,
   TagDTO,
   ProductOptionGroupDTO,
-} from "@product/presentation/dto";
+} from "product/presentation/dto";
 import ProductDTO from "./Product.dto";
 
 describe("ProductCatalogDTO", () => {

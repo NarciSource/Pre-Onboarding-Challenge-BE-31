@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository } from "@query/domain/repositories";
-import { ProductCatalogModel, ProductSummaryModel } from "@query/mongo/models";
+import { IQueryRepository } from "query/domain/repositories";
+import { ProductCatalogModel, ProductSummaryModel } from "query/mongo/models";
 import {
   ProductEntity,
   ProductDetailEntity,
@@ -10,7 +10,7 @@ import {
   ProductPriceEntity,
   ProductOptionGroupEntity,
   ProductTagEntity,
-} from "@query/rdb/entities";
+} from "query/rdb/entities";
 
 import { CategoryStateModel, TagStateModel } from "../../infrastructure/model";
 import ProductUpsertEvent from "./ProductUpsert.event";

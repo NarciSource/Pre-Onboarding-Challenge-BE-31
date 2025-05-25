@@ -2,8 +2,8 @@ import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsArray, IsDefined, ValidateNested } from "class-validator";
 
-import { PaginationSummaryDTO } from "@shared/dto";
-import ProductSummaryDTO from "@browsing/presentation/dto/ProductSummary.dto";
+import { PaginationSummaryDTO } from "shared/dto";
+import ProductSummaryDTO from "browsing/presentation/dto/ProductSummary.dto";
 import CategoryDTO from "./Category.dto";
 
 export class CategoryResponseDTO extends OmitType(CategoryDTO, ["is_primary"] as const) {}

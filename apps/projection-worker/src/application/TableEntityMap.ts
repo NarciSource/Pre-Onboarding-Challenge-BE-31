@@ -12,7 +12,7 @@ import {
   TagEntity,
   CategoryEntity,
   ReviewEntity,
-} from "@query/rdb/entities";
+} from "query/rdb/entities";
 
 export enum DebeziumOperation {
   CREATE = "c",

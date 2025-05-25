@@ -1,4 +1,4 @@
-export * from "@shared/dto";
+export * from "shared/dto";
 
 export { default as MainResponseBundleDTO } from "./MainResponseBundle.dto";
 export { default as ProductCatalogDTO } from "./ProductCatalog.dto";

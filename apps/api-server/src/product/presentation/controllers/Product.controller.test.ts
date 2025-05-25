@@ -3,8 +3,8 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { ProductEntity } from "@product/infrastructure/rdb/entities";
-import { ProductCatalogDTO, ProductSummaryDTO } from "@browsing/presentation/dto";
+import { ProductEntity } from "product/infrastructure/rdb/entities";
+import { ProductCatalogDTO, ProductSummaryDTO } from "browsing/presentation/dto";
 import {
   ParamDTO,
   ProductBodyDTO,

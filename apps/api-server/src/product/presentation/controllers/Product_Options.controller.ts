@@ -8,13 +8,13 @@ import {
   ApiErrorResponse,
   ApiStandardResponse,
   ResponseType,
-} from "@libs/decorators";
+} from "libs/decorators";
 import {
   ImageRegisterCommand,
   OptionEditCommand,
   OptionRegisterCommand,
   OptionRemoveCommand,
-} from "@product/application/command";
+} from "product/application/command";
 import {
   ImageDTO,
   OptionParamDTO,

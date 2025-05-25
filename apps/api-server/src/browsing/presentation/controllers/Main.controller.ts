@@ -2,8 +2,8 @@ import { Controller, Get } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { ApiErrorResponse, ApiStandardResponse, ResponseType } from "@libs/decorators";
-import { FindQuery } from "@browsing/application/query";
+import { ApiErrorResponse, ApiStandardResponse, ResponseType } from "libs/decorators";
+import { FindQuery } from "browsing/application/query";
 import { MainResponseBundleDTO, ResponseDTO } from "../dto";
 
 @ApiTags("메인")

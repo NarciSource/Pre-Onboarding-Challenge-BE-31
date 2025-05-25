@@ -1,4 +1,4 @@
-import { createQueryRepositoryProvider } from "@shared/repositories/createQueryRepositoryProvider";
+import { createQueryRepositoryProvider } from "shared/repositories/createQueryRepositoryProvider";
 import { FeaturedCategoryModel, ProductCatalogModel, ProductSummaryModel } from "../models";
 
 export default [

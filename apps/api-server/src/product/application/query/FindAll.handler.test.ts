@@ -2,9 +2,9 @@ import { TestingModule } from "@nestjs/testing";
 
 import test_module from "__test-utils__/test-module";
 
-import { FilterDTO } from "@shared/dto";
-import { IQueryRepository } from "@shared/repositories";
-import { ProductSummaryModel } from "@browsing/infrastructure/mongo/models";
+import { FilterDTO } from "shared/dto";
+import { IQueryRepository } from "shared/repositories";
+import { ProductSummaryModel } from "browsing/infrastructure/mongo/models";
 import FindAllHandler from "./FindAll.handler";
 
 describe("FindAllHandler", () => {

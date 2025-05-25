@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
-import { IBaseRepository } from "@shared/repositories";
-import { ProductImageEntity } from "@product/infrastructure/rdb/entities";
+import { IBaseRepository } from "shared/repositories";
+import { ProductImageEntity } from "product/infrastructure/rdb/entities";
 import ImageRegisterCommand from "./ImageRegister.command";
 
 @CommandHandler(ImageRegisterCommand)

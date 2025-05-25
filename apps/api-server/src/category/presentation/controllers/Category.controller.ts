@@ -7,9 +7,9 @@ import {
   ApiErrorResponse,
   ApiStandardResponse,
   ResponseType,
-} from "@libs/decorators";
-import { to_FilterDTO } from "@shared/mappers";
-import { FindAllQuery, FindProductsQuery } from "@category/application/query";
+} from "libs/decorators";
+import { to_FilterDTO } from "shared/mappers";
+import { FindAllQuery, FindProductsQuery } from "category/application/query";
 import {
   CategoryQueryDTO,
   CategoryResponseBundleDTO,
