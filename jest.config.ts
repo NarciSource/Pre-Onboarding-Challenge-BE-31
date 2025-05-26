@@ -101,7 +101,7 @@ const config: Config = {
   preset: "ts-jest",
 
   // Run tests from one or more projects
-  projects: ["<rootDir>/apps/api-server"],
+  projects: ["<rootDir>/apps/api-server", "<rootDir>/apps/projection-worker"],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [

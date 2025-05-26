@@ -1,4 +1,4 @@
-import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
+import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -44,10 +44,6 @@ const test_module = Test.createTestingModule({
     MongooseModule.forFeature(model_providers),
   ],
   providers: [
-    {
-      provide: EventBus,
-      useValue: { publish: jest.fn() },
-    },
     {
       provide: CommandBus,
       useValue: { execute: jest.fn() },
