@@ -1,4 +1,7 @@
 import type { Config } from "jest";
+import { pathsToModuleNameMapper } from "ts-jest";
+
+import { compilerOptions } from "./tsconfig.json";
 
 const config: Config = {
   testTimeout: 100000,
@@ -27,6 +30,7 @@ const config: Config = {
     "\\.dto\\.ts$",
     "\\.view\\.ts$",
     "\\.model\\.ts$",
+    "/entities/.*\\.ts$",
   ],
 
   // Indicates which provider should be used to instrument code for coverage
@@ -53,10 +57,10 @@ const config: Config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: "",
+  globalSetup: "<rootDir>/jest.global-setup.ts",
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: "",
+  globalTeardown: "<rootDir>/jest.teardown.ts",
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -80,7 +84,9 @@ const config: Config = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+    prefix: "<rootDir>/",
+  }),
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -95,7 +101,7 @@ const config: Config = {
   preset: "ts-jest",
 
   // Run tests from one or more projects
-  projects: ["<rootDir>/api"],
+  projects: ["<rootDir>/apps/api-server"],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [
@@ -157,10 +163,10 @@ const config: Config = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
+  testMatch: ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -172,7 +178,15 @@ const config: Config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
+  transform: {
+    "^.+\\.ts$": [
+      "ts-jest",
+      {
+        tsconfig: "<rootDir>/tsconfig.json",
+        useESM: true,
+      },
+    ],
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
