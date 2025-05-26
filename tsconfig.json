@@ -1,5 +1,5 @@
 {
-  "include": ["apps/**/*.ts", "libs/**/*.ts", "jest.config.ts"],
+  "include": ["apps/**/*.ts", "libs/**/*.ts", "jest.*.ts"],
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "module": "CommonJS",
