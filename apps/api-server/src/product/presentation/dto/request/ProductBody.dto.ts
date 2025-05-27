@@ -2,6 +2,7 @@ import { ApiProperty, OmitType, PickType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDefined, IsInt, ValidateNested } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
 import ImageDTO from "../model/Image.dto";
 import ProductDTO from "../model/Product.dto";
 import ProductOptionGroupDTO from "../model/ProductOptionGroup.dto";
@@ -14,6 +15,7 @@ class CategoryOfProductBodyDTO {
   category_id: number;
 
   @ApiProperty({ description: "대표 카테고리 여부", example: true })
+  @TransformToBoolean()
   @IsBoolean()
   is_primary: boolean;
 }

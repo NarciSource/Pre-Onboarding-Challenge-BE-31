@@ -2,6 +2,7 @@ import { ApiProperty, IntersectionType, PickType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsBoolean, IsDefined, IsInt, IsNumber, Max, Min, ValidateNested } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
 import BrandDTO from "product/presentation/dto/model/Brand.dto";
 import ImageDTO from "product/presentation/dto/model/Image.dto";
 import ProductDTO from "product/presentation/dto/model/Product.dto";
@@ -48,6 +49,7 @@ export default class ProductSummaryDTO extends IntersectionType(
   seller: SellerDTOForProductSummary;
 
   @ApiProperty({ description: "재고 유무", example: true })
+  @TransformToBoolean()
   @IsBoolean()
   in_stock: boolean;
 

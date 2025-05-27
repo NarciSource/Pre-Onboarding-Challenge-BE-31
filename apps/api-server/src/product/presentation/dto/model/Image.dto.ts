@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsInt, IsString, IsUrl, Min } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
+
 export default class ImageDTO {
   @ApiProperty({ description: "이미지 ID", example: 1 })
   @IsInt()
@@ -15,6 +17,7 @@ export default class ImageDTO {
   alt_text: string | null;
 
   @ApiProperty({ description: "대표 이미지 여부", example: false })
+  @TransformToBoolean()
   @IsBoolean()
   is_primary: boolean;
 

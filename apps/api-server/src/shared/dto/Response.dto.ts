@@ -1,8 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsBoolean, IsOptional, ValidateNested } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
+
 export default class ResponseDTO<T> {
   @ApiProperty({ description: "요청 성공 여부", example: true })
+  @TransformToBoolean()
   @IsBoolean()
   success: boolean;
 

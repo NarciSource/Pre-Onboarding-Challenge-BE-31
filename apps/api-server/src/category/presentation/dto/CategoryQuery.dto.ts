@@ -1,6 +1,8 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { IsBoolean, IsInt, IsNumber, IsOptional, Matches, Min } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
+
 export default class CategoryQueryDTO {
   @ApiPropertyOptional({ description: "페이지 번호", example: 1 })
   @IsOptional()
@@ -23,6 +25,7 @@ export default class CategoryQueryDTO {
   sort?: string = "created_at:desc";
 
   @ApiPropertyOptional({ description: "하위 카테고리 포함 여부", example: true })
+  @TransformToBoolean()
   @IsOptional()
   @IsBoolean()
   includeSubcategories?: boolean;

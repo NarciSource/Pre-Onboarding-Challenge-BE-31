@@ -10,6 +10,8 @@ import {
   ValidateNested,
 } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
+
 export class DimensionsDTO {
   @ApiProperty({ description: "가로 길이", example: 200 })
   @IsNumber()
@@ -29,6 +31,7 @@ export class DimensionsDTO {
 
 export class AdditionalInfoDTO {
   @ApiProperty({ description: "조립 필요 여부", example: true })
+  @TransformToBoolean()
   @IsBoolean()
   assembly_required: boolean;
 

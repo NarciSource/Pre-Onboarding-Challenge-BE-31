@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsInt, IsString, Max, Min, ValidateNested } from "class-validator";
+
+import { TransformToBoolean } from "libs/decorators/Transform";
 import UserDTO from "./User.dto";
 
 export default class ReviewDTO {
@@ -40,6 +42,7 @@ export default class ReviewDTO {
   updated_at: Date;
 
   @ApiProperty({ description: "구매 여부", example: true })
+  @TransformToBoolean()
   @IsBoolean()
   verified_purchase: boolean;
 

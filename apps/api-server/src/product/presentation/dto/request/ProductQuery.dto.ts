@@ -2,6 +2,8 @@ import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, Matches, Min } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
+
 export default class ProductQueryDTO {
   @ApiPropertyOptional({ description: "페이지 번호 (기본값: 1)", example: 1 })
   @IsOptional()
@@ -76,6 +78,7 @@ export default class ProductQueryDTO {
   brand?: number;
 
   @ApiPropertyOptional({ description: "재고 유무 필터", example: true })
+  @TransformToBoolean()
   @IsOptional()
   @IsBoolean()
   inStock?: boolean;

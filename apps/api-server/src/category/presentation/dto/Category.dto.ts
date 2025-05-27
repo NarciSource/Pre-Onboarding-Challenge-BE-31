@@ -10,6 +10,8 @@ import {
   ValidateNested,
 } from "class-validator";
 
+import { TransformToBoolean } from "libs/decorators/Transform";
+
 class ParentCategoryDTO {
   @ApiProperty({ description: "카테고리 ID", example: 2 })
   @IsInt()
@@ -38,6 +40,7 @@ export default class CategoryDTO {
   slug: string;
 
   @ApiProperty({ description: "대표 카테고리 여부", example: true })
+  @TransformToBoolean()
   @IsBoolean()
   is_primary: boolean;
 

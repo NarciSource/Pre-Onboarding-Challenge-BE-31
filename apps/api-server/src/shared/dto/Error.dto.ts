@@ -3,6 +3,7 @@ import { Type } from "class-transformer";
 import { IsBoolean, IsEnum, IsOptional, ValidateNested } from "class-validator";
 
 import ErrorCode from "libs/constants/ErrorCode";
+import { TransformToBoolean } from "libs/decorators/Transform";
 
 export class ErrorDetails {
   [key: string]: string;
@@ -31,6 +32,7 @@ export class ErrorObject {
 
 export default class ErrorDTO {
   @ApiProperty({ description: "요청 성공 여부", example: false })
+  @TransformToBoolean()
   @IsBoolean()
   success: boolean;
 
