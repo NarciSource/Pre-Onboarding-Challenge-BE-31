@@ -63,7 +63,7 @@ export default class ProductSummaryModel {
   @Prop({ index: true })
   created_at: Date;
 
-  @Prop({ select: false })
+  @Prop()
   stock: number;
 
   @Prop({ index: true })

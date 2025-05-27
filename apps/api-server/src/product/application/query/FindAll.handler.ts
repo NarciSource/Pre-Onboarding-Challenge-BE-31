@@ -43,7 +43,7 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
         ...(categories?.length ? { categories: { $in: categories } } : {}),
         ...(seller_id ? { seller_id } : {}),
         ...(brand_id ? { brand_id } : {}),
-        in_stock,
+        ...(in_stock ? { stock: { $gt: 0 } } : { stock: { $lte: 0 } }),
         name: { $regex: search ?? "", $options: "i" },
       },
       order: { [sort_field]: sort_order },
