@@ -240,6 +240,32 @@ graph TD
    click consumer "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/projection-worker"
 ```
 
+### Module Dependency Diagram
+
+```mermaid
+graph TB
+  subgraph DockerNetwork["Docker Network: network"]
+    server
+    consumer
+    rds
+    mongo
+    zookeeper
+    kafka
+    kafka_ui
+    debezium
+    connector_init
+  end
+
+  %% depends_on 관계
+  connector_init --> debezium ---> rds
+
+  server --> rds & mongo & kafka
+
+  consumer --> mongo & kafka
+
+  debezium & kafka_ui ---> kafka --> zookeeper
+```
+
 ## 폴더 구조
 
 <details>
