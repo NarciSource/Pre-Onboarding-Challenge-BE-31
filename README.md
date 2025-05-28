@@ -44,7 +44,11 @@
 
 ## 다이어그램
 
-### ERD
+### Entity Relationship Diagram
+
+![erd](https://github.com/user-attachments/assets/73d99608-f469-4402-9323-fcf459af51dd)
+
+<details>
 
 ```mermaid
 erDiagram
@@ -195,6 +199,45 @@ erDiagram
    product_tags }o--|| tags : tag
    reviews }o--|| products : product
    reviews }o--o| users : user
+```
+
+</details>
+
+### System Architecture Diagram
+
+```mermaid
+graph TD
+   subgraph "API Layer"
+      api[API Server]
+   end
+      mongo[(MongoDB)]
+      postgres[(PostgreSQL)]
+
+   subgraph "CDC & Messaging"
+      cdc@{ shape: rounded, label: Debezium }
+      kafka@{ shape: subproc, label: Kafka }
+   end
+
+   subgraph "Query Side"
+      consumer[Projection Consumer]
+   end
+
+   %% Command flow
+   api -->|📥 Command| postgres
+
+   %% CDC Flow
+   postgres -.->|📡 WAL Log | cdc
+   cdc -->|📣 Change Event| kafka
+
+   %% Projection flow
+   kafka -->|✉️ Topic| consumer
+   consumer --> mongo
+
+   %% Query flow
+   api -->|📤 Query| mongo
+
+   click api "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/api-server"
+   click consumer "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/projection-worker"
 ```
 
 ## 폴더 구조
