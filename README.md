@@ -13,7 +13,9 @@
 [![Github Actions](https://img.shields.io/badge/Github_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)](https://github.com/features/actions) [![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=black)](https://prettier.io/)  
 [![Docker Compose](https://img.shields.io/badge/Docker_Compose-2AB4FF.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjMgNjY1Ij4KICA8cGF0aCBmaWxsPSIjZmNmY2ZjIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00MTggMWMtNiAxLTkgMy0xMyA4LTQgMy00IDMtMTAgMS0xMi02LTYwIDAtNjYgOC01IDYtMTEgNDQtOCA1MGwyMyAxN2M3IDQgNyA2IDIgNy0yMyAzLTM3IDI5LTI5IDUyIDMgOSAzIDktMTAgNi0xOS01LTI0LTYtNDUtNS00NyAwLTg2IDE4LTEwOSA1MGExMzUgMTM1IDAgMCAwLTI0IDY0Yy0zIDI4IDIgNDggMTcgNzJsMjIgMjdjNDAgNDQgNDEgNjYgMyA5MS00NSAzMC0xMDQgMTktMTA2LTIwLTEtMTYgNC0yOSAxNy01MiAxMy0yNCAxNC0zMyAzLTUybDEzLThjMjQtMTIgMjItOSAyMy0zNCAwLTIyIDItMjAtMjMtMzAtMTgtNi0yMC02LTQwLTEtMjggOS00MCAxNC00MSAxOCAwIDItMSAzLTIgMy03IDAtMTQgMTItMTUgMjUtMSAyMSA2IDI5IDMwIDM2IDMwIDkgMzUgMjQgMTkgNDktMzYgNTMtMzIgMTAyIDExIDEyMSAzNSAxNiA3NCAxMyAxMTktOWwxMS01IDMgMzJjMCAzNC00MCAzOC04OSA4bC0xNi0xMGMtNTEtMjktMTAyIDI0LTY2IDcwIDE1IDIwIDQyIDIxIDQ2IDIgMi04IDAtMTEtMTAtMTktMTYtMTItMTctMjQtMi0yNyA1LTEgMjYgOCAyOCAxMmwzNCAyOSAyMCAxMiAyMCA4YzM2IDEzIDgyLTE1IDgyLTUwIDAtMTAgMC0xMCA2LTUgMTAgMTAgMTggMTYgMjMgMTkgNiAzIDYgNCAxIDctNSAyLTUgMi01IDctMSA4IDEgMjkgNCAzMyA0IDcgNjMgNDYgNjkgNDYgMyAwIDQ4LTI1IDUxLTI5IDItMSAzLTM0IDEtMzZsLTE2LTljLTE2LTgtMTYtOC05LTEwIDE5LTcgMzctMjcgNDMtNDdsNS0xYTE2NSAxNjUgMCAwIDAgNjAtMTNjOSAwIDM0LTIyIDQwLTM0bDQtOGM0LTcgNi0yNiA2LTU2IDAtMjkgMS0yNy0xMC0yOS02LTItOC0zLTEzLTgtMzAtMjktNzktMjMtOTYgMTAtMyA3LTMgNy04IDlzLTYgNS01IDE3djE1YzEgMTQgNCAxNiAzNCAyOGwxMiA2YzcgMyA3IDMgMzAtNyA4LTMgOS0zIDkgMS02IDIyLTY0IDQyLTczIDI0YTg3IDg3IDAgMCAwLTYzLTQyYy04IDAtOCAwIDYtMTFhNzM2IDczNiAwIDAgMCA4NS04OWwzLTVjMTktMzEgMjEtNzMgMy0xMDctNy0xNS0yMy0zNS0zNi00OC0zOS0zNi00Ni00Ny0zOC02MiA0LTggMTUtMTcgMjAtMTVhNDUyIDQ1MiAwIDAgMCA1NS0xMmMxMS00IDEzLTUgMTQtMTAgMC00IDItNyA5LTE0IDI0LTI2LTgtODAtNDMtNzFNMjI4IDMzNGMxIDEgMCAxLTEgMS0yMCAwLTI4IDMyLTEyIDQyIDE3IDkgMzctMyAzNy0yMiAwLTctNy0xNy0xMS0xN3YtMWMzLTIgMC0zLTctNGwtNiAxbTU0IDgtNCAxYy0yMiAzLTI1IDM5LTMgNDQgMjQgNSA0MS0yMSAyNS0zOGwtNS0zdi0zYy0xLTItMTQtMy0xMy0xbS00OSAxMjBjLTYgNy05IDE0LTkgMjQgMCA4IDEgMTIgMyA2IDItMTIgOC0yOCAxMy0zM3YtM2MtMSAwLTQgMi03IDZtOTcgNGMwIDIgMjMgMTcgMjcgMTcgMiAwIDEtMy00LTctOS03LTIzLTEzLTIzLTEwbS01NCA2Yy0yMSA1MSAyOSA5NiA3MyA2NyA4LTYgOC03LTEtOC0zOS0zLTYzLTIzLTY2LTU0LTItMTItMy0xMy02LTUiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://docs.docker.com/compose/) [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=Docker&logoColor=white)](https://www.docker.com/)
 
-## API 명세서
+## 개발문서
+
+### API 명세서
 
 본 프로젝트의 API 명세서는 GitHub Pages을 통해 Swagger UI로 제공됩니다.
 
@@ -27,7 +29,7 @@
 - API 요청을 정상적으로 테스트하려면,  
   로컬 환경에서 Docker Compose를 사용해 서버와 데이터베이스를 실행한 후 Swagger UI에 접속합니다.
 
-## 테스트 리포트
+### 테스트 리포트
 
 테스트 통과 여부와 커버리지 현황은 시각적으로 제공됩니다.
 
@@ -39,6 +41,161 @@
 [![codecov](https://codecov.io/gh/NarciSource/Pre-Onboarding-Challenge-BE-31/branch/main/graph/badge.svg)](https://codecov.io/gh/NarciSource/Pre-Onboarding-Challenge-BE-31)
 
 ![Sunburst-graph](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31/graphs/sunburst.svg)
+
+## 다이어그램
+
+### ERD
+
+```mermaid
+erDiagram
+   products {
+      BIGINT id PK
+      VARCHAR name
+      VARCHAR slug
+      VARCHAR short_description
+      TEXT full_description
+      TIMESTAMP created_at
+      TIMESTAMP updated_at
+      BIGINT seller_id FK
+      BIGINT brand_id FK
+      VARCHAR status
+   }
+
+   categories {
+      BIGINT id PK
+      VARCHAR name
+      VARCHAR slug
+      TEXT description
+      BIGINT parent_id FK
+      INTEGER level
+      VARCHAR image_url
+   }
+
+   sellers {
+      BIGINT id PK
+      VARCHAR name
+      TEXT description
+      VARCHAR logo_url
+      DECIMAL rating
+      VARCHAR contact_email
+      VARCHAR contact_phone
+      TIMESTAMP created_at
+   }
+
+   brands {
+      BIGINT id PK
+      VARCHAR name
+      VARCHAR slug
+      TEXT description
+      VARCHAR logo_url
+      VARCHAR website
+   }
+
+   product_details {
+      BIGINT id PK
+      BIGINT product_id FK
+      DECIMAL weight
+      JSONB dimensions
+      TEXT materials
+      VARCHAR country_of_origin
+      TEXT warranty_info
+      TEXT care_instructions
+      JSONB additional_info
+   }
+
+   product_prices {
+      BIGINT id PK
+      BIGINT product_id FK
+      DECIMAL base_price
+      DECIMAL sale_price
+      DECIMAL cost_price
+      VARCHAR currency
+      DECIMAL tax_rate
+   }
+
+   product_categories {
+      BIGINT id PK
+      BIGINT product_id FK
+      BIGINT category_id FK
+      BOOLEAN is_primary
+   }
+
+   product_option_groups {
+      BIGINT id PK
+      BIGINT product_id FK
+      VARCHAR name
+      INTEGER display_order
+   }
+
+   product_options {
+      BIGINT id PK
+      BIGINT option_group_id FK
+      VARCHAR name
+      DECIMAL additional_price
+      VARCHAR sku
+      INTEGER stock
+      INTEGER display_order
+   }
+
+   product_images {
+      BIGINT id PK
+      BIGINT product_id FK
+      VARCHAR url
+      VARCHAR alt_text
+      BOOLEAN is_primary
+      INTEGER display_order
+      BIGINT option_id FK
+   }
+
+   product_tags {
+      BIGINT id PK
+      BIGINT product_id FK
+      BIGINT tag_id FK
+   }
+
+   tags {
+      BIGINT id PK
+      VARCHAR name
+      VARCHAR slug
+   }
+
+   reviews {
+      BIGINT id PK
+      BIGINT product_id FK
+      BIGINT user_id FK
+      INTEGER rating
+      VARCHAR title
+      TEXT content
+      TIMESTAMP created_at
+      TIMESTAMP updated_at
+      BOOLEAN verified_purchase
+      INTEGER helpful_votes
+   }
+
+   users {
+      BIGINT id PK
+      VARCHAR name
+      VARCHAR email
+      VARCHAR avatar_url
+      TIMESTAMP created_at
+   }
+
+   products }o--|| sellers : seller
+   products }o--|| brands : brand
+   product_details ||--|| products : product
+   product_prices ||--|| products : product
+   product_categories }o--|| products : product
+   product_categories }o--|| categories : category
+   categories ||--o{ categories : parent
+   product_option_groups }o--|| products : product
+   product_options }o--|| product_option_groups : option_group
+   product_images }o--o| product_options : option
+   product_images }o--|| products : product
+   product_tags }o--|| products : product
+   product_tags }o--|| tags : tag
+   reviews }o--|| products : product
+   reviews }o--o| users : user
+```
 
 ## 폴더 구조
 
