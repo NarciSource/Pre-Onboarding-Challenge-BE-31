@@ -29,6 +29,25 @@
 - API 요청을 정상적으로 테스트하려면,  
   로컬 환경에서 Docker Compose를 사용해 서버와 데이터베이스를 실행한 후 Swagger UI에 접속합니다.
 
+| Category | Method | URI | Summary |
+| --- | --- | --- | --- |
+| [상품 관리](https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/blob/main/apps/api-server/src/product/presentation/controllers/Product.controller.ts) | POST | /products | 상품 등록 |
+|  | GET | /products | 상품 목록 조회 |
+|  | GET | /products/{id} | 상품 상세 조회 |
+|  | PUT | /products/{id} | 상품 수정 |
+|  | DELETE | /products/{id} | 상품 삭제 |
+| [상품 옵션 관리](https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/blob/main/apps/api-server/src/product/presentation/controllers/Product_Options.controller.ts) | POST | /products/{id}/options | 상품 옵션 추가 |
+|  | PUT | /products/{id}/options/{optionId} | 상품 옵션 수정 |
+|  | DELETE | /products/{id}/options/{optionId} | 상품 옵션 삭제 |
+|  | POST | /products/{id}/images | 상품 이미지 추가 |
+| [카테고리](https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/blob/main/apps/api-server/src/category/presentation/controllers/Category.controller.ts) | GET | /categories | 카테고리 목록 조회 |
+|  | GET | /categories/{id}/products/ | 특정 카테고리의 상품 목록 조회 |
+| [메인 페이지](https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/blob/main/apps/api-server/src/browsing/presentation/controllers/Main.controller.ts) | GET | /main | 메인 페이지 상품 및 카테고리 목록 조회 |
+| [리뷰](https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/blob/main/apps/api-server/src/review/presentation/controllers/Review.controller.ts) | GET | /products/{id}/reviews | 상품 리뷰 조회 |
+|  | POST | /products/{id}/reviews | 상품 리뷰 작성 |
+|  | PUT | /reviews/{id} | 리뷰 수정 |
+|  | DELETE | /reviews/{id} | 리뷰 삭제 |
+
 ### 테스트 리포트
 
 테스트 통과 여부와 커버리지 현황은 시각적으로 제공됩니다.
