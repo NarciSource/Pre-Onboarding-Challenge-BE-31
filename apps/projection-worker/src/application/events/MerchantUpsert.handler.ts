@@ -3,43 +3,34 @@ import { EventsHandler } from "@nestjs/cqrs";
 
 import { Brand, Seller } from "@libs/domain/entities";
 import { IQueryRepository } from "@libs/domain/repository";
-import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 
+import { BrandStateModel, SellerStateModel } from "../../infrastructure/model";
 import MerchantUpsertEvent from "./MerchantUpsert.event";
 
 @EventsHandler(MerchantUpsertEvent)
 export default class MerchantUpsertHandler {
   constructor(
-    @Inject("IProductCatalogQueryRepository")
-    private readonly catalog_query_repository: IQueryRepository<ProductCatalogModel>,
-    @Inject("IProductSummaryQueryRepository")
-    private readonly summary_query_repository: IQueryRepository<ProductSummaryModel>,
+    @Inject("IBrandStateRepository")
+    private readonly brand_state_repository: IQueryRepository<BrandStateModel>,
+    @Inject("ISellerStateRepository")
+    private readonly seller_state_repository: IQueryRepository<SellerStateModel>,
   ) {}
 
   async handle({ table, after }: MerchantUpsertEvent) {
     switch (table) {
       case "brands": {
-        const { id, name, description, logo_url, website } = after as Brand;
+        const brand = after as Brand;
 
-        await this.catalog_query_repository.update(
-          { brand: { id } },
-          { brand: { id, name, description, logo_url, website } },
-        );
+        await this.brand_state_repository.updateOne({ id: brand.id }, brand, { upsert: true });
 
-        await this.summary_query_repository.update({ brand: { id } }, { brand: { id, name } });
         break;
       }
 
       case "sellers": {
-        const { id, name, description, logo_url, rating, contact_email, contact_phone } =
-          after as Seller;
+        const seller = after as Seller;
 
-        await this.catalog_query_repository.update(
-          { seller: { id } },
-          { seller: { id, name, description, logo_url, rating, contact_email, contact_phone } },
-        );
+        await this.seller_state_repository.updateOne({ id: seller.id }, seller, { upsert: true });
 
-        await this.summary_query_repository.update({ seller: { id } }, { seller: { id, name } });
         break;
       }
     }
