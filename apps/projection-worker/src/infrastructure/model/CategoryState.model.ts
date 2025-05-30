@@ -1,6 +1,6 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 
-import CategoryModel from "@libs/infrastructure/mongo/models/sub/Category.model";
+import { CategoryModel } from "@libs/infrastructure/mongo/models";
 
 @Schema({ collection: "featured_categories" })
 export default class CategoryStateModel extends CategoryModel {

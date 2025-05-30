@@ -1,12 +1,14 @@
 import { Prop } from "@nestjs/mongoose";
 
-export default class TagModel {
+import { Tag } from "@libs/domain/entities";
+
+export default class TagModel implements Tag {
   @Prop()
   id: number;
 
   @Prop()
-  name?: string;
+  name: string;
 
   @Prop()
-  slug?: string;
+  slug: string;
 }

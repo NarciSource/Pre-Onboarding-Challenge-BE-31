@@ -1,5 +1,7 @@
 import { Prop } from "@nestjs/mongoose";
 
+import { Product_Detail } from "@libs/domain/entities";
+
 export class DimensionsModel {
   @Prop()
   width: number;
@@ -19,7 +21,9 @@ export class AdditionalInfoModel {
   assembly_time: string;
 }
 
-export default class ProductDetailModel {
+export default class ProductDetailModel
+  implements Omit<Product_Detail, "id" | "product" | "product_id">
+{
   @Prop({ type: Number })
   weight: number | null;
 

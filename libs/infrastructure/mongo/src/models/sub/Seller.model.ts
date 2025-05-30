@@ -1,6 +1,8 @@
 import { Prop } from "@nestjs/mongoose";
 
-export default class SellerModel {
+import { Seller } from "@libs/domain/entities";
+
+export default class SellerModel implements Seller {
   @Prop()
   id: number;
 

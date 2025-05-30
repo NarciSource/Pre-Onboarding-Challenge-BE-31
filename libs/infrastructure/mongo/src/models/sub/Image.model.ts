@@ -1,6 +1,10 @@
 import { Prop } from "@nestjs/mongoose";
 
-export default class ImageModel {
+import { Product_Image } from "@libs/domain/entities";
+
+export default class ImageModel
+  implements Omit<Product_Image, "product" | "product_id" | "option">
+{
   @Prop()
   id: number;
 

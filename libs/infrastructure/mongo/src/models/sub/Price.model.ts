@@ -1,6 +1,10 @@
 import { Prop } from "@nestjs/mongoose";
 
-export default class PriceModel {
+import { Product_Price } from "@libs/domain/entities";
+
+export default class PriceModel
+  implements Omit<Product_Price, "id" | "product" | "product_id" | "cost_price">
+{
   @Prop()
   base_price: number;
 
