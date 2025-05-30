@@ -12,7 +12,12 @@ import {
 import { IQueryRepository } from "@libs/domain/repository";
 import { ProductCatalogModel, ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 
-import { CategoryStateModel, TagStateModel } from "../../infrastructure/model";
+import {
+  BrandStateModel,
+  CategoryStateModel,
+  SellerStateModel,
+  TagStateModel,
+} from "../../infrastructure/model";
 import ProductUpsertEvent from "./ProductUpsert.event";
 
 @EventsHandler(ProductUpsertEvent)
@@ -26,6 +31,10 @@ export default class ProductUpsertHandler {
     private readonly category_state_repository: IQueryRepository<CategoryStateModel>,
     @Inject("ITagStateRepository")
     private readonly tag_state_repository: IQueryRepository<TagStateModel>,
+    @Inject("IBrandStateRepository")
+    private readonly brand_state_repository: IQueryRepository<BrandStateModel>,
+    @Inject("ISellerStateRepository")
+    private readonly seller_state_repository: IQueryRepository<SellerStateModel>,
   ) {}
 
   async handle({ table, after }: ProductUpsertEvent) {
@@ -33,12 +42,15 @@ export default class ProductUpsertHandler {
       case "products": {
         const { brand_id, seller_id, ...product } = after as Product;
 
+        const brand = await this.brand_state_repository.findOne({ id: brand_id });
+        const seller = await this.seller_state_repository.findOne({ id: seller_id });
+
         await this.catalog_query_repository.updateOne(
           { id: product.id },
           {
             ...product,
-            brand: { id: brand_id },
-            seller: { id: seller_id },
+            brand,
+            seller,
           },
           { upsert: true },
         );
@@ -47,8 +59,8 @@ export default class ProductUpsertHandler {
           { id: product.id },
           {
             ...product,
-            brand: { id: brand_id },
-            seller: { id: seller_id },
+            ...(brand ? { brand: { id: brand.id, name: brand.name } } : {}),
+            ...(seller ? { seller: { id: seller.id, name: seller.name } } : {}),
           },
           { upsert: true },
         );
