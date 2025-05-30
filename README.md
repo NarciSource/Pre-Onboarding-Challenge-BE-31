@@ -259,7 +259,8 @@ graph TD
    click consumer "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/projection-worker"
 ```
 
-### Module Dependency Diagram
+<details>
+<summary>Module Dependency Diagram </summary>
 
 ```mermaid
 graph TB
@@ -284,6 +285,69 @@ graph TB
 
   debezium & kafka_ui ---> kafka --> zookeeper
 ```
+
+</details>
+
+<details>
+<summary>Projection Dependency Diagram</summary>
+
+```mermaid
+graph LR
+    %% State 저장소
+    subgraph "State storage"
+        brand_state[[brand_state]]
+        seller_state[[seller_state]]
+        category_state[[category_state]]
+        tag_state[[tag_state]]
+    end
+
+    %% 입력 데이터
+    brand[/brand/]
+    seller[/seller/]
+    tag[/tag/]
+    category[/category/]
+    product[/product/]
+    review[/review/]
+    product_option_group[/product_option_group/]
+    product_option[/product_option/]
+    product_tags[/product_tags/]
+    product_category[/product_category/]
+    product_detail[/product_detail/]
+    product_prices[/product_prices/]
+    product_image[/product_image/]
+
+    subgraph "Projection <br> Document"
+        catalog@{ shape: doc, label: "catalog"}
+    end
+
+    %% State로 저장되는 흐름
+    brand --> brand_state
+    seller --> seller_state
+    category -->|상태 저장| category_state
+    tag --> tag_state
+
+
+    %% catalog로 반영되는 구성 요소
+    product_option_group & product_option ==> catalog
+    product_detail & product_prices ==> catalog
+    product ==>|프로젝션| catalog
+    product_image & review ==> catalog
+    product_category & product_tags ==> catalog
+
+
+    %% 프로젝션 의존성
+    product -.-> product_option_group -.-> product_option
+    product -.-> product_detail & product_prices
+    product -.->|의존성| product_image
+    product -.-> review & product_tags & product_category
+
+    %% State를 읽어서 사용하는 흐름
+    brand_state & seller_state --> product
+    category_state -->|데이터 사용| product_category
+    tag_state --> product_tags
+```
+
+</details>
 
 ## 폴더 구조
 
