@@ -44,10 +44,14 @@ services:
       - network
     depends_on:
       - mongo
+    env_file:
+      - .env
+    environment:
+      - MONGO_HOST=mongo
     volumes:
       - ./config/mongo-init/init-replica.js:/init-replica.js:ro
     entrypoint: >
-      bash -c "sleep 10 && mongosh --host mongo --file /init-replica.js"
+      bash -c "apt-get update && apt-get install -y gettext && envsubst < /init-replica.js | mongosh --host mongo"
 
   # e-commerce 서버 애플리케이션
   server:
