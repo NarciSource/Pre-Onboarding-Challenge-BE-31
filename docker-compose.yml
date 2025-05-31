@@ -34,8 +34,20 @@ services:
       - network
     ports:
       - "${MONGO_PORT}:27017"
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
       - mongo-data:/data/db
+
+  mongo-init:
+    image: mongo:latest
+    networks:
+      - network
+    depends_on:
+      - mongo
+    volumes:
+      - ./config/mongo-init/init-replica.js:/init-replica.js:ro
+    entrypoint: >
+      bash -c "sleep 10 && mongosh --host mongo --file /init-replica.js"
 
   # e-commerce 서버 애플리케이션
   server:

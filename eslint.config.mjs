@@ -97,6 +97,9 @@ export default tseslint.config(
         },
       ],
     },
+    ignores: [
+      "config/mongo-init/init-replica.js",
+    ],
     settings: {
       "import/resolver": {
         typescript: {
