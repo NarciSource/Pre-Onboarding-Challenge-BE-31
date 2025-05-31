@@ -162,6 +162,7 @@ services:
     depends_on:
       - kafka
       - rds
+      - mongo
     environment:
       GROUP_ID: 1
       BOOTSTRAP_SERVERS: kafka:9092
@@ -185,11 +186,15 @@ services:
     depends_on:
       - debezium
       - rds
+      - mongo
+      - mongo-init
     env_file:
       - .env
     environment:
       PG_HOST: rds
       PG_PORT: 5432
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
       CDC_HOST: debezium
       CDC_PORT: 8083
     volumes:

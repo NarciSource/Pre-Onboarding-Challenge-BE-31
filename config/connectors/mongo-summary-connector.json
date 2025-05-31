@@ -1,0 +1,18 @@
+{
+  "name": "summary-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+
+    "mongodb.connection.string": "mongodb://${MONGO_HOST}:${MONGO_PORT}/?replicaSet=${MONGO_REPLICA_SET}",
+
+    "topic.prefix": "mongo_connector",
+
+    "database.include.list": "${MONGO_DATABASE}",
+    "collection.include.list": "${MONGO_DATABASE}.productsummarymodels",
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}

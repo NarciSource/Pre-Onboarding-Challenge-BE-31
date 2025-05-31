@@ -6,7 +6,8 @@ for connector in \
     postgres-product-connector.json \
     postgres-product-option-connector.json \
     postgres-review-connector.json \
-    postgres-tag-connector.json
+    postgres-tag-connector.json \
+    mongo-summary-connector.json
 do
     envsubst < "$SCRIPT_DIR/$connector" | \
     curl -X POST -H "Content-Type: application/json" --data @- http://${CDC_HOST}:${CDC_PORT}/connectors
