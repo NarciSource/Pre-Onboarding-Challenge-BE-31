@@ -40,6 +40,7 @@ services:
 
   mongo-init:
     image: mongo:latest
+    container_name: mongo-init
     networks:
       - network
     depends_on:
@@ -79,16 +80,16 @@ services:
       - KAFKA_PORT=9092
 
   # 프로젝션하는 컨슈머 서비스
-  consumer:
-    image: projection-consumer:${CONSUMER_VERSION}
-    container_name: consumer
+  projector:
+    image: projection-docs:${PROJECTOR_VERSION}
+    container_name: projector
     build:
       context: .
-      dockerfile: Dockerfile.consumer
+      dockerfile: Dockerfile.projector
     networks:
       - network
     ports:
-      - "${WORKER_PORT}:3001"
+      - "${PROJECTOR_PORT}:3001"
     depends_on:
       - rds
       - mongo

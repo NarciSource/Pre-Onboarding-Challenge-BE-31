@@ -238,7 +238,7 @@ graph TD
    end
 
    subgraph "Query Side"
-      consumer[Projection Consumer]
+      projector[Projection Docs]
    end
 
    %% Command flow
@@ -249,14 +249,14 @@ graph TD
    cdc -->|📣 Change Event| kafka
 
    %% Projection flow
-   kafka -->|✉️ Topic| consumer
-   consumer --> mongo
+   kafka -->|✉️ Topic| projector
+   projector --> mongo
 
    %% Query flow
    api -->|📤 Query| mongo
 
    click api "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/api-server"
-   click consumer "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/projection-worker"
+   click projector "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/proj-docs"
 ```
 
 <details>
@@ -266,7 +266,7 @@ graph TD
 graph TB
   subgraph DockerNetwork["Docker Network: network"]
     server
-    consumer
+    projector
     rds
     mongo
     zookeeper
@@ -281,7 +281,7 @@ graph TB
 
   server --> rds & mongo & kafka
 
-  consumer --> mongo & kafka
+  projector --> mongo & kafka
 
   debezium & kafka_ui ---> kafka --> zookeeper
 ```
@@ -359,7 +359,7 @@ Pre-Onboarding-Challenge-BE-31
 ├─ .env
 ├─ README.md
 ├─ docker-compose.yml
-│  ├─ Dockerfile.consumer
+│  ├─ Dockerfile.
 │  └─ Dockerfile.server
 ├─ jest.config.ts
 │  ├─ jest.base-config.ts
@@ -705,7 +705,7 @@ Pre-Onboarding-Challenge-BE-31
    │              ├─ index.ts
    │              └─ Review.controller.ts
    │                 └─ Review.controller.test.ts
-   └─ projection-worker
+   └─ proj-docs
       ├─ tsconfig.json
       │  └─ tsconfig.build.json
       ├─ jest.config.ts

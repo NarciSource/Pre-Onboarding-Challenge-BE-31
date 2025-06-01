@@ -5,7 +5,7 @@ import baseConfig from "../../jest.base-config";
 const config: Config = {
   ...baseConfig,
 
-  displayName: "worker",
+  displayName: "proj-docs",
 
   // The root directory that Jest should scan for tests and modules within
   rootDir: "../..",

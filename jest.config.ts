@@ -22,7 +22,7 @@ const config: Config = {
   moduleDirectories: ["node_modules", "src"],
 
   // Run tests from one or more projects
-  projects: ["<rootDir>/apps/api-server", "<rootDir>/apps/projection-worker"],
+  projects: ["<rootDir>/apps/api-server", "<rootDir>/apps/proj-docs"],
 
   // Use this configuration option to add custom reporters to Jest
   reporters: [

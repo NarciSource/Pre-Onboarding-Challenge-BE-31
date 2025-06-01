@@ -11,14 +11,14 @@
   ],
   "workspaces": [
     "apps/api-server",
-    "apps/projection-worker"
+    "apps/proj-docs"
   ],
   "scripts": {
-    "build": "nest build api && nest build worker",
-    "start": "concurrently \"nest start api\" \"nest start worker\"",
-    "start:dev": "concurrently \"nest start api --watch\" \"nest start worker --watch\"",
-    "start:debug": "concurrently \"nest start api --debug --watch\" \"nest start worker --debug --watch\"",
-    "start:prod": "concurrently \"node dist/apps/api-server/main\" \"node dist/apps/projection-worker/main\"",
+    "build": "nest build api && nest build projector",
+    "start": "concurrently \"nest start api\" \"nest start projector\"",
+    "start:dev": "concurrently \"nest start api --watch\" \"nest start projector --watch\"",
+    "start:debug": "concurrently \"nest start api --debug --watch\" \"nest start projector --debug --watch\"",
+    "start:prod": "concurrently \"node dist/apps/api-server/main\" \"node dist/apps/proj-docs/main\"",
     "generate-openapi": "npm run generate-openapi -workspace=apps/api-server",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

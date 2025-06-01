@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
 
   "compilerOptions": {
-    "outDir": "../../dist/apps/projection-worker",
+    "outDir": "../../dist/apps/proj-docs",
   },
   "include": ["./**/*.ts"]
 }

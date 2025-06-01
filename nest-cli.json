@@ -12,13 +12,13 @@
         "tsConfigPath": "apps/api-server/tsconfig.build.json"
       }
     },
-    "worker": {
+    "projector": {
       "type": "application",
-      "root": "apps/projection-worker",
+      "root": "apps/proj-docs",
       "entryFile": "main",
-      "sourceRoot": "apps/projection-worker/src",
+      "sourceRoot": "apps/proj-docs/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/projection-worker/tsconfig.build.json"
+        "tsConfigPath": "apps/proj-docs/tsconfig.build.json"
       }
     },
     "config": {

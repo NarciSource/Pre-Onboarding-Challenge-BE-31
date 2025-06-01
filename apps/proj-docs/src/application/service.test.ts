@@ -3,7 +3,7 @@ import { EventBus } from "@nestjs/cqrs";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Kafka, Consumer, KafkaMessage } from "kafkajs";
 
-import ConsumerService from "./service";
+import ProjectionService from "./service";
 import topicEventMap from "./topicEventMap";
 
 jest.mock("kafkajs", () => {
@@ -21,7 +21,7 @@ jest.mock("kafkajs", () => {
 });
 
 describe("ConsumerService", () => {
-  let service: ConsumerService;
+  let service: ProjectionService;
   let eventBus: EventBus;
   let kafka: Kafka;
   let consumer: Consumer;
@@ -29,7 +29,7 @@ describe("ConsumerService", () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        ConsumerService,
+        ProjectionService,
         {
           provide: ConfigService,
           useValue: {
@@ -47,9 +47,9 @@ describe("ConsumerService", () => {
       ],
     }).compile();
 
-    service = module.get(ConsumerService);
+    service = module.get(ProjectionService);
     eventBus = module.get(EventBus);
-    ({ kafka, consumer } = service as ConsumerService & { kafka: Kafka; consumer: Consumer });
+    ({ kafka, consumer } = service as ProjectionService & { kafka: Kafka; consumer: Consumer });
   });
 
   it("Kafka와 Consumer 생성 확인", () => {

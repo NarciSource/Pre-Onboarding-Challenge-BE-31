@@ -7,11 +7,11 @@ import TableEntityMap, { DebeziumMessage, TableEntity } from "./TableEntityMap";
 import topicEventMap, { TopicName } from "./topicEventMap";
 
 @Injectable()
-export default class ConsumerService implements OnModuleInit {
+export default class ProjectionService implements OnModuleInit {
   private readonly kafka: Kafka;
   private readonly consumer: Consumer;
 
-  private readonly logger = new Logger(ConsumerService.name);
+  private readonly logger = new Logger(ProjectionService.name);
 
   constructor(
     private readonly config: ConfigService,

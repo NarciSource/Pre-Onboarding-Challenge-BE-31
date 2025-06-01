@@ -8,7 +8,7 @@ import { model_providers } from "@libs/infrastructure/mongo/models";
 import { repository_providers } from "@libs/infrastructure/mongo/repositories";
 
 import * as events from "./application/events";
-import ConsumerService from "./application/service";
+import ProjectionService from "./application/service";
 import { model_providers as state_model_providers } from "./infrastructure/model";
 import state_repository_providers from "./infrastructure/repository/provider";
 
@@ -20,10 +20,10 @@ import state_repository_providers from "./infrastructure/repository/provider";
     MongooseModule.forFeature([...model_providers, ...state_model_providers]),
   ],
   providers: [
-    ConsumerService,
+    ProjectionService,
     ...Object.values(events),
     ...repository_providers,
     ...state_repository_providers,
   ],
 })
-export default class KafkaConsumerModule {}
+export default class ProjectionDocsModule {}
