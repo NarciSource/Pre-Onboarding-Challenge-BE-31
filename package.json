@@ -11,22 +11,21 @@
   ],
   "workspaces": [
     "apps/api-server",
-    "apps/proj-docs"
+    "apps/proj-docs",
+    "apps/sync-index"
   ],
   "scripts": {
-    "build": "nest build api && nest build projector",
-    "start": "concurrently \"nest start api\" \"nest start projector\"",
-    "start:dev": "concurrently \"nest start api --watch\" \"nest start projector --watch\"",
-    "start:debug": "concurrently \"nest start api --debug --watch\" \"nest start projector --debug --watch\"",
-    "start:prod": "concurrently \"node dist/apps/api-server/main\" \"node dist/apps/proj-docs/main\"",
+    "build": "nest build api && nest build projector & nest build sync",
+    "start:debug": "concurrently \"nest start api --debug --watch\" \"nest start projector --debug --watch\" \"nest start sync --debug --watch\"",
+    "start:prod": "concurrently \"node dist/apps/api-server/main\" \"node dist/apps/projection-mongo/main\" \"node dist/apps/sync-index/main\"",
     "generate-openapi": "npm run generate-openapi -workspace=apps/api-server",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

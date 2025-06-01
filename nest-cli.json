@@ -21,6 +21,15 @@
         "tsConfigPath": "apps/proj-docs/tsconfig.build.json"
       }
     },
+    "sync": {
+      "type": "application",
+      "root": "apps/sync-index",
+      "entryFile": "main",
+      "sourceRoot": "apps/sync-index/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/sync-index/tsconfig.build.json"
+      }
+    },
     "config": {
       "type": "library",
       "root": "libs/config",
