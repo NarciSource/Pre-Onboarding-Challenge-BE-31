@@ -38,6 +38,7 @@ services:
     volumes:
       - mongo-data:/data/db
 
+  # 몽고디비 레플리카 설정
   mongo-init:
     image: mongo:latest
     container_name: mongo-init
@@ -53,6 +54,34 @@ services:
       - ./config/mongo-init/init-replica.js:/init-replica.js:ro
     entrypoint: >
       bash -c "apt-get update && apt-get install -y gettext && envsubst < /init-replica.js | mongosh --host mongo"
+
+  # 검색 데이터베이스
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
+    container_name: elasticsearch
+    networks:
+      - network
+    environment:
+      discovery.type: "single-node"
+      xpack.security.enabled: false
+      ELASTIC_PASSWORD: ${ES_PASSWORD}
+    ports:
+      - "${ES_PORT}:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+  # 엘라스틱서치 UI
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.0.2
+    container_name: elasticsearch-ui
+    networks:
+      - network
+    environment:
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+    ports:
+      - "${ES_UI_PORT}:5601"
+    depends_on:
+      - elasticsearch
 
   # e-commerce 서버 애플리케이션
   server:
@@ -215,6 +244,8 @@ volumes:
   pg-data:
     driver: local
   mongo-data:
+    driver: local
+  es-data:
     driver: local
   kafka-data:
     driver: local
