@@ -52,9 +52,9 @@ export default class SyncService implements OnModuleInit {
   }
 
   async dispatch(topic: TopicName, message: KafkaMessage) {
-    const { op, before, after, source } = JSON.parse(message.value!.toString()) as DebeziumMessage<
-      TableEntityMap[TableEntity]
-    >;
+    const { op, before, after, source } = JSON.parse(
+      message.value!.toString(),
+    ) as DebeziumMessage<string>;
 
     const EventClass = topicEventMap[topic][op];
     if (!EventClass) {

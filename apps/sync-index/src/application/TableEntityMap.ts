@@ -34,7 +34,7 @@ export interface DebeziumMessage<T> {
 }
 
 export default interface TableEntityMap {
-  product_summary: ProductSummaryModel;
+  product_summary: ProductSummaryModel & { _id: string; __v: string };
 }
 
 export type TableEntity = keyof TableEntityMap;
