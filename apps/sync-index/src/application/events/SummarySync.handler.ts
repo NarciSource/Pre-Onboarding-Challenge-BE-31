@@ -7,8 +7,8 @@ import SummarySyncEvent from "./SummarySync.event";
 export default class SummarySyncHandler {
   constructor(private readonly service: ElasticsearchService) {}
 
-  async handle({ collection, after }: SummarySyncEvent) {
-    const { id, _id, __v, ...body } = after;
+  async handle({ collection, docs }: SummarySyncEvent) {
+    const { id, _id, __v, ...body } = docs;
 
     await this.service.index({
       index: collection,

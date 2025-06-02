@@ -1,3 +1,8 @@
-import BaseEvent from "./BaseEvent";
+import { ProductSummaryDocs } from "../../infrastructure";
 
-export default class SummarySyncEvent extends BaseEvent {}
+export default class SummarySyncEvent {
+  constructor(
+    public collection: string,
+    public docs: ProductSummaryDocs,
+  ) {}
+}

@@ -3,8 +3,8 @@ import { ConfigService } from "@nestjs/config";
 import { EventBus } from "@nestjs/cqrs";
 import { Consumer, Kafka, KafkaMessage } from "kafkajs";
 
-import TableEntityMap, { DebeziumMessage, TableEntity } from "./TableEntityMap";
-import topicEventMap, { TopicName } from "./topicEventMap";
+import { ProductSummaryDocs } from "../infrastructure";
+import { SummarySyncEvent } from "./events";
 
 @Injectable()
 export default class SyncService implements OnModuleInit {
@@ -51,18 +51,10 @@ export default class SyncService implements OnModuleInit {
     this.logger.log("Kafka consumer stopped");
   }
 
-  async dispatch(topic: TopicName, message: KafkaMessage) {
-    const { op, before, after, source } = JSON.parse(
-      message.value!.toString(),
-    ) as DebeziumMessage<string>;
+  async dispatch(topic: string, message: KafkaMessage) {
+    const docs = JSON.parse(message.value!.toString()) as ProductSummaryDocs;
 
-    const EventClass = topicEventMap[topic][op];
-    if (!EventClass) {
-      this.logger.warn(`No EventClass found for topic: ${topic}, op: ${op}`);
-      return;
-    }
-
-    const event = new EventClass(source.collection, before, after);
+    const event = new SummarySyncEvent(topic, docs);
 
     await this.event_bus.publish(event);
   }
