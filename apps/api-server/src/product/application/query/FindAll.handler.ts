@@ -1,7 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
+import { Product_Summary } from "@libs/domain/entities";
 import { IQueryRepository, ISearchRepository, Query } from "@libs/domain/repository";
+import { ProductSummaryDocument } from "@libs/infrastructure/es/mapping";
 import { ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 
 import FindAllQuery from "./FindAll.query";
@@ -12,7 +14,7 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
     @Inject("IProductSummaryQueryRepository")
     private readonly query_repository: IQueryRepository<ProductSummaryModel>,
     @Inject("ISummarySearchRepository")
-    private readonly search_repository: ISearchRepository,
+    private readonly search_repository: ISearchRepository<ProductSummaryDocument>,
   ) {}
 
   async execute({
@@ -34,7 +36,7 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
       string,
       "ASC" | "DESC",
     ];
-    let items: ProductSummaryModel[];
+    let items: Product_Summary[];
 
     if (!search) {
       const where = {
@@ -91,7 +93,11 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
         },
       } as Query;
 
-      items = await this.search_repository.search(query);
+      const results = await this.search_repository.search(query);
+      items = results.map(({ created_at, ...remains }) => ({
+        created_at: new Date(created_at),
+        ...remains,
+      }));
     }
 
     // 페이지네이션 요약 정보
