@@ -80,12 +80,11 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
               },
             },
             {
-              match: {
-                name: {
-                  query: search ?? "",
-                  operator: "and",
-                  fuzziness: "auto",
-                },
+              multi_match: {
+                query: search ?? "",
+                fields: ["name", "short_description"],
+                operator: "and",
+                fuzziness: "auto",
               },
             },
           ],
