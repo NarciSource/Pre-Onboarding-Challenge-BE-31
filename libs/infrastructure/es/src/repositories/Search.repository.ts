@@ -4,7 +4,7 @@ import { ElasticsearchService } from "@nestjs/elasticsearch";
 import { ISearchRepository, Mapping, Query } from "@libs/domain/repository";
 
 @Injectable()
-export class SearchRepository implements ISearchRepository {
+export class SearchRepository<T> implements ISearchRepository<T> {
   constructor(
     private readonly es: ElasticsearchService,
     private readonly index_name: string,
@@ -26,7 +26,7 @@ export class SearchRepository implements ISearchRepository {
     }
   }
 
-  async index<T>(id: string, document: T): Promise<void> {
+  async index(id: string, document: T): Promise<void> {
     await this.es.index({
       index: this.index_name,
       id,
@@ -34,7 +34,7 @@ export class SearchRepository implements ISearchRepository {
     });
   }
 
-  async search<T>(query: Query): Promise<T[]> {
+  async search(query: Query): Promise<T[]> {
     const result = await this.es.search({
       index: this.index_name,
       query,

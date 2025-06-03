@@ -1,1 +1,1 @@
-export { default as SummaryMapping } from "./Summary.mapping";
+export { default as SummaryMapping, ProductSummaryDocument } from "./Summary.mapping";
