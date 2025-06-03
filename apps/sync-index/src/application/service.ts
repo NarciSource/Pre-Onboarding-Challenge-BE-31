@@ -27,7 +27,7 @@ export default class SyncService implements OnModuleInit {
   async onModuleInit() {
     await this.consumer.connect();
     await this.consumer.subscribe({
-      topic: "mongo_connector.db.productsummarymodels",
+      topic: "summary-events",
       fromBeginning: true,
     });
 

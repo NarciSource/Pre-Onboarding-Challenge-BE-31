@@ -10,10 +10,13 @@
     "database.include.list": "${MONGO_DATABASE}",
     "collection.include.list": "${MONGO_DATABASE}.productsummarymodels",
 
-    "transforms": "unwrap",
+    "transforms": "unwrap,route",
     "transforms.unwrap.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
     "transforms.unwrap.drop.tombstones": "false",
     "transforms.unwrap.delete.handling.mode": "drop",
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "(.*)",
+    "transforms.route.replacement": "summary-events",
 
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",
     "key.converter.schemas.enable": "false",
