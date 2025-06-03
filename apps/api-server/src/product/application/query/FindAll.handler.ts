@@ -1,7 +1,7 @@
 import { Inject } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
-import { IQueryRepository } from "@libs/domain/repository";
+import { IQueryRepository, ISearchRepository, Query } from "@libs/domain/repository";
 import { ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 
 import FindAllQuery from "./FindAll.query";
@@ -10,7 +10,9 @@ import FindAllQuery from "./FindAll.query";
 export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
   constructor(
     @Inject("IProductSummaryQueryRepository")
-    private readonly repository: IQueryRepository<ProductSummaryModel>,
+    private readonly query_repository: IQueryRepository<ProductSummaryModel>,
+    @Inject("ISummarySearchRepository")
+    private readonly search_repository: ISearchRepository,
   ) {}
 
   async execute({
@@ -32,9 +34,10 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
       string,
       "ASC" | "DESC",
     ];
+    let items: ProductSummaryModel[];
 
-    const items = await this.repository.find({
-      where: {
+    if (!search) {
+      const where = {
         ...(status ? { status } : {}),
         base_price: {
           $gte: min_price ?? 0,
@@ -45,11 +48,52 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
         ...(brand_id ? { brand_id } : {}),
         ...(in_stock ? { stock: { $gt: 0 } } : { stock: { $lte: 0 } }),
         name: { $regex: search ?? "", $options: "i" },
-      },
-      order: { [sort_field]: sort_order },
-      skip: (page - 1) * per_page,
-      take: per_page,
-    });
+      };
+
+      items = await this.query_repository.find({
+        where,
+        order: { [sort_field]: sort_order },
+        skip: (page - 1) * per_page,
+        take: per_page,
+      });
+    } else {
+      const query = {
+        bool: {
+          must: [
+            ...(status ? [{ match: { status } }] : []),
+            {
+              range: {
+                base_price: {
+                  gte: min_price ?? 0,
+                  lte: max_price ?? Number.MAX_SAFE_INTEGER,
+                },
+              },
+            },
+            ...(categories?.length ? [{ terms: { categories } }] : []),
+            ...(seller_id ? [{ match: { seller_id } }] : []),
+            ...(brand_id ? [{ match: { brand_id } }] : []),
+            {
+              range: {
+                stock: {
+                  [in_stock ? "gt" : "lte"]: 0,
+                },
+              },
+            },
+            {
+              match: {
+                name: {
+                  query: search ?? "",
+                  operator: "and",
+                  fuzziness: "auto",
+                },
+              },
+            },
+          ],
+        },
+      } as Query;
+
+      items = await this.search_repository.search(query);
+    }
 
     // 페이지네이션 요약 정보
     const pagination = {
