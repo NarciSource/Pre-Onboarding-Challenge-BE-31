@@ -4,6 +4,7 @@ import { ElasticsearchModule, ElasticsearchService } from "@nestjs/elasticsearch
 
 import { elastic_search_config } from "@libs/config";
 
+import { SummaryMapping } from "./mapping";
 import { SearchRepository } from "./repositories/Search.repository";
 
 @Module({
@@ -14,7 +15,7 @@ import { SearchRepository } from "./repositories/Search.repository";
   providers: [
     {
       provide: "ISummarySearchRepository",
-      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "summary"),
+      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "summary", SummaryMapping),
       inject: [ElasticsearchService],
     },
   ],
