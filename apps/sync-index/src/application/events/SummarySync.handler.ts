@@ -13,7 +13,8 @@ export default class SummarySyncHandler {
   ) {}
 
   async handle({ docs }: SummarySyncEvent) {
-    const { id, _id, __v, ...body } = docs;
+    const { id, _id, __v, created_at, ...remains } = docs;
+    const body = { created_at: created_at / 1000, ...remains };
 
     await this.repository.index(String(id), body);
   }

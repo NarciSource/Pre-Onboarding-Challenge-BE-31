@@ -1,6 +1,9 @@
 import { ProductSummaryModel } from "@libs/infrastructure/mongo/models";
 
-export default class ProductSummaryDocs extends ProductSummaryModel {
+type ProductSummaryDocs = Omit<ProductSummaryModel, "created_at"> & {
   _id: string;
   __v: string;
-}
+  created_at: number;
+};
+
+export default ProductSummaryDocs;

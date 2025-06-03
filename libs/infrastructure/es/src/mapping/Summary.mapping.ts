@@ -2,7 +2,7 @@ export default {
   properties: {
     id: { type: "keyword" },
     categories: { type: "integer" },
-    created_at: { type: "date", format: "epoch_micros" },
+    created_at: { type: "date", format: "epoch_millis" },
     name: {
       type: "text",
       fields: { keyword: { type: "keyword" } },
@@ -10,7 +10,7 @@ export default {
     short_description: { type: "text" },
     slug: { type: "keyword" },
     status: { type: "keyword" },
-    base_price: { type: "integer" },
+    base_price: { type: "long" },
     currency: { type: "keyword" },
     sale_price: { type: "keyword" },
     stock: { type: "integer" },
