@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
+import { Product_Summary } from "@libs/domain/entities";
+
 export class Image {
   @Prop() url: string;
   @Prop({ type: String }) alt_text: string | null;
@@ -17,7 +19,7 @@ export class Brand {
 }
 
 @Schema()
-export default class ProductSummaryModel {
+export default class ProductSummaryModel implements Product_Summary {
   @Prop({ unique: true })
   declare id: number;
 

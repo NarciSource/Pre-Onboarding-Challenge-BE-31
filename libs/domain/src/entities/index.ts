@@ -14,3 +14,5 @@ export { default as Product_Tag } from "./Product_Tag";
 export { default as Category } from "./Category";
 export { default as Review } from "./Review";
 export { default as Tag } from "./Tag";
+
+export { default as Product_Summary } from "./Product_Summary";
