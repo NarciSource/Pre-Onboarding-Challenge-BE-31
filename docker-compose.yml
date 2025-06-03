@@ -105,6 +105,8 @@ services:
       - PG_PORT=5432
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
+      - ES_HOST=elasticsearch
+      - ES_PORT=9200
       - KAFKA_HOST=kafka
       - KAFKA_PORT=9092
 
@@ -130,6 +132,28 @@ services:
       - PG_PORT=5432
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
+      - KAFKA_HOST=kafka
+      - KAFKA_PORT=9092
+
+  # 인덱스 싱크 컨슈머 서비스
+  sync:
+    image: sync-index:${SYNC_VERSION}
+    container_name: sync
+    build:
+      context: .
+      dockerfile: Dockerfile.sync
+    networks:
+      - network
+    ports:
+      - "${SYNC_PORT}:3002"
+    depends_on:
+      - elasticsearch
+      - kafka
+    env_file:
+      - .env
+    environment:
+      - ES_HOST=elasticsearch
+      - ES_PORT=9200
       - KAFKA_HOST=kafka
       - KAFKA_PORT=9092
 
