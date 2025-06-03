@@ -48,6 +48,15 @@
         "tsConfigPath": "libs/domain/tsconfig.lib.json"
       }
     },
+    "rdb": {
+      "type": "library",
+      "root": "libs/infrastructure/rdb",
+      "entryFile": "index",
+      "sourceRoot": "libs/infrastructure/rdb/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/infrastructure/rdb/tsconfig.lib.json"
+      }
+    },
     "mongo": {
       "type": "library",
       "root": "libs/infrastructure/mongo",
@@ -55,6 +64,15 @@
       "sourceRoot": "libs/infrastructure/mongo/src",
       "compilerOptions": {
         "tsConfigPath": "libs/infrastructure/mongo/tsconfig.lib.json"
+      }
+    },
+    "es": {
+      "type": "library",
+      "root": "libs/infrastructure/es",
+      "entryFile": "index",
+      "sourceRoot": "libs/infrastructure/es/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/infrastructure/es/tsconfig.lib.json"
       }
     }
   },

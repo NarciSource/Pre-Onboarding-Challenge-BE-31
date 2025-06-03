@@ -1,19 +1,20 @@
+import { Inject } from "@nestjs/common";
 import { EventsHandler } from "@nestjs/cqrs";
-import { ElasticsearchService } from "@nestjs/elasticsearch";
+
+import { ISearchRepository } from "@libs/domain/repository";
 
 import SummarySyncEvent from "./SummarySync.event";
 
 @EventsHandler(SummarySyncEvent)
 export default class SummarySyncHandler {
-  constructor(private readonly service: ElasticsearchService) {}
+  constructor(
+    @Inject("ISummarySearchRepository")
+    private readonly repository: ISearchRepository,
+  ) {}
 
-  async handle({ collection, docs }: SummarySyncEvent) {
+  async handle({ docs }: SummarySyncEvent) {
     const { id, _id, __v, ...body } = docs;
 
-    await this.service.index({
-      index: collection,
-      id: String(id),
-      body,
-    });
+    await this.repository.index(String(id), body);
   }
 }
