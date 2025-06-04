@@ -69,6 +69,11 @@ services:
       - "${ES_PORT}:9200"
     volumes:
       - es-data:/usr/share/elasticsearch/data
+    command: >
+      bash -c '
+        bin/elasticsearch-plugin install analysis-nori || true;
+        /usr/local/bin/docker-entrypoint.sh elasticsearch
+      '
 
   # 엘라스틱서치 UI
   kibana:
@@ -98,6 +103,7 @@ services:
       - rds
       - mongo
       - kafka
+      - elasticsearch
     env_file:
       - .env
     environment:
