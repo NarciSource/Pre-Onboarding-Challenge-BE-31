@@ -21,6 +21,30 @@ export class SearchRepository<T> implements ISearchRepository<T> {
     if (!exists) {
       await this.es.indices.create({
         index: index_name,
+        settings: {
+          analysis: {
+            analyzer: {
+              korean: {
+                type: "custom",
+                tokenizer: "nori_tokenizer",
+                filter: ["lowercase", "nori_readingform", "korean_stop"],
+                char_filter: ["html_strip"],
+              },
+            },
+            tokenizer: {
+              nori_tokenizer: {
+                type: "nori_tokenizer",
+                decompound_mode: "mixed",
+              },
+            },
+            filter: {
+              korean_stop: {
+                type: "stop",
+                stopwords: ["의", "가", "은", "는"],
+              },
+            },
+          },
+        },
         mappings: mapping,
       });
     }

@@ -7,13 +7,13 @@ export class ProductSummaryDocument implements Omit<Product_Summary, "created_at
   @ESField({ type: "keyword" })
   id: number;
 
-  @ESField({ type: "text", fields: { keyword: { type: "keyword" } } })
+  @ESField({ type: "text", analyzer: "korean", fields: { keyword: { type: "keyword" } } })
   name: string;
 
   @ESField({ type: "keyword" })
   slug: string;
 
-  @ESField({ type: "text" })
+  @ESField({ type: "text", analyzer: "korean" })
   short_description: string | null;
 
   @ESField({ type: "long" })
