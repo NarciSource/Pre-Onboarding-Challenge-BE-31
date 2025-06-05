@@ -6,7 +6,7 @@ services:
     image: postgres:latest
     container_name: rds
     networks:
-      - network
+      - shared-net
     ports:
       - "${PG_PORT}:5432"
     environment:
@@ -33,7 +33,7 @@ services:
     image: mongo:latest
     container_name: mongo
     networks:
-      - network
+      - shared-net
     ports:
       - "${MONGO_PORT}:27017"
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
@@ -47,7 +47,7 @@ services:
     image: mongo:latest
     container_name: mongo-init
     networks:
-      - network
+      - shared-net
     depends_on:
       - mongo
     env_file:
@@ -64,7 +64,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
     container_name: elasticsearch
     networks:
-      - network
+      - shared-net
     environment:
       discovery.type: "single-node"
       xpack.security.enabled: false
@@ -81,19 +81,6 @@ services:
         /usr/local/bin/docker-entrypoint.sh elasticsearch
       '
 
-  # 엘라스틱서치 UI
-  kibana:
-    image: docker.elastic.co/kibana/kibana:9.0.2
-    container_name: elasticsearch-ui
-    networks:
-      - network
-    environment:
-      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
-    ports:
-      - "${ES_UI_PORT}:5601"
-    depends_on:
-      - elasticsearch
-
   # e-commerce 서버 애플리케이션
   server:
     image: e-commerce-server:${VERSION}
@@ -102,7 +89,7 @@ services:
       context: .
       dockerfile: Dockerfile.server
     networks:
-      - network
+      - shared-net
     ports:
       - "${PORT}:3000"
     depends_on:
@@ -130,7 +117,7 @@ services:
       context: .
       dockerfile: Dockerfile.projector
     networks:
-      - network
+      - shared-net
     ports:
       - "${PROJECTOR_PORT}:3001"
     depends_on:
@@ -155,7 +142,7 @@ services:
       context: .
       dockerfile: Dockerfile.sync
     networks:
-      - network
+      - shared-net
     ports:
       - "${SYNC_PORT}:3002"
     depends_on:
@@ -174,7 +161,7 @@ services:
     image: confluentinc/cp-zookeeper:7.9.0
     container_name: coordinator
     networks:
-      - network
+      - shared-net
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -184,7 +171,7 @@ services:
     image: confluentinc/cp-kafka:latest
     container_name: kafka
     networks:
-      - network
+      - shared-net
     ports:
       - "${KAFKA_PORT}:29092"
     depends_on:
@@ -202,33 +189,18 @@ services:
     volumes:
       - kafka-data:/var/lib/kafka/data
 
-  # Kafka UI - 카프카 모니터링 및 관리용 웹 인터페이스
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    networks:
-      - network
-    depends_on:
-      - kafka
-    ports:
-      - "${KAFKA_UI_PORT}:8080"
-    environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
-
   # CDC - 변경 데이터 캡처
   debezium:
     image: debezium/connect:2.7.3.Final
     container_name: cdc
     networks:
-      - network
+      - shared-net
     ports:
       - "${CDC_PORT}:8083" # 커넥터를 등록, 모니터링하는 포트
     depends_on:
       - kafka
       - rds
-      - mongo
+      - mongo-init
     cpus: ".5"
     mem_limit: 1g
     environment:
@@ -250,7 +222,7 @@ services:
     image: bitnami/kubectl:latest
     container_name: connector-init
     networks:
-      - network
+      - shared-net
     depends_on:
       - debezium
       - rds
@@ -275,7 +247,8 @@ services:
         sh ./connectors/register.sh;"
 
 networks:
-  network:
+  shared-net:
+    name: shared-net
     driver: bridge
 
 volumes:
