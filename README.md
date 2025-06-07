@@ -229,8 +229,10 @@ graph TD
    subgraph "API Layer"
       api[API Server]
    end
-      mongo[(MongoDB)]
+
+   subgraph "Command Side"
       postgres[(PostgreSQL)]
+   end
 
    subgraph "CDC & Messaging"
       cdc@{ shape: rounded, label: Debezium }
@@ -239,21 +241,28 @@ graph TD
 
    subgraph "Query Side"
       projector[Projection Docs]
+      sync[Sync Index]
+      mongo[(MongoDB)]
+      elasticsearch[( ElasaticSearch)]
    end
 
    %% Command flow
    api -->|📥 Command| postgres
 
    %% CDC Flow
-   postgres -.->|📡 WAL Log | cdc
+   postgres & mongo -.->|📡 WAL Log | cdc
    cdc -->|📣 Change Event| kafka
-
-   %% Projection flow
-   kafka -->|✉️ Topic| projector
-   projector --> mongo
 
    %% Query flow
    api -->|📤 Query| mongo
+
+   %% Projection flow
+   kafka -->|✉️ Topic| projector & sync
+   projector --> mongo
+   sync --> elasticsearch
+
+   %% Query flow
+   api -->|📤 Query| elasticsearch
 
    click api "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/api-server"
    click projector "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/proj-docs"
