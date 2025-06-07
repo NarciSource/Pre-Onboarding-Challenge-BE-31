@@ -181,7 +181,7 @@ services:
 
   # 분산 메시징 시스템
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.2.15
     container_name: kafka
     networks:
       - network
@@ -247,7 +247,7 @@ services:
 
   # Debezium 커넥터 초기화 스크립트
   connector-init:
-    image: bitnami/kubectl:latest
+    image: alpine:3.20
     container_name: connector-init
     networks:
       - network
@@ -269,6 +269,7 @@ services:
       - ./config/connectors:/connectors
     entrypoint: >
       sh -c "
+        apk add --no-cache curl gettext &&
         echo 'Waiting for Debezium to be ready...';
         until curl -s http://debezium:8083/connectors; do sleep 2; done;
         echo 'Register connector';
