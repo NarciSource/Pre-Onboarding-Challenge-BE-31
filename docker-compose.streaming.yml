@@ -1,0 +1,115 @@
+services:
+  # 분산 시스템을 위한 중앙 집중식 서비스
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.9.0
+    container_name: coordinator
+
+    networks:
+      - shared-net
+
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # 분산 메시징 시스템
+  kafka:
+    image: confluentinc/cp-kafka:7.2.15
+    container_name: kafka
+
+    networks:
+      - shared-net
+    ports:
+      - "${KAFKA_PORT}:29092"
+    depends_on:
+      - zookeeper
+
+    environment:
+      KAFKA_BROKER_ID: 1 # 브로커 ID
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://${KAFKA_HOST}:${KAFKA_PORT}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Kafka 내부에서 사용하는 topic replication factor
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+
+    healthcheck:
+      test: ["CMD", "bash", "-c", "nc -z localhost 9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  # CDC - 변경 데이터 캡처
+  debezium:
+    image: debezium/connect:2.7.3.Final
+    container_name: cdc
+
+    networks:
+      - shared-net
+    ports:
+      - "${CDC_PORT}:8083" # 커넥터를 등록, 모니터링하는 포트
+    depends_on:
+      - kafka
+
+    environment:
+      GROUP_ID: 1
+      BOOTSTRAP_SERVERS: kafka:9092
+      CONFIG_STORAGE_TOPIC: debezium_connect_config
+      OFFSET_STORAGE_TOPIC: debezium_connect_offsets
+      STATUS_STORAGE_TOPIC: debezium_connect_statuses
+      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      ENABLE_DEBEZIUM_SCRIPTING: "true"
+      CONNECT_METRICS_ENABLED: "false"
+      CONNECT_REST_ADVERTISED_HOST_NAME: debezium
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/"]
+      interval: 10s
+      timeout: 5s
+      retries: 50
+    cpus: ".5"
+    mem_limit: 1g
+
+  # Debezium 커넥터 초기화 스크립트
+  connector-init:
+    image: alpine:3.20
+    container_name: connector-init
+
+    entrypoint: >
+      sh -c "
+        apk add --no-cache curl gettext;
+        echo 'Register connector';
+        sh ./connectors/register.sh;"
+
+    networks:
+      - shared-net
+    depends_on:
+      debezium:
+        condition: service_healthy
+
+    env_file:
+      - .env
+    environment:
+      PG_HOST: rds
+      PG_PORT: 5432
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      CDC_HOST: debezium
+      CDC_PORT: 8083
+    volumes:
+      - ./config/connectors:/connectors
+
+networks:
+  shared-net:
+    name: shared-net
+    driver: bridge
+
+volumes:
+  kafka-data:
+    driver: local
