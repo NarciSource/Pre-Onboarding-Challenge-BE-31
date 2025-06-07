@@ -787,11 +787,7 @@ Docker Compose를 활용하여 서버와 데이터베이스를 각각 별도의 
 이를 통해 개발 및 테스트 환경에서의 서비스 간 통신을 간편하게 구성합니다.
 
 ```sh
-# build
-$ docker-compose build
-
-# run
-$ docker-compose up -d
+$ docker compose -f docker-compose.streaming.yml -f docker-compose.yml up -d 
 ```
 
 ### 서버 접근
