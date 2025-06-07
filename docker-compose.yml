@@ -27,6 +27,11 @@ services:
       - "max_wal_senders=10" # 복제 클라이언트 수
       - "-c"
       - "max_replication_slots=10" # Debezium이 슬롯을 만들 수 있게
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   # 쿼리 데이터베이스
   mongo:
@@ -41,6 +46,11 @@ services:
     mem_limit: 1g
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "rs.status().ok"]
+      interval: 10s
+      retries: 10
+      start_period: 30s
 
   # 몽고디비 레플리카 설정
   mongo-init:
@@ -80,6 +90,11 @@ services:
         bin/elasticsearch-plugin install analysis-nori || true;
         /usr/local/bin/docker-entrypoint.sh elasticsearch
       '
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      retries: 20
+      start_period: 60s
 
   # 엘라스틱서치 UI
   kibana:
@@ -106,10 +121,14 @@ services:
     ports:
       - "${PORT}:3000"
     depends_on:
-      - rds
-      - mongo
-      - kafka
-      - elasticsearch
+      rds:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      kafka:
+        condition: service_started
     env_file:
       - .env
     environment:
@@ -134,9 +153,10 @@ services:
     ports:
       - "${PROJECTOR_PORT}:3001"
     depends_on:
-      - rds
-      - mongo
-      - kafka
+      mongo:
+        condition: service_healthy
+      kafka:
+        condition: service_started
     env_file:
       - .env
     environment:
@@ -159,8 +179,10 @@ services:
     ports:
       - "${SYNC_PORT}:3002"
     depends_on:
-      - elasticsearch
-      - kafka
+      elasticsearch:
+        condition: service_healthy
+      kafka:
+        condition: service_started
     env_file:
       - .env
     environment:
@@ -244,6 +266,11 @@ services:
       ENABLE_DEBEZIUM_SCRIPTING: "true"
       CONNECT_METRICS_ENABLED: "false"
       CONNECT_REST_ADVERTISED_HOST_NAME: debezium
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/"]
+      interval: 10s
+      timeout: 5s
+      retries: 50
 
   # Debezium 커넥터 초기화 스크립트
   connector-init:
@@ -252,10 +279,8 @@ services:
     networks:
       - network
     depends_on:
-      - debezium
-      - rds
-      - mongo
-      - mongo-init
+      debezium:
+        condition: service_healthy
     env_file:
       - .env
     environment:
@@ -269,9 +294,7 @@ services:
       - ./config/connectors:/connectors
     entrypoint: >
       sh -c "
-        apk add --no-cache curl gettext &&
-        echo 'Waiting for Debezium to be ready...';
-        until curl -s http://debezium:8083/connectors; do sleep 2; done;
+        apk add --no-cache curl gettext;
         echo 'Register connector';
         sh ./connectors/register.sh;"
 
