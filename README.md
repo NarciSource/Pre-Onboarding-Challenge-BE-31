@@ -259,34 +259,48 @@ graph TD
    click projector "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/proj-docs"
 ```
 
-<details>
-<summary>Module Dependency Diagram </summary>
+### Module Dependency Diagram
 
 ```mermaid
-graph TB
-  subgraph DockerNetwork["Docker Network: network"]
-    server
-    projector
-    rds
-    mongo
-    zookeeper
-    kafka
-    kafka_ui
-    debezium
-    connector_init
+graph
+  subgraph DockerNetwork["shared-net"]
+   direction RL
+
+   subgraph Event-Streaming
+    zookeeper@{ shape: dbl-circ }
+    kafka@{ shape: fr-rect }
+    kafka-ui@{ shape: win-pane }
+    debezium@{ shape: diamond }
+    connector_init@{ shape: odd }
+   end
+
+   subgraph Application
+    server@{ shape: rect }
+    projector@{ shape: rect }
+    sync@{ shape: rect }
+
+    rds@{ shape: cyl }
+    mongo@{ shape: cyl }
+    mongo-init@{ shape: odd }
+    elasticsearch@{ shape: cyl }
+    kibana@{ shape: win-pane }
+   end
   end
 
   %% depends_on 관계
-  connector_init --> debezium ---> rds
+  server -..->|🩺| rds
 
-  server --> rds & mongo & kafka
+  mongo-init -.-> mongo
+  server & projector -..->|🩺| mongo
 
-  projector --> mongo & kafka
+  server & sync -..->|🩺| elasticsearch
+  kibana --> elasticsearch
 
-  debezium & kafka_ui ---> kafka --> zookeeper
+  server & projector & sync -...-> kafka
+  connector_init -->|🩺| debezium --> kafka --> zookeeper
+
+  kafka-ui --> kafka
 ```
-
-</details>
 
 <details>
 <summary>Projection Dependency Diagram</summary>
