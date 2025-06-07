@@ -9,9 +9,10 @@
     "*.event.ts": "$(capture).handler.ts",
     "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig, nest-cli.json",
     "jest.config.ts": "jest.*.ts",
-    "docker-compose.yml": "Dockerfile.*"
+    "docker-compose.yml": "docker-compose.*, Dockerfile.*"
   },
   "cSpell.words": [
+    "cpus",
     "debezium",
     "nori",
     "healthcheck"
