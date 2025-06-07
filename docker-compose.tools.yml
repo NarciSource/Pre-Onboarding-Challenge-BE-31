@@ -1,0 +1,32 @@
+services:
+  # 엘라스틱서치 UI
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.0.2
+    container_name: elasticsearch-ui
+
+    networks:
+      - shared-net
+    ports:
+      - "${ES_UI_PORT}:5601"
+
+    environment:
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+
+  # Kafka UI - 카프카 모니터링 및 관리용 웹 인터페이스
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+
+    networks:
+      - shared-net
+    ports:
+      - "${KAFKA_UI_PORT}:8080"
+
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+
+networks:
+  shared-net:
+    external: true

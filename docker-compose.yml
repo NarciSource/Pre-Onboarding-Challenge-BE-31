@@ -1,23 +1,9 @@
-version: "3.8"
-
 services:
   # 커맨드 데이터베이스
   rds:
     image: postgres:latest
     container_name: rds
-    networks:
-      - network
-    ports:
-      - "${PG_PORT}:5432"
-    environment:
-      POSTGRES_DB: ${PG_DATABASE}
-      POSTGRES_USER: ${PG_USERNAME}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-    volumes:
-      - ./data:/docker-entrypoint-initdb.d
-      - pg-data:/var/lib/postgresql/data
-    cpus: ".5"
-    mem_limit: 1g
+
     # Debezium CDC를 위한 설정 추가
     command: # postgresql.conf의 설정을 덮어쓰기
       - "postgres"
@@ -27,87 +13,101 @@ services:
       - "max_wal_senders=10" # 복제 클라이언트 수
       - "-c"
       - "max_replication_slots=10" # Debezium이 슬롯을 만들 수 있게
+
+    networks:
+      - shared-net
+    ports:
+      - "${PG_PORT}:5432"
+
+    environment:
+      POSTGRES_DB: ${PG_DATABASE}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+      - pg-data:/var/lib/postgresql/data
+
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
       timeout: 3s
       retries: 10
+    cpus: ".5"
+    mem_limit: 1g
 
   # 쿼리 데이터베이스
   mongo:
     image: mongo:latest
     container_name: mongo
+
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+
     networks:
-      - network
+      - shared-net
     ports:
       - "${MONGO_PORT}:27017"
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
-    cpus: ".5"
-    mem_limit: 1g
+
     volumes:
       - mongo-data:/data/db
+
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "rs.status().ok"]
       interval: 10s
       retries: 10
       start_period: 30s
+    cpus: ".5"
+    mem_limit: 1g
 
   # 몽고디비 레플리카 설정
   mongo-init:
     image: mongo:latest
     container_name: mongo-init
+
+    entrypoint: >
+      bash -c "apt-get update && apt-get install -y gettext && envsubst < /init-replica.js | mongosh --host mongo"
+
     networks:
-      - network
+      - shared-net
     depends_on:
       - mongo
+
     env_file:
       - .env
     environment:
       - MONGO_HOST=mongo
     volumes:
       - ./config/mongo-init/init-replica.js:/init-replica.js:ro
-    entrypoint: >
-      bash -c "apt-get update && apt-get install -y gettext && envsubst < /init-replica.js | mongosh --host mongo"
 
   # 검색 데이터베이스
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
     container_name: elasticsearch
-    networks:
-      - network
-    environment:
-      discovery.type: "single-node"
-      xpack.security.enabled: false
-      ELASTIC_PASSWORD: ${ES_PASSWORD}
-    cpus: ".5"
-    mem_limit: 1g
-    ports:
-      - "${ES_PORT}:9200"
-    volumes:
-      - es-data:/usr/share/elasticsearch/data
+
     command: >
       bash -c '
         bin/elasticsearch-plugin install analysis-nori || true;
         /usr/local/bin/docker-entrypoint.sh elasticsearch
       '
+
+    networks:
+      - shared-net
+    ports:
+      - "${ES_PORT}:9200"
+
+    environment:
+      discovery.type: "single-node"
+      xpack.security.enabled: false
+      ELASTIC_PASSWORD: ${ES_PASSWORD}
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s
       retries: 20
       start_period: 60s
-
-  # 엘라스틱서치 UI
-  kibana:
-    image: docker.elastic.co/kibana/kibana:9.0.2
-    container_name: elasticsearch-ui
-    networks:
-      - network
-    environment:
-      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
-    ports:
-      - "${ES_UI_PORT}:5601"
-    depends_on:
-      - elasticsearch
+    cpus: ".5"
+    mem_limit: 1g
 
   # e-commerce 서버 애플리케이션
   server:
@@ -116,8 +116,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.server
+
     networks:
-      - network
+      - shared-net
     ports:
       - "${PORT}:3000"
     depends_on:
@@ -129,6 +130,7 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
+
     env_file:
       - .env
     environment:
@@ -148,8 +150,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.projector
+
     networks:
-      - network
+      - shared-net
     ports:
       - "${PROJECTOR_PORT}:3001"
     depends_on:
@@ -157,6 +160,7 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
+
     env_file:
       - .env
     environment:
@@ -174,8 +178,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.sync
+
     networks:
-      - network
+      - shared-net
     ports:
       - "${SYNC_PORT}:3002"
     depends_on:
@@ -183,6 +188,7 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
+
     env_file:
       - .env
     environment:
@@ -195,8 +201,10 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.0
     container_name: coordinator
+
     networks:
-      - network
+      - shared-net
+
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -205,12 +213,14 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.2.15
     container_name: kafka
+
     networks:
-      - network
+      - shared-net
     ports:
       - "${KAFKA_PORT}:29092"
     depends_on:
       - zookeeper
+
     environment:
       KAFKA_BROKER_ID: 1 # 브로커 ID
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -224,35 +234,18 @@ services:
     volumes:
       - kafka-data:/var/lib/kafka/data
 
-  # Kafka UI - 카프카 모니터링 및 관리용 웹 인터페이스
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    networks:
-      - network
-    depends_on:
-      - kafka
-    ports:
-      - "${KAFKA_UI_PORT}:8080"
-    environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
-
   # CDC - 변경 데이터 캡처
   debezium:
     image: debezium/connect:2.7.3.Final
     container_name: cdc
+
     networks:
-      - network
+      - shared-net
     ports:
       - "${CDC_PORT}:8083" # 커넥터를 등록, 모니터링하는 포트
     depends_on:
       - kafka
-      - rds
-      - mongo
-    cpus: ".5"
-    mem_limit: 1g
+
     environment:
       GROUP_ID: 1
       BOOTSTRAP_SERVERS: kafka:9092
@@ -266,21 +259,32 @@ services:
       ENABLE_DEBEZIUM_SCRIPTING: "true"
       CONNECT_METRICS_ENABLED: "false"
       CONNECT_REST_ADVERTISED_HOST_NAME: debezium
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8083/"]
       interval: 10s
       timeout: 5s
       retries: 50
+    cpus: ".5"
+    mem_limit: 1g
 
   # Debezium 커넥터 초기화 스크립트
   connector-init:
     image: alpine:3.20
     container_name: connector-init
+
+    entrypoint: >
+      sh -c "
+        apk add --no-cache curl gettext;
+        echo 'Register connector';
+        sh ./connectors/register.sh;"
+
     networks:
-      - network
+      - shared-net
     depends_on:
       debezium:
         condition: service_healthy
+
     env_file:
       - .env
     environment:
@@ -292,14 +296,10 @@ services:
       CDC_PORT: 8083
     volumes:
       - ./config/connectors:/connectors
-    entrypoint: >
-      sh -c "
-        apk add --no-cache curl gettext;
-        echo 'Register connector';
-        sh ./connectors/register.sh;"
 
 networks:
-  network:
+  shared-net:
+    name: shared-net
     driver: bridge
 
 volumes:
