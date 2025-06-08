@@ -1,0 +1,6 @@
+{
+  "name": "api-server",
+  "scripts": {
+    "generate-openapi": "ts-node -P tsconfig.json --require tsconfig-paths/register src/utility/downloadOpenAPI.ts"
+  }
+}
