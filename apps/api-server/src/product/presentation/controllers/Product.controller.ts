@@ -1,4 +1,4 @@
-import { CacheInterceptor } from "@nestjs/cache-manager";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 import {
   Body,
   Controller,
@@ -65,6 +65,7 @@ export default class ProductController {
   @ApiStandardResponse("상품 목록을 성공적으로 조회했습니다.", ProductResponseBundle)
   @ApiBadRequestResponse("상품 목록 조회에 실패했습니다.")
   @Get()
+  @CacheTTL(60 * 1000)
   @ResponseType(ResponseDTO<ProductResponseBundle>)
   async read_all(@Query() query_dto: ProductQueryDTO) {
     // 상품 목록 조회 쿼리
@@ -84,6 +85,7 @@ export default class ProductController {
   @ApiBadRequestResponse("요청한 상품을 찾을 수 없습니다.")
   @Get(":id")
   @UseInterceptors(CacheInterceptor)
+  @CacheTTL(10 * 60 * 1000)
   @ResponseType(ResponseDTO<ProductCatalogDTO>)
   async read(@Param() { id }: ParamDTO) {
     const query = new FindQuery(id);

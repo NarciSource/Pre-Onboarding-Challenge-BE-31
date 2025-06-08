@@ -1,4 +1,4 @@
-import { CacheInterceptor } from "@nestjs/cache-manager";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 import {
   Body,
   Controller,
@@ -49,6 +49,7 @@ export default class ReviewController {
   @ApiBadRequestResponse("상품 리뷰 조회에 실패했습니다.")
   @Get("products/:id/reviews")
   @UseInterceptors(CacheInterceptor)
+  @CacheTTL(10 * 1000)
   @ResponseType(ResponseDTO<ReviewResponseBundle>)
   async read(
     @Param() { id: product_id }: ParamDTO,

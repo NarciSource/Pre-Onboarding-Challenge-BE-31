@@ -1,4 +1,4 @@
-import { CacheInterceptor } from "@nestjs/cache-manager";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 import { Controller, Get, UseInterceptors } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -11,6 +11,7 @@ import { MainResponseBundleDTO, ResponseDTO } from "../dto";
 @Controller("main")
 @ApiErrorResponse()
 @UseInterceptors(CacheInterceptor)
+@CacheTTL(10 * 60 * 1000)
 export default class MainController {
   constructor(private readonly query_bus: QueryBus) {}
 
