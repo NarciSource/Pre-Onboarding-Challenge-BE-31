@@ -104,10 +104,29 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
       interval: 10s
-      retries: 60
+      retries: 100
       start_period: 60s
     cpus: ".5"
     mem_limit: 1g
+
+  # 캐싱 데이터베이스
+  redis:
+    image: redis:latest
+    container_name: redis
+
+    networks:
+      - shared-net
+    ports:
+      - "${REDIS_PORT}:6379"
+
+    volumes:
+      - redis-data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
 
   # e-commerce 서버 애플리케이션
   server:
@@ -130,6 +149,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
     env_file:
       - .env
@@ -140,6 +161,8 @@ services:
       - MONGO_PORT=27017
       - ES_HOST=elasticsearch
       - ES_PORT=9200
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       - KAFKA_HOST=kafka
       - KAFKA_PORT=9092
 
@@ -203,4 +226,6 @@ volumes:
   mongo-data:
     driver: local
   es-data:
+    driver: local
+  redis-data:
     driver: local
