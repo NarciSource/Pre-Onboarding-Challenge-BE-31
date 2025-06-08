@@ -1,25 +1,10 @@
 import { promises } from "fs";
 
-import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { EntityManager } from "typeorm";
 import { stringify } from "yaml";
 
-import ProductModule from "product/module";
-import CategoryModule from "category/module";
+import SwaggerAppModule from "../module.swagger";
 import generatorSwagger from "./generatorSwagger";
-
-@Module({
-  providers: [
-    {
-      provide: EntityManager,
-      useValue: {},
-    },
-    ProductModule,
-    CategoryModule,
-  ],
-})
-class SwaggerAppModule {}
 
 export async function openapi() {
   const app = await NestFactory.create(SwaggerAppModule);

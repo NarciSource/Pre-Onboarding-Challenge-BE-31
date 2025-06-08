@@ -543,6 +543,7 @@ Pre-Onboarding-Challenge-BE-31
    │  │  └─ tsconfig.build.json
    │  └─ src
    │     ├─ main.ts
+   │     │  └─ module.swagger.ts
    │     │  └─ module.ts
    │     ├─ __mocks__
    │     │  └─ entityManagerMock.ts
