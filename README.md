@@ -6,9 +6,9 @@
 
 ## 기술 스택
 
-[![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)](https://kafka.apache.org/) [![Apache Zookeeper](https://img.shields.io/badge/Apache_Zookeeper-4E7A37.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgdmlld0JveD0iMCAwIDQ2OSA1MTAiPgogIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0yNzkgMTczYTI3MTYgMjcxNiAwIDAgMS0xNzIgMTcwbC0yLTItMi00Yy0yLTEtMy0zLTItM3YtMWMtMSAxLTYtNC02LTZsLTItMS0xLTN2LTFjLTEgMS0xMy0xOC0xMi0xOWwtMS0xLTMtNC0zLTRjLTEgMC00IDMtNCA1bC03IDhhMTkzIDE5MyAwIDAgMC0yNSAzMGwtMiAzYzEgMSAwIDEtMSAybC0yIDFjMSAyLTEgNS0yIDRoLTFjMSAxIDAgMy0xIDVhMjgwIDI4MCAwIDAgMC03IDlsLTEgMi0yIDVhMTc4IDE3OCAwIDAgMC0xMyAyNmMtMiAyLTIgMS0zIDE1djEwbDEgM3YxbDEgMXYybDEgMnYyYzEtMSAzIDQgMyA3bDEgMSAzIDQgNyAxMSAzIDcgMSAxYTE3MiAxNzIgMCAwIDAgMzkgMzhjMC0yIDQgMiA0IDRoM2wxIDEgMiAxYzAgMiAwIDIgMSAxaDNsMiAyIDEgMSAyLTEgMiAxIDEtMSAxLTFjMyAwIDQtMSA3LTMgMi0yIDMtNCAzLThsMi04YzEtMiAyLTUgMC0zdi0xbDEtNCAxLTIgMi00IDEtMyAxLTEgMS0yIDItMyAxLTIgNC04di0xbDItMiAxLTFjLTEtMiA0LTkgNS05di0ybDEtMiAxLTEgMS0yIDItMmMtMS0xIDAtMSAxLTJsMi0ydi0ybDEtMSAyLTIgMS0yIDMtNSA0LTYgMi0yIDEtMSAzLTQgMi0zIDItMiAyLTQgMi0zYzItMiAyLTMtMS0zLTIgMC0yNi0yNC0yNi0yNWE0NTM4IDQ1MzggMCAwIDEgMTI3LTEyOGw3OS04MEw0MzkgNDZsMjktMjktOS04LTktOC0xNzEgMTcyek0wIDQxMGwxIDN2LTZsLTEgM3oiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://kafka.apache.org/) [![Debezium](https://img.shields.io/badge/Debezium-6DCA92.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgl4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgl2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjQgNjQ7IgoJeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQ1LjgsNTUuOWMwLDQuNSwzLjYsOC4xLDguMSw4LjFoMTBWNTRjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWMzEKCQljMC00LjUtMy42LTguMS04LjEtOC4xSDMxYy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlsMCwwVjguMUMxOC4yLDMuNiwxNC41LDAsMTAsMEgwdjEwYzAsNC41LDMuNiw4LjEsOC4xLDguMUgxMAoJCWM3LjEsMCwxMi45LDUuOCwxMi45LDEyLjl2MS45YzAsNC41LDMuNiw4LjEsOC4xLDguMUgzM2M3LjEsMCwxMi45LDUuOCwxMi45LDEyLjlsMCwwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+Cgk8cGF0aCBkPSJNNjQsMzFjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWOC4xQzQxLDMuNiwzNy40LDAsMzIuOSwwaC0xMHYxMC4xCgkJYzAuMSw0LjQsMy43LDgsOC4xLDhIMzNjNy4xLDAsMTIuOSw1LjgsMTIuOSwxMi45bDAsMHYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xSDY0VjMxeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTY0LDguMWMwLTQuMy0zLjUtNy45LTcuOC04LjFINDUuN3YxMC4xYzAuMSw0LjQsMy43LDgsOC4xLDhINjRWOC4xeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTAsMzNjMCw0LjUsMy42LDguMSw4LjEsOC4xSDEwYzcuMSwwLDEyLjksNS44LDEyLjksMTIuOXYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xaDEwVjUzLjkKCQljLTAuMS00LjQtMy43LTgtOC4xLThIMzFjLTcuMSwwLTEyLjktNS44LTEyLjktMTIuOWwwLDB2LTEuOWMwLTQuNS0zLjYtOC4xLTguMS04LjFIMFYzM3oiIGZpbGw9IiNGRkYiLz4KCTxwYXRoIGQ9Ik0wLDU1LjljMCw0LjMsMy41LDcuOSw3LjgsOC4xaDEwLjVWNTMuOWMtMC4xLTQuNC0zLjctOC04LjEtOEgwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+CjwvZz4KPC9zdmc+&style=flat&logoColor=black)](https://debezium.io/)  
+[![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)](https://kafka.apache.org/) [![Apache Zookeeper](https://img.shields.io/badge/Apache_Zookeeper-4E7A37.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgdmlld0JveD0iMCAwIDQ2OSA1MTAiPgogIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0yNzkgMTczYTI3MTYgMjcxNiAwIDAgMS0xNzIgMTcwbC0yLTItMi00Yy0yLTEtMy0zLTItM3YtMWMtMSAxLTYtNC02LTZsLTItMS0xLTN2LTFjLTEgMS0xMy0xOC0xMi0xOWwtMS0xLTMtNC0zLTRjLTEgMC00IDMtNCA1bC03IDhhMTkzIDE5MyAwIDAgMC0yNSAzMGwtMiAzYzEgMSAwIDEtMSAybC0yIDFjMSAyLTEgNS0yIDRoLTFjMSAxIDAgMy0xIDVhMjgwIDI4MCAwIDAgMC03IDlsLTEgMi0yIDVhMTc4IDE3OCAwIDAgMC0xMyAyNmMtMiAyLTIgMS0zIDE1djEwbDEgM3YxbDEgMXYybDEgMnYyYzEtMSAzIDQgMyA3bDEgMSAzIDQgNyAxMSAzIDcgMSAxYTE3MiAxNzIgMCAwIDAgMzkgMzhjMC0yIDQgMiA0IDRoM2wxIDEgMiAxYzAgMiAwIDIgMSAxaDNsMiAyIDEgMSAyLTEgMiAxIDEtMSAxLTFjMyAwIDQtMSA3LTMgMi0yIDMtNCAzLThsMi04YzEtMiAyLTUgMC0zdi0xbDEtNCAxLTIgMi00IDEtMyAxLTEgMS0yIDItMyAxLTIgNC04di0xbDItMiAxLTFjLTEtMiA0LTkgNS05di0ybDEtMiAxLTEgMS0yIDItMmMtMS0xIDAtMSAxLTJsMi0ydi0ybDEtMSAyLTIgMS0yIDMtNSA0LTYgMi0yIDEtMSAzLTQgMi0zIDItMiAyLTQgMi0zYzItMiAyLTMtMS0zLTIgMC0yNi0yNC0yNi0yNWE0NTM4IDQ1MzggMCAwIDEgMTI3LTEyOGw3OS04MEw0MzkgNDZsMjktMjktOS04LTktOC0xNzEgMTcyek0wIDQxMGwxIDN2LTZsLTEgM3oiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://zookeeper.apache.org/) [![Debezium](https://img.shields.io/badge/Debezium-6DCA92.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgl4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgl2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjQgNjQ7IgoJeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQ1LjgsNTUuOWMwLDQuNSwzLjYsOC4xLDguMSw4LjFoMTBWNTRjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWMzEKCQljMC00LjUtMy42LTguMS04LjEtOC4xSDMxYy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlsMCwwVjguMUMxOC4yLDMuNiwxNC41LDAsMTAsMEgwdjEwYzAsNC41LDMuNiw4LjEsOC4xLDguMUgxMAoJCWM3LjEsMCwxMi45LDUuOCwxMi45LDEyLjl2MS45YzAsNC41LDMuNiw4LjEsOC4xLDguMUgzM2M3LjEsMCwxMi45LDUuOCwxMi45LDEyLjlsMCwwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+Cgk8cGF0aCBkPSJNNjQsMzFjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWOC4xQzQxLDMuNiwzNy40LDAsMzIuOSwwaC0xMHYxMC4xCgkJYzAuMSw0LjQsMy43LDgsOC4xLDhIMzNjNy4xLDAsMTIuOSw1LjgsMTIuOSwxMi45bDAsMHYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xSDY0VjMxeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTY0LDguMWMwLTQuMy0zLjUtNy45LTcuOC04LjFINDUuN3YxMC4xYzAuMSw0LjQsMy43LDgsOC4xLDhINjRWOC4xeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTAsMzNjMCw0LjUsMy42LDguMSw4LjEsOC4xSDEwYzcuMSwwLDEyLjksNS44LDEyLjksMTIuOXYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xaDEwVjUzLjkKCQljLTAuMS00LjQtMy43LTgtOC4xLThIMzFjLTcuMSwwLTEyLjktNS44LTEyLjktMTIuOWwwLDB2LTEuOWMwLTQuNS0zLjYtOC4xLTguMS04LjFIMFYzM3oiIGZpbGw9IiNGRkYiLz4KCTxwYXRoIGQ9Ik0wLDU1LjljMCw0LjMsMy41LDcuOSw3LjgsOC4xaDEwLjVWNTMuOWMtMC4xLTQuNC0zLjctOC04LjEtOEgwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+CjwvZz4KPC9zdmc+&style=flat&logoColor=black)](https://debezium.io/)  
 [![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat&logo=nestjs&logoColor=white)](https://nestjs.com/) [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/ko) [![TypesSript](https://img.shields.io/badge/TypesSript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
-[![elasticsearch](https://img.shields.io/badge/ElasticSearch-005571?style=flat&logo=elasticsearch&logoColor=white)](https://www.elastic.co/kr/elasticsearch) [![Mongodb](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![TypeORM](https://img.shields.io/badge/TypeORM-FE0803?style=flat&logo=typeorm&logoColor=white)](https://typeorm.io/)  
+[![redis](https://img.shields.io/badge/Redis-FF4438?style=flat&logo=redis&logoColor=white)](https://redis.io) [![elasticsearch](https://img.shields.io/badge/ElasticSearch-005571?style=flat&logo=elasticsearch&logoColor=white)](https://www.elastic.co/kr/elasticsearch) [![Mongodb](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![TypeORM](https://img.shields.io/badge/TypeORM-FE0803?style=flat&logo=typeorm&logoColor=white)](https://typeorm.io/)  
 [![Codecov](https://img.shields.io/badge/Codecov-F01F7A?style=flat&logo=codecov&logoColor=white)](https://about.codecov.io/) [![Jest](https://img.shields.io/badge/Jest-C21325?style=flat&logo=jest&logoColor=white)](https://jestjs.io/) [![Testcontainers](https://img.shields.io/badge/Testcontainers-17a6b2.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+DQogIDxwYXRoIGZpbGw9IiMzNjFlNWIiIGQ9Ik0xODcuMjcsNTIuOTFjMC0uMTEsLjAxLS4yMiwuMDEtLjMzLDAtLjMxLS4wMy0uNjEtLjA4LS45MS0uMjYtMS40OC0xLjE3LTIuNzktMi41LTMuNTYtLjE1LS4wOS0uMy0uMTYtLjQ2LS4yM0wxMDIuNTgsLjY4Yy0xLjU4LS45MS0zLjUyLS45MS01LjEsMEwxNS4yOCw0OC4xYy0xLjU4LC45MS0yLjU1LDIuNTktMi41NSw0LjQxbC0uMDQsOTQuOWMwLDEuODIsLjk3LDMuNTEsMi41NSw0LjQybDgyLjE2LDQ3LjQ5Yy43OCwuNDUsMS42NiwuNjgsMi41NSwuNjhoLjExYy45LDAsMS43OC0uMjQsMi41NS0uNjhsODIuMTYtNDcuNDljMS41OC0uOTEsMi41NS0yLjYsMi41NS00LjQybC0uMDQtOTQuNVoiLz4NCiAgPHBvbHlnb24gcG9pbnRzPSIxMDAgMTYgMjcuMjUgNTggMjcuMjUgMTQyIDEwMCAxODQgMTcyLjc1IDE0MiAxNzIuNzUgNTggMTAwIDE2IiBmaWxsPSIjMTZkNmM3Ii8+DQogIDxwb2x5Z29uIHBvaW50cz0iMTcyLjc1IDU4IDE3Mi43NSAxNDIgMTAwIDE4NCAxMDAgMTAwLjAxIDE3Mi43NSA1OCIgZmlsbD0iIzAyN2Y5ZSIvPg0KICA8cG9seWdvbiBmaWxsPSIjMTdhNmIyIiBwb2ludHM9IjE3Mi43NSA1OCAxMDAgMTAwLjAxIDI3LjI1IDU4IDEwMCAxNiAxNzIuNzUgNTgiLz4NCjwvc3ZnPg==&style=flat&logoColor=black)](https://testcontainers.com/) [![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=swagger&logoColor=black)](https://swagger.io/)  
 [![Github Actions](https://img.shields.io/badge/Github_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)](https://github.com/features/actions) [![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=black)](https://prettier.io/)  
 [![Docker Compose](https://img.shields.io/badge/Docker_Compose-2AB4FF.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MjMgNjY1Ij4KICA8cGF0aCBmaWxsPSIjZmNmY2ZjIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00MTggMWMtNiAxLTkgMy0xMyA4LTQgMy00IDMtMTAgMS0xMi02LTYwIDAtNjYgOC01IDYtMTEgNDQtOCA1MGwyMyAxN2M3IDQgNyA2IDIgNy0yMyAzLTM3IDI5LTI5IDUyIDMgOSAzIDktMTAgNi0xOS01LTI0LTYtNDUtNS00NyAwLTg2IDE4LTEwOSA1MGExMzUgMTM1IDAgMCAwLTI0IDY0Yy0zIDI4IDIgNDggMTcgNzJsMjIgMjdjNDAgNDQgNDEgNjYgMyA5MS00NSAzMC0xMDQgMTktMTA2LTIwLTEtMTYgNC0yOSAxNy01MiAxMy0yNCAxNC0zMyAzLTUybDEzLThjMjQtMTIgMjItOSAyMy0zNCAwLTIyIDItMjAtMjMtMzAtMTgtNi0yMC02LTQwLTEtMjggOS00MCAxNC00MSAxOCAwIDItMSAzLTIgMy03IDAtMTQgMTItMTUgMjUtMSAyMSA2IDI5IDMwIDM2IDMwIDkgMzUgMjQgMTkgNDktMzYgNTMtMzIgMTAyIDExIDEyMSAzNSAxNiA3NCAxMyAxMTktOWwxMS01IDMgMzJjMCAzNC00MCAzOC04OSA4bC0xNi0xMGMtNTEtMjktMTAyIDI0LTY2IDcwIDE1IDIwIDQyIDIxIDQ2IDIgMi04IDAtMTEtMTAtMTktMTYtMTItMTctMjQtMi0yNyA1LTEgMjYgOCAyOCAxMmwzNCAyOSAyMCAxMiAyMCA4YzM2IDEzIDgyLTE1IDgyLTUwIDAtMTAgMC0xMCA2LTUgMTAgMTAgMTggMTYgMjMgMTkgNiAzIDYgNCAxIDctNSAyLTUgMi01IDctMSA4IDEgMjkgNCAzMyA0IDcgNjMgNDYgNjkgNDYgMyAwIDQ4LTI1IDUxLTI5IDItMSAzLTM0IDEtMzZsLTE2LTljLTE2LTgtMTYtOC05LTEwIDE5LTcgMzctMjcgNDMtNDdsNS0xYTE2NSAxNjUgMCAwIDAgNjAtMTNjOSAwIDM0LTIyIDQwLTM0bDQtOGM0LTcgNi0yNiA2LTU2IDAtMjkgMS0yNy0xMC0yOS02LTItOC0zLTEzLTgtMzAtMjktNzktMjMtOTYgMTAtMyA3LTMgNy04IDlzLTYgNS01IDE3djE1YzEgMTQgNCAxNiAzNCAyOGwxMiA2YzcgMyA3IDMgMzAtNyA4LTMgOS0zIDkgMS02IDIyLTY0IDQyLTczIDI0YTg3IDg3IDAgMCAwLTYzLTQyYy04IDAtOCAwIDYtMTFhNzM2IDczNiAwIDAgMCA4NS04OWwzLTVjMTktMzEgMjEtNzMgMy0xMDctNy0xNS0yMy0zNS0zNi00OC0zOS0zNi00Ni00Ny0zOC02MiA0LTggMTUtMTcgMjAtMTVhNDUyIDQ1MiAwIDAgMCA1NS0xMmMxMS00IDEzLTUgMTQtMTAgMC00IDItNyA5LTE0IDI0LTI2LTgtODAtNDMtNzFNMjI4IDMzNGMxIDEgMCAxLTEgMS0yMCAwLTI4IDMyLTEyIDQyIDE3IDkgMzctMyAzNy0yMiAwLTctNy0xNy0xMS0xN3YtMWMzLTIgMC0zLTctNGwtNiAxbTU0IDgtNCAxYy0yMiAzLTI1IDM5LTMgNDQgMjQgNSA0MS0yMSAyNS0zOGwtNS0zdi0zYy0xLTItMTQtMy0xMy0xbS00OSAxMjBjLTYgNy05IDE0LTkgMjQgMCA4IDEgMTIgMyA2IDItMTIgOC0yOCAxMy0zM3YtM2MtMSAwLTQgMi03IDZtOTcgNGMwIDIgMjMgMTcgMjcgMTcgMiAwIDEtMy00LTctOS03LTIzLTEzLTIzLTEwbS01NCA2Yy0yMSA1MSAyOSA5NiA3MyA2NyA4LTYgOC03LTEtOC0zOS0zLTYzLTIzLTY2LTU0LTItMTItMy0xMy02LTUiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://docs.docker.com/compose/) [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=Docker&logoColor=white)](https://www.docker.com/)
@@ -69,6 +69,7 @@
 graph TD
    subgraph "API Layer"
       api[API Server]
+      redis[(Redis)]
    end
 
    subgraph "Command Side"
@@ -87,15 +88,18 @@ graph TD
       elasticsearch[( ElasticSearch)]
    end
 
+   %% Cache Layer
+   api <-->|⚡ Caching| redis
+
    %% Command flow
-   api -->|📥 Command| postgres
+   api --->|📥 Command| postgres
 
    %% CDC Flow
    postgres & mongo -.->|📡 WAL Log | cdc
    cdc -->|📣 Change Event| kafka
 
    %% Query flow
-   api -->|📤 Query| mongo
+   api -->|"📤 Query (Lookup)"| mongo
 
    %% Projection flow
    kafka -->|✉️ Topic| projector & sync
@@ -103,7 +107,7 @@ graph TD
    sync --> elasticsearch
 
    %% Query flow
-   api -->|📤 Query| elasticsearch
+   api -->|"📤 Query (Search)"| elasticsearch
 
    click api "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/api-server"
    click projector "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/proj-docs"
@@ -134,12 +138,13 @@ graph
     mongo@{ shape: cyl }
     mongo-init@{ shape: odd }
     elasticsearch@{ shape: cyl }
+    redis@{ shape: cyl }
     kibana@{ shape: win-pane }
    end
   end
 
   %% depends_on 관계
-  server -..->|🩺 healthcheck| rds
+  server -..->|🩺 healthcheck| rds & redis
 
   mongo-init -.-> mongo
   server & projector -..->|🩺| mongo
@@ -427,7 +432,8 @@ Pre-Onboarding-Challenge-BE-31
 │  │     ├─ index.ts
 │  │     ├─ typeorm.config.ts
 │  │     ├─ mongo.config.ts
-│  │     └─ elasticsearch.config.ts
+│  │     ├─ elasticsearch.config.ts
+│  │     └─ redis.config.ts
 │  ├─ auth
 │  │  └─ src
 │  │     ├─ jwtInterceptor.ts
