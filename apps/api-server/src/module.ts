@@ -21,6 +21,7 @@ import BrowsingModule from "browsing/module";
     MongooseModule.forRootAsync(mongo_config),
     CacheModule.register({
       isGlobal: true,
+      ttl: 60 * 1000,
     }),
     ProductModule,
     CategoryModule,

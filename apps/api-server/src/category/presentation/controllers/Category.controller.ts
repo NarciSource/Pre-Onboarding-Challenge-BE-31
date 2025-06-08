@@ -1,4 +1,4 @@
-import { CacheInterceptor } from "@nestjs/cache-manager";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 import { Controller, Get, Param, Query, UseInterceptors } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -31,6 +31,7 @@ export default class CategoryController {
   @ApiBadRequestResponse("카테고리 목록 조회에 실패했습니다.")
   @Get()
   @UseInterceptors(CacheInterceptor)
+  @CacheTTL(10 * 60 * 1000)
   @ResponseType(ResponseDTO<NestedCategoryDTO[]>)
   async read_categories(@Query() { level }: { level: number }) {
     const query = new FindAllQuery(level);
@@ -52,6 +53,7 @@ export default class CategoryController {
   @ApiBadRequestResponse("특정 카테고리의 상품 목록 조회에 실패했습니다.")
   @Get(":id/products")
   @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60 * 1000)
   @ResponseType(ResponseDTO<CategoryResponseBundleDTO>)
   async read_products(@Param() { id }: ParamDTO, @Query() query_dto: CategoryQueryDTO) {
     const query = new FindProductsQuery(id, to_FilterDTO(query_dto));
