@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { CacheInterceptor } from "@nestjs/cache-manager";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from "@nestjs/common";
 import { QueryBus, CommandBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
@@ -37,6 +48,7 @@ export default class ReviewController {
   @ApiStandardResponse("상품 리뷰를 성공적으로 조회했습니다.", ReviewResponseBundle)
   @ApiBadRequestResponse("상품 리뷰 조회에 실패했습니다.")
   @Get("products/:id/reviews")
+  @UseInterceptors(CacheInterceptor)
   @ResponseType(ResponseDTO<ReviewResponseBundle>)
   async read(
     @Param() { id: product_id }: ParamDTO,

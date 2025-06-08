@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { CacheInterceptor } from "@nestjs/cache-manager";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseInterceptors,
+} from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
@@ -54,6 +65,7 @@ export default class ProductController {
   @ApiStandardResponse("상품 목록을 성공적으로 조회했습니다.", ProductResponseBundle)
   @ApiBadRequestResponse("상품 목록 조회에 실패했습니다.")
   @Get()
+  @UseInterceptors(CacheInterceptor)
   @ResponseType(ResponseDTO<ProductResponseBundle>)
   async read_all(@Query() query_dto: ProductQueryDTO) {
     // 상품 목록 조회 쿼리
@@ -72,6 +84,7 @@ export default class ProductController {
   @ApiStandardResponse("상품 상세 정보를 성공적으로 조회했습니다.", ProductCatalogDTO)
   @ApiBadRequestResponse("요청한 상품을 찾을 수 없습니다.")
   @Get(":id")
+  @UseInterceptors(CacheInterceptor)
   @ResponseType(ResponseDTO<ProductCatalogDTO>)
   async read(@Param() { id }: ParamDTO) {
     const query = new FindQuery(id);
