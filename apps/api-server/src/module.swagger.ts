@@ -1,3 +1,4 @@
+import { CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
 
@@ -7,7 +8,7 @@ import * as review_controllers from "review/presentation/controllers";
 import * as browsing_controllers from "browsing/presentation/controllers";
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, CacheModule.register({ isGlobal: true })],
   controllers: [
     ...Object.values(product_controllers),
     ...Object.values(category_controllers),

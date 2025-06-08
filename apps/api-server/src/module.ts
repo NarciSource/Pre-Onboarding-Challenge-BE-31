@@ -1,3 +1,4 @@
+import { CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -18,6 +19,9 @@ import BrowsingModule from "browsing/module";
     }),
     TypeOrmModule.forRootAsync(type_orm_config),
     MongooseModule.forRootAsync(mongo_config),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ProductModule,
     CategoryModule,
     ReviewModule,
