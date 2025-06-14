@@ -15,6 +15,8 @@
     "cpus",
     "debezium",
     "nori",
-    "healthcheck"
+    "healthcheck",
+    "KSQL",
+    "KSQLDB"
   ]
 }

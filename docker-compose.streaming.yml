@@ -42,6 +42,29 @@ services:
       timeout: 5s
       retries: 30
 
+  # 스트림 쿼리 처리
+  ksqldb-server:
+    image: confluentinc/ksqldb-server:0.29.0
+    container_name: ksqldb-server
+
+    networks:
+      - shared-net
+    ports:
+      - "${KSQLDB_PORT}:8088"
+    depends_on:
+      - kafka
+
+    environment:
+      KSQL_KSQL_STREAMS_AUTO_OFFSET_RESET: earliest
+      KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_HOST_NAME: ksqldb-server
+
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
   # CDC - 변경 데이터 캡처
   debezium:
     image: debezium/connect:2.7.3.Final
