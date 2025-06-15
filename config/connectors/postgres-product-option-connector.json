@@ -28,6 +28,6 @@
     "transforms": "RouteByTable",
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.RouteByTable.regex": "product-option.public.(.*)",
-    "transforms.RouteByTable.replacement": "product-option-events"
+    "transforms.RouteByTable.replacement": "$1-events"
   }
 }

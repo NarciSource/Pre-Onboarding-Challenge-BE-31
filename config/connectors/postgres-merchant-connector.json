@@ -16,6 +16,7 @@
     "table.include.list": "public.brands,public.sellers",
 
     "topic.prefix": "merchant",
+    "message.key.columns": "public.brands:id;public.sellers:id",
 
     "decimal.handling.mode": "double",
 
@@ -27,6 +28,6 @@
     "transforms": "RouteByTable",
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.RouteByTable.regex": "merchant.public.(.*)",
-    "transforms.RouteByTable.replacement": "merchant-events"
+    "transforms.RouteByTable.replacement": "$1-events"
   }
 }

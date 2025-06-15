@@ -25,6 +25,6 @@
     "transforms": "RouteByTable",
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.RouteByTable.regex": "review.public.(.*)",
-    "transforms.RouteByTable.replacement": "review-events"
+    "transforms.RouteByTable.replacement": "$1-events"
   }
 }
