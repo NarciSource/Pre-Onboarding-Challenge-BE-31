@@ -27,6 +27,18 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
 
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:latest
+    container_name: ksqldb-cli
+
+    networks:
+      - shared-net
+
+    entrypoint: ["ksql", "http://ksqldb-server:8088"]
+    tty: true
+    environment:
+      KSQL_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
+
 networks:
   shared-net:
     external: true
