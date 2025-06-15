@@ -115,11 +115,13 @@ services:
     depends_on:
       debezium:
         condition: service_healthy
+      rdb:
+        condition: service_healthy
 
     env_file:
       - .env
     environment:
-      PG_HOST: rds
+      PG_HOST: rdb
       PG_PORT: 5432
       MONGO_HOST: mongo
       MONGO_PORT: 27017

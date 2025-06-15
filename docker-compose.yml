@@ -1,8 +1,8 @@
 services:
   # 커맨드 데이터베이스
-  rds:
+  rdb:
     image: postgres:latest
-    container_name: rds
+    container_name: rdb
 
     # Debezium CDC를 위한 설정 추가
     command: # postgresql.conf의 설정을 덮어쓰기
@@ -141,7 +141,7 @@ services:
     ports:
       - "${PORT}:3000"
     depends_on:
-      rds:
+      rdb:
         condition: service_healthy
       mongo:
         condition: service_healthy
@@ -155,7 +155,7 @@ services:
     env_file:
       - .env
     environment:
-      - PG_HOST=rds
+      - PG_HOST=rdb
       - PG_PORT=5432
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
@@ -187,7 +187,7 @@ services:
     env_file:
       - .env
     environment:
-      - PG_HOST=rds
+      - PG_HOST=rdb
       - PG_PORT=5432
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
