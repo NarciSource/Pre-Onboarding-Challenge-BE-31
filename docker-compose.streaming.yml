@@ -61,6 +61,7 @@ services:
       KSQL_HOST_NAME: ksqldb-server
 
     healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/info"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -108,7 +109,7 @@ services:
       sh -c "
         apk add --no-cache curl gettext;
         echo 'Register connector';
-        sh ./connectors/register.sh;"
+        sh ./init/register.sh;"
 
     networks:
       - shared-net
@@ -128,7 +129,31 @@ services:
       CDC_HOST: debezium
       CDC_PORT: 8083
     volumes:
-      - ./config/connectors:/connectors
+      - ./config/connectors:/init
+
+  ksqldb-init:
+    image: confluentinc/ksqldb-cli:latest
+    container_name: ksqldb-cli-init
+
+    entrypoint: >
+      bash -c "
+        echo 'Waiting 120 seconds for connector-init to complete...';
+        sleep 120;
+        echo 'end'
+        for f in /init-sqls/*.sql; do
+          echo Running \$$f;
+          ksql http://ksqldb-server:8088 < \$$f;
+        done
+      "
+
+    networks:
+      - shared-net
+    depends_on:
+      ksqldb-server:
+        condition: service_healthy
+
+    volumes:
+      - ./data/ksqldb:/init-sqls
 
 networks:
   shared-net:
