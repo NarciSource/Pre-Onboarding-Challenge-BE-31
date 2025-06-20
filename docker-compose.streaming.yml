@@ -59,6 +59,7 @@ services:
       KSQL_BOOTSTRAP_SERVERS: kafka:9092
       KSQL_LISTENERS: http://0.0.0.0:8088
       KSQL_HOST_NAME: ksqldb-server
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://apicurio:8080/apis/ccompat/v6
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8088/info"]
@@ -78,6 +79,13 @@ services:
 
     environment:
       REGISTRY_LOG_LEVEL: DEBUG
+      ENABLE_CCOMPAT_LEGACY_ID_MODE: true
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/apis/ccompat/v6/subjects"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
 
   # CDC - 변경 데이터 캡처
   debezium:
@@ -89,8 +97,10 @@ services:
     ports:
       - "${CDC_PORT}:8083" # 커넥터를 등록, 모니터링하는 포트
     depends_on:
-      - kafka
-      - apicurio
+      kafka:
+        condition: service_started
+      apicurio:
+        condition: service_healthy
 
     environment:
       ENABLE_APICURIO_CONVERTERS: "true"
@@ -110,6 +120,9 @@ services:
       CONNECT_KEY_CONVERTER_APICURIO_REGISTRY_URL: http://apicurio:8080/apis/registry/v2
       CONNECT_KEY_CONVERTER_APICURIO_REGISTRY_AUTO-REGISTER: true
       CONNECT_KEY_CONVERTER_APICURIO_REGISTRY_FIND-LATEST: true
+
+      CONNECT_KEY_CONVERTER_APICURIO_REGISTRY_USE_ID: true
+      CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_USE_ID: true
 
       CONNECT_VALUE_CONVERTER: io.apicurio.registry.utils.converter.AvroConverter
       CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_URL: http://apicurio:8080/apis/registry/v2
