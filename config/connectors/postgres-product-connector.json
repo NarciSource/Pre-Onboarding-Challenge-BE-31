@@ -13,19 +13,34 @@
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
+
     "table.include.list": "public.products,public.product_prices,public.product_categories,public.product_tags,public.product_details,public.product_option_groups",
 
     "topic.prefix": "product",
     "message.key.columns": "public.products:id;public.product_prices:product_id;public.product_categories:product_id;public.product_tags:product_id;public.product_details:product_id;public.product_option_groups:product_id",
 
+    "key.converter": "io.apicurio.registry.utils.converter.AvroConverter",
+    "key.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
+    "key.converter.apicurio.registry.auto-register": true,
+    "key.converter.apicurio.registry.find-latest": true,
+    "key.converter.apicurio.registry.use-id": "globalId",
+    "key.converter.apicurio.registry.headers.enabled": false,
+    "key.converter.apicurio.registry.as-confluent": true,
+
+    "value.converter": "io.apicurio.registry.utils.converter.AvroConverter",
+    "value.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
+    "value.converter.apicurio.registry.auto-register": true,
+    "value.converter.apicurio.registry.find-latest": true,
+    "value.converter.apicurio.registry.use-id": "globalId",
+    "value.converter.apicurio.registry.headers.enabled": false,
+    "value.converter.apicurio.registry.as-confluent": true,
+
+    "schema.name.adjustment.mode": "avro",
+
     "decimal.handling.mode": "double",
 
-    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "key.converter.schemas.enable": "false",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false",
-
     "transforms": "RouteByTable",
+
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.RouteByTable.regex": "product.public.(.*)",
     "transforms.RouteByTable.replacement": "$1-events"
