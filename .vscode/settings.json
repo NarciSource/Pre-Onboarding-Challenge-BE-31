@@ -12,6 +12,7 @@
     "docker-compose.yml": "docker-compose.*, Dockerfile.*"
   },
   "cSpell.words": [
+    "apicurio",
     "cpus",
     "debezium",
     "nori",
