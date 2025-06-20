@@ -14,7 +14,7 @@ CREATE STREAM PRODUCT_RAW (
   >
 ) WITH (
   KAFKA_TOPIC = 'products-events',
-  VALUE_FORMAT = 'JSON'
+  VALUE_FORMAT = 'AVRO'
 );
 
 
@@ -30,7 +30,7 @@ CREATE STREAM BRAND_RAW (
   >
 ) WITH (
   KAFKA_TOPIC = 'brands-events',
-  VALUE_FORMAT = 'JSON'
+  VALUE_FORMAT = 'AVRO'
 );
 
 
@@ -48,5 +48,5 @@ CREATE STREAM SELLER_RAW (
   >
 ) WITH (
   KAFKA_TOPIC = 'sellers-events',
-  VALUE_FORMAT = 'JSON'
+  VALUE_FORMAT = 'AVRO'
 );
