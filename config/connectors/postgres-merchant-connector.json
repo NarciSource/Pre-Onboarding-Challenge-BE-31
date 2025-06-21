@@ -19,13 +19,7 @@
     "topic.prefix": "merchant",
     "message.key.columns": "public.brands:id;public.sellers:id",
 
-    "key.converter": "io.apicurio.registry.utils.converter.AvroConverter",
-    "key.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
-    "key.converter.apicurio.registry.auto-register": true,
-    "key.converter.apicurio.registry.find-latest": true,
-    "key.converter.apicurio.registry.use-id": "globalId",
-    "key.converter.apicurio.registry.headers.enabled": false,
-    "key.converter.apicurio.registry.as-confluent": true,
+    "key.converter": "org.apache.kafka.connect.converters.LongConverter",
 
     "value.converter": "io.apicurio.registry.utils.converter.AvroConverter",
     "value.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
@@ -39,7 +33,10 @@
 
     "decimal.handling.mode": "double",
 
-    "transforms": "RouteByTable",
+    "transforms": "ExtractKey,RouteByTable",
+
+    "transforms.ExtractKey.type": "org.apache.kafka.connect.transforms.ExtractField\u0024Key",
+    "transforms.ExtractKey.field": "id",
 
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.RouteByTable.regex": "merchant.public.(.*)",
