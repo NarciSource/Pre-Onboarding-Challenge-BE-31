@@ -9,6 +9,11 @@ for connector in \
     postgres-tag-connector.json \
     mongo-summary-connector.json
 do
+    echo "Registering $connector"
     envsubst < "$SCRIPT_DIR/$connector" | \
-    curl -X POST -H "Content-Type: application/json" --data @- http://${CDC_HOST}:${CDC_PORT}/connectors
+        curl -s -X POST -H "Content-Type: application/json" \
+            --data @- "http://${CDC_HOST}:${CDC_PORT}/connectors" | \
+        jq .
+    echo
+    sleep 5
 done
