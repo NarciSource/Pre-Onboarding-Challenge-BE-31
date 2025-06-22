@@ -4,6 +4,7 @@ for connector in \
     postgres-merchant-connector.json \
     postgres-category-connector.json \
     postgres-product-connector.json \
+    postgres-product-related-connector.json \
     postgres-product-option-connector.json \
     postgres-review-connector.json \
     postgres-tag-connector.json \
