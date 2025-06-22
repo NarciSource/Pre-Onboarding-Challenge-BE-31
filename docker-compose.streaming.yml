@@ -130,6 +130,8 @@ services:
       CONNECT_VALUE_CONVERTER_APICURIO_REGISTRY_FIND-LATEST: true
 
       CONNECT_SCHEMA_NAME_ADJUSTMENT_MODE: avro
+    volumes:
+      - ./config/logging/log4j.properties:/kafka/config/log4j.properties
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8083/"]
