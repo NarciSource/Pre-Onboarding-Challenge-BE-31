@@ -13,10 +13,8 @@ SELECT
   LATEST_BY_OFFSET(created_at) AS created_at,
   LATEST_BY_OFFSET(status) AS status,
 
-  LATEST_BY_OFFSET(b.id) AS brand_id,
-  LATEST_BY_OFFSET(b.name) AS brand_name,
-  LATEST_BY_OFFSET(s.id) AS seller_id,
-  LATEST_BY_OFFSET(s.name) AS seller_name
+  LATEST_BY_OFFSET(STRUCT(id := b.id, name := b.name)) AS brand,
+  LATEST_BY_OFFSET(STRUCT(id := s.id, name := s.name)) AS seller
 
 FROM PRODUCT_RAW p
 LEFT JOIN BRAND_RAW b ON p.brand_id = b.id
