@@ -13,19 +13,37 @@
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
-    "table.include.list": "public.product_options,public.product_images",
+
+    "table.include.list": "public.product_options",
 
     "topic.prefix": "product-option",
-    "message.key.columns": "public.product_options:option_group_id;public.product_images:option_id",
+    "message.key.columns": "public.product_options:option_group_id",
+
+    "key.converter": "org.apache.kafka.connect.converters.LongConverter",
+
+    "value.converter": "io.apicurio.registry.utils.converter.AvroConverter",
+    "value.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
+    "value.converter.apicurio.registry.auto-register": true,
+    "value.converter.apicurio.registry.find-latest": true,
+    "value.converter.apicurio.registry.use-id": "globalId",
+    "value.converter.apicurio.registry.headers.enabled": false,
+    "value.converter.apicurio.registry.as-confluent": true,
+
+    "schema.name.adjustment.mode": "avro",
 
     "decimal.handling.mode": "double",
 
-    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "key.converter.schemas.enable": "false",
-    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false",
+    "transforms": "ExtractKey,ExtractNewRecordState,RouteByTable",
 
-    "transforms": "RouteByTable",
+    "transforms.ExtractKey.type": "org.apache.kafka.connect.transforms.ExtractField\u0024Key",
+    "transforms.ExtractKey.field": "option_group_id",
+
+    "transforms.ExtractNewRecordState.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.ExtractNewRecordState.drop.tombstones": "true",
+    "transforms.ExtractNewRecordState.delete.handling.mode": "rewrite",
+    "transforms.ExtractNewRecordState.add.fields": "op,table",
+    "transforms.ExtractNewRecordState.add.headers": "db",
+
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
     "transforms.RouteByTable.regex": "product-option.public.(.*)",
     "transforms.RouteByTable.replacement": "$1-events"

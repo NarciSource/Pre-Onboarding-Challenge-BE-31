@@ -14,10 +14,13 @@ SELECT
   LATEST_BY_OFFSET(status) AS status,
 
   LATEST_BY_OFFSET(STRUCT(id := b.id, name := b.name)) AS brand,
-  LATEST_BY_OFFSET(STRUCT(id := s.id, name := s.name)) AS seller
+  LATEST_BY_OFFSET(STRUCT(id := s.id, name := s.name)) AS seller,
+
+  LATEST_BY_OFFSET(primary_image) AS primary_image
 
 FROM PRODUCT_RAW p
 LEFT JOIN BRAND_RAW b ON p.brand_id = b.id
 LEFT JOIN SELLER_RAW s ON p.seller_id = s.id
+LEFT JOIN PRIMARY_IMAGE_TABLE pi ON p.id = pi.product_id
 GROUP BY p.id
 EMIT CHANGES;
