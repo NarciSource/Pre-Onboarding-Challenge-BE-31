@@ -47,3 +47,14 @@ CREATE STREAM PRODUCT_IMAGE_RAW (
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
+
+
+CREATE STREAM REVIEW_RAW (
+  id BIGINT KEY,
+  product_id BIGINT,
+  rating INT
+) WITH (
+  KAFKA_TOPIC = 'reviews-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
