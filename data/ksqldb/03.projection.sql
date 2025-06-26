@@ -18,6 +18,8 @@ SELECT
 
   LATEST_BY_OFFSET(primary_image) AS primary_image,
 
+  LATEST_BY_OFFSET(in_stock) AS in_stock,
+
   LATEST_BY_OFFSET(r.rating) AS rating,
   LATEST_BY_OFFSET(r.review_count) AS review_count
 
@@ -26,5 +28,6 @@ LEFT JOIN BRAND_RAW b ON p.brand_id = b.id
 LEFT JOIN SELLER_RAW s ON p.seller_id = s.id
 LEFT JOIN PRIMARY_IMAGE_TABLE pi ON p.id = pi.product_id
 LEFT JOIN REVIEW_AGG r ON p.id = r.product_id
+LEFT JOIN OPTION_AGG o ON p.id = o.product_id
 GROUP BY p.id
 EMIT CHANGES;

@@ -58,3 +58,30 @@ CREATE STREAM REVIEW_RAW (
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
+
+
+CREATE STREAM OPTION_RAW (
+  id BIGINT KEY,
+  option_group_id BIGINT,
+  name STRING,
+  additional_price DOUBLE,
+  sku STRING,
+  stock INT,
+  display_order INT
+) WITH (
+  KAFKA_TOPIC = 'product_options-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
+
+CREATE TABLE OPTION_GROUP_RAW (
+  id BIGINT PRIMARY KEY,
+  product_id BIGINT,
+  name STRING,
+  display_order INT
+) WITH (
+  KAFKA_TOPIC = 'product_option_groups-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
