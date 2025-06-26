@@ -5,6 +5,22 @@ CREATE STREAM PRODUCT_RAW WITH (
 );
 
 
+CREATE TABLE DESCRIPTION_RAW (
+  product_id BIGINT PRIMARY KEY,
+  weight DOUBLE,
+  dimensions STRING,
+  materials STRING,
+  country_of_origin STRING,
+  warranty_info STRING,
+  care_instructions STRING,
+  additional_info STRING
+) WITH (
+  KAFKA_TOPIC = 'product_details-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
+
 CREATE TABLE BRAND_RAW (
   id BIGINT PRIMARY KEY,
   name STRING,
