@@ -10,7 +10,8 @@ SELECT
   LATEST_BY_OFFSET(p.name) AS name,
   LATEST_BY_OFFSET(p.slug) AS slug,
   LATEST_BY_OFFSET(short_description) AS short_description,
-  LATEST_BY_OFFSET(created_at) AS created_at,
+  LATEST_BY_OFFSET(FROM_UNIXTIME(created_at / 1000)) AS created_at,
+  LATEST_BY_OFFSET(FROM_UNIXTIME(updated_at / 1000)) AS updated_at,
   LATEST_BY_OFFSET(status) AS status,
 
   LATEST_BY_OFFSET(STRUCT(id := b.id, name := b.name)) AS brand,
