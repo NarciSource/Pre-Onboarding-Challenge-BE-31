@@ -60,6 +60,20 @@ CREATE STREAM REVIEW_RAW (
 );
 
 
+CREATE TABLE PRODUCT_PRICE_RAW (
+  product_id BIGINT PRIMARY KEY,
+  base_price DOUBLE,
+  sale_price DOUBLE,
+  cost_price DOUBLE,
+  currency STRING,
+  tax_rate DOUBLE
+) WITH (
+  KAFKA_TOPIC = 'product_prices-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
+
 CREATE STREAM OPTION_RAW (
   id BIGINT KEY,
   option_group_id BIGINT,
