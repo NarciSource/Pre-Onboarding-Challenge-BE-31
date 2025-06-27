@@ -55,6 +55,8 @@ CREATE TABLE CATEGORIES_RAW (
   name STRING,
   slug STRING,
   description STRING,
+  parent_id BIGINT,
+  level INT,
   image_url STRING
 ) WITH (
   KAFKA_TOPIC = 'categories-events',
