@@ -61,7 +61,11 @@ SELECT
       tax_rate := tax_rate,
       discount_percentage := ROUND(((base_price - sale_price) / base_price) * 100, 0)
     )
-  ) AS price
+  ) AS price,
+
+  LATEST_BY_OFFSET(option_groups) AS option_groups,
+
+  LATEST_BY_OFFSET(tags) AS tags
 
 FROM PRODUCT_RAW p
 LEFT JOIN DESCRIPTION_RAW d ON p.id = d.product_id
@@ -70,5 +74,7 @@ LEFT JOIN SELLER_RAW s ON p.seller_id = s.id
 LEFT JOIN CATEGORIES_LIST cl ON p.id = cl.product_id
 LEFT JOIN IMAGE_LIST il ON p.id = il.product_id
 LEFT JOIN PRODUCT_PRICE_RAW pp ON p.id = pp.product_id
+LEFT JOIN OPTION_AGG o ON p.id = o.product_id
+LEFT JOIN TAG_LIST t ON p.id = t.product_id
 GROUP BY p.id
 EMIT CHANGES;

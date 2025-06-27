@@ -142,3 +142,26 @@ CREATE TABLE OPTION_GROUP_RAW (
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
+
+
+CREATE TABLE TAGS_RAW (
+  id BIGINT PRIMARY KEY,
+  name STRING,
+  slug STRING
+) WITH (
+  KAFKA_TOPIC = 'tags-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
+
+CREATE TABLE PRODUCT_TAGS_RAW (
+  id BIGINT PRIMARY KEY,
+  tag_id BIGINT,
+  product_id BIGINT
+) WITH (
+  KAFKA_TOPIC = 'product_tags-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
