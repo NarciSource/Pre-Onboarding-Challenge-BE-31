@@ -50,6 +50,31 @@ CREATE TABLE SELLER_RAW (
 );
 
 
+CREATE TABLE CATEGORIES_RAW (
+  id BIGINT PRIMARY KEY,
+  name STRING,
+  slug STRING,
+  description STRING,
+  image_url STRING
+) WITH (
+  KAFKA_TOPIC = 'categories-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
+
+CREATE STREAM PRODUCT_CATEGORIES_RAW (
+  id BIGINT KEY,
+  product_id BIGINT,
+  category_id BIGINT,
+  is_primary BOOLEAN
+) WITH (
+  KAFKA_TOPIC = 'product_categories-events',
+  KEY_FORMAT = 'KAFKA',
+  VALUE_FORMAT = 'AVRO'
+);
+
+
 CREATE STREAM PRODUCT_IMAGE_RAW (
   id BIGINT KEY,
   product_id BIGINT,

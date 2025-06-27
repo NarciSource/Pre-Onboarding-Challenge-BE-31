@@ -1,3 +1,39 @@
+CREATE TABLE CATEGORIES_LIST AS
+SELECT
+  product_id,
+  COLLECT_LIST(
+    STRUCT(
+      id := c.id,
+      name := name,
+      slug := slug,
+      description := description,
+      image_url := image_url
+    )
+  ) AS categories
+FROM PRODUCT_CATEGORIES_RAW pc
+LEFT JOIN CATEGORIES_RAW c ON c.id = pc.category_id
+GROUP BY product_id
+EMIT CHANGES;
+
+
+CREATE TABLE IMAGE_LIST AS
+SELECT
+  product_id,
+  COLLECT_LIST(
+    STRUCT(
+      id := id,
+      url := url,
+      alt_text := alt_text,
+      is_primary := is_primary,
+      display_order := display_order,
+      option_id := option_id
+    )
+  ) AS images
+FROM PRODUCT_IMAGE_RAW
+GROUP BY product_id
+EMIT CHANGES;
+
+
 CREATE TABLE PRIMARY_IMAGE_TABLE AS
 SELECT
   product_id,

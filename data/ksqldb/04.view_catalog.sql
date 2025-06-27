@@ -48,6 +48,10 @@ SELECT
     )
   ) AS details,
 
+  LATEST_BY_OFFSET(categories) AS categories,
+
+  LATEST_BY_OFFSET(images) AS images,
+
   LATEST_BY_OFFSET(
     STRUCT(
       base_price := base_price,
@@ -63,6 +67,8 @@ FROM PRODUCT_RAW p
 LEFT JOIN DESCRIPTION_RAW d ON p.id = d.product_id
 LEFT JOIN BRAND_RAW b ON p.brand_id = b.id
 LEFT JOIN SELLER_RAW s ON p.seller_id = s.id
+LEFT JOIN CATEGORIES_LIST cl ON p.id = cl.product_id
+LEFT JOIN IMAGE_LIST il ON p.id = il.product_id
 LEFT JOIN PRODUCT_PRICE_RAW pp ON p.id = pp.product_id
 GROUP BY p.id
 EMIT CHANGES;
