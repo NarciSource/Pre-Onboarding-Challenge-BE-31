@@ -1,4 +1,8 @@
-CREATE TABLE OPTION_LIST AS
+CREATE TABLE OPTION_LIST WITH (
+  KAFKA_TOPIC = 'ksql_state_option_list',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
 SELECT
   option_group_id,
   COLLECT_LIST(
@@ -16,7 +20,11 @@ GROUP BY option_group_id
 EMIT CHANGES;
 
 
-CREATE TABLE OPTION_AGG AS
+CREATE TABLE OPTION_AGG WITH (
+  KAFKA_TOPIC = 'ksql_state_option_agg',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
 SELECT
   og.product_id AS product_id,
   (MAX(STOCK) > 0) AS in_stock,
@@ -35,7 +43,11 @@ GROUP BY og.product_id
 EMIT CHANGES;
 
 
-CREATE TABLE TAG_LIST AS
+CREATE TABLE TAG_LIST WITH (
+  KAFKA_TOPIC = 'ksql_state_tag_list',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
 SELECT
   pt.product_id AS product_id,
   COLLECT_LIST(

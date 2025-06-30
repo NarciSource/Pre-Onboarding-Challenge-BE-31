@@ -16,7 +16,7 @@
     
     "table.include.list": "public.reviews",
 
-    "topic.prefix": "review",
+    "topic.prefix": "postgres",
     "message.key.columns": "public.reviews:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
@@ -45,7 +45,7 @@
     "transforms.ExtractNewRecordState.add.headers": "db",
 
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.RouteByTable.regex": "review.public.(.*)",
-    "transforms.RouteByTable.replacement": "$1-events"
+    "transforms.RouteByTable.regex": "(.*).public.(.*)",
+    "transforms.RouteByTable.replacement": "$1_$2"
   }
 }

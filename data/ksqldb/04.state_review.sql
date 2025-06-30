@@ -1,4 +1,8 @@
-CREATE TABLE REVIEW_AGG AS
+CREATE TABLE REVIEW_AGG WITH (
+  KAFKA_TOPIC = 'ksql_state_review_agg',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
 SELECT
   product_id AS product_id,
   AVG(rating) AS rating,
@@ -7,7 +11,11 @@ FROM REVIEW_RAW
 GROUP BY product_id;
 
 
-CREATE TABLE RATING_AGG AS
+CREATE TABLE RATING_AGG WITH (
+  KAFKA_TOPIC = 'ksql_state_rating_agg',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
 SELECT
   product_id,
   STRUCT(

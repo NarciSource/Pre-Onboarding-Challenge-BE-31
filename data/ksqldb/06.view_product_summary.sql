@@ -1,5 +1,5 @@
-CREATE TABLE PRODUCT_SUMMARY_TABLE WITH (
-  KAFKA_TOPIC = 'PRODUCT_SUMMARY_TABLE',
+CREATE TABLE PRODUCT_SUMMARY WITH (
+  KAFKA_TOPIC = 'ksql_view_product_summary',
   PARTITIONS = 1,
   REPLICAS = 1,
   KEY_FORMAT = 'DELIMITED',
@@ -31,7 +31,7 @@ SELECT
 FROM PRODUCT_RAW p
 LEFT JOIN BRAND_RAW b ON p.brand_id = b.id
 LEFT JOIN SELLER_RAW s ON p.seller_id = s.id
-LEFT JOIN PRIMARY_IMAGE_TABLE pi ON p.id = pi.product_id
+LEFT JOIN PRIMARY_IMAGE pi ON p.id = pi.product_id
 LEFT JOIN PRODUCT_PRICE_RAW pp ON p.id = pp.product_id
 LEFT JOIN REVIEW_AGG r ON p.id = r.product_id
 LEFT JOIN OPTION_AGG o ON p.id = o.product_id

@@ -1,5 +1,5 @@
 CREATE STREAM PRODUCT_RAW WITH (
-  KAFKA_TOPIC = 'products-events',
+  KAFKA_TOPIC = 'postgres_products',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -15,7 +15,7 @@ CREATE TABLE DESCRIPTION_RAW (
   care_instructions STRING,
   additional_info STRING
 ) WITH (
-  KAFKA_TOPIC = 'product_details-events',
+  KAFKA_TOPIC = 'postgres_product_details',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -29,7 +29,7 @@ CREATE TABLE BRAND_RAW (
   logo_url STRING,
   website STRING
 ) WITH (
-  KAFKA_TOPIC = 'brands-events',
+  KAFKA_TOPIC = 'postgres_brands',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -44,7 +44,7 @@ CREATE TABLE SELLER_RAW (
   contact_email STRING,
   contact_phone STRING
 ) WITH (
-  KAFKA_TOPIC = 'sellers-events',
+  KAFKA_TOPIC = 'postgres_sellers',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -59,7 +59,7 @@ CREATE TABLE CATEGORIES_RAW (
   level INT,
   image_url STRING
 ) WITH (
-  KAFKA_TOPIC = 'categories-events',
+  KAFKA_TOPIC = 'postgres_categories',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -71,7 +71,7 @@ CREATE STREAM PRODUCT_CATEGORIES_RAW (
   category_id BIGINT,
   is_primary BOOLEAN
 ) WITH (
-  KAFKA_TOPIC = 'product_categories-events',
+  KAFKA_TOPIC = 'postgres_product_categories',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -86,7 +86,7 @@ CREATE STREAM PRODUCT_IMAGE_RAW (
   display_order INT,
   option_id BIGINT
 ) WITH (
-  KAFKA_TOPIC = 'product_images-events',
+  KAFKA_TOPIC = 'postgres_product_images',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -97,7 +97,7 @@ CREATE STREAM REVIEW_RAW (
   product_id BIGINT,
   rating INT
 ) WITH (
-  KAFKA_TOPIC = 'reviews-events',
+  KAFKA_TOPIC = 'postgres_reviews',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -111,7 +111,7 @@ CREATE TABLE PRODUCT_PRICE_RAW (
   currency STRING,
   tax_rate DOUBLE
 ) WITH (
-  KAFKA_TOPIC = 'product_prices-events',
+  KAFKA_TOPIC = 'postgres_product_prices',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -126,7 +126,7 @@ CREATE STREAM OPTION_RAW (
   stock INT,
   display_order INT
 ) WITH (
-  KAFKA_TOPIC = 'product_options-events',
+  KAFKA_TOPIC = 'postgres_product_options',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -138,7 +138,7 @@ CREATE TABLE OPTION_GROUP_RAW (
   name STRING,
   display_order INT
 ) WITH (
-  KAFKA_TOPIC = 'product_option_groups-events',
+  KAFKA_TOPIC = 'postgres_product_option_groups',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -149,7 +149,7 @@ CREATE TABLE TAGS_RAW (
   name STRING,
   slug STRING
 ) WITH (
-  KAFKA_TOPIC = 'tags-events',
+  KAFKA_TOPIC = 'postgres_tags',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );
@@ -160,7 +160,7 @@ CREATE TABLE PRODUCT_TAGS_RAW (
   tag_id BIGINT,
   product_id BIGINT
 ) WITH (
-  KAFKA_TOPIC = 'product_tags-events',
+  KAFKA_TOPIC = 'postgres_product_tags',
   KEY_FORMAT = 'KAFKA',
   VALUE_FORMAT = 'AVRO'
 );

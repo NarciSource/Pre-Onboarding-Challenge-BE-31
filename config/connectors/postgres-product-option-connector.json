@@ -16,7 +16,7 @@
 
     "table.include.list": "public.product_options",
 
-    "topic.prefix": "product-option",
+    "topic.prefix": "postgres",
     "message.key.columns": "public.product_options:option_group_id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
@@ -45,7 +45,7 @@
     "transforms.ExtractNewRecordState.add.headers": "db",
 
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.RouteByTable.regex": "product-option.public.(.*)",
-    "transforms.RouteByTable.replacement": "$1-events"
+    "transforms.RouteByTable.regex": "(.*).public.(.*)",
+    "transforms.RouteByTable.replacement": "$1_$2"
   }
 }

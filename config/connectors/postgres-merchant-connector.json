@@ -16,7 +16,7 @@
 
     "table.include.list": "public.brands,public.sellers",
 
-    "topic.prefix": "merchant",
+    "topic.prefix": "postgres",
     "message.key.columns": "public.brands:id;public.sellers:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
@@ -45,7 +45,7 @@
     "transforms.ExtractNewRecordState.add.headers": "db",
 
     "transforms.RouteByTable.type": "org.apache.kafka.connect.transforms.RegexRouter",
-    "transforms.RouteByTable.regex": "merchant.public.(.*)",
-    "transforms.RouteByTable.replacement": "$1-events"
+    "transforms.RouteByTable.regex": "(.*).public.(.*)",
+    "transforms.RouteByTable.replacement": "$1_$2"
   }
 }
