@@ -6,7 +6,7 @@ CREATE TABLE PRODUCT_SUMMARY WITH (
   VALUE_FORMAT = 'AVRO'
 ) AS
 SELECT
-  p.id,
+  p.id AS id,
   LATEST_BY_OFFSET(p.name) AS name,
   LATEST_BY_OFFSET(p.slug) AS slug,
   LATEST_BY_OFFSET(short_description) AS short_description,
@@ -16,6 +16,7 @@ SELECT
 
   LATEST_BY_OFFSET(STRUCT(id := b.id, name := b.name)) AS brand,
   LATEST_BY_OFFSET(STRUCT(id := s.id, name := s.name)) AS seller,
+  LATEST_BY_OFFSET(categories) AS categories,
 
   LATEST_BY_OFFSET(primary_image) AS primary_image,
 
@@ -31,6 +32,7 @@ SELECT
 FROM PRODUCT_RAW p
 LEFT JOIN BRAND_RAW b ON p.brand_id = b.id
 LEFT JOIN SELLER_RAW s ON p.seller_id = s.id
+LEFT JOIN NESTED_PRODUCT_CATEGORY pc ON p.id = pc.product_id
 LEFT JOIN PRIMARY_IMAGE pi ON p.id = pi.product_id
 LEFT JOIN PRODUCT_PRICE_RAW pp ON p.id = pp.product_id
 LEFT JOIN REVIEW_AGG r ON p.id = r.product_id
