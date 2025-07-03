@@ -1,0 +1,67 @@
+CREATE TABLE CATEGORY_PRODUCT_LEVEL1_COUNT WITH (
+  KAFKA_TOPIC = 'ksql_state_category_product_level_1_count',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
+SELECT
+  category_id AS id,
+  COUNT(*) AS product_count
+FROM PRODUCT_CATEGORIES_RAW
+GROUP BY category_id
+EMIT CHANGES;
+
+
+CREATE TABLE CATEGORY_PRODUCT_LEVEL1_PARENT_COUNT WITH (
+  KAFKA_TOPIC = 'ksql_state_category_product_level_1_parent_count',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
+SELECT
+  parent_id AS id,
+  SUM(product_count) AS product_count
+FROM CATEGORY_PRODUCT_LEVEL1_COUNT l1c
+LEFT JOIN CATEGORIES_RAW c ON c.id = l1c.id
+GROUP BY parent_id
+EMIT CHANGES;
+
+
+CREATE TABLE CATEGORY_PRODUCT_LEVEL2_COUNT WITH (
+  KAFKA_TOPIC = 'ksql_state_category_product_level_2_count',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
+SELECT 
+  ROWKEY as id,
+  COALESCE(l1c.product_count, CAST(0 AS BIGINT)) +
+  COALESCE(pc.product_count, CAST(0 AS BIGINT)) AS product_count
+FROM CATEGORY_PRODUCT_LEVEL1_COUNT l1c
+FULL OUTER JOIN CATEGORY_PRODUCT_LEVEL1_PARENT_COUNT pc ON l1c.id = pc.id
+EMIT CHANGES;
+
+
+CREATE TABLE CATEGORY_PRODUCT_LEVEL2_PARENT_COUNT WITH (
+  KAFKA_TOPIC = 'ksql_state_category_product_level_2_parent_count',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
+SELECT
+  c.parent_id AS id,
+  SUM(product_count) AS product_count
+FROM CATEGORY_PRODUCT_LEVEL1_PARENT_COUNT pc 
+LEFT JOIN CATEGORIES_RAW c ON c.id = pc.id
+GROUP BY c.parent_id
+EMIT CHANGES;
+
+
+CREATE TABLE CATEGORY_PRODUCT_LEVEL3_COUNT WITH (
+  KAFKA_TOPIC = 'ksql_state_category_product_level_3_count',
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
+SELECT
+  ROWKEY as id,
+  COALESCE(l2c.product_count, CAST(0 AS BIGINT)) +
+  COALESCE(pc.product_count, CAST(0 AS BIGINT)) AS product_count
+FROM CATEGORY_PRODUCT_LEVEL2_COUNT l2c
+FULL OUTER JOIN CATEGORY_PRODUCT_LEVEL2_PARENT_COUNT pc ON l2c.id = pc.id
+EMIT CHANGES;

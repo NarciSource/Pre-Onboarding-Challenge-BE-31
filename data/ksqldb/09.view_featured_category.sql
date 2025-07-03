@@ -1,0 +1,16 @@
+CREATE TABLE FEATURED_CATEGORY WITH (
+  KAFKA_TOPIC = 'ksql_view_featured_category',
+  PARTITIONS = 1,
+  REPLICAS = 1,
+  KEY_FORMAT = 'DELIMITED',
+  VALUE_FORMAT = 'AVRO'
+) AS
+SELECT
+  c.id,
+  name,
+  slug,
+  image_url,
+  product_count
+FROM CATEGORIES_RAW c
+LEFT JOIN CATEGORY_PRODUCT_LEVEL3_COUNT pc ON c.id = pc.id
+EMIT CHANGES;
