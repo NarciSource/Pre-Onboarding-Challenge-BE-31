@@ -1,5 +1,5 @@
 {
-  "name": "product-related-connector",
+  "name": "postgres-merchant-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,15 +9,15 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "product_slot",
+    "slot.name": "merchant_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
 
-    "table.include.list": "public.product_prices,public.product_categories,public.product_tags,public.product_details,public.product_option_groups,public.product_images",
+    "table.include.list": "public.brands,public.sellers",
 
     "topic.prefix": "postgres",
-    "message.key.columns": "public.product_prices:product_id;public.product_categories:product_id;public.product_tags:product_id;public.product_details:product_id;public.product_option_groups:product_id;public.product_images:product_id",
+    "message.key.columns": "public.brands:id;public.sellers:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
 
@@ -36,7 +36,7 @@
     "transforms": "ExtractKey,ExtractNewRecordState,RouteByTable",
 
     "transforms.ExtractKey.type": "org.apache.kafka.connect.transforms.ExtractField\u0024Key",
-    "transforms.ExtractKey.field": "product_id",
+    "transforms.ExtractKey.field": "id",
 
     "transforms.ExtractNewRecordState.type": "io.debezium.transforms.ExtractNewRecordState",
     "transforms.ExtractNewRecordState.drop.tombstones": "true",

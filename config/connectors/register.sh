@@ -1,17 +1,12 @@
+#!/bin/bash
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 for connector in \
-    postgres-merchant-connector.json \
-    postgres-category-connector.json \
-    postgres-product-connector.json \
-    postgres-product-related-connector.json \
-    postgres-product-option-connector.json \
-    postgres-review-connector.json \
-    postgres-tag-connector.json \
-    mongo-summary-connector.json
+    $SCRIPT_DIR/source/*-connector.json \
+    $SCRIPT_DIR/sink/*-connector.json
 do
     echo "Registering $connector"
-    envsubst < "$SCRIPT_DIR/$connector" | \
+    envsubst < "$connector" | \
         curl -s -X POST -H "Content-Type: application/json" \
             --data @- "http://${CDC_HOST}:${CDC_PORT}/connectors" | \
         jq .

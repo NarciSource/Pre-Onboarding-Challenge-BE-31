@@ -1,5 +1,5 @@
 {
-  "name": "tag-connector",
+  "name": "postgres-review-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,15 +9,15 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "tag_slot",
+    "slot.name": "review_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
-
-    "table.include.list": "public.tags",
+    
+    "table.include.list": "public.reviews",
 
     "topic.prefix": "postgres",
-    "message.key.columns": "public.tag:id",
+    "message.key.columns": "public.reviews:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
 

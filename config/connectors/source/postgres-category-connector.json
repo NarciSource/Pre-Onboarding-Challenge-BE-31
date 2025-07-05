@@ -1,5 +1,5 @@
 {
-  "name": "review-connector",
+  "name": "postgres-category-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,15 +9,15 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "review_slot",
+    "slot.name": "category_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
-    
-    "table.include.list": "public.reviews",
+
+    "table.include.list": "public.categories",
 
     "topic.prefix": "postgres",
-    "message.key.columns": "public.reviews:id",
+    "message.key.columns": "public.categories:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
 

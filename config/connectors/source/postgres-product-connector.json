@@ -1,5 +1,5 @@
 {
-  "name": "product-option-connector",
+  "name": "postgres-product-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,15 +9,15 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "product_option_slot",
+    "slot.name": "product_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
 
-    "table.include.list": "public.product_options",
+    "table.include.list": "public.products",
 
     "topic.prefix": "postgres",
-    "message.key.columns": "public.product_options:option_group_id",
+    "message.key.columns": "public.products:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
 
@@ -36,7 +36,7 @@
     "transforms": "ExtractKey,ExtractNewRecordState,RouteByTable",
 
     "transforms.ExtractKey.type": "org.apache.kafka.connect.transforms.ExtractField\u0024Key",
-    "transforms.ExtractKey.field": "option_group_id",
+    "transforms.ExtractKey.field": "id",
 
     "transforms.ExtractNewRecordState.type": "io.debezium.transforms.ExtractNewRecordState",
     "transforms.ExtractNewRecordState.drop.tombstones": "true",

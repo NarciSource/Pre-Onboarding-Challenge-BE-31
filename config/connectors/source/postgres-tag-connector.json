@@ -1,5 +1,5 @@
 {
-  "name": "category-connector",
+  "name": "postgres-tag-connector",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
 
@@ -9,15 +9,15 @@
     "database.password": "${PG_PASSWORD}",
     "database.dbname": "${PG_DATABASE}",
 
-    "slot.name": "category_slot",
+    "slot.name": "tag_slot",
     "plugin.name": "pgoutput",
 
     "snapshot.mode": "initial",
 
-    "table.include.list": "public.categories",
+    "table.include.list": "public.tags",
 
     "topic.prefix": "postgres",
-    "message.key.columns": "public.categories:id",
+    "message.key.columns": "public.tag:id",
 
     "key.converter": "org.apache.kafka.connect.converters.LongConverter",
 
