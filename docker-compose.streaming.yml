@@ -89,8 +89,11 @@ services:
 
   # CDC - 변경 데이터 캡처
   debezium:
-    image: quay.io/debezium/connect:2.5
+    image: debezium
     container_name: cdc
+    build:
+      context: .
+      dockerfile: Dockerfile.cdc
 
     networks:
       - shared-net
@@ -172,7 +175,8 @@ services:
     volumes:
       - ./config/connectors:/init
 
-  ksqldb-init:
+  # ksql 쿼리 초기화 스크립트
+  ksql-init:
     image: confluentinc/ksqldb-cli:latest
     container_name: ksqldb-cli-init
 
@@ -192,6 +196,8 @@ services:
     depends_on:
       ksqldb-server:
         condition: service_healthy
+      connector-init:
+        condition: service_completed_successfully
 
     volumes:
       - ./data/ksqldb:/init-sqls
