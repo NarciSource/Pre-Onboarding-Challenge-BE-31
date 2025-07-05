@@ -80,7 +80,7 @@ services:
 
   # 검색 데이터베이스
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
     container_name: elasticsearch
 
     command: >
