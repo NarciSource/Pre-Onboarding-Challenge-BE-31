@@ -1,0 +1,27 @@
+{
+  "name": "es-product_catalog-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "tasks.max": "1",
+
+    "connection.url": "http://${ES_HOST}:${ES_PORT}",
+    "connection.username": "${ES_USERNAME}",
+    "connection.password": "${ES_PASSWORD}",
+
+    "topics": "ksql_view_product_catalog",
+
+    "key.ignore": false,
+    "schema.ignore": true,
+
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schemas.enable": false,
+
+    "value.converter": "io.apicurio.registry.utils.converter.AvroConverter",
+    "value.converter.apicurio.registry.url": "http://apicurio:8080/apis/registry/v2",
+    "value.converter.apicurio.registry.auto-register": true,
+    "value.converter.apicurio.registry.find-latest": true,
+    "value.converter.apicurio.registry.use-id": "globalId",
+    "value.converter.apicurio.registry.headers.enabled": false,
+    "value.converter.apicurio.registry.as-confluent": true
+  }
+}
