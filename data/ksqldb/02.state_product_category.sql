@@ -30,11 +30,11 @@ SELECT
   LATEST_BY_OFFSET(c.parent_id) AS parent_id,
   COLLECT_LIST(
     STRUCT(
-      id := parent.id,
-      name := parent.name,
-      slug := parent.slug,
-      description := parent.description,
-      image_url := parent.image_url
+      "id" := parent.id,
+      "name" := parent.name,
+      "slug" := parent.slug,
+      "description" := parent.description,
+      "image_url" := parent.image_url
     )
   ) AS parent
 FROM CATEGORIES_RAW c
@@ -52,11 +52,11 @@ SELECT
   product_id,
   COLLECT_LIST(
     STRUCT(
-      id := c.id,
-      name := c.name,
-      slug := c.slug,
-      is_primary := pc.is_primary,
-      parent := parent
+      "id" := c.id,
+      "name" := c.name,
+      "slug" := c.slug,
+      "is_primary" := pc.is_primary,
+      "parent" := parent
     )
   ) AS categories
 FROM PRODUCT_CATEGORIES_RAW pc

@@ -14,8 +14,8 @@ SELECT
   LATEST_BY_OFFSET(FROM_UNIXTIME(updated_at / 1000)) AS updated_at,
   LATEST_BY_OFFSET(status) AS status,
 
-  LATEST_BY_OFFSET(STRUCT(id := b.id, name := b.name)) AS brand,
-  LATEST_BY_OFFSET(STRUCT(id := s.id, name := s.name)) AS seller,
+  LATEST_BY_OFFSET(STRUCT("id" := b.id, "name" := b.name)) AS brand,
+  LATEST_BY_OFFSET(STRUCT("id" := s.id, "name" := s.name)) AS seller,
   LATEST_BY_OFFSET(categories) AS categories,
 
   LATEST_BY_OFFSET(primary_image) AS primary_image,

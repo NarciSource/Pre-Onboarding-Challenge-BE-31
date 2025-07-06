@@ -7,12 +7,12 @@ SELECT
   option_group_id,
   COLLECT_LIST(
     STRUCT(
-      id := id,
-      name := name,
-      additional_price := additional_price,
-      sku := sku,
-      stock := stock,
-      display_order := display_order
+      "id" := id,
+      "name" := name,
+      "additional_price" := additional_price,
+      "sku" := sku,
+      "stock" := stock,
+      "display_order" := display_order
     )
   ) AS options
 FROM OPTION_RAW
@@ -30,10 +30,10 @@ SELECT
   (MAX(STOCK) > 0) AS in_stock,
   COLLECT_LIST(
     STRUCT(
-      id := og.id,
-      name := og.name,
-      display_order := og.display_order,
-      options := ol.options
+      "id" := og.id,
+      "name" := og.name,
+      "display_order" := og.display_order,
+      "options" := ol.options
     )
   ) AS option_groups
 FROM OPTION_RAW o
@@ -52,9 +52,9 @@ SELECT
   pt.product_id AS product_id,
   COLLECT_LIST(
     STRUCT(
-      id := t.id,
-      name := t.name,
-      slug:= t.slug
+      "id" := t.id,
+      "name" := t.name,
+      "slug":= t.slug
     )
   ) AS tags
 FROM PRODUCT_TAGS_RAW pt

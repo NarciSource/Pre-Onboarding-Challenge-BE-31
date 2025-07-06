@@ -17,34 +17,34 @@ SELECT
 
   LATEST_BY_OFFSET(
     STRUCT(
-      id := b.id,
-      name := b.name,
-      description := b.description,
-      logo_url := b.logo_url,
-      website := b.website
+      "id" := b.id,
+      "name" := b.name,
+      "description" := b.description,
+      "logo_url" := b.logo_url,
+      "website" := b.website
     )
   ) AS brand,
 
   LATEST_BY_OFFSET(
     STRUCT(
-      id := s.id,
-      name := s.name,
-      description := s.description,
-      logo_url := s.logo_url,
-      rating := s.rating,
-      contact_email := s.contact_email,
-      contact_phone := s.contact_phone
+      "id" := s.id,
+      "name" := s.name,
+      "description" := s.description,
+      "logo_url" := s.logo_url,
+      "rating" := s.rating,
+      "contact_email" := s.contact_email,
+      "contact_phone" := s.contact_phone
     )
   ) AS seller,
 
   LATEST_BY_OFFSET(
     STRUCT(
-      weight := weight,
-      dimensions := JSON_RECORDS(dimensions),
-      materials := materials,
-      country_of_origin := country_of_origin,
-      warranty_info := warranty_info,
-      additional_info := JSON_RECORDS(additional_info)
+      "weight" := weight,
+      "dimensions" := JSON_RECORDS(dimensions),
+      "materials" := materials,
+      "country_of_origin" := country_of_origin,
+      "warranty_info" := warranty_info,
+      "additional_info" := JSON_RECORDS(additional_info)
     )
   ) AS details,
 
@@ -54,12 +54,12 @@ SELECT
 
   LATEST_BY_OFFSET(
     STRUCT(
-      base_price := base_price,
-      sale_price := sale_price,
-      cost_price := cost_price,
-      currency := currency,
-      tax_rate := tax_rate,
-      discount_percentage := ROUND(((base_price - sale_price) / base_price) * 100, 0)
+      "base_price" := base_price,
+      "sale_price" := sale_price,
+      "cost_price" := cost_price,
+      "currency" := currency,
+      "tax_rate" := tax_rate,
+      "discount_percentage" := ROUND(((base_price - sale_price) / base_price) * 100, 0)
     )
   ) AS price,
 
