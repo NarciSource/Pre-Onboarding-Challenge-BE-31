@@ -23,12 +23,16 @@
 
     "document.id.strategy": "com.mongodb.kafka.connect.sink.processor.id.strategy.ProvidedInKeyStrategy",
 
-    "transforms": "KeyToStruct,ExtractNewRecordState",
+    "transforms": "KeyToStruct,ExtractNewRecordState,ChangeCase",
 
     "transforms.KeyToStruct.type": "org.apache.kafka.connect.transforms.HoistField\u0024Key",
     "transforms.KeyToStruct.field": "_id",
 
     "transforms.ExtractNewRecordState.type": "io.debezium.transforms.ExtractNewRecordState",
-    "transforms.ExtractNewRecordState.drop.tombstones": true
+    "transforms.ExtractNewRecordState.drop.tombstones": true,
+
+    "transforms.ChangeCase.type": "com.github.jcustenborder.kafka.connect.transform.common.ChangeCase\u0024Value",
+    "transforms.ChangeCase.from": "UPPER_UNDERSCORE",
+    "transforms.ChangeCase.to": "LOWER_UNDERSCORE"
   }
 }
