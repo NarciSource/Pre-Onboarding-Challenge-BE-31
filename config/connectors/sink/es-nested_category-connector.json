@@ -24,10 +24,14 @@
     "value.converter.apicurio.registry.headers.enabled": false,
     "value.converter.apicurio.registry.as-confluent": true,
 
-    "transforms": "ChangeCase",
+    "transforms": "ChangeCase,RenameTopic",
 
     "transforms.ChangeCase.type": "com.github.jcustenborder.kafka.connect.transform.common.ChangeCase\u0024Value",
     "transforms.ChangeCase.from": "UPPER_UNDERSCORE",
-    "transforms.ChangeCase.to": "LOWER_UNDERSCORE"
+    "transforms.ChangeCase.to": "LOWER_UNDERSCORE",
+
+    "transforms.RenameTopic.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.RenameTopic.regex": "ksql_view_(.*)_level_(\\d+)",
+    "transforms.RenameTopic.replacement": "$1"
   }
 }
