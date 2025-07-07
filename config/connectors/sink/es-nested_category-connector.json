@@ -3,12 +3,12 @@
   "config": {
     "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
     "tasks.max": "1",
+    "topics": "ksql_view_nested_category_level_3,ksql_view_nested_category_level_2,ksql_view_nested_category_level_1",
+    "flush.synchronously": true,
 
     "connection.url": "http://${ES_HOST}:${ES_PORT}",
     "connection.username": "${ES_USERNAME}",
     "connection.password": "${ES_PASSWORD}",
-
-    "topics": "ksql_view_nested_category_level_3,ksql_view_nested_category_level_2,ksql_view_nested_category_level_1",
 
     "key.ignore": false,
     "schema.ignore": true,
