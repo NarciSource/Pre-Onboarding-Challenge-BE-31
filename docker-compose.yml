@@ -109,6 +109,31 @@ services:
     cpus: ".5"
     mem_limit: 1g
 
+  # ElasticSearch 인덱스 템플릿 등록 스크립트
+  elasticsearch-init:
+    image: alpine:3.20
+    container_name: elasticsearch-init
+
+    entrypoint: >
+      sh -c "
+        apk add --no-cache curl gettext jq;
+        echo 'Register index templates';
+        sh ./init/register.sh;"
+
+    networks:
+      - shared-net
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+    env_file:
+      - .env
+    environment:
+      ES_HOST: elasticsearch
+      ES_PORT: 9200
+    volumes:
+      - ./config/elasticsearch:/init
+
   # 캐싱 데이터베이스
   redis:
     image: redis:latest
