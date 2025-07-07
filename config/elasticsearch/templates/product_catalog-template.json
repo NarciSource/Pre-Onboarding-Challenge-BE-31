@@ -1,0 +1,202 @@
+{
+  "index_patterns": ["product_catalog"],
+
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "analysis": {
+        "analyzer": {
+          "korean": {
+            "tokenizer": "nori_tokenizer"
+          }
+        }
+      }
+    },
+
+    "mappings": {
+      "properties": {
+        "name": {
+          "type": "text",
+          "analyzer": "korean",
+          "fields": {
+            "keyword": { "type": "keyword" }
+          }
+        },
+        "slug": { "type": "keyword" },
+        "short_description": { "type": "text", "analyzer": "korean" },
+        "full_description": { "type": "text", "analyzer": "korean" },
+        "created_at": { "type": "long" },
+        "updated_at": { "type": "long" },
+        "status": { "type": "keyword" },
+
+        "brand": {
+          "properties": {
+            "id": { "type": "long" },
+            "name": {
+              "type": "text",
+              "analyzer": "korean",
+              "fields": {
+                "keyword": { "type": "keyword" }
+              }
+            },
+            "description": { "type": "text", "analyzer": "korean" },
+            "logo_url": { "type": "keyword" },
+            "website": {
+              "type": "text",
+              "fields": {
+                "keyword": { "type": "keyword" }
+              }
+            }
+          }
+        },
+        "seller": {
+          "properties": {
+            "id": { "type": "long" },
+            "name": {
+              "type": "text",
+              "analyzer": "korean",
+              "fields": {
+                "keyword": { "type": "keyword" }
+              }
+            },
+            "description": { "type": "text", "analyzer": "korean" },
+
+            "contact_email": {
+              "type": "text",
+              "fields": {
+                "keyword": { "type": "keyword" }
+              }
+            },
+            "contact_phone": {
+              "type": "text",
+              "fields": {
+                "keyword": { "type": "keyword" }
+              }
+            },
+            "logo_url": { "type": "keyword" },
+            "rating": { "type": "keyword" }
+          }
+        },
+
+        "detail": {
+          "properties": {
+            "weight": { "type": "float" },
+            "dimensions": {
+              "properties": {
+                "width": { "type": "float" },
+                "height": { "type": "float" },
+                "depth": { "type": "float" }
+              }
+            },
+            "materials": { "type": "text", "analyzer": "korean" },
+            "country_of_origin": { "type": "keyword" },
+            "warranty_info": { "type": "text", "analyzer": "korean" },
+            "care_instructions": { "type": "text", "analyzer": "korean" },
+            "additional_info": {
+              "properties": {
+                "assembly_required": { "type": "boolean" },
+                "assembly_time": { "type": "integer" }
+              }
+            }
+          }
+        },
+
+        "categories": {
+          "type": "nested",
+          "properties": {
+            "id": { "type": "keyword" },
+            "name": {
+              "type": "text",
+              "analyzer": "korean",
+              "fields": {
+                "keyword": { "type": "keyword" }
+              }
+            },
+            "slug": { "type": "keyword" },
+            "is_primary": { "type": "boolean" },
+            "parent": {
+              "properties": {
+                "id": { "type": "keyword" },
+                "name": {
+                  "type": "text",
+                  "analyzer": "korean",
+                  "fields": {
+                    "keyword": { "type": "keyword" }
+                  }
+                },
+                "slug": { "type": "keyword" }
+              }
+            }
+          }
+        },
+
+        "images": {
+          "type": "nested",
+          "properties": {
+            "id": { "type": "long" },
+            "url": { "type": "keyword" },
+            "alt_text": { "type": "text", "analyzer": "korean" },
+            "is_primary": { "type": "boolean" },
+            "display_order": { "type": "integer" },
+            "option_id": { "type": "long" }
+          }
+        },
+
+        "price": {
+          "properties": {
+            "base_price": { "type": "float" },
+            "sale_price": { "type": "float" },
+            "cost_price": { "type": "float" },
+            "tax_rate": { "type": "float" },
+            "discount_percentage": { "type": "integer" }
+          }
+        },
+
+        "rating": {
+          "properties": {
+            "average": { "type": "float" },
+            "count": { "type": "integer" },
+            "distribution": {
+              "properties": {
+                "5": { "type": "integer" },
+                "4": { "type": "integer" },
+                "3": { "type": "integer" },
+                "2": { "type": "integer" },
+                "1": { "type": "integer" }
+              }
+            }
+          }
+        },
+
+        "option_groups": {
+          "type": "nested",
+          "properties": {
+            "id": { "type": "long" },
+            "name": { "type": "keyword" },
+            "display_order": { "type": "integer" },
+            "options": {
+              "type": "nested",
+              "properties": {
+                "id": { "type": "keyword" },
+                "name": { "type": "keyword" },
+                "additional_price": { "type": "float" },
+                "sku": { "type": "keyword" },
+                "stock": { "type": "integer" },
+                "display_order": { "type": "integer" }
+              }
+            }
+          }
+        },
+
+        "tags": {
+          "type": "nested",
+          "properties": {
+            "id": { "type": "long" },
+            "name": { "type": "keyword" },
+            "slug": { "type": "keyword" }
+          }
+        }
+      }
+    }
+  }
+}

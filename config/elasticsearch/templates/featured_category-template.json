@@ -1,0 +1,31 @@
+{
+  "index_patterns": ["featured_category"],
+
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "analysis": {
+        "analyzer": {
+          "korean": {
+            "tokenizer": "nori_tokenizer"
+          }
+        }
+      }
+    },
+
+    "mappings": {
+      "properties": {
+        "name": {
+          "type": "text",
+          "analyzer": "korean",
+          "fields": {
+            "keyword": { "type": "keyword" }
+          }
+        },
+        "slug": { "type": "keyword" },
+        "image_url": { "type": "keyword" },
+        "product_count": { "type": "integer" }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "index_patterns": ["nested_category"],
+
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "analysis": {
+        "analyzer": {
+          "korean": {
+            "tokenizer": "nori_tokenizer"
+          }
+        }
+      }
+    },
+
+    "mappings": {
+      "properties": {
+        "name": {
+          "type": "text",
+          "analyzer": "korean",
+          "fields": {
+            "keyword": { "type": "keyword" }
+          }
+        },
+        "slug": { "type": "keyword" },
+        "description": { "type": "text", "analyzer": "korean" },
+        "level": { "type": "integer" },
+        "image_url": { "type": "keyword" }
+      }
+    }
+  }
+}
