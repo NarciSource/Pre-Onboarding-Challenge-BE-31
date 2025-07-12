@@ -12,24 +12,6 @@
         "tsConfigPath": "apps/api-server/tsconfig.build.json"
       }
     },
-    "projector": {
-      "type": "application",
-      "root": "apps/proj-docs",
-      "entryFile": "main",
-      "sourceRoot": "apps/proj-docs/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/proj-docs/tsconfig.build.json"
-      }
-    },
-    "sync": {
-      "type": "application",
-      "root": "apps/sync-index",
-      "entryFile": "main",
-      "sourceRoot": "apps/sync-index/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/sync-index/tsconfig.build.json"
-      }
-    },
     "config": {
       "type": "library",
       "root": "libs/config",
