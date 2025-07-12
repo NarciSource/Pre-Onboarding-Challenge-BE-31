@@ -6,7 +6,7 @@
 
 ## 기술 스택
 
-[![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)](https://kafka.apache.org/) [![Apache Zookeeper](https://img.shields.io/badge/Apache_Zookeeper-4E7A37.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgdmlld0JveD0iMCAwIDQ2OSA1MTAiPgogIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0yNzkgMTczYTI3MTYgMjcxNiAwIDAgMS0xNzIgMTcwbC0yLTItMi00Yy0yLTEtMy0zLTItM3YtMWMtMSAxLTYtNC02LTZsLTItMS0xLTN2LTFjLTEgMS0xMy0xOC0xMi0xOWwtMS0xLTMtNC0zLTRjLTEgMC00IDMtNCA1bC03IDhhMTkzIDE5MyAwIDAgMC0yNSAzMGwtMiAzYzEgMSAwIDEtMSAybC0yIDFjMSAyLTEgNS0yIDRoLTFjMSAxIDAgMy0xIDVhMjgwIDI4MCAwIDAgMC03IDlsLTEgMi0yIDVhMTc4IDE3OCAwIDAgMC0xMyAyNmMtMiAyLTIgMS0zIDE1djEwbDEgM3YxbDEgMXYybDEgMnYyYzEtMSAzIDQgMyA3bDEgMSAzIDQgNyAxMSAzIDcgMSAxYTE3MiAxNzIgMCAwIDAgMzkgMzhjMC0yIDQgMiA0IDRoM2wxIDEgMiAxYzAgMiAwIDIgMSAxaDNsMiAyIDEgMSAyLTEgMiAxIDEtMSAxLTFjMyAwIDQtMSA3LTMgMi0yIDMtNCAzLThsMi04YzEtMiAyLTUgMC0zdi0xbDEtNCAxLTIgMi00IDEtMyAxLTEgMS0yIDItMyAxLTIgNC04di0xbDItMiAxLTFjLTEtMiA0LTkgNS05di0ybDEtMiAxLTEgMS0yIDItMmMtMS0xIDAtMSAxLTJsMi0ydi0ybDEtMSAyLTIgMS0yIDMtNSA0LTYgMi0yIDEtMSAzLTQgMi0zIDItMiAyLTQgMi0zYzItMiAyLTMtMS0zLTIgMC0yNi0yNC0yNi0yNWE0NTM4IDQ1MzggMCAwIDEgMTI3LTEyOGw3OS04MEw0MzkgNDZsMjktMjktOS04LTktOC0xNzEgMTcyek0wIDQxMGwxIDN2LTZsLTEgM3oiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://zookeeper.apache.org/) [![Debezium](https://img.shields.io/badge/Debezium-6DCA92.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgl4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgl2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjQgNjQ7IgoJeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQ1LjgsNTUuOWMwLDQuNSwzLjYsOC4xLDguMSw4LjFoMTBWNTRjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWMzEKCQljMC00LjUtMy42LTguMS04LjEtOC4xSDMxYy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlsMCwwVjguMUMxOC4yLDMuNiwxNC41LDAsMTAsMEgwdjEwYzAsNC41LDMuNiw4LjEsOC4xLDguMUgxMAoJCWM3LjEsMCwxMi45LDUuOCwxMi45LDEyLjl2MS45YzAsNC41LDMuNiw4LjEsOC4xLDguMUgzM2M3LjEsMCwxMi45LDUuOCwxMi45LDEyLjlsMCwwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+Cgk8cGF0aCBkPSJNNjQsMzFjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWOC4xQzQxLDMuNiwzNy40LDAsMzIuOSwwaC0xMHYxMC4xCgkJYzAuMSw0LjQsMy43LDgsOC4xLDhIMzNjNy4xLDAsMTIuOSw1LjgsMTIuOSwxMi45bDAsMHYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xSDY0VjMxeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTY0LDguMWMwLTQuMy0zLjUtNy45LTcuOC04LjFINDUuN3YxMC4xYzAuMSw0LjQsMy43LDgsOC4xLDhINjRWOC4xeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTAsMzNjMCw0LjUsMy42LDguMSw4LjEsOC4xSDEwYzcuMSwwLDEyLjksNS44LDEyLjksMTIuOXYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xaDEwVjUzLjkKCQljLTAuMS00LjQtMy43LTgtOC4xLThIMzFjLTcuMSwwLTEyLjktNS44LTEyLjktMTIuOWwwLDB2LTEuOWMwLTQuNS0zLjYtOC4xLTguMS04LjFIMFYzM3oiIGZpbGw9IiNGRkYiLz4KCTxwYXRoIGQ9Ik0wLDU1LjljMCw0LjMsMy41LDcuOSw3LjgsOC4xaDEwLjVWNTMuOWMtMC4xLTQuNC0zLjctOC04LjEtOEgwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+CjwvZz4KPC9zdmc+&style=flat&logoColor=black)](https://debezium.io/)  
+[![ksqlDB](https://img.shields.io/badge/ksqlDB-EF5862.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNSA2MyI+PHBhdGggZmlsbD0iI0ZGRiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJtMjUgNTggMSAzYTEgMSAwIDAgMS0yIDFoLTFsLTEtM2ExIDEgMCAwIDEgMy0xWm00LTJhMSAxIDAgMSAxLTIgMSAxIDEgMCAwIDEgMi0xWk0xNiAxM2M0IDUgOSAxMSAxMiAxOWw1IDEyIDEgMWEzIDMgMCAwIDEtNSAzbC0xLTJhMSAxIDAgMSAwLTMgMWwyIDQgMSAyYTEgMSAwIDAgMS0zIDFsLTEtMmExIDEgMCAxIDAtMiAxbDEgMWExIDEgMCAxIDEtMiAybC0xLTItMS00YTEgMSAwIDEgMC0zIDJ2MWEzIDMgMCAwIDEtNSAybC0xLTItNS0xMWMtMy04LTQtMTYtNS0yMlptMyAyMmEzIDMgMCAxIDAtNSAyIDMgMyAwIDAgMCA1LTJabS0zLTdhMyAzIDAgMSAwLTUgMiAzIDMgMCAwIDAgNS0yWm0tMy02YTMgMyAwIDEgMC01IDIgMyAzIDAgMCAwIDUtMlpNMSAwbDEzIDExaDFMMCAxNyAxIDBaIi8+PC9zdmc+&style=flat&logoColor=black)](https://www.confluent.io/ko-kr/product/ksqldb/) [![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)](https://kafka.apache.org/) [![Apicurio Registry](https://img.shields.io/badge/Apicurio_Registry-758EBF.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBpZD0iU3ZnanNTdmcxMDAwIiB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0Ij48ZGVmcy8+PHBhdGggZD0iTTQ2NiA2MTJoLTFjLTU4LTQtMTA3LTY0LTEwNy0xMDlsNC04MkE0NjMgNDYzIDAgMCAxIDcwMSA1NSA0NTMgNDUzIDAgMCAwIDQyIDQ1OHY0MDNhMTU4IDE1OCAwIDAgMCAzMTUgMHYtODRjMC02MSA0OC0xMTEgMTA4LTExNWgxYTI1IDI1IDAgMCAwIDAtNTBaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+PHBhdGggZD0iTTg0OSAyMjRjMjQgMCA0OCAyIDcxIDUtMjktNDktNjctOTItMTExLTEyN2E0NjMgNDYzIDAgMCAwLTM2OSAyNTIgMTM3IDEzNyAwIDAgMSAxMTgtMzBjODAtNjMgMTgxLTEwMCAyOTEtMTAwWk05NTkgMzE2YTQ3NSA0NzUgMCAwIDAtMzQ0IDM1YzMyIDI1IDUyIDY0IDUyIDEwN3Y0NWMwIDQ1LTUwIDEwNS0xMDcgMTA5aC0yYTI1IDI1IDAgMCAwIDAgNTBoMWM1OSA0IDEwNCA1MCAxMDggMTA5djkwYTE1OCAxNTggMCAwIDAgMzE1IDBWNDU4YzAtNTAtOC05OC0yMy0xNDJaIiBjbGFzcz0iY2xzLTEiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz48L3N2Zz48L3N2Zz4=&style=flat&logoColor=black)](https://www.apicur.io/registry/) [![Apache Zookeeper](https://img.shields.io/badge/Apache_Zookeeper-4E7A37.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgdmlld0JveD0iMCAwIDQ2OSA1MTAiPgogIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0yNzkgMTczYTI3MTYgMjcxNiAwIDAgMS0xNzIgMTcwbC0yLTItMi00Yy0yLTEtMy0zLTItM3YtMWMtMSAxLTYtNC02LTZsLTItMS0xLTN2LTFjLTEgMS0xMy0xOC0xMi0xOWwtMS0xLTMtNC0zLTRjLTEgMC00IDMtNCA1bC03IDhhMTkzIDE5MyAwIDAgMC0yNSAzMGwtMiAzYzEgMSAwIDEtMSAybC0yIDFjMSAyLTEgNS0yIDRoLTFjMSAxIDAgMy0xIDVhMjgwIDI4MCAwIDAgMC03IDlsLTEgMi0yIDVhMTc4IDE3OCAwIDAgMC0xMyAyNmMtMiAyLTIgMS0zIDE1djEwbDEgM3YxbDEgMXYybDEgMnYyYzEtMSAzIDQgMyA3bDEgMSAzIDQgNyAxMSAzIDcgMSAxYTE3MiAxNzIgMCAwIDAgMzkgMzhjMC0yIDQgMiA0IDRoM2wxIDEgMiAxYzAgMiAwIDIgMSAxaDNsMiAyIDEgMSAyLTEgMiAxIDEtMSAxLTFjMyAwIDQtMSA3LTMgMi0yIDMtNCAzLThsMi04YzEtMiAyLTUgMC0zdi0xbDEtNCAxLTIgMi00IDEtMyAxLTEgMS0yIDItMyAxLTIgNC04di0xbDItMiAxLTFjLTEtMiA0LTkgNS05di0ybDEtMiAxLTEgMS0yIDItMmMtMS0xIDAtMSAxLTJsMi0ydi0ybDEtMSAyLTIgMS0yIDMtNSA0LTYgMi0yIDEtMSAzLTQgMi0zIDItMiAyLTQgMi0zYzItMiAyLTMtMS0zLTIgMC0yNi0yNC0yNi0yNWE0NTM4IDQ1MzggMCAwIDEgMTI3LTEyOGw3OS04MEw0MzkgNDZsMjktMjktOS04LTktOC0xNzEgMTcyek0wIDQxMGwxIDN2LTZsLTEgM3oiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://zookeeper.apache.org/) [![Debezium](https://img.shields.io/badge/Debezium-6DCA92.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgl4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgl2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjQgNjQ7IgoJeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQ1LjgsNTUuOWMwLDQuNSwzLjYsOC4xLDguMSw4LjFoMTBWNTRjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWMzEKCQljMC00LjUtMy42LTguMS04LjEtOC4xSDMxYy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlsMCwwVjguMUMxOC4yLDMuNiwxNC41LDAsMTAsMEgwdjEwYzAsNC41LDMuNiw4LjEsOC4xLDguMUgxMAoJCWM3LjEsMCwxMi45LDUuOCwxMi45LDEyLjl2MS45YzAsNC41LDMuNiw4LjEsOC4xLDguMUgzM2M3LjEsMCwxMi45LDUuOCwxMi45LDEyLjlsMCwwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+Cgk8cGF0aCBkPSJNNjQsMzFjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWOC4xQzQxLDMuNiwzNy40LDAsMzIuOSwwaC0xMHYxMC4xCgkJYzAuMSw0LjQsMy43LDgsOC4xLDhIMzNjNy4xLDAsMTIuOSw1LjgsMTIuOSwxMi45bDAsMHYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xSDY0VjMxeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTY0LDguMWMwLTQuMy0zLjUtNy45LTcuOC04LjFINDUuN3YxMC4xYzAuMSw0LjQsMy43LDgsOC4xLDhINjRWOC4xeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTAsMzNjMCw0LjUsMy42LDguMSw4LjEsOC4xSDEwYzcuMSwwLDEyLjksNS44LDEyLjksMTIuOXYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xaDEwVjUzLjkKCQljLTAuMS00LjQtMy43LTgtOC4xLThIMzFjLTcuMSwwLTEyLjktNS44LTEyLjktMTIuOWwwLDB2LTEuOWMwLTQuNS0zLjYtOC4xLTguMS04LjFIMFYzM3oiIGZpbGw9IiNGRkYiLz4KCTxwYXRoIGQ9Ik0wLDU1LjljMCw0LjMsMy41LDcuOSw3LjgsOC4xaDEwLjVWNTMuOWMtMC4xLTQuNC0zLjctOC04LjEtOEgwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+CjwvZz4KPC9zdmc+&style=flat&logoColor=black)](https://debezium.io/)  
 [![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat&logo=nestjs&logoColor=white)](https://nestjs.com/) [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/ko) [![TypesSript](https://img.shields.io/badge/TypesSript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
 [![redis](https://img.shields.io/badge/Redis-FF4438?style=flat&logo=redis&logoColor=white)](https://redis.io) [![elasticsearch](https://img.shields.io/badge/ElasticSearch-005571?style=flat&logo=elasticsearch&logoColor=white)](https://www.elastic.co/kr/elasticsearch) [![Mongodb](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![TypeORM](https://img.shields.io/badge/TypeORM-FE0803?style=flat&logo=typeorm&logoColor=white)](https://typeorm.io/)  
 [![Codecov](https://img.shields.io/badge/Codecov-F01F7A?style=flat&logo=codecov&logoColor=white)](https://about.codecov.io/) [![Jest](https://img.shields.io/badge/Jest-C21325?style=flat&logo=jest&logoColor=white)](https://jestjs.io/) [![Testcontainers](https://img.shields.io/badge/Testcontainers-17a6b2.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+DQogIDxwYXRoIGZpbGw9IiMzNjFlNWIiIGQ9Ik0xODcuMjcsNTIuOTFjMC0uMTEsLjAxLS4yMiwuMDEtLjMzLDAtLjMxLS4wMy0uNjEtLjA4LS45MS0uMjYtMS40OC0xLjE3LTIuNzktMi41LTMuNTYtLjE1LS4wOS0uMy0uMTYtLjQ2LS4yM0wxMDIuNTgsLjY4Yy0xLjU4LS45MS0zLjUyLS45MS01LjEsMEwxNS4yOCw0OC4xYy0xLjU4LC45MS0yLjU1LDIuNTktMi41NSw0LjQxbC0uMDQsOTQuOWMwLDEuODIsLjk3LDMuNTEsMi41NSw0LjQybDgyLjE2LDQ3LjQ5Yy43OCwuNDUsMS42NiwuNjgsMi41NSwuNjhoLjExYy45LDAsMS43OC0uMjQsMi41NS0uNjhsODIuMTYtNDcuNDljMS41OC0uOTEsMi41NS0yLjYsMi41NS00LjQybC0uMDQtOTQuNVoiLz4NCiAgPHBvbHlnb24gcG9pbnRzPSIxMDAgMTYgMjcuMjUgNTggMjcuMjUgMTQyIDEwMCAxODQgMTcyLjc1IDE0MiAxNzIuNzUgNTggMTAwIDE2IiBmaWxsPSIjMTZkNmM3Ii8+DQogIDxwb2x5Z29uIHBvaW50cz0iMTcyLjc1IDU4IDE3Mi43NSAxNDIgMTAwIDE4NCAxMDAgMTAwLjAxIDE3Mi43NSA1OCIgZmlsbD0iIzAyN2Y5ZSIvPg0KICA8cG9seWdvbiBmaWxsPSIjMTdhNmIyIiBwb2ludHM9IjE3Mi43NSA1OCAxMDAgMTAwLjAxIDI3LjI1IDU4IDEwMCAxNiAxNzIuNzUgNTgiLz4NCjwvc3ZnPg==&style=flat&logoColor=black)](https://testcontainers.com/) [![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=swagger&logoColor=black)](https://swagger.io/)  
@@ -388,11 +388,10 @@ Pre-Onboarding-Challenge-BE-31
 ├─ .env
 ├─ README.md
 ├─ docker-compose.yml
-│  ├─ docker-compose.app.yml
+│  ├─ docker-compose.streaming.yml
 │  ├─ docker-compose.tools.yml
 │  ├─ Dockerfile.server
-│  ├─ Dockerfile.projector
-│  └─ Dockerfile.sync
+│  └─ Dockerfile.cdc
 ├─ jest.config.ts
 │  ├─ jest.base-config.ts
 │  ├─ jest.global-setup.ts
@@ -403,29 +402,60 @@ Pre-Onboarding-Challenge-BE-31
 │  ├─ eslint.config.mjs
 │  └─ nest-cli.json
 ├─ tsconfig.json
-├─ data
-│  ├─ 01.ddl.sql
-│  ├─ 02.sellers.sql
-│  ├─ 03.brands.sql
-│  ├─ 04.categories.sql
-│  ├─ 05.tags.sql
-│  ├─ 06.products.sql
-│  ├─ 07.product_options.sql
-│  ├─ 08.product_extended.sql
-│  ├─ 09.users.sql
-│  └─ 10.reviews.sql
 ├─ config
 │  ├─ connectors
-│  │  ├─ mongo-summary-connector.json
-│  │  ├─ postgres-category-connector.json
-│  │  ├─ postgres-merchant-connector.json
-│  │  ├─ postgres-product-connector.json
-│  │  ├─ postgres-product-option-connector.json
-│  │  ├─ postgres-review-connector.json
-│  │  ├─ postgres-tag-connector.json
-│  │  └─ register.sh
-│  └─ mongo-init
-│     └─ init-replica.js
+│  │  ├─ register.sh
+│  │  ├─ source
+│  │  │  ├─ postgres-category-connector.json
+│  │  │  ├─ postgres-merchant-connector.json
+│  │  │  ├─ postgres-product-connector.json
+│  │  │  ├─ postgres-product_option-connector.json
+│  │  │  ├─ postgres-product_related-connector.json
+│  │  │  ├─ postgres-review-connector.json
+│  │  │  └─ postgres-tag-connector.json
+│  │  └─ sink
+│  │     ├─ mongo-featured_category-connector.json
+│  │     ├─ mongo-nested_category-connector.json
+│  │     ├─ mongo-product_summary-connector.json
+│  │     ├─ mongo-product_catalog-connector.json
+│  │     ├─ es-product_summary-connector.json
+│  │     ├─ es-product_catalog-connector.json
+│  │     ├─ es-featured_category-connector.json
+│  │     └─ es-nested_category-connector.json
+│  ├─ elasticsearch
+│  │  ├─ register.sh
+│  │  └─ templates
+│  │     ├─ product_summary-template.json
+│  │     ├─ product_catalog-template.json
+│  │     ├─ featured_category-template.json
+│  │     └─ nested_category-template.json
+│  ├─ mongo-init
+│  │  └─ init-replica.js
+│  └─ logging
+│     └─ log4j.properties
+├─ data
+│  ├─ rdb
+│  │  ├─ 01.ddl.sql
+│  │  ├─ 02.sellers.sql
+│  │  ├─ 03.brands.sql
+│  │  ├─ 04.categories.sql
+│  │  ├─ 05.tags.sql
+│  │  ├─ 06.products.sql
+│  │  ├─ 07.product_options.sql
+│  │  ├─ 08.product_extended.sql
+│  │  ├─ 09.users.sql
+│  │  └─ 10.reviews.sql
+│  └─ ksqldb
+│     ├─ 01.raw.sql
+│     ├─ 02.state_product_category.sql
+│     ├─ 03.state_category_product.sql
+│     ├─ 04.state_image.sql
+│     ├─ 05.state_review.sql
+│     ├─ 06.state_option.sql
+│     ├─ 07.view_product_summary.sql
+│     ├─ 08.view_product_catalog.sql
+│     ├─ 09.view_featured_category.sql
+│     └─ 10.view_nested_category.sql
 ├─ libs
 │  ├─ config
 │  │  └─ src
@@ -522,8 +552,9 @@ Pre-Onboarding-Challenge-BE-31
 │     │     │  │  └─ Tag.model.ts
 │     │     │  ├─ index.ts
 │     │     │  ├─ FeaturedCategory.model.ts
-│     │     │  ├─ ProductCatalog.model.ts
 │     │     │  ├─ ProductSummary.model.ts
+│     │     │  ├─ ProductCatalog.model.ts
+│     │     │  ├─ NestedCategory.model.ts
 │     │     │  └─ provider.ts
 │     │     └─ repositories
 │     │        ├─ index.ts
@@ -543,291 +574,219 @@ Pre-Onboarding-Challenge-BE-31
 │           └─ repositories
 │              └─ Search.repository.ts
 └─ apps
-   ├─ api-server
-   │  ├─ jest.config.ts
-   │  ├─ tsconfig.json
-   │  │  └─ tsconfig.build.json
-   │  └─ src
-   │     ├─ main.ts
-   │     │  └─ module.swagger.ts
-   │     │  └─ module.ts
-   │     ├─ __mocks__
-   │     │  └─ entityManagerMock.ts
-   │     ├─ __test-utils__
-   │     │  ├─ getValidateDTO.ts
-   │     │  └─ test-module.ts
-   │     ├─ utility
-   │     │  ├─ downloadOpenAPI.ts
-   │     │  ├─ extractDTOExample.ts
-   │     │  └─ generatorSwagger.ts
-   │     ├─ libs
-   │     │  ├─ constants
-   │     │  │  └─ ErrorCode.ts
-   │     │  ├─ decorators
-   │     │  │  ├─ index.ts
-   │     │  │  ├─ ApiErrorResponse.ts
-   │     │  │  ├─ ApiStandardResponse.ts
-   │     │  │  ├─ ResponseType.ts
-   │     │  │  └─ Transform.ts
-   │     │  ├─ filters
-   │     │  │  ├─ index.ts
-   │     │  │  ├─ BadRequestExceptionFilter.ts
-   │     │  │  ├─ ConflictExceptionFilter.ts
-   │     │  │  ├─ ForbiddenExceptionFilter.ts
-   │     │  │  ├─ InternalServerErrorExceptionFilter.ts
-   │     │  │  ├─ NotFoundExceptionFilter.ts
-   │     │  │  ├─ QueryFailedExceptionFilter.ts
-   │     │  │  └─ UnauthorizedExceptionFilter.ts
-   │     │  └─ interceptors
-   │     │     └─ ResponseInterceptor.ts
-   │     │        └─ ResponseInterceptor.test.ts
-   │     ├─ shared
-   │     │  ├─ dto
-   │     │  │  ├─ index.ts
-   │     │  │  ├─ Error.dto.ts
-   │     │  │  │  └─ Error.dto.test.ts
-   │     │  │  ├─ Filter.dto.ts
-   │     │  │  ├─ PaginationSummary.dto.ts
-   │     │  │  │  └─ PaginationSummary.dto.test.ts
-   │     │  │  ├─ Param.dto.ts
-   │     │  │  │  └─ Param.dto.test.ts
-   │     │  │  └─ Response.dto.ts
-   │     │  │     └─ Response.dto.test.ts
-   │     │  └─ mappers
-   │     │     ├─ index.ts
-   │     │     └─ to_FilterDTO.ts
-   │     ├─ browsing
-   │     │  ├─ module.ts
-   │     │  ├─ application
-   │     │  │  └─ query
-   │     │  │     ├─ index.ts
-   │     │  │     └─ Find.query.ts
-   │     │  │        ├─ Find.handler.ts
-   │     │  │        └─ Find.handler.test.ts
-   │     │  └─ presentation
-   │     │     ├─ dto
-   │     │     │  ├─ index.ts
-   │     │     │  ├─ MainResponseBundle.dto.ts
-   │     │     │  │  └─ MainResponseBundle.dto.test.ts
-   │     │     │  ├─ ProductCatalog.dto.ts
-   │     │     │  │  └─ ProductCatalog.dto.test.ts
-   │     │     │  └─ ProductSummary.dto.ts
-   │     │     │     └─ ProductSummary.dto.test.ts
-   │     │     └─ controllers
-   │     │        ├─ index.ts
-   │     │        └─ Main.controller.ts
-   │     │           └─ Main.controller.test.ts
-   │     ├─ product
-   │     │  ├─ module.ts
-   │     │  ├─ application
-   │     │  │  ├─ command
-   │     │  │  │  ├─ index.ts
-   │     │  │  │  ├─ Edit.command.ts
-   │     │  │  │  │  ├─ Edit.handler.ts
-   │     │  │  │  │  └─ Edit.handler.test.ts
-   │     │  │  │  ├─ ImageRegister.command.ts
-   │     │  │  │  │  ├─ ImageRegister.handler.ts
-   │     │  │  │  │  └─ ImageRegister.handler.test.ts
-   │     │  │  │  ├─ OptionEdit.command.ts
-   │     │  │  │  │  ├─ OptionEdit.handler.ts
-   │     │  │  │  │  └─ OptionEdit.handler.test.ts
-   │     │  │  │  ├─ OptionRegister.command.ts
-   │     │  │  │  │  ├─ OptionRegister.handler.ts
-   │     │  │  │  │  └─ OptionRegister.handler.test.ts
-   │     │  │  │  ├─ OptionRemove.command.ts
-   │     │  │  │  │  ├─ OptionRemove.handler.ts
-   │     │  │  │  │  └─ OptionRemove.handler.test.ts
-   │     │  │  │  ├─ Register.command.ts
-   │     │  │  │  │  ├─ Register.handler.ts
-   │     │  │  │  │  └─ Register.handler.test.ts
-   │     │  │  │  └─ Remove.command.ts
-   │     │  │  │     ├─ Remove.handler.ts
-   │     │  │  │     └─ Remove.handler.test.ts
-   │     │  │  └─ query
-   │     │  │     ├─ index.ts
-   │     │  │     ├─ Find.query.ts
-   │     │  │     │  ├─ Find.handler.ts
-   │     │  │     │  └─ Find.handler.test.ts
-   │     │  │     └─ FindAll.query.ts
-   │     │  │        ├─ FindAll.handler.ts
-   │     │  │        └─ FindAll.handler.test.ts
-   │     │  └─ presentation
-   │     │     ├─ dto
-   │     │     │  ├─ index.ts
-   │     │     │  ├─ model
-   │     │     │  │  ├─ Brand.dto.ts
-   │     │     │  │  │  └─ Brand.dto.test.ts
-   │     │     │  │  ├─ Image.dto.ts
-   │     │     │  │  │  └─ Image.dto.test.ts
-   │     │     │  │  ├─ Product.dto.ts
-   │     │     │  │  │  └─ Product.dto.test.ts
-   │     │     │  │  ├─ ProductDetail.dto.ts
-   │     │     │  │  │  └─ ProductDetail.dto.test.ts
-   │     │     │  │  ├─ ProductOption.dto.ts
-   │     │     │  │  │  └─ ProductOption.dto.test.ts
-   │     │     │  │  ├─ ProductOptionGroup.dto.ts
-   │     │     │  │  │  └─ ProductOptionGroup.dto.test.ts
-   │     │     │  │  ├─ ProductPrice.dto.ts
-   │     │     │  │  │  └─ ProductPrice.dto.test.ts
-   │     │     │  │  ├─ Seller.dto.ts
-   │     │     │  │  │  └─ Seller.dto.test.ts
-   │     │     │  │  └─ Tag.dto.ts
-   │     │     │  │     └─ Tag.dto.test.ts
-   │     │     │  ├─ request
-   │     │     │  │  ├─ ProductBody.dto.ts
-   │     │     │  │  │  └─ ProductBody.dto.test.ts
-   │     │     │  │  ├─ ProductQuery.dto.ts
-   │     │     │  │  │  └─ ProductQuery.dto.test.ts
-   │     │     │  │  ├─ ProductOptionBody.dto.ts
-   │     │     │  │  └─ ProductOptionImageBody.dto.ts
-   │     │     │  └─ response
-   │     │     │     ├─ ProductResponse.dto.ts
-   │     │     │     │  └─ ProductResponse.dto.test.ts
-   │     │     │     └─ ProductResponseBundle.dto.ts
-   │     │     │        └─ ProductResponseBundle.dto.test.ts
-   │     │     └─ controllers
-   │     │        ├─ index.ts
-   │     │        ├─ Product.controller.ts
-   │     │        │  └─ Product.controller.test.ts
-   │     │        └─ Product_Options.controller.ts
-   │     │           └─ Product_Options.controller.test.ts
-   │     ├─ category
-   │     │  ├─ module.ts
-   │     │  ├─ application
-   │     │  │  └─ query
-   │     │  │     ├─ index.ts
-   │     │  │     ├─ FindAll.query.ts
-   │     │  │     │  ├─ FindAll.handler.ts
-   │     │  │     │  └─ FindAll.handler.test.ts
-   │     │  │     └─ FindProducts.query.ts
-   │     │  │        ├─ FindProducts.handler.ts
-   │     │  │        └─ FindProducts.handler.test.ts
-   │     │  └─ presentation
-   │     │     ├─ dto
-   │     │     │  ├─ index.ts
-   │     │     │  ├─ Category.dto.ts
-   │     │     │  │  └─ Category.dto.test.ts
-   │     │     │  ├─ CategoryQuery.dto.ts
-   │     │     │  │  └─ CategoryQuery.dto.test.ts
-   │     │     │  ├─ CategoryResponseBundle.dto.ts
-   │     │     │  │  └─ CategoryResponseBundle.dto.test.ts
-   │     │     │  └─ NestedCategory.dto.ts
-   │     │     │     └─ NestedCategory.dto.test.ts
-   │     │     └─ controllers
-   │     │        ├─ index.ts
-   │     │        └─ Category.controller.ts
-   │     │           └─ Category.controller.test.ts
-   │     └─ review
-   │        ├─ module.ts
-   │        ├─ application
-   │        │  ├─ command
-   │        │  │  ├─ index.ts
-   │        │  │  ├─ Edit.command.ts
-   │        │  │  │  ├─ Edit.handler.ts
-   │        │  │  │  └─ Edit.handler.test.ts
-   │        │  │  ├─ Register.command.ts
-   │        │  │  │  ├─ Register.handler.ts
-   │        │  │  │  └─ Register.handler.test.ts
-   │        │  │  └─ Remove.command.ts
-   │        │  │     ├─ Remove.handler.ts
-   │        │  │     └─ Remove.handler.test.ts
-   │        │  └─ query
-   │        │     ├─ index.ts
-   │        │     └─ Find.query.ts
-   │        │        ├─ Find.handler.ts
-   │        │        └─ Find.handler.test.ts
-   │        └─ presentation
-   │           ├─ dto
-   │           │  ├─ index.ts
-   │           │  ├─ Review.dto.ts
-   │           │  │  └─ Review.dto.test.ts
-   │           │  ├─ ReviewBody.dto.ts
-   │           │  │  └─ ReviewBody.dto.test.ts
-   │           │  ├─ ReviewQuery.dto.ts
-   │           │  │  └─ ReviewQuery.dto.test.ts
-   │           │  ├─ ReviewResponse.dto.ts
-   │           │  │  └─ ReviewResponse.dto.test.ts
-   │           │  ├─ ReviewResponseBundle.dto.ts
-   │           │  │  └─ ReviewResponseBundle.dto.test.ts
-   │           │  ├─ ReviewSummary.dto.ts
-   │           │  │  └─ ReviewSummary.dto.test.ts
-   │           │  └─ User.dto.ts
-   │           └─ controllers
-   │              ├─ index.ts
-   │              └─ Review.controller.ts
-   │                 └─ Review.controller.test.ts
-   ├─ proj-docs
-   │  ├─ tsconfig.json
-   │  │  └─ tsconfig.build.json
-   │  ├─ jest.config.ts
-   │  └─ src
-   │     ├─ main.ts
-   │     │  └─ module.ts
-   │     ├─ __test-utils__
-   │     │  └─ test-module.ts
-   │     ├─ application
-   │     │  ├─ TableEntityMap.ts
-   │     │  ├─ topicEventMap.ts
-   │     │  ├─ service.ts
-   │     │  │  └─ service.test.ts
-   │     │  └─ events
-   │     │     ├─ index.ts
-   │     │     ├─ BaseEvent.ts
-   │     │     ├─ ProductUpsert.event.ts
-   │     │     │  ├─ ProductUpsert.handler.ts
-   │     │     │  └─ ProductUpsert.handler.test.ts
-   │     │     ├─ ProductDelete.event.ts
-   │     │     │  ├─ ProductDelete.handler.ts
-   │     │     │  └─ ProductDelete.handler.test.ts
-   │     │     ├─ ProductOptionUpsert.event.ts
-   │     │     │  ├─ ProductOptionUpsert.handler.ts
-   │     │     │  └─ ProductOptionUpsert.handler.test.ts
-   │     │     ├─ ProductOptionDelete.event.ts
-   │     │     │  ├─ ProductOptionDelete.handler.ts
-   │     │     │  └─ ProductOptionDelete.handler.test.ts
-   │     │     ├─ MerchantUpsert.event.ts
-   │     │     │  ├─ MerchantUpsert.handler.ts
-   │     │     │  └─ MerchantUpsert.handler.test.ts
-   │     │     ├─ CategoryUpsert.event.ts
-   │     │     │  ├─ CategoryUpsert.handler.ts
-   │     │     │  └─ CategoryUpsert.handler.test.ts
-   │     │     ├─ ReviewCreate.event.ts
-   │     │     │  ├─ ReviewCreate.handler.ts
-   │     │     │  └─ ReviewCreate.handler.test.ts
-   │     │     ├─ ReviewUpdate.event.ts
-   │     │     │  ├─ ReviewUpdate.handler.ts
-   │     │     │  └─ ReviewUpdate.handler.test.ts
-   │     │     ├─ ReviewDelete.event.ts
-   │     │     │  ├─ ReviewDelete.handler.ts
-   │     │     │  └─ ReviewDelete.handler.test.ts
-   │     │     └─ TagUpsert.event.ts
-   │     │        ├─ TagUpsert.handler.ts
-   │     │        └─ TagUpsert.handler.test.ts
-   │     └─ infrastructure
-   │        ├─ model
-   │        │  ├─ index.ts
-   │        │  ├─ CategoryState.model.ts
-   │        │  ├─ TagState.model.ts
-   │        │  └─ provider.ts
-   │        └─ repository
-   │           ├─ index.ts
-   │           └─ provider.ts
-   └─ sync-index
+   └─ api-server
       ├─ jest.config.ts
       ├─ tsconfig.json
       │  └─ tsconfig.build.json
       └─ src
          ├─ main.ts
+         │  └─ module.swagger.ts
          │  └─ module.ts
-         ├─ application
-         │  ├─ service.ts
-         │  └─ events
+         ├─ __mocks__
+         │  └─ entityManagerMock.ts
+         ├─ __test-utils__
+         │  ├─ getValidateDTO.ts
+         │  └─ test-module.ts
+         ├─ utility
+         │  ├─ downloadOpenAPI.ts
+         │  ├─ extractDTOExample.ts
+         │  └─ generatorSwagger.ts
+         ├─ libs
+         │  ├─ constants
+         │  │  └─ ErrorCode.ts
+         │  ├─ decorators
+         │  │  ├─ index.ts
+         │  │  ├─ ApiErrorResponse.ts
+         │  │  ├─ ApiStandardResponse.ts
+         │  │  ├─ ResponseType.ts
+         │  │  └─ Transform.ts
+         │  ├─ filters
+         │  │  ├─ index.ts
+         │  │  ├─ BadRequestExceptionFilter.ts
+         │  │  ├─ ConflictExceptionFilter.ts
+         │  │  ├─ ForbiddenExceptionFilter.ts
+         │  │  ├─ InternalServerErrorExceptionFilter.ts
+         │  │  ├─ NotFoundExceptionFilter.ts
+         │  │  ├─ QueryFailedExceptionFilter.ts
+         │  │  └─ UnauthorizedExceptionFilter.ts
+         │  └─ interceptors
+         │     └─ ResponseInterceptor.ts
+         │        └─ ResponseInterceptor.test.ts
+         ├─ shared
+         │  ├─ dto
+         │  │  ├─ index.ts
+         │  │  ├─ Error.dto.ts
+         │  │  │  └─ Error.dto.test.ts
+         │  │  ├─ Filter.dto.ts
+         │  │  ├─ PaginationSummary.dto.ts
+         │  │  │  └─ PaginationSummary.dto.test.ts
+         │  │  ├─ Param.dto.ts
+         │  │  │  └─ Param.dto.test.ts
+         │  │  └─ Response.dto.ts
+         │  │     └─ Response.dto.test.ts
+         │  └─ mappers
          │     ├─ index.ts
-         │     └─ SummarySync.event.ts
-         │        └─ SummarySync.handler.ts
-         └─ infrastructure
-            ├─ index.ts
-            └─ ProductSummaryDocs.ts
+         │     └─ to_FilterDTO.ts
+         ├─ browsing
+         │  ├─ module.ts
+         │  ├─ application
+         │  │  └─ query
+         │  │     ├─ index.ts
+         │  │     └─ Find.query.ts
+         │  │        ├─ Find.handler.ts
+         │  │        └─ Find.handler.test.ts
+         │  └─ presentation
+         │     ├─ dto
+         │     │  ├─ index.ts
+         │     │  ├─ MainResponseBundle.dto.ts
+         │     │  │  └─ MainResponseBundle.dto.test.ts
+         │     │  ├─ ProductCatalog.dto.ts
+         │     │  │  └─ ProductCatalog.dto.test.ts
+         │     │  └─ ProductSummary.dto.ts
+         │     │     └─ ProductSummary.dto.test.ts
+         │     └─ controllers
+         │        ├─ index.ts
+         │        └─ Main.controller.ts
+         │           └─ Main.controller.test.ts
+         ├─ product
+         │  ├─ module.ts
+         │  ├─ application
+         │  │  ├─ command
+         │  │  │  ├─ index.ts
+         │  │  │  ├─ Edit.command.ts
+         │  │  │  │  ├─ Edit.handler.ts
+         │  │  │  │  └─ Edit.handler.test.ts
+         │  │  │  ├─ ImageRegister.command.ts
+         │  │  │  │  ├─ ImageRegister.handler.ts
+         │  │  │  │  └─ ImageRegister.handler.test.ts
+         │  │  │  ├─ OptionEdit.command.ts
+         │  │  │  │  ├─ OptionEdit.handler.ts
+         │  │  │  │  └─ OptionEdit.handler.test.ts
+         │  │  │  ├─ OptionRegister.command.ts
+         │  │  │  │  ├─ OptionRegister.handler.ts
+         │  │  │  │  └─ OptionRegister.handler.test.ts
+         │  │  │  ├─ OptionRemove.command.ts
+         │  │  │  │  ├─ OptionRemove.handler.ts
+         │  │  │  │  └─ OptionRemove.handler.test.ts
+         │  │  │  ├─ Register.command.ts
+         │  │  │  │  ├─ Register.handler.ts
+         │  │  │  │  └─ Register.handler.test.ts
+         │  │  │  └─ Remove.command.ts
+         │  │  │     ├─ Remove.handler.ts
+         │  │  │     └─ Remove.handler.test.ts
+         │  │  └─ query
+         │  │     ├─ index.ts
+         │  │     ├─ Find.query.ts
+         │  │     │  ├─ Find.handler.ts
+         │  │     │  └─ Find.handler.test.ts
+         │  │     └─ FindAll.query.ts
+         │  │        ├─ FindAll.handler.ts
+         │  │        └─ FindAll.handler.test.ts
+         │  └─ presentation
+         │     ├─ dto
+         │     │  ├─ index.ts
+         │     │  ├─ model
+         │     │  │  ├─ Brand.dto.ts
+         │     │  │  │  └─ Brand.dto.test.ts
+         │     │  │  ├─ Image.dto.ts
+         │     │  │  │  └─ Image.dto.test.ts
+         │     │  │  ├─ Product.dto.ts
+         │     │  │  │  └─ Product.dto.test.ts
+         │     │  │  ├─ ProductDetail.dto.ts
+         │     │  │  │  └─ ProductDetail.dto.test.ts
+         │     │  │  ├─ ProductOption.dto.ts
+         │     │  │  │  └─ ProductOption.dto.test.ts
+         │     │  │  ├─ ProductOptionGroup.dto.ts
+         │     │  │  │  └─ ProductOptionGroup.dto.test.ts
+         │     │  │  ├─ ProductPrice.dto.ts
+         │     │  │  │  └─ ProductPrice.dto.test.ts
+         │     │  │  ├─ Seller.dto.ts
+         │     │  │  │  └─ Seller.dto.test.ts
+         │     │  │  └─ Tag.dto.ts
+         │     │  │     └─ Tag.dto.test.ts
+         │     │  ├─ request
+         │     │  │  ├─ ProductBody.dto.ts
+         │     │  │  │  └─ ProductBody.dto.test.ts
+         │     │  │  ├─ ProductQuery.dto.ts
+         │     │  │  │  └─ ProductQuery.dto.test.ts
+         │     │  │  ├─ ProductOptionBody.dto.ts
+         │     │  │  └─ ProductOptionImageBody.dto.ts
+         │     │  └─ response
+         │     │     ├─ ProductResponse.dto.ts
+         │     │     │  └─ ProductResponse.dto.test.ts
+         │     │     └─ ProductResponseBundle.dto.ts
+         │     │        └─ ProductResponseBundle.dto.test.ts
+         │     └─ controllers
+         │        ├─ index.ts
+         │        ├─ Product.controller.ts
+         │        │  └─ Product.controller.test.ts
+         │        └─ Product_Options.controller.ts
+         │           └─ Product_Options.controller.test.ts
+         ├─ category
+         │  ├─ module.ts
+         │  ├─ application
+         │  │  └─ query
+         │  │     ├─ index.ts
+         │  │     ├─ FindAll.query.ts
+         │  │     │  ├─ FindAll.handler.ts
+         │  │     │  └─ FindAll.handler.test.ts
+         │  │     └─ FindProducts.query.ts
+         │  │        ├─ FindProducts.handler.ts
+         │  │        └─ FindProducts.handler.test.ts
+         │  └─ presentation
+         │     ├─ dto
+         │     │  ├─ index.ts
+         │     │  ├─ Category.dto.ts
+         │     │  │  └─ Category.dto.test.ts
+         │     │  ├─ CategoryQuery.dto.ts
+         │     │  │  └─ CategoryQuery.dto.test.ts
+         │     │  ├─ CategoryResponseBundle.dto.ts
+         │     │  │  └─ CategoryResponseBundle.dto.test.ts
+         │     │  └─ NestedCategory.dto.ts
+         │     │     └─ NestedCategory.dto.test.ts
+         │     └─ controllers
+         │        ├─ index.ts
+         │        └─ Category.controller.ts
+         │           └─ Category.controller.test.ts
+         └─ review
+            ├─ module.ts
+            ├─ application
+            │  ├─ command
+            │  │  ├─ index.ts
+            │  │  ├─ Edit.command.ts
+            │  │  │  ├─ Edit.handler.ts
+            │  │  │  └─ Edit.handler.test.ts
+            │  │  ├─ Register.command.ts
+            │  │  │  ├─ Register.handler.ts
+            │  │  │  └─ Register.handler.test.ts
+            │  │  └─ Remove.command.ts
+            │  │     ├─ Remove.handler.ts
+            │  │     └─ Remove.handler.test.ts
+            │  └─ query
+            │     ├─ index.ts
+            │     └─ Find.query.ts
+            │        ├─ Find.handler.ts
+            │        └─ Find.handler.test.ts
+            └─ presentation
+               ├─ dto
+               │  ├─ index.ts
+               │  ├─ Review.dto.ts
+               │  │  └─ Review.dto.test.ts
+               │  ├─ ReviewBody.dto.ts
+               │  │  └─ ReviewBody.dto.test.ts
+               │  ├─ ReviewQuery.dto.ts
+               │  │  └─ ReviewQuery.dto.test.ts
+               │  ├─ ReviewResponse.dto.ts
+               │  │  └─ ReviewResponse.dto.test.ts
+               │  ├─ ReviewResponseBundle.dto.ts
+               │  │  └─ ReviewResponseBundle.dto.test.ts
+               │  ├─ ReviewSummary.dto.ts
+               │  │  └─ ReviewSummary.dto.test.ts
+               │  └─ User.dto.ts
+               └─ controllers
+                  ├─ index.ts
+                  └─ Review.controller.ts
+                     └─ Review.controller.test.ts
 ```
 
 </details>
