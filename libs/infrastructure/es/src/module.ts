@@ -4,7 +4,6 @@ import { ElasticsearchModule, ElasticsearchService } from "@nestjs/elasticsearch
 
 import { elastic_search_config } from "@libs/config";
 
-import { SummaryMapping } from "./mapping";
 import { SearchRepository } from "./repositories/Search.repository";
 
 @Module({
@@ -15,26 +14,22 @@ import { SearchRepository } from "./repositories/Search.repository";
   providers: [
     {
       provide: "IProductSummarySearchRepository",
-      useFactory: (es: ElasticsearchService) =>
-        new SearchRepository(es, "product_summary", SummaryMapping),
+      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "product_summary"),
       inject: [ElasticsearchService],
     },
     {
       provide: "IProductCatalogSearchRepository",
-      useFactory: (es: ElasticsearchService) =>
-        new SearchRepository(es, "product_catalog", SummaryMapping),
+      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "product_catalog"),
       inject: [ElasticsearchService],
     },
     {
       provide: "IFeaturedCategorySearchRepository",
-      useFactory: (es: ElasticsearchService) =>
-        new SearchRepository(es, "featured_category", SummaryMapping),
+      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "featured_category"),
       inject: [ElasticsearchService],
     },
     {
       provide: "INestedCategorySearchRepository",
-      useFactory: (es: ElasticsearchService) =>
-        new SearchRepository(es, "nested_category", SummaryMapping),
+      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "nested_category"),
       inject: [ElasticsearchService],
     },
   ],

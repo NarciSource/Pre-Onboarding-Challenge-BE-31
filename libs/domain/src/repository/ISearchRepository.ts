@@ -6,8 +6,6 @@ export type Query = QueryDslQueryContainer;
 export type Mapping = MappingTypeMapping;
 
 export default interface ISearchRepository<T> extends OnModuleInit {
-  create(index: string, mapping: Mapping): Promise<void>;
-
   index(id: string, document: Partial<T>): Promise<void>;
 
   search(query: Query): Promise<T[]>;
