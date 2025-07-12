@@ -11,6 +11,7 @@ import { repository_providers } from "./repositories";
     "IProductCatalogQueryRepository",
     "IProductSummaryQueryRepository",
     "IFeaturedCategoryQueryRepository",
+    "INestedCategoryQueryRepository",
   ],
 })
 export default class MongoQueryModule {}

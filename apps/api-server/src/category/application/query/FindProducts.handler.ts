@@ -43,7 +43,7 @@ export default class FindProductsHandler implements IQueryHandler<FindProductsQu
 
     // 아이템 필터링
     const items = await this.summary_repository.find({
-      where: { categories: { $in: [category_id] } },
+      where: { "categories.id": { $in: [category_id] } },
       order: { [sort_field]: sort_order },
       skip: (page - 1) * per_page,
       take: per_page,

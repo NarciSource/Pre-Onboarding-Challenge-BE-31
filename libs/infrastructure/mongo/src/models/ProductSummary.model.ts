@@ -18,10 +18,8 @@ export class Brand {
   @Prop() name: string;
 }
 
-@Schema()
+@Schema({ collection: "product_summary" })
 export default class ProductSummaryModel implements Product_Summary {
-  @Prop({ unique: true })
-  _id: number;
   id: number;
 
   @Prop()

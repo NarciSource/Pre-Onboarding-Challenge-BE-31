@@ -18,10 +18,8 @@ class ExtendedCategoryModel extends CategoryModel {
   parent?: CategoryModel | null;
 }
 
-@Schema()
+@Schema({ collection: "product_catalog" })
 export default class ProductCatalogModel {
-  @Prop({ unique: true })
-  _id: string;
   id: number;
 
   @Prop()
