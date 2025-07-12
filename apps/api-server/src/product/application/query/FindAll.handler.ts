@@ -48,7 +48,7 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
         ...(categories?.length ? { categories: { $in: categories } } : {}),
         ...(seller_id ? { seller_id } : {}),
         ...(brand_id ? { brand_id } : {}),
-        ...(in_stock ? { stock: { $gt: 0 } } : { stock: { $lte: 0 } }),
+        ...(in_stock ? { in_stock } : {}),
         name: { $regex: search ?? "", $options: "i" },
       };
 
@@ -74,13 +74,7 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
             ...(categories?.length ? [{ terms: { categories } }] : []),
             ...(seller_id ? [{ match: { seller_id } }] : []),
             ...(brand_id ? [{ match: { brand_id } }] : []),
-            {
-              range: {
-                stock: {
-                  [in_stock ? "gt" : "lte"]: 0,
-                },
-              },
-            },
+            ...(in_stock ? [{ match: { in_stock } }] : []),
             {
               multi_match: {
                 query: search ?? "",

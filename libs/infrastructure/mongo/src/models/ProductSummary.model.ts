@@ -21,7 +21,8 @@ export class Brand {
 @Schema()
 export default class ProductSummaryModel implements Product_Summary {
   @Prop({ unique: true })
-  declare id: number;
+  _id: number;
+  id: number;
 
   @Prop()
   name: string;
@@ -66,7 +67,7 @@ export default class ProductSummaryModel implements Product_Summary {
   created_at: Date;
 
   @Prop()
-  stock: number;
+  in_stock: boolean;
 
   @Prop({ index: true })
   rating: number;
@@ -80,9 +81,6 @@ export default class ProductSummaryModel implements Product_Summary {
 
 export const ProductSummarySchema = SchemaFactory.createForClass(ProductSummaryModel);
 
-ProductSummarySchema.virtual("in_stock").get(function () {
-  return this.stock > 0;
-});
 ProductSummarySchema.plugin(mongooseLeanVirtuals);
 
 ProductSummarySchema.index({ status: 1, base_price: 1, created_at: -1 })

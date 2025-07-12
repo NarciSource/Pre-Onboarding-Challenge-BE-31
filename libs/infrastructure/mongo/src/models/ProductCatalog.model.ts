@@ -21,7 +21,8 @@ class ExtendedCategoryModel extends CategoryModel {
 @Schema()
 export default class ProductCatalogModel {
   @Prop({ unique: true })
-  declare id: number;
+  _id: string;
+  id: number;
 
   @Prop()
   name: string;

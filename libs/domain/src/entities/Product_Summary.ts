@@ -21,7 +21,7 @@ export default class Product_Summary {
     },
     public status: string,
     public created_at: Date,
-    public stock: number,
+    public in_stock: boolean,
     public rating: number,
     public review_count: number,
     public categories: number[],

@@ -52,8 +52,8 @@ export class ProductSummaryDocument implements Omit<Product_Summary, "created_at
   @ESField({ type: "date", format: "epoch_millis" })
   created_at: number;
 
-  @ESField({ type: "integer" })
-  stock: number;
+  @ESField({ type: "boolean" })
+  in_stock: boolean;
 
   @ESField({ type: "float" })
   rating: number;
