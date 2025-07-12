@@ -14,11 +14,35 @@ import { SearchRepository } from "./repositories/Search.repository";
   ],
   providers: [
     {
-      provide: "ISummarySearchRepository",
-      useFactory: (es: ElasticsearchService) => new SearchRepository(es, "summary", SummaryMapping),
+      provide: "IProductSummarySearchRepository",
+      useFactory: (es: ElasticsearchService) =>
+        new SearchRepository(es, "product_summary", SummaryMapping),
+      inject: [ElasticsearchService],
+    },
+    {
+      provide: "IProductCatalogSearchRepository",
+      useFactory: (es: ElasticsearchService) =>
+        new SearchRepository(es, "product_catalog", SummaryMapping),
+      inject: [ElasticsearchService],
+    },
+    {
+      provide: "IFeaturedCategorySearchRepository",
+      useFactory: (es: ElasticsearchService) =>
+        new SearchRepository(es, "featured_category", SummaryMapping),
+      inject: [ElasticsearchService],
+    },
+    {
+      provide: "INestedCategorySearchRepository",
+      useFactory: (es: ElasticsearchService) =>
+        new SearchRepository(es, "nested_category", SummaryMapping),
       inject: [ElasticsearchService],
     },
   ],
-  exports: ["ISummarySearchRepository"],
+  exports: [
+    "IProductSummarySearchRepository",
+    "IProductCatalogSearchRepository",
+    "IFeaturedCategorySearchRepository",
+    "INestedCategorySearchRepository",
+  ],
 })
 export default class ESearchModule {}

@@ -13,7 +13,7 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
   constructor(
     @Inject("IProductSummaryQueryRepository")
     private readonly query_repository: IQueryRepository<ProductSummaryModel>,
-    @Inject("ISummarySearchRepository")
+    @Inject("IProductSummarySearchRepository")
     private readonly search_repository: ISearchRepository<ProductSummaryDocument>,
   ) {}
 
