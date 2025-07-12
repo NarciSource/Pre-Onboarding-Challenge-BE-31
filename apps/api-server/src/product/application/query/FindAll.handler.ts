@@ -78,7 +78,13 @@ export default class FindAllHandler implements IQueryHandler<FindAllQuery> {
             {
               multi_match: {
                 query: search ?? "",
-                fields: ["name", "short_description"],
+                fields: [
+                  "name",
+                  "short_description",
+                  "brand.name",
+                  "seller.name",
+                  "primary_image.alt_text",
+                ],
                 operator: "and",
                 fuzziness: "auto",
               },
