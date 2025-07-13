@@ -48,19 +48,6 @@
 |  | PUT | /reviews/{id} | 리뷰 수정 |
 |  | DELETE | /reviews/{id} | 리뷰 삭제 |
 
-### 테스트 리포트
-
-테스트 통과 여부와 커버리지 현황은 시각적으로 제공됩니다.
-
-| [![Jest](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg)](https://narcisource.github.io/Pre-Onboarding-Challenge-BE-31/test-report) | [![Codecov](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/codecov/codecov-plain.svg)](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31) |
-| --- | --- |
-| [테스트 리포트 바로가기](https://narcisource.github.io/Pre-Onboarding-Challenge-BE-31/test-report) | [커버리지 대시보드 바로가기](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31) |
-
-커버리지는 Codecov를 통해 분석됩니다.  
-[![codecov](https://codecov.io/gh/NarciSource/Pre-Onboarding-Challenge-BE-31/branch/main/graph/badge.svg)](https://codecov.io/gh/NarciSource/Pre-Onboarding-Challenge-BE-31)
-
-![Sunburst-graph](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31/graphs/sunburst.svg)
-
 ## 다이어그램
 
 ### System Architecture Diagram
@@ -124,7 +111,56 @@ graph TD
    click sync "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/sync-index"
 ```
 
-### Module Dependency Diagram
+#### Debezium – Kafka – ksqlDB 기반 실시간 CQRS 아키텍처
+
+1. API Layer
+
+   - **API Server**: 클라이언트로부터 Command(쓰기 요청)와 Query(읽기 요청)를 처리하는 진입점.  
+      Command 요청은 Command Side를 통해 처리하고, Query 요청은 Query Side를 통해 처리.
+
+   - **Redis**: API 레이어에서 읽기 요청의 응답 속도를 높이기 위해 캐시로 사용.  
+      API 서버와 양방향으로 연결되어 캐시 조회 및 갱신 수행.
+
+2. Command Side
+
+   - **PostgreSQL**: 시스템의 쓰기 전용 데이터 저장소.  
+      Command Side의 영속 데이터가 저장되며, 변경 사항은 CDC로 감지됨.
+
+3. CDC (Change Data Capture)
+
+   - **Debezium** (PostgreSQL Connector): PostgreSQL의 _WAL_(Write-Ahead Log)을 읽어 변경 이벤트를 추출.  
+      추출된 이벤트를 Kafka 토픽으로 발행.
+
+4. Messaging
+
+   - **Kafka**: 모든 변경 이벤트와 스트리밍 데이터를 전달하는 중앙 메시징 플랫폼.  
+      Debezium에서 발행한 CDC 이벤트를 토픽에 저장하고, 이를 소비자(ksqlDB, Sink Connector 등)가 구독하도록 함.
+
+5. Streaming Processing
+
+   - **ksqlDB**: Kafka 토픽의 실시간 스트림을 읽어 변환, 필터링, 집계 등 스트리밍 처리 수행.  
+      처리된 결과를 새로운 Kafka 토픽에 발행하여 후속 시스템에서 사용 가능하게 함.
+
+6. Query Side
+
+   - **MongoDB**: CQRS에서의 읽기 전용 Document DB 역할.  
+      *Kafka Connect MongoDB Sink Connector*가 Kafka의 처리된 데이터를 저장.  
+      API Layer의 ID 조회나 집계 기반 읽기 요청 처리.
+
+   - **Elasticsearch**: CQRS에서의 읽기 전용 Search Index 역할.  
+      *Kafka Connect Elasticsearch Sink Connector*가 Kafka의 처리된 데이터를 색인화.  
+      API Layer의 검색 및 전문(Full-text) 조회 요청 처리.
+
+7. 데이터 흐름 요약
+
+   - _Command_: `API Server → PostgreSQL → Debezium → Kafka → ksqlDB → Kafka → Sink Connectors → MongoDB / Elasticsearch`
+
+   - _Query_: `API Server → Redis (캐시) / MongoDB / Elasticsearch`
+
+&nbsp;
+
+<details>
+<summary>Module Dependency Diagram</summary>
 
 ```mermaid
 graph
@@ -173,66 +209,9 @@ graph
   kafka-ui --> kafka --> zookeeper
 ```
 
-<details>
-<summary>Projection Dependency Diagram</summary>
-
-```mermaid
-graph LR
-    %% State 저장소
-    subgraph "State storage"
-        brand_state[[brand_state]]
-        seller_state[[seller_state]]
-        category_state[[category_state]]
-        tag_state[[tag_state]]
-    end
-
-    %% 입력 데이터
-    brand[/brand/]
-    seller[/seller/]
-    tag[/tag/]
-    category[/category/]
-    product[/product/]
-    review[/review/]
-    product_option_group[/product_option_group/]
-    product_option[/product_option/]
-    product_tags[/product_tags/]
-    product_category[/product_category/]
-    product_detail[/product_detail/]
-    product_prices[/product_prices/]
-    product_image[/product_image/]
-
-    subgraph "Projection <br> Document"
-        catalog@{ shape: doc, label: "catalog"}
-    end
-
-    %% State로 저장되는 흐름
-    brand --> brand_state
-    seller --> seller_state
-    category -->|상태 저장| category_state
-    tag --> tag_state
-
-
-    %% catalog로 반영되는 구성 요소
-    product_option_group & product_option ==> catalog
-    product_detail & product_prices ==> catalog
-    product ==>|프로젝션| catalog
-    product_image & review ==> catalog
-    product_category & product_tags ==> catalog
-
-
-    %% 프로젝션 의존성
-    product -.-> product_option_group -.-> product_option
-    product -.-> product_detail & product_prices
-    product -.->|의존성| product_image
-    product -.-> review & product_tags & product_category
-
-    %% State를 읽어서 사용하는 흐름
-    brand_state & seller_state --> product
-    category_state -->|데이터 사용| product_category
-    tag_state --> product_tags
-```
-
 </details>
+
+&nbsp;
 
 ### Entity Relationship Diagram
 
@@ -392,6 +371,19 @@ erDiagram
 ```
 
 </details>
+
+### 테스트 리포트
+
+테스트 통과 여부와 커버리지 현황은 시각적으로 제공됩니다.
+
+| [![Jest](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg)](https://narcisource.github.io/Pre-Onboarding-Challenge-BE-31/test-report) | [![Codecov](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/codecov/codecov-plain.svg)](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31) |
+| --- | --- |
+| [테스트 리포트 바로가기](https://narcisource.github.io/Pre-Onboarding-Challenge-BE-31/test-report) | [커버리지 대시보드 바로가기](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31) |
+
+커버리지는 Codecov를 통해 분석됩니다.  
+[![codecov](https://codecov.io/gh/NarciSource/Pre-Onboarding-Challenge-BE-31/branch/main/graph/badge.svg)](https://codecov.io/gh/NarciSource/Pre-Onboarding-Challenge-BE-31)
+
+![Sunburst-graph](https://codecov.io/gh/narcisource/Pre-Onboarding-Challenge-BE-31/graphs/sunburst.svg)
 
 ## 폴더 구조
 
