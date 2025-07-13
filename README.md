@@ -78,14 +78,16 @@ graph TD
 
    subgraph "CDC & Messaging"
       cdc@{ shape: rounded, label: Debezium }
-      kafka@{ shape: subproc, label: Kafka }
+      kafka@{ shape: das, label: "**Kafka**" }
    end
 
    subgraph "Query Side"
-      projector[Projection Docs]
-      sync[Sync Index]
       mongo[(MongoDB)]
       elasticsearch[( ElasticSearch)]
+   end
+
+   subgraph "Streaming Processing"
+      ksql@{ shape: trap-t, label: "ksqlDB" }
    end
 
    %% Cache Layer
@@ -95,19 +97,27 @@ graph TD
    api --->|📥 Command| postgres
 
    %% CDC Flow
-   postgres & mongo -.->|📡 WAL Log | cdc
-   cdc -->|📣 Change Event| kafka
+   postgres e1@-.->|📡 WAL Log | cdc
+   cdc e2@-->|📣 Change Event| kafka
+
+   %% Projection flow
+   kafka e3@<-.->|✉️ Topic| ksql
+
+   %% Sink flow
+   kafka e4@-.->|📝 Document| mongo
+   kafka e5@-.->|🔍 Index| elasticsearch
 
    %% Query flow
    api -->|"📤 Query (Lookup)"| mongo
 
-   %% Projection flow
-   kafka -->|✉️ Topic| projector & sync
-   projector --> mongo
-   sync --> elasticsearch
-
    %% Query flow
    api -->|"📤 Query (Search)"| elasticsearch
+
+   e1@{ animation: fast }
+   e2@{ animation: fast }
+   e3@{ animation: fast }
+   e4@{ animation: fast }
+   e5@{ animation: fast }
 
    click api "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/api-server"
    click projector "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/proj-docs"
@@ -123,21 +133,23 @@ graph
 
    subgraph Event-Streaming
     zookeeper@{ shape: dbl-circ }
-    kafka@{ shape: fr-rect }
+    kafka@{ shape: das, label: "**Kafka**" }
     kafka-ui@{ shape: win-pane }
+    ksqldb-server@{ shape: trap-t }
+    schema-registry@{ shape: div-rect }
     debezium@{ shape: diamond }
     connector-init@{ shape: odd }
+    ksql-init@{ shape: odd }
    end
 
    subgraph Application
     server@{ shape: rect }
-    projector@{ shape: rect }
-    sync@{ shape: rect }
 
     rds@{ shape: cyl }
     mongo@{ shape: cyl }
     mongo-init@{ shape: odd }
     elasticsearch@{ shape: cyl }
+    elasticsearch-init@{ shape: odd }
     redis@{ shape: cyl }
     kibana@{ shape: win-pane }
    end
@@ -147,15 +159,18 @@ graph
   server -..->|🩺 healthcheck| rds & redis
 
   mongo-init -.-> mongo
-  server & projector -..->|🩺| mongo
+  server -..->|🩺| mongo
 
-  server & sync -..->|🩺| elasticsearch
+  server -..->|🩺| elasticsearch
+  elasticsearch-init -.->|🩺| elasticsearch
   kibana --> elasticsearch
 
-  server & projector & sync -...-> kafka
-  connector-init -->|🩺| debezium --> kafka --> zookeeper
-
-  kafka-ui --> kafka
+  server -...-> kafka
+  connector-init -.->|🩺| debezium --> kafka
+  debezium --->|🩺| schema-registry
+  ksql-init -.->|🩺| ksqldb-server --> kafka
+  ksql-init -.-> connector-init
+  kafka-ui --> kafka --> zookeeper
 ```
 
 <details>
