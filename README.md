@@ -7,7 +7,7 @@
 ## 기술 스택
 
 [![ksqlDB](https://img.shields.io/badge/ksqlDB-EF5862.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNSA2MyI+PHBhdGggZmlsbD0iI0ZGRiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJtMjUgNTggMSAzYTEgMSAwIDAgMS0yIDFoLTFsLTEtM2ExIDEgMCAwIDEgMy0xWm00LTJhMSAxIDAgMSAxLTIgMSAxIDEgMCAwIDEgMi0xWk0xNiAxM2M0IDUgOSAxMSAxMiAxOWw1IDEyIDEgMWEzIDMgMCAwIDEtNSAzbC0xLTJhMSAxIDAgMSAwLTMgMWwyIDQgMSAyYTEgMSAwIDAgMS0zIDFsLTEtMmExIDEgMCAxIDAtMiAxbDEgMWExIDEgMCAxIDEtMiAybC0xLTItMS00YTEgMSAwIDEgMC0zIDJ2MWEzIDMgMCAwIDEtNSAybC0xLTItNS0xMWMtMy04LTQtMTYtNS0yMlptMyAyMmEzIDMgMCAxIDAtNSAyIDMgMyAwIDAgMCA1LTJabS0zLTdhMyAzIDAgMSAwLTUgMiAzIDMgMCAwIDAgNS0yWm0tMy02YTMgMyAwIDEgMC01IDIgMyAzIDAgMCAwIDUtMlpNMSAwbDEzIDExaDFMMCAxNyAxIDBaIi8+PC9zdmc+&style=flat&logoColor=black)](https://www.confluent.io/ko-kr/product/ksqldb/) [![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=flat&logo=apachekafka&logoColor=white)](https://kafka.apache.org/) [![Apicurio Registry](https://img.shields.io/badge/Apicurio_Registry-758EBF.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBpZD0iU3ZnanNTdmcxMDAwIiB2aWV3Qm94PSIwIDAgMTAyNCAxMDI0Ij48ZGVmcy8+PHBhdGggZD0iTTQ2NiA2MTJoLTFjLTU4LTQtMTA3LTY0LTEwNy0xMDlsNC04MkE0NjMgNDYzIDAgMCAxIDcwMSA1NSA0NTMgNDUzIDAgMCAwIDQyIDQ1OHY0MDNhMTU4IDE1OCAwIDAgMCAzMTUgMHYtODRjMC02MSA0OC0xMTEgMTA4LTExNWgxYTI1IDI1IDAgMCAwIDAtNTBaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+PHBhdGggZD0iTTg0OSAyMjRjMjQgMCA0OCAyIDcxIDUtMjktNDktNjctOTItMTExLTEyN2E0NjMgNDYzIDAgMCAwLTM2OSAyNTIgMTM3IDEzNyAwIDAgMSAxMTgtMzBjODAtNjMgMTgxLTEwMCAyOTEtMTAwWk05NTkgMzE2YTQ3NSA0NzUgMCAwIDAtMzQ0IDM1YzMyIDI1IDUyIDY0IDUyIDEwN3Y0NWMwIDQ1LTUwIDEwNS0xMDcgMTA5aC0yYTI1IDI1IDAgMCAwIDAgNTBoMWM1OSA0IDEwNCA1MCAxMDggMTA5djkwYTE1OCAxNTggMCAwIDAgMzE1IDBWNDU4YzAtNTAtOC05OC0yMy0xNDJaIiBjbGFzcz0iY2xzLTEiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz48L3N2Zz48L3N2Zz4=&style=flat&logoColor=black)](https://www.apicur.io/registry/) [![Apache Zookeeper](https://img.shields.io/badge/Apache_Zookeeper-4E7A37.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMCIgdmlld0JveD0iMCAwIDQ2OSA1MTAiPgogIDxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0yNzkgMTczYTI3MTYgMjcxNiAwIDAgMS0xNzIgMTcwbC0yLTItMi00Yy0yLTEtMy0zLTItM3YtMWMtMSAxLTYtNC02LTZsLTItMS0xLTN2LTFjLTEgMS0xMy0xOC0xMi0xOWwtMS0xLTMtNC0zLTRjLTEgMC00IDMtNCA1bC03IDhhMTkzIDE5MyAwIDAgMC0yNSAzMGwtMiAzYzEgMSAwIDEtMSAybC0yIDFjMSAyLTEgNS0yIDRoLTFjMSAxIDAgMy0xIDVhMjgwIDI4MCAwIDAgMC03IDlsLTEgMi0yIDVhMTc4IDE3OCAwIDAgMC0xMyAyNmMtMiAyLTIgMS0zIDE1djEwbDEgM3YxbDEgMXYybDEgMnYyYzEtMSAzIDQgMyA3bDEgMSAzIDQgNyAxMSAzIDcgMSAxYTE3MiAxNzIgMCAwIDAgMzkgMzhjMC0yIDQgMiA0IDRoM2wxIDEgMiAxYzAgMiAwIDIgMSAxaDNsMiAyIDEgMSAyLTEgMiAxIDEtMSAxLTFjMyAwIDQtMSA3LTMgMi0yIDMtNCAzLThsMi04YzEtMiAyLTUgMC0zdi0xbDEtNCAxLTIgMi00IDEtMyAxLTEgMS0yIDItMyAxLTIgNC04di0xbDItMiAxLTFjLTEtMiA0LTkgNS05di0ybDEtMiAxLTEgMS0yIDItMmMtMS0xIDAtMSAxLTJsMi0ydi0ybDEtMSAyLTIgMS0yIDMtNSA0LTYgMi0yIDEtMSAzLTQgMi0zIDItMiAyLTQgMi0zYzItMiAyLTMtMS0zLTIgMC0yNi0yNC0yNi0yNWE0NTM4IDQ1MzggMCAwIDEgMTI3LTEyOGw3OS04MEw0MzkgNDZsMjktMjktOS04LTktOC0xNzEgMTcyek0wIDQxMGwxIDN2LTZsLTEgM3oiLz4KPC9zdmc+Cg==&style=flat&logoColor=black)](https://zookeeper.apache.org/) [![Debezium](https://img.shields.io/badge/Debezium-6DCA92.svg?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgl4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiCgl2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjQgNjQ7IgoJeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQ1LjgsNTUuOWMwLDQuNSwzLjYsOC4xLDguMSw4LjFoMTBWNTRjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWMzEKCQljMC00LjUtMy42LTguMS04LjEtOC4xSDMxYy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlsMCwwVjguMUMxOC4yLDMuNiwxNC41LDAsMTAsMEgwdjEwYzAsNC41LDMuNiw4LjEsOC4xLDguMUgxMAoJCWM3LjEsMCwxMi45LDUuOCwxMi45LDEyLjl2MS45YzAsNC41LDMuNiw4LjEsOC4xLDguMUgzM2M3LjEsMCwxMi45LDUuOCwxMi45LDEyLjlsMCwwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+Cgk8cGF0aCBkPSJNNjQsMzFjMC00LjUtMy42LTguMS04LjEtOC4xSDU0Yy03LjEsMC0xMi45LTUuOC0xMi45LTEyLjlWOC4xQzQxLDMuNiwzNy40LDAsMzIuOSwwaC0xMHYxMC4xCgkJYzAuMSw0LjQsMy43LDgsOC4xLDhIMzNjNy4xLDAsMTIuOSw1LjgsMTIuOSwxMi45bDAsMHYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xSDY0VjMxeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTY0LDguMWMwLTQuMy0zLjUtNy45LTcuOC04LjFINDUuN3YxMC4xYzAuMSw0LjQsMy43LDgsOC4xLDhINjRWOC4xeiIgZmlsbD0iI0ZGRiIvPgoJPHBhdGggZD0iTTAsMzNjMCw0LjUsMy42LDguMSw4LjEsOC4xSDEwYzcuMSwwLDEyLjksNS44LDEyLjksMTIuOXYxLjljMCw0LjUsMy42LDguMSw4LjEsOC4xaDEwVjUzLjkKCQljLTAuMS00LjQtMy43LTgtOC4xLThIMzFjLTcuMSwwLTEyLjktNS44LTEyLjktMTIuOWwwLDB2LTEuOWMwLTQuNS0zLjYtOC4xLTguMS04LjFIMFYzM3oiIGZpbGw9IiNGRkYiLz4KCTxwYXRoIGQ9Ik0wLDU1LjljMCw0LjMsMy41LDcuOSw3LjgsOC4xaDEwLjVWNTMuOWMtMC4xLTQuNC0zLjctOC04LjEtOEgwVjU1Ljl6IiBmaWxsPSIjRkZGIi8+CjwvZz4KPC9zdmc+&style=flat&logoColor=black)](https://debezium.io/)  
-[![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat&logo=nestjs&logoColor=white)](https://nestjs.com/) [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/ko) [![TypesSript](https://img.shields.io/badge/TypesSript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
+[![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat&logo=nestjs&logoColor=white)](https://nestjs.com/) [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/ko) [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
 [![redis](https://img.shields.io/badge/Redis-FF4438?style=flat&logo=redis&logoColor=white)](https://redis.io) [![elasticsearch](https://img.shields.io/badge/ElasticSearch-005571?style=flat&logo=elasticsearch&logoColor=white)](https://www.elastic.co/kr/elasticsearch) [![Mongodb](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![TypeORM](https://img.shields.io/badge/TypeORM-FE0803?style=flat&logo=typeorm&logoColor=white)](https://typeorm.io/)  
 [![Codecov](https://img.shields.io/badge/Codecov-F01F7A?style=flat&logo=codecov&logoColor=white)](https://about.codecov.io/) [![Jest](https://img.shields.io/badge/Jest-C21325?style=flat&logo=jest&logoColor=white)](https://jestjs.io/) [![Testcontainers](https://img.shields.io/badge/Testcontainers-17a6b2.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+DQogIDxwYXRoIGZpbGw9IiMzNjFlNWIiIGQ9Ik0xODcuMjcsNTIuOTFjMC0uMTEsLjAxLS4yMiwuMDEtLjMzLDAtLjMxLS4wMy0uNjEtLjA4LS45MS0uMjYtMS40OC0xLjE3LTIuNzktMi41LTMuNTYtLjE1LS4wOS0uMy0uMTYtLjQ2LS4yM0wxMDIuNTgsLjY4Yy0xLjU4LS45MS0zLjUyLS45MS01LjEsMEwxNS4yOCw0OC4xYy0xLjU4LC45MS0yLjU1LDIuNTktMi41NSw0LjQxbC0uMDQsOTQuOWMwLDEuODIsLjk3LDMuNTEsMi41NSw0LjQybDgyLjE2LDQ3LjQ5Yy43OCwuNDUsMS42NiwuNjgsMi41NSwuNjhoLjExYy45LDAsMS43OC0uMjQsMi41NS0uNjhsODIuMTYtNDcuNDljMS41OC0uOTEsMi41NS0yLjYsMi41NS00LjQybC0uMDQtOTQuNVoiLz4NCiAgPHBvbHlnb24gcG9pbnRzPSIxMDAgMTYgMjcuMjUgNTggMjcuMjUgMTQyIDEwMCAxODQgMTcyLjc1IDE0MiAxNzIuNzUgNTggMTAwIDE2IiBmaWxsPSIjMTZkNmM3Ii8+DQogIDxwb2x5Z29uIHBvaW50cz0iMTcyLjc1IDU4IDE3Mi43NSAxNDIgMTAwIDE4NCAxMDAgMTAwLjAxIDE3Mi43NSA1OCIgZmlsbD0iIzAyN2Y5ZSIvPg0KICA8cG9seWdvbiBmaWxsPSIjMTdhNmIyIiBwb2ludHM9IjE3Mi43NSA1OCAxMDAgMTAwLjAxIDI3LjI1IDU4IDEwMCAxNiAxNzIuNzUgNTgiLz4NCjwvc3ZnPg==&style=flat&logoColor=black)](https://testcontainers.com/) [![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat&logo=swagger&logoColor=black)](https://swagger.io/)  
 [![Github Actions](https://img.shields.io/badge/Github_Actions-2088FF?style=flat&logo=githubactions&logoColor=white)](https://github.com/features/actions) [![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white)](https://eslint.org/) [![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat&logo=prettier&logoColor=black)](https://prettier.io/)  
@@ -63,9 +63,11 @@ graph TD
       postgres[(PostgreSQL)]
    end
 
-   subgraph "CDC & Messaging"
+   subgraph "Streaming Layer"
       cdc@{ shape: rounded, label: Debezium }
       kafka@{ shape: das, label: "**Kafka**" }
+      ksql@{ shape: trap-t, label: "ksqlDB" }
+      sink@{ shape: sm-circ, label: "SinkConnector" }
    end
 
    subgraph "Query Side"
@@ -73,9 +75,6 @@ graph TD
       elasticsearch[( ElasticSearch)]
    end
 
-   subgraph "Streaming Processing"
-      ksql@{ shape: trap-t, label: "ksqlDB" }
-   end
 
    %% Cache Layer
    api <-->|⚡ Caching| redis
@@ -88,11 +87,12 @@ graph TD
    cdc e2@-->|📣 Change Event| kafka
 
    %% Projection flow
-   kafka e3@<-.->|✉️ Topic| ksql
+   ksql e3@<-.->|✉️ Topic| kafka
 
    %% Sink flow
-   kafka e4@-.->|📝 Document| mongo
-   kafka e5@-.->|🔍 Index| elasticsearch
+   kafka e4@-.-> sink
+   sink e5@-.->|📝 Document| mongo
+   sink e6@-.->|🔍 Index| elasticsearch
 
    %% Query flow
    api -->|"📤 Query (Lookup)"| mongo
@@ -105,10 +105,13 @@ graph TD
    e3@{ animation: fast }
    e4@{ animation: fast }
    e5@{ animation: fast }
+   e6@{ animation: fast }
 
-   click api "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/api-server"
-   click projector "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/proj-docs"
-   click sync "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/apps/sync-index"
+   click postgres "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/db/rdb"
+   click cdc "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/config/connectors/source"
+   click sink "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/config/connectors/sink"
+   click ksql "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/db/ksqldb"
+   click elasticsearch "https://github.com/NarciSource/Pre-Onboarding-Challenge-BE-31/tree/main/config/elasticsearch/templates"
 ```
 
 #### Debezium – Kafka – ksqlDB 기반 실시간 CQRS 아키텍처
@@ -410,37 +413,37 @@ Pre-Onboarding-Challenge-BE-31
 │  └─ nest-cli.json
 ├─ tsconfig.json
 ├─ config
+│  ├─ logging
+│  │  └─ log4j.properties
 │  ├─ connectors
 │  │  ├─ register.sh
 │  │  ├─ source
-│  │  │  ├─ postgres-category-connector.json
-│  │  │  ├─ postgres-merchant-connector.json
 │  │  │  ├─ postgres-product-connector.json
 │  │  │  ├─ postgres-product_option-connector.json
 │  │  │  ├─ postgres-product_related-connector.json
+│  │  │  ├─ postgres-merchant-connector.json
+│  │  │  ├─ postgres-category-connector.json
 │  │  │  ├─ postgres-review-connector.json
 │  │  │  └─ postgres-tag-connector.json
 │  │  └─ sink
-│  │     ├─ mongo-featured_category-connector.json
-│  │     ├─ mongo-nested_category-connector.json
 │  │     ├─ mongo-product_summary-connector.json
 │  │     ├─ mongo-product_catalog-connector.json
+│  │     ├─ mongo-featured_category-connector.json
+│  │     ├─ mongo-nested_category-connector.json
 │  │     ├─ es-product_summary-connector.json
 │  │     ├─ es-product_catalog-connector.json
 │  │     ├─ es-featured_category-connector.json
 │  │     └─ es-nested_category-connector.json
-│  ├─ elasticsearch
-│  │  ├─ register.sh
-│  │  └─ templates
-│  │     ├─ product_summary-template.json
-│  │     ├─ product_catalog-template.json
-│  │     ├─ featured_category-template.json
-│  │     └─ nested_category-template.json
-│  ├─ mongo-init
+│  ├─ mongo
 │  │  └─ init-replica.js
-│  └─ logging
-│     └─ log4j.properties
-├─ data
+│  └─ elasticsearch
+│     ├─ register.sh
+│     └─ templates
+│        ├─ product_summary-template.json
+│        ├─ product_catalog-template.json
+│        ├─ featured_category-template.json
+│        └─ nested_category-template.json
+├─ db
 │  ├─ rdb
 │  │  ├─ 01.ddl.sql
 │  │  ├─ 02.sellers.sql
@@ -457,7 +460,7 @@ Pre-Onboarding-Challenge-BE-31
 │     ├─ 02.state_product_category.sql
 │     ├─ 03.state_category_product.sql
 │     ├─ 04.state_image.sql
-│     ├─ 05.state_review.sql
+│     ├─ 05.state_rating.sql
 │     ├─ 06.state_option.sql
 │     ├─ 07.view_product_summary.sql
 │     ├─ 08.view_product_catalog.sql
@@ -494,7 +497,10 @@ Pre-Onboarding-Challenge-BE-31
 │  │     │  ├─ Review.ts
 │  │     │  ├─ User.ts
 │  │     │  ├─ Tag.ts
-│  │     │  └─ Product_Summary.ts
+│  │     │  ├─ Product_Summary.ts
+│  │     │  ├─ Product_Catalog.ts
+│  │     │  ├─ Featured_Category.ts
+│  │     │  └─ Nested_Category.ts
 │  │     └─ repository
 │  │        ├─ index.ts
 │  │        ├─ IBaseRepository.ts
@@ -558,9 +564,9 @@ Pre-Onboarding-Challenge-BE-31
 │     │     │  │  ├─ Rating.model.ts
 │     │     │  │  └─ Tag.model.ts
 │     │     │  ├─ index.ts
-│     │     │  ├─ FeaturedCategory.model.ts
 │     │     │  ├─ ProductSummary.model.ts
 │     │     │  ├─ ProductCatalog.model.ts
+│     │     │  ├─ FeaturedCategory.model.ts
 │     │     │  ├─ NestedCategory.model.ts
 │     │     │  └─ provider.ts
 │     │     └─ repositories
