@@ -1,5 +1,6 @@
 import { Prop, Schema } from "@nestjs/mongoose";
 
+import { Product_Catalog } from "@libs/domain/entities";
 import BrandModel from "./sub/Brand.model";
 import CategoryModel from "./sub/Category.model";
 import ProductDetailModel from "./sub/Detail.model";
@@ -19,7 +20,7 @@ class ExtendedCategoryModel extends CategoryModel {
 }
 
 @Schema({ collection: "product_catalog" })
-export default class ProductCatalogModel {
+export default class ProductCatalogModel implements Product_Catalog {
   id: number;
 
   @Prop()

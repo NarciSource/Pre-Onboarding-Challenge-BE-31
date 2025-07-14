@@ -24,7 +24,7 @@ services:
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
     volumes:
-      - ./data/rdb:/docker-entrypoint-initdb.d
+      - ./db/rdb:/docker-entrypoint-initdb.d
       - pg-data:/var/lib/postgresql/data
 
     healthcheck:
@@ -76,7 +76,7 @@ services:
     environment:
       - MONGO_HOST=mongo
     volumes:
-      - ./config/mongo-init/init-replica.js:/init-replica.js:ro
+      - ./config/mongo/init-replica.js:/init-replica.js:ro
 
   # 검색 데이터베이스
   elasticsearch:

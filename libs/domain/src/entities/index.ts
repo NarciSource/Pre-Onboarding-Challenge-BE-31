@@ -16,3 +16,6 @@ export { default as Review } from "./Review";
 export { default as Tag } from "./Tag";
 
 export { default as Product_Summary } from "./Product_Summary";
+export { default as Product_Catalog } from "./Product_Catalog";
+export { default as Featured_Category } from "./Featured_Category";
+export { default as Nested_Category } from "./Nested_Category";

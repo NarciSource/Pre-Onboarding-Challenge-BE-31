@@ -9,6 +9,8 @@ export default class BrandModel implements Omit<Brand, "slug"> {
   @Prop()
   name: string;
 
+  slug: string;
+
   @Prop({ type: String })
   description: string | null;
 
